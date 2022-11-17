@@ -1,5 +1,8 @@
 
-chk_input_size <- function(input, name, max_dim, min_char = NULL, max_char = NULL) {
+chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_char = NULL) {
+  
+  if (length(input) < min_dim) 
+    return(stringr::str_glue("{name} has too few dimensions. The minimum is {max_dim}."))
   
   if (length(input) > max_dim) 
     return(stringr::str_glue("{name} has too many dimensions. The limit is {max_dim}."))
@@ -37,26 +40,12 @@ chk_input_choice <- function(input, name, choices) {
 }
 
 
-
-anchor_it <- function(reg) {
-  paste0("^", reg, "$")
-}
-reg_xref <- function(only = TRUE) {
-  #p31
-  reg <- "@[a-zA-Z0-9]{1,20}@"
-  if(only) reg <- anchor_it(reg)
-  reg
+chk_input_R7classes <- function(inputs, name, target_class){
+  target_class_name <- target_class@name
+  for(inp in inputs){
+    if(!R7_inherits(inp, target_class))
+      return(stringr::str_glue("{name} contains an invalid object not of {target_class_name}."))
+  }
+  NULL
 }
 
-reg_age_at_event <- function() {
-  paste0("^(?:[<>] )?",
-         c("\\d{1,3}y \\d{1,2}m \\d{1,3}d$",
-           "\\d{1,3}y \\d{1,2}m$",
-           "\\d{1,3}y \\d{1,3}d$",
-           "\\d{1,2}m \\d{1,3}d$",
-           "\\d{1,3}y$",
-           "\\d{1,2}m$",
-           "\\d{1,3}d$")) |> 
-    paste(collapse = "|")
-  
-}
