@@ -4,39 +4,39 @@
 # if creating a new obj from scratch, certain properties need to be preset (parent) class_new - take out presets
 # if importing, all properties can be open (child)  class_general - add in properties that were preset
 
-class_gedcomR7 <- new_class("class_gedcomR7",
+class_gedcomR7 <- R7::new_class("class_gedcomR7",
                             properties = list(
-                              gedcom_version = new_property(getter = function(self) "5.5.5"),
-                              gedcom_form = new_property(getter = function(self) "LINEAGE-LINKED"),
-                              character_encoding = new_property(getter = function(self) "UTF-8"),
-                              system_id = new_property(class_character, default = "gedcomR7"),
-                              product_name = new_property(class_character,
+                              gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
+                              gedcom_form = R7::new_property(getter = function(self) "LINEAGE-LINKED"),
+                              character_encoding = R7::new_property(getter = function(self) "UTF-8"),
+                              system_id = R7::new_property(R7::class_character, default = "gedcomR7"),
+                              product_name = R7::new_property(R7::class_character,
                                                           default = "The 'gedcom7' package for the R language"),
-                              business_name = new_property(class_character, default = "Jamie Lendrum"),
-                              product_version = class_character,
-                              business_address = new_property(new_union(NULL, class_address)),
-                              source_data_name = class_character,
-                              source_data_pubdate = new_property(new_union(NULL, class_date_exact)),
-                              source_data_copyright = class_character,
-                              receiving_system = class_character,
-                              creation_date = new_property(new_union(NULL, class_date_exact)),
-                              creation_time = class_character,
-                              language = new_property(class_character, default = "English"),
-                              xref_subm = class_character,
-                              file_name = class_character,
-                              gedcom_copyright = class_character,
-                              content_description = class_character,
+                              business_name = R7::new_property(R7::class_character, default = "Jamie Lendrum"),
+                              product_version = R7::class_character,
+                              business_address = R7::new_property(R7::new_union(NULL, class_address)),
+                              source_data_name = R7::class_character,
+                              source_data_pubdate = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
+                              source_data_copyright = R7::class_character,
+                              receiving_system = R7::class_character,
+                              creation_date = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
+                              creation_time = R7::class_character,
+                              language = R7::new_property(R7::class_character, default = "English"),
+                              xref_subm = R7::class_character,
+                              file_name = R7::class_character,
+                              gedcom_copyright = R7::class_character,
+                              content_description = R7::class_character,
                               # Records
                               subm = class_record_subm,
-                              indi = class_list,
-                              famg = class_list,
-                              sour = class_list,
-                              repo = class_list,
-                              media = class_list,
-                              note = class_list,
+                              indi = R7::class_list,
+                              famg = R7::class_list,
+                              sour = R7::class_list,
+                              repo = R7::class_list,
+                              media = R7::class_list,
+                              note = R7::class_list,
                               
-                              as_df = new_property(
-                                class_data.frame, 
+                              as_df = R7::new_property(
+                                R7::class_data.frame, 
                                 getter = function(self){
 
                                   hd <- dplyr::bind_rows(
@@ -55,21 +55,24 @@ class_gedcomR7 <- new_class("class_gedcomR7",
                                       dplyr::mutate(level = level + 2)
                                   }
                                   
-                                  if(is.null(self@source_data_pubdate)){
+                                  if(length(self@source_data_pubdate) == 0){
                                     pubdate <- character()
+                                  } else if(is.character(self@source_data_pubdate)) {
+                                    pubdate <- self@source_data_pubdate
                                   } else {
-                                    pubdate <- self@source_data_pubdate@gedcom_value
+                                    pubdate <- self@source_data_pubdate@as_gedcom_val
                                   }
                                   
                                   if(is.null(self@creation_date)){
                                     credate <- character()
+                                  } else if(is.character(self@creation_date)) {
+                                    credate <- self@creation_date
                                   } else {
-                                    credate <- self@creation_date@gedcom_value
+                                    credate <- self@creation_date@as_gedcom_val
                                   }
                                   
                                   hd_ext <- dplyr::bind_rows(
-                                    tibble::tibble(level = 0, record = "HD", tag = "DEST", value = self@receiving_system),
-                                    tibble::tibble(level = 0, tag = "SOUR", value = self@system_id),
+                                    tibble::tibble(level = 0, record = "HD", tag = "SOUR", value = self@system_id),
                                     tibble::tibble(level = 1, tag = "VERS", value = self@product_version),
                                     tibble::tibble(level = 1, tag = "NAME", value = self@product_name),
                                     tibble::tibble(level = 1, tag = "CORP", value = self@business_name),
@@ -77,6 +80,7 @@ class_gedcomR7 <- new_class("class_gedcomR7",
                                     tibble::tibble(level = 1, tag = "DATA", value = self@source_data_name),
                                     tibble::tibble(level = 2, tag = "DATE", value = pubdate),
                                     tibble::tibble(level = 2, tag = "COPR", value = self@source_data_copyright),
+                                    tibble::tibble(level = 0, tag = "DEST", value = self@receiving_system),
                                     tibble::tibble(level = 0, tag = "DATE", value = credate),
                                     tibble::tibble(level = 1, tag = "TIME", value = self@creation_time),
                                     tibble::tibble(level = 0, tag = "LANG", value = self@language),
@@ -109,7 +113,7 @@ class_gedcomR7 <- new_class("class_gedcomR7",
 # class_gedcomR7_new <- purrr::partial(class_gedcomR7,
 #                                      file_name = "test_file.ged")
 
-method(print, class_gedcomR7) <- function(x, ...){
+R7::method(print, class_gedcomR7) <- function(x, ...){
   
   eol <- "\n"
   # this is the longest string

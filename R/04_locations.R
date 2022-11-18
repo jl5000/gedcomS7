@@ -1,47 +1,60 @@
 
-class_place <- new_class("class_place",
+# FINISHED
+class_place <- R7::new_class("class_place",
                          properties = list(
-                           name = class_character,
-                           phonetic_names = class_character,
-                           phonetic_methods = class_character,
-                           romanised_names = class_character,
-                           romanised_methods = class_character,
-                           latitude = class_character, #TODO: x@latitude/longitude doesn't work without valid_eventually
-                           longitude = class_character,
-                           notes = class_list,
+                           name = R7::class_character,
+                           phon_names = R7::class_character,
+                           rom_names = R7::class_character,
+                           lat_long = R7::class_character,
+                           notes = R7::class_list,
                            
-                           as_df = new_property(class_data.frame,
+                           lat = R7::new_property(R7::class_character,
+                                              getter = function(self){
+                                                if(length(self@lat_long) == 1){
+                                                  unlist(strsplit(self@lat_long, split = " "))[1]
+                                                } else { character() }
+                                              }),
+                           long = R7::new_property(R7::class_character,
+                                              getter = function(self){
+                                                if(length(self@lat_long) == 1){
+                                                  unlist(strsplit(self@lat_long, split = " "))[2]
+                                                } else { character() }
+                                              }),
+                           
+                           as_df = R7::new_property(R7::class_data.frame,
                                                 getter = function(self){
                                                   
                                                   pla_df <- tibble::tibble(level = 0, tag = "PLAC", value = self@name)
                                                   
-                                                  for (i in seq_along(self@phonetic_names)) {
+                                                  for (i in seq_along(self@phon_names)) {
                                                     pla_df <- dplyr::bind_rows(
                                                       pla_df,
-                                                      tibble::tibble(level = 1, tag = "FONE", value = self@phonetic_names[i]),
-                                                      tibble::tibble(level = 2, tag = "TYPE", value = self@phonetic_methods[i])
+                                                      tibble::tibble(level = 1, tag = "FONE", value = self@phon_names[i]),
+                                                      tibble::tibble(level = 2, tag = "TYPE", value = names(self@phon_names)[i])
                                                     )
                                                   }
                                                   
-                                                  for (i in seq_along(self@romanised_names)) {
+                                                  for (i in seq_along(self@rom_names)) {
                                                     pla_df <- dplyr::bind_rows(
                                                       pla_df,
-                                                      tibble::tibble(level = 1, tag = "ROMN", value = self@romanised_names[i]),
-                                                      tibble::tibble(level = 2, tag = "TYPE", value = self@romanised_methods[i])
+                                                      tibble::tibble(level = 1, tag = "ROMN", value = self@rom_names[i]),
+                                                      tibble::tibble(level = 2, tag = "TYPE", value = names(self@rom_names)[i])
                                                     )
                                                   }
                                                   
-                                                  if(length(self@latitude) == 1){
+                                                  if(length(self@lat_long) == 1){
                                                     pla_df <- dplyr::bind_rows(
                                                       pla_df,
                                                       tibble::tibble(level = 1, tag = "MAP", value = ""),
-                                                      tibble::tibble(level = 2, tag = "LATI", value = self@latitude),
-                                                      tibble::tibble(level = 2, tag = "LONG", value = self@longitude)
+                                                      tibble::tibble(level = 2, tag = "LATI", value = self@lat),
+                                                      tibble::tibble(level = 2, tag = "LONG", value = self@long)
                                                     )
                                                   }
                                                   
-                                                  nts <- #purrr::map(self@notes, ~ .x@as_df) |>
+                                                  nts <- purrr::map(self@notes, ~ .x@as_df) |>
                                                     dplyr::bind_rows()
+                                                  
+                                                  if(nrow(nts) > 0) nts <- dplyr::mutate(nts, level = level + 1)
                                                   
                                                   dplyr::bind_rows(pla_df, nts)
                                                   
@@ -51,32 +64,32 @@ class_place <- new_class("class_place",
                          validator = function(self) {
                            c(
                              chk_input_size(self@name, "@name", 1, 1, 1, 120),
-                             chk_input_size(self@phonetic_names, "@phonetic_names", 0, 10000, 1, 120),
-                             chk_input_size(self@phonetic_methods, "@phonetic_methods", length(self@phonetic_names), length(self@phonetic_names), 5, 30),
-                             chk_input_size(self@romanised_names, "@romanised_names", 0, 10000, 1, 120),
-                             chk_input_size(self@romanised_methods, "@romanised_methods", length(self@romanised_names), length(self@romanised_names), 5, 30),
-                             chk_input_size(self@latitude, "@latitude", 0, 1, 2, 10),
-                             chk_input_size(self@longitude, "@longitude", length(self@latitude), length(self@latitude), 2, 11),
+                             chk_input_size(self@phon_names, "@phon_names", 0, 10000, 1, 120),
+                             chk_input_size(names(self@phon_names), "@phon_names names", length(self@phon_names), length(self@phon_names), 5, 30),
+                             chk_input_size(self@rom_names, "@rom_names", 0, 10000, 1, 120),
+                             chk_input_size(names(self@rom_names), "@rom_names names", length(self@rom_names), length(self@rom_names), 5, 30),
+                             chk_input_size(self@lat_long, "@lat_long", 0, 1, 2+1+2, 10+1+11),
+                             chk_input_pattern(self@lat_long, "@lat_long", "^[NS]\\d{1,2}(\\.\\d{1,6})? [EW]\\d{1,3}(\\.\\d{2,6})?$"),
                              chk_input_R7classes(self@notes, "@notes", class_note)
                            )
                          }
 )
 
 
-
-class_address <- new_class("class_address",
+# FINISHED
+class_address <- R7::new_class("class_address",
                            properties = list(
-                             local_address_lines = class_character,
-                             city = class_character,
-                             state = class_character,
-                             postal_code = class_character,
-                             country = class_character,
-                             phone_numbers = class_character,
-                             emails = class_character,
-                             faxes = class_character,
-                             web_pages = class_character,
+                             local_address_lines = R7::class_character,
+                             city = R7::class_character,
+                             state = R7::class_character,
+                             postal_code = R7::class_character,
+                             country = R7::class_character,
+                             phone_numbers = R7::class_character,
+                             emails = R7::class_character,
+                             faxes = R7::class_character,
+                             web_pages = R7::class_character,
                              
-                             as_string = new_property(class_character,
+                             as_string = R7::new_property(R7::class_character,
                                                       getter = function(self){
                                                         full_add <- ""
                                                         if(length(self@local_address_lines) > 0)
@@ -93,7 +106,7 @@ class_address <- new_class("class_address",
                                                         full_add
                                                       }),
                              
-                             as_df = new_property(class_data.frame,
+                             as_df = R7::new_property(R7::class_data.frame,
                                                   getter = function(self){
                                                     
                                                     add_df <- dplyr::bind_rows(

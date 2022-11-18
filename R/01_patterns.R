@@ -1,4 +1,5 @@
 
+`@` <- R7::`@`
 
 anchor_it <- function(reg) {
   paste0("^", reg, "$")

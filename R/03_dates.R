@@ -1,15 +1,15 @@
 
-class_date_exact <- new_class("class_date_exact",
+class_date_exact <- R7::new_class("class_date_exact",
                               properties = list(
-                                day = class_integer,
-                                month = class_integer,
-                                year = class_integer,
-                                gedcom_value = new_property(
-                                  class_character,
+                                year = R7::class_integer,
+                                month = R7::class_integer,
+                                day = R7::class_integer,
+                                
+                                as_gedcom_val = R7::new_property(
+                                  R7::class_character,
                                   getter = function(self){
                                     paste(self@day, toupper(month.abb[self@month]), self@year)
-                                  }               
-                                )
+                                  })
                               ),
                               validator = function(self){
                                 c(
@@ -21,16 +21,23 @@ class_date_exact <- new_class("class_date_exact",
                               }
 )
 
+date_exact_current <- function(){
+  current_date <- Sys.Date()
+  class_date_exact(year = as.integer(lubridate::year(current_date)),
+                   month = as.integer(lubridate::month(current_date)),
+                   day = as.integer(lubridate::day(current_date)))
+}
 
-class_date_calendar <- new_class("class_date_calendar",
+class_date_calendar <- R7::new_class("class_date_calendar",
                              properties = list(
-                               day = class_integer,
-                               month = class_integer,
-                               year = class_integer,
-                               year_is_bce = new_property(class_logical, default = FALSE),
-                               year_is_dual = new_property(class_logical, default = FALSE),
-                               gedcom_value = new_property(
-                                 class_character,
+                               day = R7::class_integer,
+                               month = R7::class_integer,
+                               year = R7::class_integer,
+                               year_is_bce = R7::new_property(R7::class_logical, default = FALSE),
+                               year_is_dual = R7::new_property(R7::class_logical, default = FALSE),
+                               
+                               as_gedcom_val = R7::new_property(
+                                 R7::class_character,
                                  getter = function(self){
                                    val <- ""
                                    if (length(self@day) == 1) 
@@ -59,20 +66,21 @@ class_date_calendar <- new_class("class_date_calendar",
 )
 
 
-class_date_period <- new_class("class_date_period",
+class_date_period <- R7::new_class("class_date_period",
                                properties = list(
-                                 start_date = new_property(new_union(NULL, class_date_calendar)),
-                                 end_date = new_property(new_union(NULL, class_date_calendar)),
-                                 gedcom_value = new_property(
-                                   class_character,
+                                 start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
+                                 end_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
+                                 
+                                 as_gedcom_val = R7::new_property(
+                                   R7::class_character,
                                    getter = function(self){
                                      if (length(self@start_date) + length(self@end_date) == 2) {
-                                       paste("FROM", self@start_date@gedcom_value, 
-                                             "TO", self@end_date@gedcom_value)
+                                       paste("FROM", self@start_date@as_gedcom_val, 
+                                             "TO", self@end_date@as_gedcom_val)
                                      } else if (length(self@start_date) == 1) {
-                                       paste("FROM", self@start_date@gedcom_value)
+                                       paste("FROM", self@start_date@as_gedcom_val)
                                      } else if (length(self@end_date) == 1) {
-                                       paste("TO", self@end_date@gedcom_value)
+                                       paste("TO", self@end_date@as_gedcom_val)
                                      } 
                                    }               
                                  )
@@ -82,20 +90,21 @@ class_date_period <- new_class("class_date_period",
                                }
 )
 
-class_date_range <- new_class("class_date_range",
+class_date_range <- R7::new_class("class_date_range",
                               properties = list(
-                                start_date = new_property(new_union(NULL, class_date_calendar)),
-                                end_date = new_property(new_union(NULL, class_date_calendar)),
-                                gedcom_value = new_property(
-                                  class_character,
+                                start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
+                                end_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
+                                
+                                as_gedcom_val = R7::new_property(
+                                  R7::class_character,
                                   getter = function(self){
                                     if (length(self@start_date) + length(self@end_date) == 2) {
-                                      paste("BET", self@start_date@gedcom_value, 
-                                            "AND", self@end_date@gedcom_value)
+                                      paste("BET", self@start_date@as_gedcom_val, 
+                                            "AND", self@end_date@as_gedcom_val)
                                     } else if (length(self@start_date) == 1) {
-                                      paste("AFT", self@start_date@gedcom_value)
+                                      paste("AFT", self@start_date@as_gedcom_val)
                                     } else if (length(self@end_date) == 1) {
-                                      paste("BEF", self@end_date@gedcom_value)
+                                      paste("BEF", self@end_date@as_gedcom_val)
                                     } 
                                   }               
                                 )
@@ -105,21 +114,22 @@ class_date_range <- new_class("class_date_range",
                               }
 )
 
-class_date_approx <- new_class("class_date_approx",
+class_date_approx <- R7::new_class("class_date_approx",
                                properties = list(
                                  date = class_date_calendar,
-                                 about = new_property(class_logical, default = TRUE),
-                                 calc = new_property(class_logical, default = FALSE),
-                                 est = new_property(class_logical, default = FALSE),
-                                 gedcom_value = new_property(
-                                   class_character,
+                                 about = R7::new_property(R7::class_logical, default = TRUE),
+                                 calc = R7::new_property(R7::class_logical, default = FALSE),
+                                 est = R7::new_property(R7::class_logical, default = FALSE),
+                                 
+                                 as_gedcom_val = R7::new_property(
+                                   R7::class_character,
                                    getter = function(self){
                                      if(self@calc) {
-                                       paste("CAL", self@date@gedcom_value)
+                                       paste("CAL", self@date@as_gedcom_val)
                                      } else if(self@est) {
-                                       paste("EST", self@date@gedcom_value)
+                                       paste("EST", self@date@as_gedcom_val)
                                      } else if (self@about) {
-                                       paste("ABT", self@date@gedcom_value)
+                                       paste("ABT", self@date@as_gedcom_val)
                                      } 
                                    }               
                                  )
@@ -129,9 +139,9 @@ class_date_approx <- new_class("class_date_approx",
                                }
 )
 
-class_date_value <- new_class("class_date_value",
+class_date_value <- R7::new_class("class_date_value",
                               properties = list(
-                                date = new_property(new_union(class_date_calendar,
+                                date = R7::new_property(R7::new_union(class_date_calendar,
                                                               class_date_period,
                                                               class_date_range,
                                                               class_date_approx))

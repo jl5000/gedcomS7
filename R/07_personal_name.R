@@ -1,14 +1,14 @@
 
-class_name_pieces <- new_class("class_name_pieces",
+class_name_pieces <- R7::new_class("class_name_pieces",
                          properties = list(
-                           prefix = class_character,
-                           given = class_character,
-                           nickname = class_character,
-                           surname_prefix = class_character,
-                           surname = class_character,
-                           suffix = class_character,
-                           notes = class_list,
-                           citations = class_list
+                           prefix = R7::class_character,
+                           given = R7::class_character,
+                           nickname = R7::class_character,
+                           surname_prefix = R7::class_character,
+                           surname = R7::class_character,
+                           suffix = R7::class_character,
+                           notes = R7::class_list,
+                           citations = R7::class_list
                          ),
                          validator = function(self) {
                            c(
@@ -24,18 +24,18 @@ class_name_pieces <- new_class("class_name_pieces",
 )
 
 
-class_name_info <- new_class("class_name_info",
+class_name_info <- R7::new_class("class_name_info",
                   properties = list(
-                    full_name = class_character,
-                    name_type = class_character,
+                    full_name = R7::class_character,
+                    name_type = R7::class_character,
                     name_pieces = class_name_pieces
                   ))
 
-class_personal_name <- new_class("class_personal_name",
+class_personal_name <- R7::new_class("class_personal_name",
                            properties = list(
                              name = class_name_info,
-                             name_phonetic = class_list,
-                             name_romanised = class_list
+                             name_phonetic = R7::class_list,
+                             name_romanised = R7::class_list
                            ))
 
 
