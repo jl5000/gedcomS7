@@ -40,12 +40,12 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 getter = function(self){
 
                                   hd <- dplyr::bind_rows(
-                                    tibble::tibble(level = 0, record = "HD", tag = "HEAD", value = ""),
-                                    tibble::tibble(level = 1, tag = "GEDC", value = ""),
-                                    tibble::tibble(level = 2, tag = "VERS", value = self@gedcom_version),
-                                    tibble::tibble(level = 2, tag = "FORM", value = self@gedcom_form),
-                                    tibble::tibble(level = 3, tag = "VERS", value = self@gedcom_version),
-                                    tibble::tibble(level = 1, tag = "CHAR", value = self@character_encoding)
+                                    df_rows(level = 0, record = "HD", tag = "HEAD", value = ""),
+                                    df_rows(level = 1, tag = "GEDC", value = ""),
+                                    df_rows(level = 2, tag = "VERS", value = self@gedcom_version),
+                                    df_rows(level = 2, tag = "FORM", value = self@gedcom_form),
+                                    df_rows(level = 3, tag = "VERS", value = self@gedcom_version),
+                                    df_rows(level = 1, tag = "CHAR", value = self@character_encoding)
                                   ) |> tidyr::fill(record)
                                   
                                   if(is.null(self@business_address)){
@@ -72,22 +72,22 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   }
                                   
                                   hd_ext <- dplyr::bind_rows(
-                                    tibble::tibble(level = 0, record = "HD", tag = "SOUR", value = self@system_id),
-                                    tibble::tibble(level = 1, tag = "VERS", value = self@product_version),
-                                    tibble::tibble(level = 1, tag = "NAME", value = self@product_name),
-                                    tibble::tibble(level = 1, tag = "CORP", value = self@business_name),
+                                    df_rows(level = 0, record = "HD", tag = "SOUR", value = self@system_id),
+                                    df_rows(level = 1, tag = "VERS", value = self@product_version),
+                                    df_rows(level = 1, tag = "NAME", value = self@product_name),
+                                    df_rows(level = 1, tag = "CORP", value = self@business_name),
                                     busadd_df,
-                                    tibble::tibble(level = 1, tag = "DATA", value = self@source_data_name),
-                                    tibble::tibble(level = 2, tag = "DATE", value = pubdate),
-                                    tibble::tibble(level = 2, tag = "COPR", value = self@source_data_copyright),
-                                    tibble::tibble(level = 0, tag = "DEST", value = self@receiving_system),
-                                    tibble::tibble(level = 0, tag = "DATE", value = credate),
-                                    tibble::tibble(level = 1, tag = "TIME", value = self@creation_time),
-                                    tibble::tibble(level = 0, tag = "LANG", value = self@language),
-                                    tibble::tibble(level = 0, tag = "SUBM", value = self@subm@xref),
-                                    tibble::tibble(level = 0, tag = "FILE", value = self@file_name),
-                                    tibble::tibble(level = 0, tag = "COPR", value = self@gedcom_copyright),
-                                    tibble::tibble(level = 0, tag = "NOTE", value = self@content_description)
+                                    df_rows(level = 1, tag = "DATA", value = self@source_data_name),
+                                    df_rows(level = 2, tag = "DATE", value = pubdate),
+                                    df_rows(level = 2, tag = "COPR", value = self@source_data_copyright),
+                                    df_rows(level = 0, tag = "DEST", value = self@receiving_system),
+                                    df_rows(level = 0, tag = "DATE", value = credate),
+                                    df_rows(level = 1, tag = "TIME", value = self@creation_time),
+                                    df_rows(level = 0, tag = "LANG", value = self@language),
+                                    df_rows(level = 0, tag = "SUBM", value = self@subm@xref),
+                                    df_rows(level = 0, tag = "FILE", value = self@file_name),
+                                    df_rows(level = 0, tag = "COPR", value = self@gedcom_copyright),
+                                    df_rows(level = 0, tag = "NOTE", value = self@content_description)
                                   ) |> 
                                     tidyr::fill(record) |>
                                     dplyr::mutate(level = level + 1)
@@ -99,7 +99,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   #   purrr::map(~ .x@as_df) |>
                                   #   dplyr::bind_rows()
                                   
-                                  tr <- tibble::tibble(record = "TR", level = 0, tag = "TRLR", value = "")
+                                  tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
                                   
                                   dplyr::bind_rows(hd, hd_ext, tr)#subm, linlin_rec, tr)
                                   

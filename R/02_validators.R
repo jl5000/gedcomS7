@@ -22,7 +22,7 @@ chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_c
 
 
 chk_input_pattern <- function(input, name, pattern) {
-  if (length(input) > 0) {
+  if (length(input) > 0 && is.character(input)) {
     for (i in input) {
       if (!grepl(pattern, i))
         return(stringr::str_glue("{name} is in an invalid format."))
@@ -33,7 +33,7 @@ chk_input_pattern <- function(input, name, pattern) {
 
 
 chk_input_choice <- function(input, name, choices) {
-  if (length(input) == 1 && !input %in% choices) 
+  if (length(input) == 1 && is.character(input) && !input %in% choices) 
     return(stringr::str_glue("{name} has an invalid value:\n  The valid values are: ", 
                  paste(choices, collapse = ", ")))
   NULL
