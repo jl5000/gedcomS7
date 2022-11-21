@@ -66,7 +66,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     df_rows(level = 0, tag = "COPR", value = self@gedcom_copyright),
                                     df_rows(level = 0, tag = "NOTE", value = self@content_description)
                                   ) |> 
-                                    dplyr::mutate(record = "HD", .before = 1)
+                                    dplyr::mutate(record = "HD", .before = 1) |>
                                     dplyr::mutate(level = level + 1)
                                     
                                     tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
@@ -74,13 +74,13 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     dplyr::bind_rows(
                                       hd,
                                       hd_ext,
-                                      obj_to_df(self@subm, level_inc = 1),
-                                      lst_to_df(self@indi, level_inc = 1),
-                                      lst_to_df(self@famg, level_inc = 1),
-                                      lst_to_df(self@sour, level_inc = 1),
-                                      lst_to_df(self@repo, level_inc = 1),
-                                      lst_to_df(self@media, level_inc = 1),
-                                      lst_to_df(self@note, level_inc = 1),
+                                      obj_to_df(self@subm, level_inc = 0),
+                                      lst_to_df(self@indi, level_inc = 0),
+                                      lst_to_df(self@famg, level_inc = 0),
+                                      lst_to_df(self@sour, level_inc = 0),
+                                      lst_to_df(self@repo, level_inc = 0),
+                                      lst_to_df(self@media, level_inc = 0),
+                                      lst_to_df(self@note, level_inc = 0),
                                       tr
                                     )
                                 }
