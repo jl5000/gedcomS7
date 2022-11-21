@@ -40,13 +40,13 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 getter = function(self){
 
                                   hd <- dplyr::bind_rows(
-                                    df_rows(level = 0, record = "HD", tag = "HEAD", value = ""),
+                                    df_rows(level = 0, tag = "HEAD", value = ""),
                                     df_rows(level = 1, tag = "GEDC", value = ""),
                                     df_rows(level = 2, tag = "VERS", value = self@gedcom_version),
                                     df_rows(level = 2, tag = "FORM", value = self@gedcom_form),
                                     df_rows(level = 3, tag = "VERS", value = self@gedcom_version),
                                     df_rows(level = 1, tag = "CHAR", value = self@character_encoding)
-                                  ) |> tidyr::fill(record)
+                                  ) |> dplyr::mutate(record = "HD", .before = 1)
                                   
                                   if(is.null(self@business_address)){
                                     busadd_df <- NULL
@@ -72,7 +72,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   }
                                   
                                   hd_ext <- dplyr::bind_rows(
-                                    df_rows(level = 0, record = "HD", tag = "SOUR", value = self@system_id),
+                                    df_rows(level = 0, tag = "SOUR", value = self@system_id),
                                     df_rows(level = 1, tag = "VERS", value = self@product_version),
                                     df_rows(level = 1, tag = "NAME", value = self@product_name),
                                     df_rows(level = 1, tag = "CORP", value = self@business_name),
@@ -89,20 +89,23 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     df_rows(level = 0, tag = "COPR", value = self@gedcom_copyright),
                                     df_rows(level = 0, tag = "NOTE", value = self@content_description)
                                   ) |> 
-                                    tidyr::fill(record) |>
+                                    dplyr::mutate(record = "HD", .before = 1)
                                     dplyr::mutate(level = level + 1)
+                                    
+                                    tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
                                   
-                                  # subm <- self@subm@as_df
-                                  # 
-                                  # linlin_rec <- c(self@indi, self@famg, self@sour,
-                                  #                 self@repo, self@media, self@note) |>
-                                  #   purrr::map(~ .x@as_df) |>
-                                  #   dplyr::bind_rows()
-                                  
-                                  tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
-                                  
-                                  dplyr::bind_rows(hd, hd_ext, tr)#subm, linlin_rec, tr)
-                                  
+                                    dplyr::bind_rows(
+                                      hd,
+                                      hd_ext,
+                                      obj_to_df(self@subm, level_inc = 1),
+                                      lst_to_df(self@indi, level_inc = 1),
+                                      lst_to_df(self@famg, level_inc = 1),
+                                      lst_to_df(self@sour, level_inc = 1),
+                                      lst_to_df(self@repo, level_inc = 1),
+                                      lst_to_df(self@media, level_inc = 1),
+                                      lst_to_df(self@note, level_inc = 1),
+                                      tr
+                                    )
                                 }
                               )
                               

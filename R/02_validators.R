@@ -5,7 +5,7 @@ chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_c
     return(stringr::str_glue("{name} has too few dimensions. The minimum is {max_dim}."))
   
   if (length(input) > max_dim) 
-    return(stringr::str_glue("{name} has too many dimensions. The limit is {max_dim}."))
+    return(stringr::str_glue("{name} has too many dimensions. The maximum is {max_dim}."))
   
   if (length(input) > 0) {
     

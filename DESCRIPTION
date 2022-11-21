@@ -18,7 +18,6 @@ Imports:
     R7,
     tibble,
     dplyr,
-    tidyr,
     purrr,
     lubridate,
     stringr
