@@ -45,35 +45,30 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     df_rows(level = 2, tag = "VERS", value = self@gedcom_version),
                                     df_rows(level = 2, tag = "FORM", value = self@gedcom_form),
                                     df_rows(level = 3, tag = "VERS", value = self@gedcom_version),
-                                    df_rows(level = 1, tag = "CHAR", value = self@character_encoding)
-                                  ) |> dplyr::mutate(record = "HD", .before = 1)
-                                  
-                                  hd_ext <- dplyr::bind_rows(
-                                    df_rows(level = 0, tag = "SOUR", value = self@system_id),
-                                    df_rows(level = 1, tag = "VERS", value = self@product_version),
-                                    df_rows(level = 1, tag = "NAME", value = self@product_name),
-                                    df_rows(level = 1, tag = "CORP", value = self@business_name),
-                                    obj_to_df(self@business_address, level_inc = 2),
-                                    df_rows(level = 1, tag = "DATA", value = self@source_data_name),
-                                    date_to_df(self@source_data_pubdate, level_inc = 2),
-                                    df_rows(level = 2, tag = "COPR", value = self@source_data_copyright),
-                                    df_rows(level = 0, tag = "DEST", value = self@receiving_system),
-                                    date_to_df(self@creation_date, level_inc = 0),
-                                    df_rows(level = 1, tag = "TIME", value = self@creation_time),
-                                    df_rows(level = 0, tag = "LANG", value = self@language),
-                                    df_rows(level = 0, tag = "SUBM", value = self@subm@xref),
-                                    df_rows(level = 0, tag = "FILE", value = self@file_name),
-                                    df_rows(level = 0, tag = "COPR", value = self@gedcom_copyright),
-                                    df_rows(level = 0, tag = "NOTE", value = self@content_description)
+                                    df_rows(level = 1, tag = "CHAR", value = self@character_encoding),
+                                    df_rows(level = 1, tag = "SOUR", value = self@system_id),
+                                    df_rows(level = 2, tag = "VERS", value = self@product_version),
+                                    df_rows(level = 2, tag = "NAME", value = self@product_name),
+                                    df_rows(level = 2, tag = "CORP", value = self@business_name),
+                                    obj_to_df(self@business_address, level_inc = 3),
+                                    df_rows(level = 2, tag = "DATA", value = self@source_data_name),
+                                    date_to_df(self@source_data_pubdate, level_inc = 3),
+                                    df_rows(level = 3, tag = "COPR", value = self@source_data_copyright),
+                                    df_rows(level = 1, tag = "DEST", value = self@receiving_system),
+                                    date_to_df(self@creation_date, level_inc = 1),
+                                    df_rows(level = 2, tag = "TIME", value = self@creation_time),
+                                    df_rows(level = 1, tag = "LANG", value = self@language),
+                                    df_rows(level = 1, tag = "SUBM", value = self@subm@xref),
+                                    df_rows(level = 1, tag = "FILE", value = self@file_name),
+                                    df_rows(level = 1, tag = "COPR", value = self@gedcom_copyright),
+                                    df_rows(level = 1, tag = "NOTE", value = self@content_description)
                                   ) |> 
-                                    dplyr::mutate(record = "HD", .before = 1) |>
-                                    dplyr::mutate(level = level + 1)
+                                    dplyr::mutate(record = "HD", .before = 1)
                                     
                                     tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
                                   
                                     dplyr::bind_rows(
                                       hd,
-                                      hd_ext,
                                       obj_to_df(self@subm, level_inc = 0),
                                       lst_to_df(self@indi, level_inc = 0),
                                       lst_to_df(self@famg, level_inc = 0),
