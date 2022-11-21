@@ -2,7 +2,7 @@
 
 class_change_date <- R7::new_class("class_change_date",
                                properties = list(
-                                 change_date = R7::new_property(class_date_exact, 
+                                 change_date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
                                                             default = date_exact_current()),
                                  change_time = R7::class_character,
                                  notes = R7::class_list,
@@ -12,7 +12,7 @@ class_change_date <- R7::new_class("class_change_date",
                                                         
                                                         dplyr::bind_rows(
                                                           df_rows(level = 0, tag = "CHAN", value = ""),
-                                                          df_rows(level = 1, tag = "DATE", value = self@change_date@as_gedcom_val),
+                                                          date_to_df(self@change_date, level_inc = 1),
                                                           df_rows(level = 2, tag = "TIME", value = self@change_time),
                                                           lst_to_df(self@notes, level_inc = 1)
                                                         )
@@ -22,6 +22,7 @@ class_change_date <- R7::new_class("class_change_date",
                                validator = function(self) {
                                  c(
                                    chk_input_size(self@change_date, "@change_date", 1, 1),
+                                   chk_input_pattern(self@change_date, "@change_date", reg_date_exact()),
                                    chk_input_size(self@change_time, "@change_time", 0, 1, 7, 12),
                                    chk_input_R7classes(self@notes, "@notes", class_note)
                                  )
@@ -64,7 +65,12 @@ class_citation <- R7::new_class("class_citation",
                                   where = R7::class_character,
                                   event_type = R7::class_character,
                                   event_role = R7::class_character,
-                                  recording_date = R7::new_property(R7::new_union(NULL, class_date_value)),
+                                  recording_date = R7::new_property(R7::new_union(NULL, 
+                                                                                  class_date_calendar,
+                                                                                  class_date_period,
+                                                                                  class_date_range,
+                                                                                  class_date_approx, 
+                                                                                  R7::class_character)),
                                   source_text = R7::class_character,
                                   media_links = R7::class_list,
                                   notes = R7::class_list,
@@ -79,7 +85,7 @@ class_citation <- R7::new_class("class_citation",
                                                                 df_rows(level = 1, tag = "EVEN", value = self@event_type),
                                                                 df_rows(level = 2, tag = "ROLE", value = self@event_role),
                                                                 df_rows(level = 1, tag = "DATA", value = ""),
-                                                               # df_rows(level = 2, tag = "DATE", value = self@recording),
+                                                                date_to_df(self@recording_date, level_inc = 2),
                                                                 df_rows(level = 2, tag = "TEXT", value = self@source_text),
                                                                 lst_to_df(self@media_links, level_inc = 1),
                                                                 lst_to_df(self@notes, level_inc = 1),
@@ -104,6 +110,7 @@ class_citation <- R7::new_class("class_citation",
                                     chk_input_pattern(self@event_role, "@event_role",
                                                       paste(reg_role_in_event(), reg_custom_value(), sep = "|")),
                                     chk_input_size(self@recording_date, "@recording_date", 0, 1),
+                                    chk_input_pattern(self@recording_date, "@recording_date", reg_date_value()),
                                     chk_input_size(self@source_text, "@source_text", 0, 10000, 1, 32767),
                                     chk_input_R7classes(self@media_links, "@media_links", class_media_link),
                                     chk_input_R7classes(self@notes, "@notes", class_note),

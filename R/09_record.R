@@ -197,7 +197,7 @@ class_record_sour <-
   R7::new_class("class_record_sour", parent = class_record_lin,
                 properties = list(
                   events_recorded = R7::class_character,
-                  date_period = R7::class_character,
+                  date_period = R7::new_property(R7::new_union(NULL, class_date_period, R7::class_character)),
                   jurisdiction_place = R7::class_character,
                   responsible_agency = R7::class_character,
                   data_notes = R7::class_list,
@@ -216,7 +216,7 @@ class_record_sour <-
                                                df_rows(level = 0, tag = "SOUR", value = ""),
                                                df_rows(level = 1, tag = "DATA", value = ""),
                                                df_rows(level = 2, tag = "EVEN", value = self@events_recorded),
-                                               df_rows(level = 3, tag = "DATE", value = self@date_period),
+                                               date_to_df(self@date_period, level_inc = 3),
                                                df_rows(level = 3, tag = "PLAC", value = self@jurisdiction_place),
                                                df_rows(level = 2, tag = "AGNC", value = self@responsible_agency),
                                                lst_to_df(self@data_notes, level_inc = 2),
@@ -244,7 +244,8 @@ class_record_sour <-
                 validator = function(self){
                   c(
                     # chk_input_size(self@events_recorded, "@events_recorded", 1, 1, 1, 259), # TODO
-                    # chk_input_size(self@date_period, "@date_period", 1, 1, 1, 259), # TODO
+                    chk_input_size(self@date_period, "@date_period", 0, 1),
+                    chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
                     # chk_input_size(self@jurisdiction_place, "@jurisdiction_place", 1, 1, 1, 259), # TODO
                     chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1, 120),
                     chk_input_R7classes(self@data_notes, "@data_notes", class_note),

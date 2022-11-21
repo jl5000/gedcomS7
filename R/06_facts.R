@@ -2,7 +2,12 @@
 class_event_detail <- R7::new_class("class_event_detail",
                                     properties = list(
                                       type = R7::class_character,
-                                      date = R7::new_property(R7::new_union(NULL, class_date_value, R7::class_character)),
+                                      date = R7::new_property(R7::new_union(NULL, 
+                                                                            class_date_calendar,
+                                                                            class_date_period,
+                                                                            class_date_range,
+                                                                            class_date_approx, 
+                                                                            R7::class_character)),
                                       place = R7::new_property(R7::new_union(NULL, class_place)),
                                       address = R7::new_property(R7::new_union(NULL, class_address)),
                                       agency = R7::class_character,
@@ -16,7 +21,7 @@ class_event_detail <- R7::new_class("class_event_detail",
                                                                getter = function(self){
                                                                  dplyr::bind_rows(
                                                                    df_rows(level = 0, tag = "TYPE", value = self@type),
-                                                                   df_rows(level = 0, tag = "DATE", value = self@date),
+                                                                   date_to_df(self@date, level_inc = 0),
                                                                    obj_to_df(self@place, level_inc = 0),
                                                                    obj_to_df(self@address, level_inc = 0),
                                                                    df_rows(level = 0, tag = "AGNC", value = self@agency),
@@ -31,7 +36,8 @@ class_event_detail <- R7::new_class("class_event_detail",
                                     validator = function(self) {
                                       c(
                                         chk_input_size(self@type, "@type", 0, 1, 1, 90),
-                                        chk_input_size(self@date, "@date", 0, 1, 1, 35),
+                                        chk_input_size(self@date, "@date", 0, 1),
+                                        chk_input_pattern(self@date, "@date", reg_date_value()),
                                         chk_input_size(self@place, "@place", 0, 1),
                                         chk_input_size(self@address, "@address", 0, 1),
                                         chk_input_size(self@agency, "@agency", 0, 1, 1, 120),

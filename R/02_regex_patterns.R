@@ -16,8 +16,18 @@ lst_to_df <- function(lst, level_inc = 0){
 }
 
 obj_to_df <- function(obj, level_inc = 0){
-  if(is.null(obj)) return(tibble::tibble())
+  if(is.null(obj)) return(NULL)
   dplyr::mutate(obj@as_df, level = level + level_inc)
+}
+
+date_to_df <- function(obj, level_inc = 0){
+  if(is.null(obj)) return(NULL)
+  if(is.character(obj)){
+    date_val <- obj
+  } else {
+    date_val <- obj@as_gedcom_val
+  }
+  df_rows(level = level_inc, tag = "DATE", value = date_val)
 }
 
 group_it <- function(reg) {

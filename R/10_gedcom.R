@@ -48,40 +48,17 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     df_rows(level = 1, tag = "CHAR", value = self@character_encoding)
                                   ) |> dplyr::mutate(record = "HD", .before = 1)
                                   
-                                  if(is.null(self@business_address)){
-                                    busadd_df <- NULL
-                                  } else {
-                                    busadd_df <- self@business_address@as_df |> 
-                                      dplyr::mutate(level = level + 2)
-                                  }
-                                  
-                                  if(length(self@source_data_pubdate) == 0){
-                                    pubdate <- character()
-                                  } else if(is.character(self@source_data_pubdate)) {
-                                    pubdate <- self@source_data_pubdate
-                                  } else {
-                                    pubdate <- self@source_data_pubdate@as_gedcom_val
-                                  }
-                                  
-                                  if(is.null(self@creation_date)){
-                                    credate <- character()
-                                  } else if(is.character(self@creation_date)) {
-                                    credate <- self@creation_date
-                                  } else {
-                                    credate <- self@creation_date@as_gedcom_val
-                                  }
-                                  
                                   hd_ext <- dplyr::bind_rows(
                                     df_rows(level = 0, tag = "SOUR", value = self@system_id),
                                     df_rows(level = 1, tag = "VERS", value = self@product_version),
                                     df_rows(level = 1, tag = "NAME", value = self@product_name),
                                     df_rows(level = 1, tag = "CORP", value = self@business_name),
-                                    busadd_df,
+                                    obj_to_df(self@business_address, level_inc = 2),
                                     df_rows(level = 1, tag = "DATA", value = self@source_data_name),
-                                    df_rows(level = 2, tag = "DATE", value = pubdate),
+                                    date_to_df(self@source_data_pubdate, level_inc = 2),
                                     df_rows(level = 2, tag = "COPR", value = self@source_data_copyright),
                                     df_rows(level = 0, tag = "DEST", value = self@receiving_system),
-                                    df_rows(level = 0, tag = "DATE", value = credate),
+                                    date_to_df(self@creation_date, level_inc = 0),
                                     df_rows(level = 1, tag = "TIME", value = self@creation_time),
                                     df_rows(level = 0, tag = "LANG", value = self@language),
                                     df_rows(level = 0, tag = "SUBM", value = self@subm@xref),
@@ -109,7 +86,15 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 }
                               )
                               
-                            )
+                            ),
+                            validator = function(self){
+                              c(
+                                chk_input_size(self@source_data_pubdate, "@source_data_pubdate", 0, 1),
+                                chk_input_pattern(self@source_data_pubdate, "@source_data_pubdate", reg_date_exact()),
+                                chk_input_size(self@creation_date, "@creation_date", 0, 1),
+                                chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact())
+                              )
+                            }
 )
 
 # CRAP - do it manually with a function

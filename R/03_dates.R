@@ -139,14 +139,3 @@ class_date_approx <- R7::new_class("class_date_approx",
                                }
 )
 
-class_date_value <- R7::new_class("class_date_value",
-                              properties = list(
-                                date = R7::new_property(R7::new_union(class_date_calendar,
-                                                              class_date_period,
-                                                              class_date_range,
-                                                              class_date_approx))
-                              ),
-                              validator = function(self){
-                                
-                              }
-)
