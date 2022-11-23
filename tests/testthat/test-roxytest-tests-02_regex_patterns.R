@@ -2,7 +2,7 @@
 
 # File R/"02_regex_patterns.R": @tests
 
-test_that("Function reg_date_exact() @ L134", {
+test_that("Function reg_date_exact() @ L144", {
   expect_equal(grepl(reg_date_exact(), "14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date_exact(), "14 JAM 2005"), FALSE)
   expect_equal(grepl(reg_date_exact(), "JAN 2005"), FALSE)
@@ -17,7 +17,7 @@ test_that("Function reg_date_exact() @ L134", {
 })
 
 
-test_that("Function reg_date() @ L166", {
+test_that("Function reg_date() @ L176", {
   expect_equal(grepl(reg_date(), "14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date(), "14 JAM 2005"), FALSE)
   expect_equal(grepl(reg_date(), "JAN 2005"), TRUE)
@@ -32,7 +32,7 @@ test_that("Function reg_date() @ L166", {
 })
 
 
-test_that("Function reg_date_period() @ L208", {
+test_that("Function reg_date_period() @ L218", {
   expect_equal(grepl(reg_date_period(), "FROM 14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date_period(), "TO 14 JAM 2005"), FALSE)
   expect_equal(grepl(reg_date_period(), "FROM JAN 2005"), TRUE)
@@ -47,7 +47,7 @@ test_that("Function reg_date_period() @ L208", {
 })
 
 
-test_that("Function reg_date_range() @ L239", {
+test_that("Function reg_date_range() @ L249", {
   expect_equal(grepl(reg_date_range(), "BEF 14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date_range(), "AFT 14 JAM 2005"), FALSE)
   expect_equal(grepl(reg_date_range(), "BEF JAN 2005"), TRUE)
@@ -62,7 +62,7 @@ test_that("Function reg_date_range() @ L239", {
 })
 
 
-test_that("Function reg_date_approximated() @ L270", {
+test_that("Function reg_date_approximated() @ L280", {
   expect_equal(grepl(reg_date_approximated(), "ABT 14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date_approximated(), "CAL 14 JAM 2005"), FALSE)
   expect_equal(grepl(reg_date_approximated(), "EST JAN 2005"), TRUE)
@@ -77,7 +77,7 @@ test_that("Function reg_date_approximated() @ L270", {
 })
 
 
-test_that("Function reg_date_value() @ L309", {
+test_that("Function reg_date_value() @ L319", {
   expect_equal(grepl(reg_date_value(), "14 JAN 2005"), TRUE)
   expect_equal(grepl(reg_date_value(), "MAR 1901"), TRUE)
   expect_equal(grepl(reg_date_value(), "2010"), TRUE)

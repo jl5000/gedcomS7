@@ -156,7 +156,8 @@ class_record_indi <-
                 validator = function(self){
                   c(
                     chk_input_R7classes(self@personal_names, "@personal_names", class_personal_name),
-                    chk_input_size(self@sex, "@sex", 0, 1, 1, 1),
+                    chk_input_size(self@sex, "@sex", 0, 1),
+                    chk_input_choice(self@sex, "@sex", val_sexes()),
                     chk_input_R7classes(self@facts, "@facts", class_indi_fact),
                     chk_input_R7classes(self@family_links, "@family_links", class_family_link),
                     chk_input_R7classes(self@associations, "@associations", class_association),

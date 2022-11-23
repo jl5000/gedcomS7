@@ -18,7 +18,7 @@ terminated by a full stop or anything else.}
 
 \item{lat_long}{A character string giving the latitude and longitude separated by a space. See Details.}
 
-\item{notes}{A list...}
+\item{notes}{A list of \code{class_note} objects to record or reference notes about the place.}
 }
 \value{
 An R7 Place object.

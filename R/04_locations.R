@@ -22,7 +22,7 @@
 #' @param rom_names A named vector of romanised variations of the place name written in the same form as 
 #' `name`. The names of the vector contain the romanisation method used for creating the romanised text.
 #' @param lat_long A character string giving the latitude and longitude separated by a space. See Details.
-#' @param notes A list...
+#' @param notes A list of `class_note` objects to record or reference notes about the place.
 #'
 #' @return An R7 Place object.
 #' @export
@@ -104,7 +104,22 @@ class_place <- R7::new_class("class_place",
 )
 
 
-# FINISHED
+#' Create an Address object
+#' 
+#' @param local_address_lines A character vector containing up to three local address lines.
+#' @param city The city of the address.
+#' @param state The state/county of the address.
+#' @param postal_code The postal code of the address.
+#' @param country The country of the address.
+#' @param phone_numbers A character vector containing up to three phone numbers.
+#' @param emails A character vector containing up to three email addresses.
+#' @param faxes A character vector containing up to three fax numbers.
+#' @param web_pages A character vector containing up to three web pages.
+#'
+#' @return An R7 Address object.
+#' @export
+#' @name class_address
+NULL
 class_address <- R7::new_class("class_address",
                            properties = list(
                              local_address_lines = R7::class_character,
