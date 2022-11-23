@@ -33,7 +33,7 @@ chk_input_pattern <- function(input, name, pattern) {
 
 
 chk_input_choice <- function(input, name, choices) {
-  if (length(input) > 1 && is.character(input)){
+  if (length(input) > 0 && is.character(input)){
     for (i in input) {
       if (!i %in% choices)
         return(stringr::str_glue("{name} has an invalid value:\n  The valid values are: ", 
