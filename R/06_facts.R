@@ -203,7 +203,7 @@ num_children <- R7::new_class("num_children", parent = class_indi_fact,
                                 as_df = R7::new_property(R7::class_data.frame,
                                                          getter = function(self){
                                                            dplyr::bind_rows(
-                                                             df_rows(level = 0, tag = "NCHI", value = self@num_chil),
+                                                             df_rows(level = 0, tag = "NCHI", value = as.character(self@num_chil)),
                                                              self@as_df_no_context
                                                            )
                                                          })
@@ -221,7 +221,7 @@ num_relationships <- R7::new_class("num_relationships", parent = class_indi_fact
                                      as_df = R7::new_property(R7::class_data.frame,
                                                               getter = function(self){
                                                                 dplyr::bind_rows(
-                                                                  df_rows(level = 0, tag = "NMR", value = self@num_rel),
+                                                                  df_rows(level = 0, tag = "NMR", value = as.character(self@num_rel)),
                                                                   self@as_df_no_context
                                                                 )
                                                               })

@@ -86,7 +86,7 @@ class_record_famg <-
                                                df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
                                                df_rows(level = 1, tag = "WIFE", value = self@wife_xref),
                                                df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
-                                               df_rows(level = 1, tag = "NCHI", value = self@num_children),
+                                               df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
                                                self@refs_df,
                                                obj_to_df(self@change_date, level_inc = 1),
                                                lst_to_df(self@notes, level_inc = 1),
