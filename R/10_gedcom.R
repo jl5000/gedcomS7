@@ -1,9 +1,4 @@
 
-#child has additional properties that can be set (new)
-
-# if creating a new obj from scratch, certain properties need to be preset (parent) class_new - take out presets
-# if importing, all properties can be open (child)  class_general - add in properties that were preset
-
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                             properties = list(
                               gedcom_version = R7::new_property(getter = function(self) "5.5.5"),

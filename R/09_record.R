@@ -2,12 +2,14 @@
 class_record <- 
   R7::new_class("class_record", # TODO: abstract = TRUE,
                 properties = list(
-                  xref = R7::new_property(R7::class_character),
+                  xref = R7::class_character,
+                  auto_id = R7::class_character,
                   change_date = R7::new_property(R7::new_union(NULL, class_change_date))
                 ),
                 validator = function(self){
                   c(
                     chk_input_size(self@xref, "@xref", 1, 1, 3, 22),
+                    chk_input_size(self@auto_id, "@auto_id", 0, 1, 1, 12),
                     chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
                     chk_input_size(self@change_date, "@change_date", 0, 1)
                   )
@@ -31,12 +33,21 @@ class_record_subm <-
                                                df_rows(level = 1, tag = "NAME", value = self@name),
                                                obj_to_df(self@address, level_inc = 1),
                                                lst_to_df(self@media_links, level_inc = 1),
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                lst_to_df(self@notes, level_inc = 1),
                                                obj_to_df(self@change_date, level_inc = 1)
                                              ) |> dplyr::mutate(record = self@xref, .before = 1)
                                              
                                            })
-                )
+                ),
+                validator = function(self){
+                  c(
+                    chk_input_size(self@name, "@name", 1, 1, 1, 60),
+                    chk_input_size(self@address, "@address", 0, 1),
+                    chk_input_R7classes(self@notes, "@notes", class_note),
+                    chk_input_R7classes(self@media_links, "@media_links", class_media_link)
+                  )
+                }
   )
 
 class_record_lin <- 
@@ -88,6 +99,7 @@ class_record_famg <-
                                                df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
                                                df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                obj_to_df(self@change_date, level_inc = 1),
                                                lst_to_df(self@notes, level_inc = 1),
                                                lst_to_df(self@citations, level_inc = 1),
@@ -133,6 +145,7 @@ class_record_indi <-
                                                lst_to_df(self@family_links, level_inc = 1),
                                                lst_to_df(self@associations, level_inc = 1),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                obj_to_df(self@change_date, level_inc = 1),
                                                lst_to_df(self@notes, level_inc = 1),
                                                lst_to_df(self@citations, level_inc = 1),
@@ -173,6 +186,7 @@ class_record_media <-
                                                df_rows(level = 3, tag = "TYPE", value = rep(self@media_type, length(self@format))),
                                                df_rows(level = 2, tag = "TITL", value = rep(self@title, length(self@file_ref))),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                lst_to_df(self@notes, level_inc = 1),
                                                lst_to_df(self@citations, level_inc = 1),
                                                obj_to_df(self@change_date, level_inc = 1)
@@ -227,6 +241,7 @@ class_record_sour <-
                                                df_rows(level = 1, tag = "TEXT", value = self@source_text),
                                                lst_to_df(self@repo_citations, level_inc = 1),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                obj_to_df(self@change_date, level_inc = 1),
                                                lst_to_df(self@notes, level_inc = 1),
                                                lst_to_df(self@media_links, level_inc = 1),
@@ -275,6 +290,7 @@ class_record_repo <-
                                                obj_to_df(self@address, level_inc = 1),
                                                lst_to_df(self@notes, level_inc = 1),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                obj_to_df(self@change_date, level_inc = 1)
                                              ) |> dplyr::mutate(record = self@xref, .before = 1)
                                            })
@@ -299,6 +315,7 @@ class_record_note <-
                                              dplyr::bind_rows(
                                                df_rows(level = 0, tag = "NOTE", value = self@text),
                                                self@refs_df,
+                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
                                                lst_to_df(self@citations, level_inc = 1),
                                                obj_to_df(self@change_date, level_inc = 1)
                                              ) |> dplyr::mutate(record = self@xref, .before = 1)
