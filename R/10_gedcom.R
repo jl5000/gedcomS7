@@ -9,34 +9,82 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                               gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
                               gedcom_form = R7::new_property(getter = function(self) "LINEAGE-LINKED"),
                               character_encoding = R7::new_property(getter = function(self) "UTF-8"),
-                              system_id = R7::new_property(R7::class_character, default = "gedcomR7"),
-                              product_name = R7::new_property(R7::class_character,
-                                                          default = "The 'gedcomR7' package for the R language"),
+                              system_id = R7::class_character,
+                              product_name = R7::class_character,
                               product_version = R7::class_character,
-                              business_name = R7::new_property(R7::class_character, default = "Jamie Lendrum"),
-                              business_address = R7::new_property(R7::new_union(NULL, class_address),
-                                                                  default = class_address(emails = "jalendrum@gmail.com")),
+                              business_name = R7::class_character,
+                              business_address = R7::new_property(R7::new_union(NULL, class_address)),
                               source_data_name = R7::class_character,
                               source_data_pubdate = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
                               source_data_copyright = R7::class_character,
                               receiving_system = R7::class_character,
-                              creation_date = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character),
-                                                               default = date_exact_current()),
+                              creation_date = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
                               creation_time = R7::class_character,
-                              language = R7::new_property(R7::class_character, default = "English"),
+                              language = R7::class_character,
                               xref_subm = R7::class_character,
                               file_name = R7::class_character,
                               gedcom_copyright = R7::class_character,
                               content_description = R7::class_character,
+                              
                               # Records
-                              subm = R7::new_property(class_record_subm,
-                                                      default = class_record_subm(xref = "@U1@")),
+                              subm = class_record_subm,
                               indi = R7::class_list,
                               famg = R7::class_list,
                               sour = R7::class_list,
                               repo = R7::class_list,
                               media = R7::class_list,
                               note = R7::class_list,
+                              
+                              xref_prefixes = R7::new_property(R7::class_character,
+                                                               default = rep("", 6) |> 
+                                                                 purrr::set_names("indi","famg","sour",
+                                                                                  "repo","media","note")),
+                              
+                              xrefs <- R7::new_property(R7::class_list,
+                                                        getter = function(self){
+                                                          list(self@indi, self@famg, self@sour, 
+                                                               self@repo, self@media, self@note) |>
+                                                          purrr::map() |> #TODO: Figure this out
+                                                            purrr::map(~ .x@xref) |>
+                                                            purrr::set_names("indi","famg","sour",
+                                                                             "repo","media","note")
+                                                        }),
+                              
+                              # indi_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@indi, ~ .x@xref)),
+                              # famg_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@famg, ~ .x@xref)),
+                              # sour_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@sour, ~ .x@xref)),
+                              # repo_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@repo, ~ .x@xref)),
+                              # media_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@media, ~ .x@xref)),
+                              # note_xrefs = R7::new_property(R7::class_character,
+                              #                               getter = function(self) purrr::map_chr(self@note, ~ .x@xref)),
+                              
+                              # next xref
+                              next_xref = R7::new_property(R7::class_character,
+                                                           getter = function(self){
+                                                             idx <- integer(6L)
+                                                             for(i in seq_along(idx)){
+                                                               if(length(self@xrefs[[i]]) == 0){
+                                                                 idx[i] <- 1
+                                                               } else {
+                                                                 existing_refs <- self@xrefs[[i]] |>
+                                                                   stringr::str_remove_all("@") |> 
+                                                                   stringr::str_remove_all(unname(self@xref_prefixes[i])) |> #TODO: Needs work if prefixes is ""
+                                                                   as.integer()
+                                                                 
+                                                                 available_refs <- seq_len(max(existing_refs) + 1) |>
+                                                                   dplyr::setdiff(existing_refs)
+                                                                 
+                                                                 idx[i] <- available_refs[1]
+                                                               }
+                                                             }
+             
+                                                             paste0("@", self@xref_prefixes, idx, "@")
+                                                           }),
                               
                               as_df = R7::new_property(
                                 R7::class_data.frame, 
@@ -112,14 +160,26 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 chk_input_R7classes(self@sour, "@sour", class_record_sour),
                                 chk_input_R7classes(self@repo, "@repo", class_record_repo),
                                 chk_input_R7classes(self@media, "@media", class_record_media),
-                                chk_input_R7classes(self@note, "@note", class_record_note)
+                                chk_input_R7classes(self@note, "@note", class_record_note),
+                                chk_input_size(self@xref_prefixes, "@xref_prefixes", 0, 1, 6, 6) # TODO
                               )
                             }
 )
 
-# CRAP - do it manually with a function
-# class_gedcomR7_new <- purrr::partial(class_gedcomR7,
-#                                      file_name = "test_file.ged")
+new_gedcomR7 <- function(submitter_details = class_record_subm(xref = "@U1@"),
+                         language = "English",
+                         xref_prefixes = c(indi = "I", famg = "F", sour = "S", 
+                                           repo = "R", media = "M", note = "N")){
+  class_gedcomR7(system_id = "gedcomR7",
+                 product_name = "The 'gedcomR7' package for the R language",
+                 business_name = "Jamie Lendrum",
+                 business_address = class_address(emails = "jalendrum@gmail.com"),
+                 creation_date = date_exact_current(),
+                 language = language,
+                 subm = submitter_details,
+                 xref_prefixes = xref_prefixes
+                 )
+}
 
 R7::method(print, class_gedcomR7) <- function(x, ...){
   
