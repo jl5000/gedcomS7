@@ -348,31 +348,240 @@ indi_attribute <- R7::new_class("indi_attribute", parent = class_indi_fact,
 # Individual events
 adoption <- R7::new_class("adoption", parent = class_indi_fact,
                           properties = list(
-                            famc_xref = R7::class_character,
-                            adopting_parent = R7::class_character
-                          ))
-adult_christening <- R7::new_class("adult_christening", parent = class_indi_fact)
-baptism <- R7::new_class("baptism", parent = class_indi_fact)
-bar_mitzvah <- R7::new_class("bar_mitzvah", parent = class_indi_fact)
-bas_mitzvah <- R7::new_class("bas_mitzvah", parent = class_indi_fact)
+                            famg_xref = R7::class_character,
+                            adopting_parent = R7::class_character,
+                            
+                            as_df = R7::new_property(R7::class_data.frame,
+                                                     getter = function(self){
+                                                       dplyr::bind_rows(
+                                                         df_rows(level = 0, tag = "ADOP", value = ""),
+                                                         df_rows(level = 1, tag = "FAMC", value = self@famg_xref),
+                                                         df_rows(level = 2, tag = "ADOP", value = rep(self@adopting_parent, 
+                                                                                                      length(self@famg_xref))),
+                                                         self@as_df_no_context
+                                                       )
+                                                     })
+                          ),
+                          validator = function(self){
+                            c(
+                              chk_input_size(self@famg_xref, "@famg_xref", 0, 1, 3, 22),
+                              chk_input_pattern(self@famg_xref, "@famg_xref", reg_xref(TRUE)),
+                              chk_input_size(self@adopting_parent, "@adopting_parent", 0, 1, 4, 4),
+                              chk_input_choice(self@adopting_parent, "@adopting_parent", val_adoptive_parents())
+                            )
+                          }
+)
+
+adult_christening <- R7::new_class("adult_christening", parent = class_indi_fact,
+                                   properties = list(
+                                     as_df = R7::new_property(R7::class_data.frame,
+                                                              getter = function(self){
+                                                                dplyr::bind_rows(
+                                                                  df_rows(level = 0, tag = "CHRA", value = ""),
+                                                                  self@as_df_no_context
+                                                                )
+                                                              })))
+baptism <- R7::new_class("baptism", parent = class_indi_fact,
+                         properties = list(
+                           as_df = R7::new_property(R7::class_data.frame,
+                                                    getter = function(self){
+                                                      dplyr::bind_rows(
+                                                        df_rows(level = 0, tag = "BAPM", value = ""),
+                                                        self@as_df_no_context
+                                                      )
+                                                    })))
+bar_mitzvah <- R7::new_class("bar_mitzvah", parent = class_indi_fact,
+                             properties = list(
+                               as_df = R7::new_property(R7::class_data.frame,
+                                                        getter = function(self){
+                                                          dplyr::bind_rows(
+                                                            df_rows(level = 0, tag = "BARM", value = ""),
+                                                            self@as_df_no_context
+                                                          )
+                                                        })))
+bas_mitzvah <- R7::new_class("bas_mitzvah", parent = class_indi_fact,
+                             properties = list(
+                               as_df = R7::new_property(R7::class_data.frame,
+                                                        getter = function(self){
+                                                          dplyr::bind_rows(
+                                                            df_rows(level = 0, tag = "BASM", value = ""),
+                                                            self@as_df_no_context
+                                                          )
+                                                        })))
 birth <- R7::new_class("birth", parent = class_indi_fact,
-                       properties = list(famc_xref = R7::class_character))
-burial <- R7::new_class("burial", parent = class_indi_fact)
-census <- R7::new_class("census", parent = class_indi_fact)
-christening <- R7::new_class("christening", parent = class_indi_fact)
-confirmation <- R7::new_class("confirmation", parent = class_indi_fact)
-cremation <- R7::new_class("cremation", parent = class_indi_fact)
-death <- R7::new_class("death", parent = class_indi_fact)
-emigration <- R7::new_class("emigration", parent = class_indi_fact)
-first_communion <- R7::new_class("first_communion", parent = class_indi_fact)
-graduation <- R7::new_class("graduation", parent = class_indi_fact)
-immigration <- R7::new_class("immigration", parent = class_indi_fact)
-naturalization <- R7::new_class("naturalization", parent = class_indi_fact)
-probate <- R7::new_class("probate", parent = class_indi_fact)
-retirement <- R7::new_class("retirement", parent = class_indi_fact)
-will <- R7::new_class("will", parent = class_indi_fact)
+                       properties = list(
+                         famg_xref = R7::class_character,
+                         
+                         as_df = R7::new_property(R7::class_data.frame,
+                                                  getter = function(self){
+                                                    dplyr::bind_rows(
+                                                      df_rows(level = 0, tag = "BIRT", value = ""),
+                                                      df_rows(level = 1, tag = "FAMC", value = self@famg_xref),
+                                                      self@as_df_no_context
+                                                    )
+                                                  })
+                         ),
+                       validator = function(self){
+                         c(
+                           chk_input_size(self@famg_xref, "@famg_xref", 0, 1, 3, 22),
+                           chk_input_pattern(self@famg_xref, "@famg_xref", reg_xref(TRUE))
+                         )
+                       }
+)
+burial <- R7::new_class("burial", parent = class_indi_fact,
+                        properties = list(
+                          as_df = R7::new_property(R7::class_data.frame,
+                                                   getter = function(self){
+                                                     dplyr::bind_rows(
+                                                       df_rows(level = 0, tag = "BURI", value = ""),
+                                                       self@as_df_no_context
+                                                     )
+                                                   })))
+census <- R7::new_class("census", parent = class_indi_fact,
+                        properties = list(
+                          as_df = R7::new_property(R7::class_data.frame,
+                                                   getter = function(self){
+                                                     dplyr::bind_rows(
+                                                       df_rows(level = 0, tag = "CENS", value = ""),
+                                                       self@as_df_no_context
+                                                     )
+                                                   })))
+christening <- R7::new_class("christening", parent = class_indi_fact,
+                             properties = list(
+                               famg_xref = R7::class_character,
+                               
+                               as_df = R7::new_property(R7::class_data.frame,
+                                                        getter = function(self){
+                                                          dplyr::bind_rows(
+                                                            df_rows(level = 0, tag = "CHR", value = ""),
+                                                            df_rows(level = 1, tag = "FAMC", value = self@famg_xref),
+                                                            self@as_df_no_context
+                                                          )
+                                                        })
+                             ),
+                             validator = function(self){
+                               c(
+                                 chk_input_size(self@famg_xref, "@famg_xref", 0, 1, 3, 22),
+                                 chk_input_pattern(self@famg_xref, "@famg_xref", reg_xref(TRUE))
+                               )
+                             }
+)
+confirmation <- R7::new_class("confirmation", parent = class_indi_fact,
+                              properties = list(
+                                as_df = R7::new_property(R7::class_data.frame,
+                                                         getter = function(self){
+                                                           dplyr::bind_rows(
+                                                             df_rows(level = 0, tag = "CONF", value = ""),
+                                                             self@as_df_no_context
+                                                           )
+                                                         })))
+cremation <- R7::new_class("cremation", parent = class_indi_fact,
+                           properties = list(
+                             as_df = R7::new_property(R7::class_data.frame,
+                                                      getter = function(self){
+                                                        dplyr::bind_rows(
+                                                          df_rows(level = 0, tag = "CREM", value = ""),
+                                                          self@as_df_no_context
+                                                        )
+                                                      })))
+death <- R7::new_class("death", parent = class_indi_fact,
+                       properties = list(
+                         as_df = R7::new_property(R7::class_data.frame,
+                                                  getter = function(self){
+                                                    dplyr::bind_rows(
+                                                      df_rows(level = 0, tag = "DEAT", value = ""),
+                                                      self@as_df_no_context
+                                                    )
+                                                  })))
+emigration <- R7::new_class("emigration", parent = class_indi_fact,
+                            properties = list(
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "EMIG", value = ""),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })))
+first_communion <- R7::new_class("first_communion", parent = class_indi_fact,
+                                 properties = list(
+                                   as_df = R7::new_property(R7::class_data.frame,
+                                                            getter = function(self){
+                                                              dplyr::bind_rows(
+                                                                df_rows(level = 0, tag = "FCOM", value = ""),
+                                                                self@as_df_no_context
+                                                              )
+                                                            })))
+graduation <- R7::new_class("graduation", parent = class_indi_fact,
+                            properties = list(
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "GRAD", value = ""),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })))
+immigration <- R7::new_class("immigration", parent = class_indi_fact,
+                             properties = list(
+                               as_df = R7::new_property(R7::class_data.frame,
+                                                        getter = function(self){
+                                                          dplyr::bind_rows(
+                                                            df_rows(level = 0, tag = "IMMI", value = ""),
+                                                            self@as_df_no_context
+                                                          )
+                                                        })))
+naturalization <- R7::new_class("naturalization", parent = class_indi_fact,
+                                properties = list(
+                                  as_df = R7::new_property(R7::class_data.frame,
+                                                           getter = function(self){
+                                                             dplyr::bind_rows(
+                                                               df_rows(level = 0, tag = "NATU", value = ""),
+                                                               self@as_df_no_context
+                                                             )
+                                                           })))
+probate <- R7::new_class("probate", parent = class_indi_fact,
+                         properties = list(
+                           as_df = R7::new_property(R7::class_data.frame,
+                                                    getter = function(self){
+                                                      dplyr::bind_rows(
+                                                        df_rows(level = 0, tag = "PROB", value = ""),
+                                                        self@as_df_no_context
+                                                      )
+                                                    })))
+retirement <- R7::new_class("retirement", parent = class_indi_fact,
+                            properties = list(
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "RETI", value = ""),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })))
+will <- R7::new_class("will", parent = class_indi_fact,
+                      properties = list(
+                        as_df = R7::new_property(R7::class_data.frame,
+                                                 getter = function(self){
+                                                   dplyr::bind_rows(
+                                                     df_rows(level = 0, tag = "WILL", value = ""),
+                                                     self@as_df_no_context
+                                                   )
+                                                 })))
 indi_event <- R7::new_class("indi_event", parent = class_indi_fact,
-                            properties = list(event_descriptor = R7::class_character))
+                                properties = list(
+                                  event_descriptor = R7::class_character,
+                                  
+                                  as_df = R7::new_property(R7::class_data.frame,
+                                                           getter = function(self){
+                                                             dplyr::bind_rows(
+                                                               df_rows(level = 0, tag = "EVEN", value = self@event_descriptor),
+                                                               self@as_df_no_context
+                                                             )
+                                                           })
+                                ),
+                                validator = function(self){
+                                  c(
+                                    chk_input_size(self@event_descriptor, "@event_descriptor", 0, 1, 1, 90)
+                                  )
+                                })
 
 # Family events
 annulment <- R7::new_class("annulment", parent = class_famg_fact,
@@ -383,16 +592,94 @@ annulment <- R7::new_class("annulment", parent = class_famg_fact,
                                                           df_rows(level = 0, tag = "ANUL", value = ""),
                                                           self@as_df_no_context
                                                         )
-                                                      })
-                           ))
-divorce <- R7::new_class("divorce", parent = class_famg_fact)
-divorce_filed <- R7::new_class("divorce_filed", parent = class_famg_fact)
-engagement <- R7::new_class("engagement", parent = class_famg_fact)
-marr_banns <- R7::new_class("marr_banns", parent = class_famg_fact)
-marr_contract <- R7::new_class("marr_contract", parent = class_famg_fact)
-marr_license <- R7::new_class("marr_license", parent = class_famg_fact)
-marr_settlement <- R7::new_class("marr_settlement", parent = class_famg_fact)
-relationship <- R7::new_class("relationship", parent = class_famg_fact)
+                                                      })))
+divorce <- R7::new_class("divorce", parent = class_famg_fact,
+                         properties = list(
+                           as_df = R7::new_property(R7::class_data.frame,
+                                                    getter = function(self){
+                                                      dplyr::bind_rows(
+                                                        df_rows(level = 0, tag = "DIV", value = ""),
+                                                        self@as_df_no_context
+                                                      )
+                                                    })))
+divorce_filed <- R7::new_class("divorce_filed", parent = class_famg_fact,
+                               properties = list(
+                                 as_df = R7::new_property(R7::class_data.frame,
+                                                          getter = function(self){
+                                                            dplyr::bind_rows(
+                                                              df_rows(level = 0, tag = "DIVF", value = ""),
+                                                              self@as_df_no_context
+                                                            )
+                                                          })))
+engagement <- R7::new_class("engagement", parent = class_famg_fact,
+                            properties = list(
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "ENGA", value = ""),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })))
+marr_banns <- R7::new_class("marr_banns", parent = class_famg_fact,
+                            properties = list(
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "MARB", value = ""),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })))
+marr_contract <- R7::new_class("marr_contract", parent = class_famg_fact,
+                               properties = list(
+                                 as_df = R7::new_property(R7::class_data.frame,
+                                                          getter = function(self){
+                                                            dplyr::bind_rows(
+                                                              df_rows(level = 0, tag = "MARC", value = ""),
+                                                              self@as_df_no_context
+                                                            )
+                                                          })))
+marr_license <- R7::new_class("marr_license", parent = class_famg_fact,
+                              properties = list(
+                                as_df = R7::new_property(R7::class_data.frame,
+                                                         getter = function(self){
+                                                           dplyr::bind_rows(
+                                                             df_rows(level = 0, tag = "MARL", value = ""),
+                                                             self@as_df_no_context
+                                                           )
+                                                         })))
+marr_settlement <- R7::new_class("marr_settlement", parent = class_famg_fact,
+                                 properties = list(
+                                   as_df = R7::new_property(R7::class_data.frame,
+                                                            getter = function(self){
+                                                              dplyr::bind_rows(
+                                                                df_rows(level = 0, tag = "MARS", value = ""),
+                                                                self@as_df_no_context
+                                                              )
+                                                            })))
+relationship <- R7::new_class("relationship", parent = class_famg_fact,
+                              properties = list(
+                                as_df = R7::new_property(R7::class_data.frame,
+                                                         getter = function(self){
+                                                           dplyr::bind_rows(
+                                                             df_rows(level = 0, tag = "MARR", value = ""),
+                                                             self@as_df_no_context
+                                                           )
+                                                         })))
 famg_event <- R7::new_class("will", parent = class_famg_fact,
-                            properties = list(event_descriptor = R7::class_character))
+                            properties = list(
+                              event_descriptor = R7::class_character,
+                              
+                              as_df = R7::new_property(R7::class_data.frame,
+                                                       getter = function(self){
+                                                         dplyr::bind_rows(
+                                                           df_rows(level = 0, tag = "EVEN", value = self@event_descriptor),
+                                                           self@as_df_no_context
+                                                         )
+                                                       })
+                            ),
+                            validator = function(self){
+                              c(
+                                chk_input_size(self@event_descriptor, "@event_descriptor", 1, 1, 1, 90)
+                              )
+                            })
 
