@@ -138,3 +138,8 @@ class_media_link <- R7::new_class("class_media_link",
                                     )
                                   }
                                   )
+
+add_notes <- function(x, text = character(), xref = character()){
+  x@notes[[length(x@note) + 1]] <- class_note(text = text, xref = xref)
+  
+}

@@ -53,3 +53,32 @@ chk_input_R7classes <- function(inputs, name, target_class){
   NULL
 }
 
+chk_xref_pointers_valid <- function(x){
+  xrefs <- unname(unlist(x@xrefs))
+  if(sum(duplicated(xrefs)) > 0)
+    return(paste0("Duplicate record xrefs found: ", 
+                  paste(xrefs[which(duplicated(xrefs))], collapse = ", ")))
+  
+  if(length(x@xref_subm) > 0 && x@subm@xref != x@xref_subm)
+    return("Inconsistent submitter record xref.")
+  browser()
+  # xrefs in famg record and corresponding Famc/fams structures
+  for(famg in x@famg){
+    for(husb in famg@husb_xref){
+      print(husb)
+    }
+    for(wife in famg@wife_xref){
+      print(wife)
+    }
+    for(chil in famg@chil_xref){
+      print(chil)
+    }
+  }
+  # associations
+  # media links
+  # notes links
+  # citation links
+  # source repo link
+  
+  
+}

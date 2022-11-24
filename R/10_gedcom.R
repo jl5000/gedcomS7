@@ -135,8 +135,10 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 chk_input_R7classes(self@media, "@media", class_record_media),
                                 chk_input_R7classes(self@note, "@note", class_record_note),
                                 chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 1, 1),
-                                chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))
-                                # names and values must be unique
+                                chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
+                                # TODO: names and values must be unique
+                                # Check all xrefs point to a record
+                                chk_xref_pointers_valid(self)
                               )
                             }
 )
@@ -149,7 +151,8 @@ new_gedcomR7 <- function(my_name = unname(Sys.info()["user"]),
                  business_address = class_address(emails = "jalendrum@gmail.com"),
                  creation_date = date_exact_current(),
                  language = my_language,
-                 subm = class_record_subm(xref = "@U1@", name = my_name)
+                 subm = class_record_subm(xref = "@U1@", name = my_name),
+                 xref_subm = "@U1@"
                  )
 }
 
@@ -181,3 +184,4 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
   ) |> cat()
   
 }
+
