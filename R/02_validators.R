@@ -61,24 +61,31 @@ chk_xref_pointers_valid <- function(x){
   
   if(length(x@xref_subm) > 0 && x@subm@xref != x@xref_subm)
     return("Inconsistent submitter record xref.")
-  browser()
+  
   # xrefs in famg record and corresponding Famc/fams structures
-  for(famg in x@famg){
-    for(husb in famg@husb_xref){
-      print(husb)
-    }
-    for(wife in famg@wife_xref){
-      print(wife)
-    }
-    for(chil in famg@chil_xref){
-      print(chil)
-    }
-  }
+  # for(famg in x@famg){
+  #   famg_xref <- famg@xref
+  #   for(husb in famg@husb_xref){
+  #     if(!husb %in% x@xrefs[["indi"]])
+  #       return(stringr::str_glue("Husband {husb} does not exist."))
+  #     for(link in x@indi@links){
+  #       
+  #     }
+  #   }
+  #   for(wife in famg@wife_xref){
+  #     if(!wife %in% x@xrefs[["indi"]])
+  #       return(stringr::str_glue("Wife {wife} does not exist."))
+  #   }
+  #   for(chil in famg@chil_xref){
+  #     if(!chil %in% x@xrefs[["indi"]])
+  #       return(stringr::str_glue("Child {chil} does not exist."))
+  #   }
+  # }
   # associations
   # media links
   # notes links
   # citation links
   # source repo link
   
-  
+  NULL
 }

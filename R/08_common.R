@@ -137,9 +137,4 @@ class_media_link <- R7::new_class("class_media_link",
                                       chk_input_pattern(self@xref, "@xref", reg_xref(TRUE))
                                     )
                                   }
-                                  )
-
-add_notes <- function(x, text = character(), xref = character()){
-  x@notes[[length(x@note) + 1]] <- class_note(text = text, xref = xref)
-  
-}
+)
