@@ -81,7 +81,15 @@ class_record_famg <-
   R7::new_class("class_record_famg", parent = class_record_lin,
                 properties = list(
                   events = R7::class_list,
-                  husb_xref = R7::class_character,
+                  .husb_xref = R7::class_character,
+                  .wife_xref = R7::class_character,
+                  husb_xref = R7::new_property(R7::class_character,
+                                               getter = function(self) self@.husb_xref,
+                                               setter = function(self, value){
+                                                 self@.husb_xref <- value
+                                                 self@.wife_xref <- value
+                                                 self
+                                               }),
                   wife_xref = R7::class_character,
                   chil_xref = R7::class_character,
                   num_children = R7::class_integer,

@@ -10,9 +10,10 @@ add_indi <- function(x, sex = "U"){
 
 add_famg <- function(x, husb_xref = character(), wife_xref = character(), chil_xref = character()){
   xref <- unname(x@next_xref["famg"])
-  x@famg[[length(x@famg) + 1]] <- class_record_famg(xref = xref, husb_xref = husb_xref, 
-                                                    wife_xref = wife_xref, chil_xref = chil_xref)
+  x@famg[[length(x@famg) + 1]] <- class_record_famg(xref = xref)
   names(x@famg)[[length(x@famg)]] <- xref
+  # Assign properties here to trigger the setter which does not happen on instantiation
+  R7::props(x@famg[[xref]]) <- list(husb_xref = husb_xref, wife_xref = wife_xref, chil_xref = chil_xref)
   message(stringr::str_glue("Family group added with xref {xref}."))
   x
 }

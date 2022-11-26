@@ -62,6 +62,16 @@ chk_xref_pointers_valid <- function(x){
   if(length(x@xref_subm) > 0 && x@subm@xref != x@xref_subm)
     return("Inconsistent submitter record xref.")
   
+  xdf <- x@as_df
+  
+  husbands <- dplyr::filter(xdf, tag == "HUSB") |>
+    dplyr::pull(value)
+  fictional_husbands <- setdiff(husbands, x@xrefs["indi"])
+  if(length(fictional_husbands) > 0)
+    return(paste("Husband not found:", fictional_husbands))
+  
+  
+  
   # xrefs in famg record and corresponding Famc/fams structures
   # for(famg in x@famg){
   #   famg_xref <- famg@xref

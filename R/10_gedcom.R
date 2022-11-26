@@ -24,7 +24,15 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                               # Records
                               subm = class_record_subm,
                               indi = R7::class_list,
-                              famg = R7::class_list,
+                              # Why the hell can this not be made private?
+                              .famg = R7::class_list,
+                              famg = R7::new_property(R7::class_list,
+                                                      getter = function(self) self@.famg,
+                                                      setter = function(self, value){
+                                                        self@.famg <- value
+                                                        self <- update_family_links(self)
+                                                        self
+                                                      }),
                               sour = R7::class_list,
                               repo = R7::class_list,
                               media = R7::class_list,
@@ -135,10 +143,10 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 chk_input_R7classes(self@media, "@media", class_record_media),
                                 chk_input_R7classes(self@note, "@note", class_record_note),
                                 chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 1, 1),
-                                chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
+                                chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))#,
                                 # TODO: names and values must be unique
                                 # Check all xrefs point to a record
-                                chk_xref_pointers_valid(self)
+                                #chk_xref_pointers_valid(self)
                               )
                             }
 )
@@ -185,3 +193,51 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
   
 }
 
+
+
+# 
+# 
+# for(fam in famg){
+#   for(spou in c(fam@husb_xref, fam@wife_xref)){
+#     
+#     x@indi[[spou]] <- add_indi_family_link(x@indi[[spou]],
+#                                            xref_famg = xref,
+#                                            as_child = FALSE)
+#   }
+#   
+#   if(is.null(names(chil_xref)))
+#     names(chil_xref) <- rep("birth", length(chil_xref))
+#   
+#   for(chil in fam@chil_xref){
+#     ped <- names(chil_xref[chil_xref == chil])
+#     x@indi[[chil]] <- add_indi_family_link(x@indi[[chil]],
+#                                            xref_famg = xref,
+#                                            as_child = TRUE,
+#                                            pedigree = ped)
+#   }
+# }
+# 
+# 
+# 
+# 
+
+# 
+# for(fam in famg){
+#   for(spou in c(fam@husb_xref, fam@wife_xref)){
+#     
+#     x@indi[[spou]] <- add_indi_family_link(x@indi[[spou]],
+#                                            xref_famg = xref,
+#                                            as_child = FALSE)
+#   }
+#   
+#   if(is.null(names(chil_xref)))
+#     names(chil_xref) <- rep("birth", length(chil_xref))
+#   
+#   for(chil in fam@chil_xref){
+#     ped <- names(chil_xref[chil_xref == chil])
+#     x@indi[[chil]] <- add_indi_family_link(x@indi[[chil]],
+#                                            xref_famg = xref,
+#                                            as_child = TRUE,
+#                                            pedigree = ped)
+#   }
+# }
