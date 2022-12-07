@@ -23,20 +23,68 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                               
                               # Records
                               subm = class_record_subm,
-                              indi = R7::class_list,
-                              # Why the hell can this not be made private?
-                              .famg = R7::class_list,
-                              famg = R7::new_property(R7::class_list,
-                                                      getter = function(self) self@.famg,
-                                                      setter = function(self, value){
-                                                        self@.famg <- value
-                                                        self <- update_family_links(self)
-                                                        self
-                                                      }),
-                              sour = R7::class_list,
-                              repo = R7::class_list,
-                              media = R7::class_list,
-                              note = R7::class_list,
+                              
+                              indi = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@indi <- value
+                                  names(self@indi) <- purrr::map_chr(self@indi, \(rec) rec@xref)
+                                  refresh_famg_members(self)
+                                }),
+                              
+                              famg = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@famg <- value
+                                  names(self@famg) <- purrr::map_chr(self@famg, \(rec) rec@xref)
+                                  refresh_indi_links(self)
+                                }),
+                              
+                              sour = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@sour <- value
+                                  names(self@sour) <- purrr::map_chr(self@sour, \(rec) rec@xref)
+                                  self
+                                }),
+                              
+                              repo = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@repo <- value
+                                  names(self@repo) <- purrr::map_chr(self@repo, \(rec) rec@xref)
+                                  self
+                                }),
+                              
+                              media = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@media <- value
+                                  names(self@media) <- purrr::map_chr(self@media, \(rec) rec@xref)
+                                  self
+                                }),
+                              
+                              note = R7::new_property(
+                                R7::class_list,
+                                setter = function(self, value){
+                                  self@note <- value
+                                  names(self@note) <- purrr::map_chr(self@note, \(rec) rec@xref)
+                                  self
+                                }),
+                              
+                              get_indi = R7::new_property(
+                                R7::class_list,
+                                getter = function(self){
+                                  self@indi  
+                                }
+                              ),
+                              
+                              get_famg = R7::new_property(
+                                R7::class_list,
+                                getter = function(self){
+                                  self@famg  
+                                }
+                              ),
                               
                               # This serves as both a record of prefixes and order of records
                               xref_prefixes = R7::new_property(R7::class_character,
@@ -193,7 +241,106 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
   
 }
 
+refresh_famg_members <- function(x){
+  
+  x |>
+    refresh_famg_spou() |>
+    refresh_famg_chil()
+  
+}
 
+refresh_famg_spou <- function(x){
+  
+  xdf <- x@as_df
+  
+  spou_links <- dplyr::filter(xdf, level == 1,
+                              tag %in% c("HUSB","WIFE","FAMS")) |>
+    dplyr::mutate(famg = dplyr::if_else(tag == "FAMS", value,  record)) |>
+    dplyr::mutate(indi = dplyr::if_else(tag == "FAMS", record, value)) |>
+    dplyr::mutate(pair = paste(famg, indi)) |>
+    dplyr::add_count(pair) |>
+    dplyr::filter(n < 2)
+  
+  for(i in seq_len(nrow(spou_links))){
+    tag <- spou_links$tag[i]
+    indi <- spou_links$indi[i]
+    famg <- spou_links$famg[i]
+    husb <- x@get_famg[[famg]]@husb_xref
+    wife <- x@get_famg[[famg]]@wife_xref
+    
+    if(tag == "FAMS"){ # add spouse to famg
+      
+      if(length(c(husb, wife)) == 0){
+        # use sex as determinant
+        if(x@get_indi[[indi]]@sex == "M"){
+          x@get_famg[[famg]]@husb_xref <- indi
+        } else {
+          x@get_famg[[famg]]@wife_xref <- indi
+        }
+        
+      } else if(length(husb) == 0) {
+        x@get_famg[[famg]]@husb_xref <- indi
+      } else {
+        x@get_famg[[famg]]@wife_xref <- indi
+      }
+      
+    } else { # remove spouse from famg
+      
+      if(husb == indi){
+        x@get_famg[[famg]]@husb_xref <- character()
+      } else if (wife == indi){
+        x@get_famg[[famg]]@wife_xref <- character()
+      }
+      
+    }
+
+  }
+  
+  x
+}
+
+refresh_famg_chil <- function(x){
+  
+  xdf <- x@as_df
+  
+  chil_links <- dplyr::filter(xdf, level == 1,
+                              tag %in% c("CHIL","FAMC")) |>
+    dplyr::mutate(famg = dplyr::if_else(tag == "FAMC", value,  record)) |>
+    dplyr::mutate(indi = dplyr::if_else(tag == "FAMC", record, value)) |>
+    dplyr::mutate(pair = paste(famg, indi)) |>
+    dplyr::add_count(pair) |>
+    dplyr::filter(n < 2)
+  
+  for(i in seq_len(nrow(chil_links))){
+    tag <- chil_links$tag[i]
+    indi <- chil_links$indi[i]
+    famg <- chil_links$famg[i]
+    chil <- x@get_famg[[famg]]@chil_xref
+    
+    if(tag == "FAMC"){ # add child to famg
+      
+      x@get_famg[[famg]]@chil_xref <- c(chil, indi)
+      
+    } else { # remove child from famg
+      
+      x@get_famg[[famg]]@chil_xref <- chil[-indi]
+
+    }
+    
+  }
+  
+  x
+}
+
+refresh_indi_links <- function(x){
+  
+  for(famg in x@get_famg){
+    
+    
+  }
+  x
+  
+}
 
 # 
 # 

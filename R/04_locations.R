@@ -134,19 +134,16 @@ class_address <- R7::new_class("class_address",
                              
                              as_string = R7::new_property(R7::class_character,
                                                       getter = function(self){
-                                                        full_add <- ""
-                                                        if(length(self@local_address_lines) > 0)
-                                                          full_add <- paste(self@local_address_lines, collapse = ", ")
-                                                        if(length(self@city) > 0)
-                                                          full_add <- paste(full_add, self@city, sep = ", ")
-                                                        if(length(self@state) > 0)
-                                                          full_add <- paste(full_add, self@state, sep = ", ")
-                                                        if(length(self@postal_code) > 0)
-                                                          full_add <- paste(full_add, self@postal_code, sep = ", ")
-                                                        if(length(self@country) > 0)
-                                                          full_add <- paste(full_add, self@country, sep = ". ")
-                                                        
-                                                        full_add
+                                                        paste(
+                                                          paste(self$local_address_lines, collapse = ", "),
+                                                          self$city,
+                                                          self$state,
+                                                          self$country,
+                                                          sep = ", "
+                                                        ) |>
+                                                          stringr::str_replace_all("(, ){2,}", ", ") |>
+                                                          stringr::str_remove("^, ") |>
+                                                          stringr::str_remove(", $")
                                                       }),
                              
                              as_df = R7::new_property(R7::class_data.frame,

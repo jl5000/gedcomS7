@@ -105,24 +105,3 @@ class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link", pare
                                              )
 )
 
-update_family_links <- function(x){
-  
-  geddf <- x@as_df
-  
-  spou_links <- dplyr::filter(geddf, level == 1,
-                              tag %in% c("HUSB","WIFE","FAMS"))
-  
-  missing_spou_links <- setdiff(unique(spou_links$value),
-                                unique(spou_links$record))
-  for(spou in missing_spou_links){
-    x@indi[[spou]] <- add_indi_family_link(x@indi[[spou]],
-                                           xref_famg = "@F1@",
-                                           as_child = FALSE)
-  }
-  # remove extra links
-  
-  # chil_links <- dplyr::filter(geddf, level == 1,
-  #                             tag %in% c("CHIL","FAMC"))
-  
-  x
-}
