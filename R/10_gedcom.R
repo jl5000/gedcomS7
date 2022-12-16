@@ -1,4 +1,12 @@
 
+# x@content_description <- "bah"
+# x@subm@name = "me"
+# # accessing and modifying records needs something different
+# 
+# x |>
+#   get_indi("Jamie") |>
+  
+
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                             properties = list(
                               gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
@@ -21,6 +29,11 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                               gedcom_copyright = R7::class_character,
                               content_description = R7::class_character,
                               
+                              # This serves as both a record of prefixes and order of records
+                              xref_prefixes = R7::new_property(R7::class_character,
+                                                               default = c(indi = "I", famg = "F", sour = "S", 
+                                                                           repo = "R", media = "M", note = "N")),
+                              
                               # Records
                               subm = class_record_subm,
                               
@@ -29,7 +42,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 setter = function(self, value){
                                   self@indi <- value
                                   names(self@indi) <- purrr::map_chr(self@indi, \(rec) rec@xref)
-                                  refresh_famg_members(self)
+                                  self <- refresh_family_links(self, TRUE)
+                                  self
                                 }),
                               
                               famg = R7::new_property(
@@ -37,7 +51,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 setter = function(self, value){
                                   self@famg <- value
                                   names(self@famg) <- purrr::map_chr(self@famg, \(rec) rec@xref)
-                                  refresh_indi_links(self)
+                                  #self <- refresh_family_links(self, FALSE)
+                                  self
                                 }),
                               
                               sour = R7::new_property(
@@ -86,11 +101,6 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 }
                               ),
                               
-                              # This serves as both a record of prefixes and order of records
-                              xref_prefixes = R7::new_property(R7::class_character,
-                                                               default = c(indi = "I", famg = "F", sour = "S", 
-                                                                           repo = "R", media = "M", note = "N")),
-                              
                               # List of xrefs for each record type
                               xrefs = R7::new_property(R7::class_list,
                                                         getter = function(self){
@@ -114,6 +124,32 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                              paste0("@", self@xref_prefixes, idx, "@") |>
                                                                purrr::set_names(names(self@xref_prefixes))
                                                            }),
+                              
+                              df_indi = R7::new_property(
+                                R7::class_data.frame,
+                                getter = function(self){
+                                  purrr::map(
+                                    self@indi,
+                                    function(ind){
+                                      tibble::tibble(
+                                        xref = ind@xref,
+                                        name = ind@primary_name,
+                                        sex = ind@sex,
+                                        birth_date = ind@birth_date,
+                                        birth_place = ind@birth_place,
+                                        is_alive = ind@is_alive,
+                                        death_date = ind@death_date,
+                                        death_place = ind@death_place,
+                                        mother = "",
+                                        mother_xref = "",
+                                        father = "",
+                                        father_xref = "",
+                                        num_siblings = ""
+                                      )
+                                    }
+                                  ) |>
+                                    dplyr::bind_rows()
+                                }),
                               
                               as_df = R7::new_property(
                                 R7::class_data.frame, 
@@ -241,15 +277,15 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
   
 }
 
-refresh_famg_members <- function(x){
+refresh_family_links <- function(x, modify_famg_members){
   
   x |>
-    refresh_famg_spou() |>
-    refresh_famg_chil()
+    refresh_spouse_links(modify_famg_members) |>
+    refresh_child_links(modify_famg_members)
   
 }
 
-refresh_famg_spou <- function(x){
+refresh_spouse_links <- function(x, modify_famg_members){
   
   xdf <- x@as_df
   
@@ -270,27 +306,40 @@ refresh_famg_spou <- function(x){
     
     if(tag == "FAMS"){ # add spouse to famg
       
-      if(length(c(husb, wife)) == 0){
-        # use sex as determinant
-        if(x@get_indi[[indi]]@sex == "M"){
-          x@get_famg[[famg]]@husb_xref <- indi
+      if(modify_famg_members){
+        
+        if(length(c(husb, wife)) == 0){
+          # use sex as determinant
+          if(x@get_indi[[indi]]@sex == "M"){
+            x@famg[[famg]]@husb_xref <- indi
+          } else {
+            x@famg[[famg]]@wife_xref <- indi
+          }
+          
+        } else if(length(husb) == 0) {
+          x@famg[[famg]]@husb_xref <- indi
         } else {
-          x@get_famg[[famg]]@wife_xref <- indi
+          x@famg[[famg]]@wife_xref <- indi
         }
         
-      } else if(length(husb) == 0) {
-        x@get_famg[[famg]]@husb_xref <- indi
-      } else {
-        x@get_famg[[famg]]@wife_xref <- indi
+      } else { # remove indi spouse link
+        
       }
+      
+      
       
     } else { # remove spouse from famg
       
-      if(husb == indi){
-        x@get_famg[[famg]]@husb_xref <- character()
-      } else if (wife == indi){
-        x@get_famg[[famg]]@wife_xref <- character()
+      if(modify_famg_members){
+        if(husb == indi){
+          x@famg[[famg]]@husb_xref <- character()
+        } else if (wife == indi){
+          x@famg[[famg]]@wife_xref <- character()
+        }
+      } else { # add indi spouse link
+        x@indi[[indi]] <- add_indi_family_link(x@get_indi[[indi]], famg, as_child = FALSE)
       }
+      
       
     }
 
@@ -299,7 +348,7 @@ refresh_famg_spou <- function(x){
   x
 }
 
-refresh_famg_chil <- function(x){
+refresh_child_links <- function(x, modify_famg_members){
   
   xdf <- x@as_df
   
@@ -317,13 +366,23 @@ refresh_famg_chil <- function(x){
     famg <- chil_links$famg[i]
     chil <- x@get_famg[[famg]]@chil_xref
     
-    if(tag == "FAMC"){ # add child to famg
+    if(tag == "FAMC"){ 
       
-      x@get_famg[[famg]]@chil_xref <- c(chil, indi)
+      if(modify_famg_members){ # add child to famg
+        x@famg[[famg]]@chil_xref <- c(chil, indi)
+      } else { # remove indi family link
+        
+      }
       
-    } else { # remove child from famg
       
-      x@get_famg[[famg]]@chil_xref <- chil[-indi]
+    } else { # tag = "CHIL"
+      
+      if(modify_famg_members){ # remove child from famg
+        x@famg[[famg]]@chil_xref <- chil[chil != indi]
+      } else { # add indi family link
+        x@indi[[indi]] <- add_indi_family_link(x@get_indi[[indi]], famg, as_child = TRUE)
+      }
+      
 
     }
     
@@ -332,15 +391,6 @@ refresh_famg_chil <- function(x){
   x
 }
 
-refresh_indi_links <- function(x){
-  
-  for(famg in x@get_famg){
-    
-    
-  }
-  x
-  
-}
 
 # 
 # 

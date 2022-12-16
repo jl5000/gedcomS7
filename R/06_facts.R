@@ -17,6 +17,25 @@ class_event_detail <- R7::new_class("class_event_detail",
                                       citations = R7::class_list,
                                       media_links = R7::class_list,
                                       
+                                      event_date = R7::new_property(
+                                        R7::class_character,
+                                        getter = function(self){
+                                          dplyr::filter(self@as_df_no_context, tag == "DATE") |>
+                                            dplyr::pull(value)
+                                        }),
+                                      
+                                      event_location = R7::new_property(
+                                        R7::class_character,
+                                        getter = function(self){
+                                          if(length(self@place) == 1){
+                                            self@place@as_val
+                                          } else if(length(self@address) == 1) {
+                                            self@address@as_val
+                                          } else {
+                                            character()
+                                          }
+                                        }),
+
                                       as_df = R7::new_property(R7::class_data.frame,
                                                                getter = function(self){
                                                                  dplyr::bind_rows(
@@ -50,7 +69,7 @@ class_event_detail <- R7::new_class("class_event_detail",
                                     }
 )
 
-class_famg_fact <- R7::new_class("class_famg_fact", #TODO: abstract = TRUE,
+class_famg_fact <- R7::new_class("class_famg_fact", #abstract = TRUE,
                                  properties = list(
                                    husband_age = R7::class_character,
                                    wife_age = R7::class_character,
@@ -78,7 +97,7 @@ class_famg_fact <- R7::new_class("class_famg_fact", #TODO: abstract = TRUE,
                                  }
 )
 
-class_indi_fact <- R7::new_class("class_indi_fact", #TODO: abstract = TRUE,
+class_indi_fact <- R7::new_class("class_indi_fact", #abstract = TRUE,
                                  properties = list(
                                    age = R7::class_character,
                                    fact_detail = R7::new_property(R7::new_union(NULL, class_event_detail)),

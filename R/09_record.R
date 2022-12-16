@@ -1,6 +1,6 @@
 
 class_record <- 
-  R7::new_class("class_record", # TODO: abstract = TRUE,
+  R7::new_class("class_record", #abstract = TRUE,
                 properties = list(
                   xref = R7::class_character,
                   auto_id = R7::class_character,
@@ -25,20 +25,21 @@ class_record_subm <-
                   media_links = R7::class_list,
                   notes = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "SUBM", value = ""),
-                                               df_rows(level = 1, tag = "NAME", value = self@name),
-                                               obj_to_df(self@address, level_inc = 1),
-                                               lst_to_df(self@media_links, level_inc = 1),
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               obj_to_df(self@change_date, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                             
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "SUBM", value = ""),
+                        df_rows(level = 1, tag = "NAME", value = self@name),
+                        obj_to_df(self@address, level_inc = 1),
+                        lst_to_df(self@media_links, level_inc = 1),
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        lst_to_df(self@notes, level_inc = 1),
+                        obj_to_df(self@change_date, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                      
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -51,23 +52,24 @@ class_record_subm <-
   )
 
 class_record_lin <- 
-  R7::new_class("class_record_lin", parent = class_record, #TODO: abstract = TRUE,
+  R7::new_class("class_record_lin", parent = class_record, #abstract = TRUE,
                 properties = list(
                   user_reference_numbers = R7::class_character,
                   
-                  refs_df = R7::new_property(R7::class_data.frame,
-                                             getter = function(self){
-                                               tmp <- tibble::tibble()
-                                               for(i in seq_along(self@user_reference_numbers)){
-                                                 tmp <- dplyr::bind_rows(
-                                                   tmp,
-                                                   df_rows(level = 1, tag = "REFN", value = self@user_reference_numbers[i]),
-                                                   df_rows(level = 2, tag = "TYPE", value = names(self@user_reference_numbers)[i])
-                                                 ) |>
-                                                   dplyr::filter(!(tag == "TYPE" & value == ""))
-                                               }
-                                               tmp
-                                             })
+                  refs_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      tmp <- tibble::tibble()
+                      for(i in seq_along(self@user_reference_numbers)){
+                        tmp <- dplyr::bind_rows(
+                          tmp,
+                          df_rows(level = 1, tag = "REFN", value = self@user_reference_numbers[i]),
+                          df_rows(level = 2, tag = "TYPE", value = names(self@user_reference_numbers)[i])
+                        ) |>
+                          dplyr::filter(!(tag == "TYPE" & value == ""))
+                      }
+                      tmp
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -89,23 +91,24 @@ class_record_famg <-
                   citations = R7::class_list,
                   media_links = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "FAM", value = ""),
-                                               lst_to_df(self@events, level_inc = 1),
-                                               df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
-                                               df_rows(level = 1, tag = "WIFE", value = self@wife_xref),
-                                               df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
-                                               df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               obj_to_df(self@change_date, level_inc = 1),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               lst_to_df(self@citations, level_inc = 1),
-                                               lst_to_df(self@media_links, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "FAM", value = ""),
+                        lst_to_df(self@events, level_inc = 1),
+                        df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
+                        df_rows(level = 1, tag = "WIFE", value = self@wife_xref),
+                        df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
+                        df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        obj_to_df(self@change_date, level_inc = 1),
+                        lst_to_df(self@notes, level_inc = 1),
+                        lst_to_df(self@citations, level_inc = 1),
+                        lst_to_df(self@media_links, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -135,23 +138,67 @@ class_record_indi <-
                   citations = R7::class_list,
                   media_links = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "INDI", value = ""),
-                                               lst_to_df(self@personal_names, level_inc = 1),
-                                               df_rows(level = 1, tag = "SEX", value = self@sex),
-                                               lst_to_df(self@facts, level_inc = 1),
-                                               lst_to_df(self@family_links, level_inc = 1),
-                                               lst_to_df(self@associations, level_inc = 1),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               obj_to_df(self@change_date, level_inc = 1),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               lst_to_df(self@citations, level_inc = 1),
-                                               lst_to_df(self@media_links, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                           })
+                  primary_name = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      if(length(self@personal_names) == 0) return("Unnamed individual")
+                      
+                      self@personal_names[[1]]@name@full |>
+                        stringr::str_remove_all("/")
+                    }),
+                  
+                  all_names = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      purrr::map_chr(self@personal_names, \(nm){
+                        stringr::str_remove_all(nm@name@full, "/")
+                      })
+                    }),
+                  
+                  desc_short = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      paste0("Individual ", self@xref, ", ", self@primary_name)
+                    }),
+                  
+                  birth_date = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(R7::R7_inherits(fact, birth)){
+                          if(fact@fact_detail@event_date) return("TODO") # TODO
+                        }
+                      }
+                      character()
+                    }),
+                  
+                  is_alive = R7::new_property(
+                    R7::class_logical,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(R7::R7_inherits(fact, death)) return(FALSE)
+                      }
+                      TRUE
+                    }),
+                  
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "INDI", value = ""),
+                        lst_to_df(self@personal_names, level_inc = 1),
+                        df_rows(level = 1, tag = "SEX", value = self@sex),
+                        lst_to_df(self@facts, level_inc = 1),
+                        lst_to_df(self@family_links, level_inc = 1),
+                        lst_to_df(self@associations, level_inc = 1),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        obj_to_df(self@change_date, level_inc = 1),
+                        lst_to_df(self@notes, level_inc = 1),
+                        lst_to_df(self@citations, level_inc = 1),
+                        lst_to_df(self@media_links, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -178,21 +225,22 @@ class_record_media <-
                   notes = R7::class_list,
                   citations = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "OBJE", value = ""),
-                                               df_rows(level = 1, tag = "FILE", value = self@file_ref),
-                                               df_rows(level = 2, tag = "FORM", value = self@format),
-                                               df_rows(level = 3, tag = "TYPE", value = rep(self@media_type, length(self@format))),
-                                               df_rows(level = 2, tag = "TITL", value = rep(self@title, length(self@file_ref))),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               lst_to_df(self@citations, level_inc = 1),
-                                               obj_to_df(self@change_date, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "OBJE", value = ""),
+                        df_rows(level = 1, tag = "FILE", value = self@file_ref),
+                        df_rows(level = 2, tag = "FORM", value = self@format),
+                        df_rows(level = 3, tag = "TYPE", value = rep(self@media_type, length(self@format))),
+                        df_rows(level = 2, tag = "TITL", value = rep(self@title, length(self@file_ref))),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        lst_to_df(self@notes, level_inc = 1),
+                        lst_to_df(self@citations, level_inc = 1),
+                        obj_to_df(self@change_date, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -225,37 +273,38 @@ class_record_sour <-
                   notes = R7::class_list,
                   media_links = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             sour_df <- dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "SOUR", value = ""),
-                                               df_rows(level = 1, tag = "DATA", value = ""),
-                                               df_rows(level = 2, tag = "EVEN", value = self@events_recorded),
-                                               date_to_df(self@date_period, level_inc = 3),
-                                               df_rows(level = 3, tag = "PLAC", value = self@jurisdiction_place),
-                                               df_rows(level = 2, tag = "AGNC", value = self@responsible_agency),
-                                               lst_to_df(self@data_notes, level_inc = 2),
-                                               df_rows(level = 1, tag = "AUTH", value = self@originator),
-                                               df_rows(level = 1, tag = "TITL", value = self@full_title),
-                                               df_rows(level = 1, tag = "ABBR", value = self@short_title),
-                                               df_rows(level = 1, tag = "PUBL", value = self@publication_facts),
-                                               df_rows(level = 1, tag = "TEXT", value = self@source_text),
-                                               lst_to_df(self@repo_citations, level_inc = 1),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               obj_to_df(self@change_date, level_inc = 1),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               lst_to_df(self@media_links, level_inc = 1),
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                             
-                                             if (length(self@date_period) + length(self@jurisdiction_place) == 0)
-                                               sour_df <- dplyr::filter(sour_df, tag != "EVEN")
-                                             
-                                             if (length(self@events_recorded) + length(self@responsible_agency) + length(self@data_notes) == 0)
-                                               sour_df <- dplyr::filter(sour_df, tag != "DATA")
-                                             
-                                             sour_df
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      sour_df <- dplyr::bind_rows(
+                        df_rows(level = 0, tag = "SOUR", value = ""),
+                        df_rows(level = 1, tag = "DATA", value = ""),
+                        df_rows(level = 2, tag = "EVEN", value = self@events_recorded),
+                        date_to_df(self@date_period, level_inc = 3),
+                        df_rows(level = 3, tag = "PLAC", value = self@jurisdiction_place),
+                        df_rows(level = 2, tag = "AGNC", value = self@responsible_agency),
+                        lst_to_df(self@data_notes, level_inc = 2),
+                        df_rows(level = 1, tag = "AUTH", value = self@originator),
+                        df_rows(level = 1, tag = "TITL", value = self@full_title),
+                        df_rows(level = 1, tag = "ABBR", value = self@short_title),
+                        df_rows(level = 1, tag = "PUBL", value = self@publication_facts),
+                        df_rows(level = 1, tag = "TEXT", value = self@source_text),
+                        lst_to_df(self@repo_citations, level_inc = 1),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        obj_to_df(self@change_date, level_inc = 1),
+                        lst_to_df(self@notes, level_inc = 1),
+                        lst_to_df(self@media_links, level_inc = 1),
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                      
+                      if (length(self@date_period) + length(self@jurisdiction_place) == 0)
+                        sour_df <- dplyr::filter(sour_df, tag != "EVEN")
+                      
+                      if (length(self@events_recorded) + length(self@responsible_agency) + length(self@data_notes) == 0)
+                        sour_df <- dplyr::filter(sour_df, tag != "DATA")
+                      
+                      sour_df
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -283,18 +332,19 @@ class_record_repo <-
                   address = R7::new_property(R7::new_union(NULL, class_address)),
                   notes = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "REPO", value = ""),
-                                               df_rows(level = 1, tag = "NAME", value = self@name),
-                                               obj_to_df(self@address, level_inc = 1),
-                                               lst_to_df(self@notes, level_inc = 1),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               obj_to_df(self@change_date, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "REPO", value = ""),
+                        df_rows(level = 1, tag = "NAME", value = self@name),
+                        obj_to_df(self@address, level_inc = 1),
+                        lst_to_df(self@notes, level_inc = 1),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        obj_to_df(self@change_date, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                    })
                 ),
                 validator = function(self){
                   c(
@@ -311,16 +361,17 @@ class_record_note <-
                   text = R7::class_character,
                   citations = R7::class_list,
                   
-                  as_df = R7::new_property(R7::class_data.frame,
-                                           getter = function(self){
-                                             dplyr::bind_rows(
-                                               df_rows(level = 0, tag = "NOTE", value = self@text),
-                                               self@refs_df,
-                                               df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                                               lst_to_df(self@citations, level_inc = 1),
-                                               obj_to_df(self@change_date, level_inc = 1)
-                                             ) |> dplyr::mutate(record = self@xref, .before = 1)
-                                           })
+                  as_df = R7::new_property(
+                    R7::class_data.frame,
+                    getter = function(self){
+                      dplyr::bind_rows(
+                        df_rows(level = 0, tag = "NOTE", value = self@text),
+                        self@refs_df,
+                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
+                        lst_to_df(self@citations, level_inc = 1),
+                        obj_to_df(self@change_date, level_inc = 1)
+                      ) |> dplyr::mutate(record = self@xref, .before = 1)
+                    })
                 ),
                 validator = function(self){
                   c(

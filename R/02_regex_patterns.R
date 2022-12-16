@@ -25,7 +25,7 @@ date_to_df <- function(obj, level_inc = 0){
   if(is.character(obj)){
     date_val <- obj
   } else {
-    date_val <- obj@as_gedcom_val
+    date_val <- obj@as_val
   }
   df_rows(level = level_inc, tag = "DATE", value = date_val)
 }

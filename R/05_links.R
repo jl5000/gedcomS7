@@ -54,7 +54,7 @@ class_association <- R7::new_class("class_association",
 )
 
 # FINISHED
-class_family_link <- R7::new_class("family_links", # TODO: abstract = TRUE,
+class_family_link <- R7::new_class("family_links", #abstract = TRUE,
                                 properties = list(
                                   xref = R7::class_character,
                                   notes = R7::class_list
