@@ -14,7 +14,7 @@ class_name_pieces <- R7::new_class("class_name_pieces",
                            as_df = R7::new_property(R7::class_data.frame,
                                                      getter = function(self){
 
-                                                       dplyr::bind_rows(
+                                                       rbind(
                                                          df_rows(level = 0, tag = "NPFX", value = self@prefix),
                                                          df_rows(level = 0, tag = "GIVN", value = self@given),
                                                          df_rows(level = 0, tag = "NICK", value = self@nickname),
@@ -51,8 +51,7 @@ class_name_info <- R7::new_class("class_name_info",
                     
                     as_df = R7::new_property(R7::class_data.frame,
                                              getter = function(self){
-                                               
-                                               dplyr::bind_rows(
+                                               rbind(
                                                  df_rows(level = 0, tag = "NAME", value = self@full),
                                                  df_rows(level = 1, tag = "TYPE", value = self@type),
                                                  obj_to_df(self@pieces, level_inc = 1)
@@ -81,17 +80,17 @@ class_personal_name <- R7::new_class("class_personal_name",
                                                       getter = function(self){
                                                         
                                                         phon_df <- lst_to_df(self@phon_names, level_inc = 1)
-                                                        if(nrow(phon_df) > 0)
+                                                        if(!is.null(phon_df))
                                                           phon_df <- dplyr::mutate(phon_df, tag = ifelse(tag == "NAME", "FONE", tag))
                                                         
                                                         rom_df <- lst_to_df(self@rom_names, level_inc = 1)
-                                                        if(nrow(rom_df) > 0)
+                                                        if(!is.null(rom_df))
                                                           rom_df <- dplyr::mutate(rom_df, tag = ifelse(tag == "NAME", "ROMN", tag))
                                                         
-                                                        dplyr::bind_rows(
+                                                        rbind(
                                                           obj_to_df(self@name, level_inc = 0),
                                                           phon_df,
-                                                          rom_df,
+                                                          rom_df
                                                         )
                                                       })
                            ),

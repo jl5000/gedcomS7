@@ -1,23 +1,40 @@
 
 `@` <- R7::`@`
+.datatable.aware = TRUE
+
+pop <- function(x){
+  paste(x, collapse = "")
+}
 
 df_rows <- function(level, tag, value, record = NULL){
-  tibble::tibble(record = record, level = level, tag = tag, value = value)
+  if(length(value) == 0) return(NULL)
+  df <- data.table::data.table(level = level, tag = tag, value = value)
+  if(!is.null(record)){
+    df[,record:=record]
+    data.table::setcolorder(df, c(4,1,2,3))
+  }
+  df[]
 }
 
 lst_to_df <- function(lst, level_inc = 0){
+  if(length(lst) == 0) return(NULL)
   
-  lst_df <- purrr::map(lst, ~ .x@as_df) |>
-    dplyr::bind_rows()
+  lst_df <- lapply(lst, function(obj) obj@as_df) |>
+    data.table::rbindlist()
   
-  if(nrow(lst_df) > 0) lst_df <- dplyr::mutate(lst_df, level = level + level_inc)
+  if(lst_df[,.N] == 0) return(NULL)
+  
+  lst_df$level <- lst_df$level + level_inc
   
   lst_df
 }
 
 obj_to_df <- function(obj, level_inc = 0){
   if(is.null(obj)) return(NULL)
-  dplyr::mutate(obj@as_df, level = level + level_inc)
+  df <- obj@as_df
+  if(is.null(df)) return(NULL)
+  df$level = df$level + level_inc
+  df
 }
 
 date_to_df <- function(obj, level_inc = 0){

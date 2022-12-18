@@ -62,7 +62,7 @@ class_place <- R7::new_class("class_place",
                                                           pla_df <- df_rows(level = 0, tag = "PLAC", value = self@name)
                                                           
                                                           for (i in seq_along(self@phon_names)) {
-                                                            pla_df <- dplyr::bind_rows(
+                                                            pla_df <- rbind(
                                                               pla_df,
                                                               df_rows(level = 1, tag = "FONE", value = self@phon_names[i]),
                                                               df_rows(level = 2, tag = "TYPE", value = names(self@phon_names)[i])
@@ -70,7 +70,7 @@ class_place <- R7::new_class("class_place",
                                                           }
                                                           
                                                           for (i in seq_along(self@rom_names)) {
-                                                            pla_df <- dplyr::bind_rows(
+                                                            pla_df <- rbind(
                                                               pla_df,
                                                               df_rows(level = 1, tag = "ROMN", value = self@rom_names[i]),
                                                               df_rows(level = 2, tag = "TYPE", value = names(self@rom_names)[i])
@@ -78,7 +78,7 @@ class_place <- R7::new_class("class_place",
                                                           }
                                                           
                                                           if(length(self@lat_long) == 1){
-                                                            pla_df <- dplyr::bind_rows(
+                                                            pla_df <- rbind(
                                                               pla_df,
                                                               df_rows(level = 1, tag = "MAP", value = ""),
                                                               df_rows(level = 2, tag = "LATI", value = self@lat),
@@ -86,8 +86,8 @@ class_place <- R7::new_class("class_place",
                                                             )
                                                           }
                                                           
-                                                          dplyr::bind_rows(pla_df,
-                                                                           lst_to_df(self@notes, level_inc = 1))
+                                                          rbind(pla_df,
+                                                                lst_to_df(self@notes, level_inc = 1))
                                                           
                                                         })
                              ),
@@ -144,16 +144,16 @@ class_address <- R7::new_class("class_address",
                                        self@country,
                                        sep = ", "
                                      ) |>
-                                       stringr::str_replace_all("(, ){2,}", ", ") |>
-                                       stringr::str_remove("^, ") |>
-                                       stringr::str_remove(", $")
+                                       gsub(pattern = "(, ){2,}", replacement = ", ") |>
+                                       sub(pattern = "^, ", replacement = "") |>
+                                       sub(pattern = ", $", replacement = "")
                                    }),
                                  
                                  as_df = R7::new_property(
                                    R7::class_data.frame,
                                    getter = function(self){
                                      
-                                     add_df <- dplyr::bind_rows(
+                                     add_df <- rbind(
                                        df_rows(level = 0, tag = "ADDR", value = ""),
                                        df_rows(level = 1, tag = paste0("ADR", seq_along(self@local_address_lines)), value = self@local_address_lines),
                                        df_rows(level = 1, tag = "CITY", value = self@city),

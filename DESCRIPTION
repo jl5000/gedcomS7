@@ -16,11 +16,9 @@ Depends:
     R (>= 4.1)
 Imports:
     R7,
-    tibble,
+    data.table,
     dplyr,
-    purrr,
-    lubridate,
-    stringr
+    lubridate
 Suggests: 
     testthat (>= 3.0.0),
     roxytest

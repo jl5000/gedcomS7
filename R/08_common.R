@@ -10,7 +10,7 @@ class_change_date <- R7::new_class("class_change_date",
                                  as_df = R7::new_property(R7::class_data.frame,
                                                       getter = function(self){
                                                         
-                                                        dplyr::bind_rows(
+                                                        rbind(
                                                           df_rows(level = 0, tag = "CHAN", value = ""),
                                                           date_to_df(self@change_date, level_inc = 1),
                                                           df_rows(level = 2, tag = "TIME", value = self@change_time),
@@ -79,7 +79,7 @@ class_citation <- R7::new_class("class_citation",
                                   as_df = R7::new_property(R7::class_data.frame,
                                                             getter = function(self){
                                                             
-                                                              cit_df <- dplyr::bind_rows(
+                                                              cit_df <- rbind(
                                                                 df_rows(level = 0, tag = "SOUR", value = self@xref),
                                                                 df_rows(level = 1, tag = "PAGE", value = self@where),
                                                                 df_rows(level = 1, tag = "EVEN", value = self@event_type),

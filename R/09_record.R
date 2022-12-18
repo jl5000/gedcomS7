@@ -29,7 +29,7 @@ class_record_subm <-
                     R7::class_data.frame,
                     getter = function(self){
                       
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "SUBM", value = ""),
                         df_rows(level = 1, tag = "NAME", value = self@name),
                         obj_to_df(self@address, level_inc = 1),
@@ -59,9 +59,9 @@ class_record_lin <-
                   refs_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      tmp <- tibble::tibble()
+                      tmp <- NULL
                       for(i in seq_along(self@user_reference_numbers)){
-                        tmp <- dplyr::bind_rows(
+                        tmp <- rbind(
                           tmp,
                           df_rows(level = 1, tag = "REFN", value = self@user_reference_numbers[i]),
                           df_rows(level = 2, tag = "TYPE", value = names(self@user_reference_numbers)[i])
@@ -94,7 +94,7 @@ class_record_famg <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "FAM", value = ""),
                         lst_to_df(self@events, level_inc = 1),
                         df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
@@ -141,33 +141,47 @@ class_record_indi <-
                   primary_name = R7::new_property(
                     R7::class_character,
                     getter = function(self){
-                      if(length(self@personal_names) == 0) return("Unnamed individual")
-                      
-                      self@personal_names[[1]]@name@full |>
-                        stringr::str_remove_all("/")
+                      if(length(self@personal_names) == 0){
+                        character()
+                      } else {
+                        self@personal_names[[1]]@name@full |>
+                          gsub(pattern = "/", replacement = "")
+                      }
                     }),
                   
                   all_names = R7::new_property(
                     R7::class_character,
                     getter = function(self){
-                      purrr::map_chr(self@personal_names, \(nm){
-                        stringr::str_remove_all(nm@name@full, "/")
-                      })
+                      sapply(self@personal_names, \(nm){
+                        gsub(nm@name@full, pattern = "/", replacement = "")
+                      }, USE.NAMES = FALSE)
                     }),
                   
                   desc_short = R7::new_property(
                     R7::class_character,
                     getter = function(self){
-                      paste0("Individual ", self@xref, ", ", self@primary_name)
+                      if(length(self@primary_name) == 0){
+                        name <- "Unnamed individual"
+                      } else {
+                        name <- self@primary_name
+                      }
+                      paste0("Individual ", self@xref, ", ", name)
                     }),
                   
                   birth_date = R7::new_property(
                     R7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, birth)){
-                          if(fact@fact_detail@event_date) return("TODO") # TODO
-                        }
+                        if(R7::R7_inherits(fact, birth)) return(fact@details@event_date)
+                      }
+                      character()
+                    }),
+                  
+                  birth_place = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(R7::R7_inherits(fact, birth)) return(fact@details@event_location)
                       }
                       character()
                     }),
@@ -181,10 +195,28 @@ class_record_indi <-
                       TRUE
                     }),
                   
+                  death_date = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(R7::R7_inherits(fact, death)) return(fact@details@event_date)
+                      }
+                      character()
+                    }),
+                  
+                  death_place = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(R7::R7_inherits(fact, death)) return(fact@details@event_location)
+                      }
+                      character()
+                    }),
+                  
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "INDI", value = ""),
                         lst_to_df(self@personal_names, level_inc = 1),
                         df_rows(level = 1, tag = "SEX", value = self@sex),
@@ -228,7 +260,7 @@ class_record_media <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "OBJE", value = ""),
                         df_rows(level = 1, tag = "FILE", value = self@file_ref),
                         df_rows(level = 2, tag = "FORM", value = self@format),
@@ -276,7 +308,7 @@ class_record_sour <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      sour_df <- dplyr::bind_rows(
+                      sour_df <- rbind(
                         df_rows(level = 0, tag = "SOUR", value = ""),
                         df_rows(level = 1, tag = "DATA", value = ""),
                         df_rows(level = 2, tag = "EVEN", value = self@events_recorded),
@@ -335,7 +367,7 @@ class_record_repo <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "REPO", value = ""),
                         df_rows(level = 1, tag = "NAME", value = self@name),
                         obj_to_df(self@address, level_inc = 1),
@@ -364,7 +396,7 @@ class_record_note <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      dplyr::bind_rows(
+                      rbind(
                         df_rows(level = 0, tag = "NOTE", value = self@text),
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),

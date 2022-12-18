@@ -7,7 +7,7 @@ class_repository_citation <- R7::new_class("class_repository_citation",
                                              
                                              as_df = R7::new_property(R7::class_data.frame,
                                                                       getter = function(self){
-                                                                        dplyr::bind_rows(
+                                                                        rbind(
                                                                           df_rows(level = 0, tag = "REPO", value = self@xref),
                                                                           df_rows(level = 1, tag = "CALN", value = self@source_call_number)
                                                                         )
@@ -33,7 +33,7 @@ class_association <- R7::new_class("class_association",
                                      
                                      as_df = R7::new_property(R7::class_data.frame,
                                                               getter = function(self){
-                                                                dplyr::bind_rows(
+                                                                rbind(
                                                                   df_rows(level = 0, tag = "ASSO", value = self@xref),
                                                                   df_rows(level = 1, tag = "RELA", value = self@relation_is),
                                                                   lst_to_df(self@citations, level_inc = 1),
@@ -76,7 +76,7 @@ class_child_to_family_link <- R7::new_class("class_child_to_family_link", parent
                                           
                                           as_df = R7::new_property(R7::class_data.frame,
                                                                    getter = function(self){
-                                                                     dplyr::bind_rows(
+                                                                     rbind(
                                                                        df_rows(level = 0, tag = "FAMC", value = self@xref),
                                                                        df_rows(level = 1, tag = "PEDI", value = self@pedigree),
                                                                        lst_to_df(self@notes, level_inc = 1)
@@ -97,7 +97,7 @@ class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link", pare
                                              properties = list(
                                                as_df = R7::new_property(R7::class_data.frame,
                                                                         getter = function(self){
-                                                                          dplyr::bind_rows(
+                                                                          rbind(
                                                                             df_rows(level = 0, tag = "FAMS", value = self@xref),
                                                                             lst_to_df(self@notes, level_inc = 1)
                                                                           )
