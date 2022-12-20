@@ -29,7 +29,8 @@ class_association <- R7::new_class("class_association",
                                      xref = R7::class_character,
                                      relation_is = R7::class_character,
                                      citations = R7::class_list,
-                                     notes = R7::class_list,
+                                     note_links = R7::class_character,
+                                     notes = R7::class_character,
                                      
                                      as_df = R7::new_property(R7::class_data.frame,
                                                               getter = function(self){
@@ -37,7 +38,8 @@ class_association <- R7::new_class("class_association",
                                                                   df_rows(level = 0, tag = "ASSO", value = self@xref),
                                                                   df_rows(level = 1, tag = "RELA", value = self@relation_is),
                                                                   lst_to_df(self@citations, level_inc = 1),
-                                                                  lst_to_df(self@notes, level_inc = 1)
+                                                                  df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                                  df_rows(level = 1, tag = "NOTE", value = self@notes)
                                                                 )
                                                               })
                                    ),
@@ -48,7 +50,9 @@ class_association <- R7::new_class("class_association",
                                        chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
                                        chk_input_size(self@relation_is, "@relation_is", 1, 1, 1, 25),
                                        chk_input_R7classes(self@citations, "@citations", class_citation),
-                                       chk_input_R7classes(self@notes, "@notes", class_note)
+                                       chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                       chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                       chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
                                      )
                                    }
 )
@@ -57,14 +61,17 @@ class_association <- R7::new_class("class_association",
 class_family_link <- R7::new_class("family_links", #abstract = TRUE,
                                 properties = list(
                                   xref = R7::class_character,
-                                  notes = R7::class_list
+                                  note_links = R7::class_character,
+                                  notes = R7::class_character
                                 ),
                                 
                                 validator = function(self){
                                   c(
                                     chk_input_size(self@xref, "@xref", 1, 1, 3, 22),
                                     chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
-                                    chk_input_R7classes(self@notes, "@notes", class_note)
+                                    chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                    chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                    chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
                                   )
                                 }
 )
@@ -79,7 +86,8 @@ class_child_to_family_link <- R7::new_class("class_child_to_family_link", parent
                                                                      rbind(
                                                                        df_rows(level = 0, tag = "FAMC", value = self@xref),
                                                                        df_rows(level = 1, tag = "PEDI", value = self@pedigree),
-                                                                       lst_to_df(self@notes, level_inc = 1)
+                                                                       df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                                       df_rows(level = 1, tag = "NOTE", value = self@notes)
                                                                      )
                                                                    })
                                         ),
@@ -99,7 +107,8 @@ class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link", pare
                                                                         getter = function(self){
                                                                           rbind(
                                                                             df_rows(level = 0, tag = "FAMS", value = self@xref),
-                                                                            lst_to_df(self@notes, level_inc = 1)
+                                                                            df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                                            df_rows(level = 1, tag = "NOTE", value = self@notes)
                                                                           )
                                                                         })
                                              )

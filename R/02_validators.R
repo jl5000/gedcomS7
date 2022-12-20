@@ -16,8 +16,6 @@ chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_c
       return(sprintf("%s has too many characters. The maximum is %s.", name, max_char))
     
   }
-  
-  NULL
 }
 
 
@@ -28,7 +26,6 @@ chk_input_pattern <- function(input, name, pattern) {
         return(sprintf("%s is in an invalid format.", name))
     }
   }
-  NULL
 }
 
 
@@ -40,7 +37,6 @@ chk_input_choice <- function(input, name, choices) {
                                  name, paste(choices, collapse = ", ")))
     }
   } 
-  NULL
 }
 
 
@@ -51,7 +47,63 @@ chk_input_R7classes <- function(inputs, name, target_class){
       return(sprintf("%s contains an invalid object not of %s.", 
                      name, target_class_name))
   }
-  NULL
+}
+
+chk_input_date <- function(year, month, day, bce = FALSE, dual = FALSE){
+  if (length(year) + length(day) == 0)
+    return("Year or day must be defined")
+  
+  if(bce){
+    if(length(year) == 0 || length(month) + length(day) > 0)
+      return("BCE date must contain year only")
+  }
+  
+  if(dual){
+    if(length(year) + length(month) == 0){
+      return("Dual year dates require a year and a month")
+    } else {
+      if(year > 1923) return("Dual year dates may only be used for 1923 and earlier")
+      if(month > 3) return("Dual year dates may only be used for 1 January to 24 March")
+      if(month == 3 && length(day) == 1 && day > 24)
+        return("Dual year dates may only be used for 1 January to 24 March")
+    }
+  }
+  
+  if (length(month) < length(day))
+    return("Day is defined without a month")
+  
+  if(length(year) == 0) year <- 2000
+  if(length(month) == 0) month <- 10
+  if(length(day) == 0) day <- 10
+  if(nchar(day) == 1) day <- paste0(0, day)
+  if(nchar(month) == 1) month <- paste0(0, month)
+  d <- try(as.Date(paste(day, month, year), format = "%d %m %Y"))
+  if("try-error" %in% class(d) || is.na(d)) {
+    return("Invalid date")
+  }
+}
+
+chk_input_dates <- function(start_date, end_date){
+  
+  if(is.null(start_date) || is.null(end_date)) return()
+  if(start_date@as_val == end_date@as_val)
+    return("Start date is the same as end date")
+  
+  if(length(start_date@year) + length(end_date@year) < 2) return()
+  if(start_date@year < end_date@year) return()
+  if(start_date@year > end_date@year)
+    return("Start date comes after end date")
+  
+  if(length(start_date@month) + length(end_date@month) < 2) return()
+  if(start_date@month < end_date@month) return()
+  if(start_date@month > end_date@month)
+    return("Start date comes after end date")
+  
+  if(length(start_date@day) + length(end_date@day) < 2) return()
+  if(start_date@day < end_date@day) return()
+  if(start_date@day > end_date@day)
+    return("Start date comes after end date")
+    
 }
 
 chk_xref_pointers_valid <- function(x){

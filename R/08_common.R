@@ -5,7 +5,8 @@ class_change_date <- R7::new_class("class_change_date",
                                  change_date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
                                                             default = date_exact_current()),
                                  change_time = R7::class_character,
-                                 notes = R7::class_list,
+                                 note_links = R7::class_character,
+                                 notes = R7::class_character,
                                  
                                  as_df = R7::new_property(R7::class_data.frame,
                                                       getter = function(self){
@@ -14,7 +15,8 @@ class_change_date <- R7::new_class("class_change_date",
                                                           df_rows(level = 0, tag = "CHAN", value = ""),
                                                           date_to_df(self@change_date, level_inc = 1),
                                                           df_rows(level = 2, tag = "TIME", value = self@change_time),
-                                                          lst_to_df(self@notes, level_inc = 1)
+                                                          df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                          df_rows(level = 1, tag = "NOTE", value = self@notes)
                                                         )
 
                                                       })
@@ -24,38 +26,13 @@ class_change_date <- R7::new_class("class_change_date",
                                    chk_input_size(self@change_date, "@change_date", 1, 1),
                                    chk_input_pattern(self@change_date, "@change_date", reg_date_exact()),
                                    chk_input_size(self@change_time, "@change_time", 0, 1, 7, 12),
-                                   chk_input_R7classes(self@notes, "@notes", class_note)
+                                   chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                   chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                   chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
                                  )
                                }
 )
 
-
-
-
-# FINISHED
-class_note <- R7::new_class("class_note",
-                   properties = list(
-                     xref = R7::class_character,
-                     text = R7::class_character,
-                     
-                     as_df = R7::new_property(R7::class_data.frame,
-                                          getter = function(self){
-                                            if(length(self@xref) == 1){
-                                              df_rows(level = 0, tag = "NOTE", value = self@xref)
-                                            } else {
-                                              df_rows(level = 0, tag = "NOTE", value = self@text)
-                                            }
-                                          })
-                   ),
-                   validator = function(self) {
-                     c(
-                       chk_input_size(self@xref, "@xref", 0, 1, 3, 22),
-                       chk_input_size(self@text, "@text", 0, 1, 1, 32767),
-                       chk_input_size(c(self@xref, self@text), "note", 1, 1),
-                       chk_input_pattern(self@xref, "@xref", reg_xref(TRUE))
-                     )
-                   }
-)
 
 
 
@@ -72,8 +49,9 @@ class_citation <- R7::new_class("class_citation",
                                                                                   class_date_approx, 
                                                                                   R7::class_character)),
                                   source_text = R7::class_character,
-                                  media_links = R7::class_list,
-                                  notes = R7::class_list,
+                                  media_links = R7::class_character,
+                                  note_links = R7::class_character,
+                                  notes = R7::class_character,
                                   certainty = R7::class_character,
                                   
                                   as_df = R7::new_property(R7::class_data.frame,
@@ -87,14 +65,16 @@ class_citation <- R7::new_class("class_citation",
                                                                 df_rows(level = 1, tag = "DATA", value = ""),
                                                                 date_to_df(self@recording_date, level_inc = 2),
                                                                 df_rows(level = 2, tag = "TEXT", value = self@source_text),
-                                                                lst_to_df(self@media_links, level_inc = 1),
-                                                                lst_to_df(self@notes, level_inc = 1),
+                                                                df_rows(level = 1, tag = "OBJE", value = self@media_links),
+                                                                df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                                df_rows(level = 1, tag = "NOTE", value = self@notes),
                                                                 df_rows(level = 1, tag = "QUAY", value = self@certainty)
                                                               ) 
                                                               
-                                                              if (sum(cit_df$tag == "EVEN") == 0) cit_df <- dplyr::filter(cit_df, tag != "ROLE")
-                                                              if (sum(cit_df$tag == "DATE") == 0 & sum(cit_df$tag == "TEXT") == 0) 
-                                                                cit_df <- dplyr::filter(cit_df, tag != "DATA")
+                                                              if (cit_df[tag == "EVEN", .N] == 0) 
+                                                                cit_df <- cit_df[tag != "ROLE"]
+                                                              if (cit_df[tag == "DATE", .N] == 0 & cit_df[tag == "TEXT", .N] == 0) 
+                                                                cit_df <- cit_df[tag != "DATA"]
                                                               
                                                               cit_df
                                                             })
@@ -112,8 +92,11 @@ class_citation <- R7::new_class("class_citation",
                                     chk_input_size(self@recording_date, "@recording_date", 0, 1),
                                     chk_input_pattern(self@recording_date, "@recording_date", reg_date_value()),
                                     chk_input_size(self@source_text, "@source_text", 0, 10000, 1, 32767),
-                                    chk_input_R7classes(self@media_links, "@media_links", class_media_link),
-                                    chk_input_R7classes(self@notes, "@notes", class_note),
+                                    chk_input_size(self@media_links, "@media_links", 0, 10000, 3, 22),
+                                    chk_input_pattern(self@media_links, "@media_links", reg_xref(TRUE)),
+                                    chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                    chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                    chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
                                     chk_input_size(self@certainty, "@certainty", 0, 1),
                                     chk_input_choice(self@certainty, "@certainty", as.character(0:3))
                                   )
@@ -121,20 +104,4 @@ class_citation <- R7::new_class("class_citation",
                                 
 )
 
-# FINISHED
-class_media_link <- R7::new_class("class_media_link",
-                                  properties = list(
-                                    xref = R7::class_character,
-                                    
-                                    as_df = R7::new_property(R7::class_data.frame,
-                                                             getter = function(self){
-                                                               df_rows(level = 0, tag = "OBJE", value = self@xref)
-                                                             })
-                                  ),
-                                  validator = function(self) {
-                                    c(
-                                      chk_input_size(self@xref, "@xref", 1, 1, 3, 22),
-                                      chk_input_pattern(self@xref, "@xref", reg_xref(TRUE))
-                                    )
-                                  }
-)
+

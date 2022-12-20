@@ -109,10 +109,10 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   
                                   # List of xrefs for each record type
                                   xrefs = R7::new_property(R7::class_list,
-                                                           getter = function(self){
-                                                             purrr::map(1:6, ~ R7::prop(self, names(self@xref_prefixes)[.x])) |> 
-                                                               purrr::map(\(rec_list) purrr::map_chr(rec_list, \(rec) rec@xref)) |>
-                                                               purrr::set_names(names(self@xref_prefixes))
+                                                           getter = function(self){ # TODO: get rid of purrr
+                                                             lapply(names(self@xref_prefixes), \(rec_type) R7::prop(self, rec_type)) |> 
+                                                               lapply(\(rec_list) purrr::map_chr(unname(rec_list), \(rec) rec@xref)) |>
+                                                               setNames(names(self@xref_prefixes))
                                                            }),
                                   
                                   next_xref = R7::new_property(R7::class_character,
@@ -302,6 +302,12 @@ refresh_spouse_links <- function(x, modify_famg_members){
     dplyr::mutate(pair = paste(famg, indi)) |>
     dplyr::add_count(pair) |>
     dplyr::filter(n < 2)
+  
+  # spou_links2 <- xdf[level == 1 & tag %chin% c("HUSB","WIFE","FAMS")
+  #                   ][,famg:= ifelse(tag == "FAMS", value,  record)
+  #                     ][,indi:= ifelse(tag == "FAMS", record,  value)
+  #                       ][,pair:= paste(famg, indi)
+  #                         ][, .SD[.N < 2], by = pair]
   
   for(i in seq_len(nrow(spou_links))){
     tag <- spou_links$tag[i]

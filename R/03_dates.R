@@ -9,30 +9,40 @@ class_date_exact <- R7::new_class("class_date_exact",
                                   R7::class_character,
                                   getter = function(self){
                                     paste(self@day, toupper(month.abb[self@month]), self@year)
+                                  }),
+                                
+                                as_date = R7::new_property(
+                                  R7::class_Date,
+                                  getter = function(self){
+                                    day <- self@day
+                                    month <- self@month
+                                    year <- self@year
+                                    if(nchar(day) == 1) day <- paste0(0, day)
+                                    if(nchar(month) == 1) month <- paste0(0, month)
+                                    as.Date(paste(day, month, year), format = "%d %m %Y")
                                   })
                               ),
                               validator = function(self){
                                 c(
                                   chk_input_size(self@day, "@day", 1, 1, 1, 2),
                                   chk_input_size(self@month, "@month", 1, 1, 1, 2),
-                                  chk_input_size(self@year, "@year", 1, 1, 3, 4)
-                                  
+                                  chk_input_size(self@year, "@year", 1, 1, 3, 4),
+                                  chk_input_date(self@year, self@month, self@day)
                                 )
                               }
 )
 
 date_exact_current <- function(){
-  current_date <- Sys.Date()
-  class_date_exact(year = as.integer(lubridate::year(current_date)),
-                   month = as.integer(lubridate::month(current_date)),
-                   day = as.integer(lubridate::day(current_date)))
+  class_date_exact(year = as.integer(format(Sys.Date(), "%Y")),
+                   month = as.integer(format(Sys.Date(), "%m")),
+                   day = as.integer(format(Sys.Date(), "%d")))
 }
 
 class_date_calendar <- R7::new_class("class_date_calendar",
                              properties = list(
-                               day = R7::class_integer,
-                               month = R7::class_integer,
                                year = R7::class_integer,
+                               month = R7::class_integer,
+                               day = R7::class_integer,
                                year_is_bce = R7::new_property(R7::class_logical, default = FALSE),
                                year_is_dual = R7::new_property(R7::class_logical, default = FALSE),
                                
@@ -59,11 +69,48 @@ class_date_calendar <- R7::new_class("class_date_calendar",
                                )
                              ),
                              validator = function(self){
-                               if(length(self@year) + length(self@month) == 0){
-                                 return("Date needs a month or year")
-                               }
+                               c(
+                                 chk_input_size(self@day, "@day", 0, 1, 1, 2),
+                                 chk_input_size(self@month, "@month", 0, 1, 1, 2),
+                                 chk_input_size(self@year, "@year", 0, 1, 3, 4),
+                                 chk_input_size(self@year_is_bce, "@year_is_bce", 1, 1),
+                                 chk_input_size(self@year_is_dual, "@year_is_dual", 1, 1),
+                                 chk_input_date(self@year, self@month, self@day, 
+                                                self@year_is_bce, self@year_is_dual)
+                               )
                              }
 )
+
+class_date_approx <- R7::new_class("class_date_approx",
+                                   properties = list(
+                                     date = class_date_calendar,
+                                     about = R7::new_property(R7::class_logical, default = TRUE),
+                                     calc = R7::new_property(R7::class_logical, default = FALSE),
+                                     est = R7::new_property(R7::class_logical, default = FALSE),
+                                     
+                                     as_val = R7::new_property(
+                                       R7::class_character,
+                                       getter = function(self){
+                                         if(self@calc) {
+                                           paste("CAL", self@date@as_val)
+                                         } else if(self@est) {
+                                           paste("EST", self@date@as_val)
+                                         } else if (self@about) {
+                                           paste("ABT", self@date@as_val)
+                                         } 
+                                       }               
+                                     )
+                                   ),
+                                   validator = function(self){
+                                     c(
+                                       chk_input_size(self@date, "@date", 1, 1),
+                                       chk_input_size(self@about, "@about", 1, 1),
+                                       chk_input_size(self@calc, "@calc", 1, 1),
+                                       chk_input_size(self@est, "@est", 1, 1)
+                                     )
+                                   }
+)
+
 
 
 class_date_period <- R7::new_class("class_date_period",
@@ -86,14 +133,18 @@ class_date_period <- R7::new_class("class_date_period",
                                  )
                                ),
                                validator = function(self){
-                               
+                                 c(
+                                   chk_input_size(self@start_date, "@start_date", 0, 1),
+                                   chk_input_size(self@end_date, "@end_date", 0, 1),
+                                   chk_input_size(Filter(Negate(is.null), list(self@start_date, self@end_date)), 
+                                                  "@start_date + @end_date", 1, 2),
+                                   chk_input_dates(self@start_date, self@end_date)
+                                 )
                                }
 )
 
-class_date_range <- R7::new_class("class_date_range",
+class_date_range <- R7::new_class("class_date_range", parent = class_date_period,
                               properties = list(
-                                start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
-                                end_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
                                 
                                 as_val = R7::new_property(
                                   R7::class_character,
@@ -108,34 +159,6 @@ class_date_range <- R7::new_class("class_date_range",
                                     } 
                                   }               
                                 )
-                              ),
-                              validator = function(self){
-                                
-                              }
-)
-
-class_date_approx <- R7::new_class("class_date_approx",
-                               properties = list(
-                                 date = class_date_calendar,
-                                 about = R7::new_property(R7::class_logical, default = TRUE),
-                                 calc = R7::new_property(R7::class_logical, default = FALSE),
-                                 est = R7::new_property(R7::class_logical, default = FALSE),
-                                 
-                                 as_val = R7::new_property(
-                                   R7::class_character,
-                                   getter = function(self){
-                                     if(self@calc) {
-                                       paste("CAL", self@date@as_val)
-                                     } else if(self@est) {
-                                       paste("EST", self@date@as_val)
-                                     } else if (self@about) {
-                                       paste("ABT", self@date@as_val)
-                                     } 
-                                   }               
-                                 )
-                               ),
-                               validator = function(self){
-                                 
-                               }
+                              )
 )
 

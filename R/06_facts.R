@@ -13,15 +13,15 @@ class_event_detail <- R7::new_class("class_event_detail",
                                       agency = R7::class_character,
                                       relig_affil = R7::class_character,
                                       cause = R7::class_character,
-                                      notes = R7::class_list,
+                                      note_links = R7::class_character,
+                                      notes = R7::class_character,
                                       citations = R7::class_list,
-                                      media_links = R7::class_list,
+                                      media_links = R7::class_character,
                                       
                                       event_date = R7::new_property(
                                         R7::class_character,
                                         getter = function(self){
-                                          dplyr::filter(self@as_df, tag == "DATE") |>
-                                            dplyr::pull(value)
+                                          self@as_df[tag == "DATE",value]
                                         }),
                                       
                                       event_location = R7::new_property(
@@ -47,9 +47,10 @@ class_event_detail <- R7::new_class("class_event_detail",
                                             df_rows(level = 0, tag = "AGNC", value = self@agency),
                                             df_rows(level = 0, tag = "RELI", value = self@relig_affil),
                                             df_rows(level = 0, tag = "CAUS", value = self@cause),
-                                            lst_to_df(self@notes, level_inc = 0),
+                                            df_rows(level = 0, tag = "NOTE", value = self@note_links),
+                                            df_rows(level = 0, tag = "NOTE", value = self@notes),
                                             lst_to_df(self@citations, level_inc = 0),
-                                            lst_to_df(self@media_links, level_inc = 0)
+                                            df_rows(level = 0, tag = "OBJE", value = self@media_links)
                                           )
                                         })
                                     ),
@@ -63,9 +64,12 @@ class_event_detail <- R7::new_class("class_event_detail",
                                         chk_input_size(self@agency, "@agency", 0, 1, 1, 120),
                                         chk_input_size(self@relig_affil, "@relig_affil", 0, 1, 1, 90),
                                         chk_input_size(self@cause, "@cause", 0, 1, 1, 90),
-                                        chk_input_R7classes(self@notes, "@notes", class_note),
-                                        chk_input_R7classes(self@citations, "@notes", class_citation),
-                                        chk_input_R7classes(self@media_links, "@notes", class_media_link)
+                                        chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                        chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                        chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
+                                        chk_input_R7classes(self@citations, "@citations", class_citation),
+                                        chk_input_size(self@media_links, "@media_links", 0, 10000, 3, 22),
+                                        chk_input_pattern(self@media_links, "@media_links", reg_xref(TRUE))
                                       )
                                     }
 )

@@ -26,10 +26,6 @@
 #'
 #' @return An R7 Place object.
 #' @export
-#' @tests
-#' expect_error(class_place())
-#' expect_error(class_place(""))
-#' expect_snapshot_value(class_place("here"), "serialize")
 #' @name class_place
 NULL
 class_place <- R7::new_class("class_place",
@@ -38,7 +34,8 @@ class_place <- R7::new_class("class_place",
                                phon_names = R7::class_character,
                                rom_names = R7::class_character,
                                lat_long = R7::class_character,
-                               notes = R7::class_list,
+                               note_links = R7::class_character,
+                               notes = R7::class_character,
                                
                                lat = R7::new_property(R7::class_character,
                                                       getter = function(self){
@@ -86,8 +83,11 @@ class_place <- R7::new_class("class_place",
                                                             )
                                                           }
                                                           
-                                                          rbind(pla_df,
-                                                                lst_to_df(self@notes, level_inc = 1))
+                                                          rbind(
+                                                            pla_df,
+                                                            df_rows(level = 1, tag = "NOTE", value = self@note_links),
+                                                            df_rows(level = 1, tag = "NOTE", value = self@notes)
+                                                          )
                                                           
                                                         })
                              ),
@@ -101,7 +101,9 @@ class_place <- R7::new_class("class_place",
                                  chk_input_size(names(self@rom_names), "@rom_names names", length(self@rom_names), length(self@rom_names), 5, 30),
                                  chk_input_size(self@lat_long, "@lat_long", 0, 1, 2+1+2, 10+1+11),
                                  chk_input_pattern(self@lat_long, "@lat_long", "^[NS]\\d{1,2}(\\.\\d{1,6})? [EW]\\d{1,3}(\\.\\d{2,6})?$"),
-                                 chk_input_R7classes(self@notes, "@notes", class_note)
+                                 chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                 chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+                                 chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
                                )
                              }
 )
