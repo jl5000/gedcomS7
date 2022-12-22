@@ -1,12 +1,4 @@
 
-# x@content_description <- "bah"
-# x@subm@name = "me"
-# # accessing and modifying records needs something different
-# 
-# x |>
-#   get_indi("Jamie") |>
-
-
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 properties = list(
                                   gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
@@ -28,6 +20,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   file_name = R7::class_character,
                                   gedcom_copyright = R7::class_character,
                                   content_description = R7::class_character,
+                                  # Not currently used
+                                  update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
                                   
                                   # This serves as both a record of prefixes and order of records
                                   xref_prefixes = R7::new_property(R7::class_character,
@@ -114,6 +108,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                                lapply(\(rec_list) purrr::map_chr(unname(rec_list), \(rec) rec@xref)) |>
                                                                setNames(names(self@xref_prefixes))
                                                            }),
+                                  
+                                  active_record = R7::class_character,
                                   
                                   next_xref = R7::new_property(R7::class_character,
                                                                getter = function(self){
@@ -219,9 +215,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     chk_input_size(self@source_data_copyright, "@source_data_copyright", 0, 1, 1, 248),
                                     chk_input_size(self@creation_date, "@creation_date", 0, 1),
                                     chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
-                                    chk_input_size(self@creation_time, "@creation_time", 0, 1, 7, 12),
-                                    chk_input_pattern(self@creation_time, "@creation_time", paste0("^\\d{1,2}:\\d\\d:\\d\\d$|",
-                                                                                                   "^\\d{1,2}:\\d\\d:\\d\\d.\\d\\d$")),
+                                    chk_input_size(self@creation_time, "@creation_time", 0, 1, 4, 11), # different from spec
+                                    chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
                                     chk_input_size(self@language, "@language", 0, 1, 1, 15),
                                     chk_input_choice(self@language, "@language", val_languages()),
                                     chk_input_size(self@file_name, "@file_name", 0, 1, 5, 248),
@@ -234,7 +229,9 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     chk_input_R7classes(self@media, "@media", class_record_media),
                                     chk_input_R7classes(self@note, "@note", class_record_note),
                                     chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 1, 1),
-                                    chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))#,
+                                    chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
+                                    chk_input_size(self@active_record, "@active_record", 0, 1, 3, 22),
+                                    chk_input_pattern(self@active_record, "@active_record", reg_xref(TRUE))
                                     # TODO: names and values must be unique
                                     # Check all xrefs point to a record
                                     #chk_xref_pointers_valid(self)

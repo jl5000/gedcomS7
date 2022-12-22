@@ -9,7 +9,7 @@ class_record <-
                   note_links = R7::class_character,
                   notes = R7::class_character,
                   citations = R7::class_list,
-                  change_date = R7::new_property(R7::new_union(NULL, class_change_date)),
+                  last_updated = R7::new_property(R7::new_union(NULL, class_change_date)),
                   
                   refs_df = R7::new_property(
                     R7::class_data.frame,
@@ -38,7 +38,7 @@ class_record <-
                     chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                     chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
                     chk_input_R7classes(self@citations, "@citations", class_citation),
-                    chk_input_size(self@change_date, "@change_date", 0, 1)
+                    chk_input_size(self@last_updated, "@last_updated", 0, 1)
                   )
                 }
   )
@@ -61,7 +61,7 @@ class_record_subm <-
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        obj_to_df(self@change_date, level_inc = 1)
+                        obj_to_df(self@last_updated, level_inc = 1)
                       )
                       df[,record:= self@xref]
                       data.table::setcolorder(df, c(4,1,2,3))
@@ -99,7 +99,7 @@ class_record_famg <-
                         df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@change_date, level_inc = 1),
+                        obj_to_df(self@last_updated, level_inc = 1),
                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
                         lst_to_df(self@citations, level_inc = 1),
@@ -219,7 +219,7 @@ class_record_indi <-
                         lst_to_df(self@associations, level_inc = 1),
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@change_date, level_inc = 1),
+                        obj_to_df(self@last_updated, level_inc = 1),
                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
                         lst_to_df(self@citations, level_inc = 1),
@@ -264,7 +264,7 @@ class_record_media <-
                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
                         lst_to_df(self@citations, level_inc = 1),
-                        obj_to_df(self@change_date, level_inc = 1)
+                        obj_to_df(self@last_updated, level_inc = 1)
                       )
                       df[,record:= self@xref]
                       data.table::setcolorder(df, c(4,1,2,3))
@@ -320,7 +320,7 @@ class_record_sour <-
                         lst_to_df(self@repo_citations, level_inc = 1),
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@change_date, level_inc = 1),
+                        obj_to_df(self@last_updated, level_inc = 1),
                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
                         df_rows(level = 1, tag = "OBJE", value = self@media_links)
@@ -374,7 +374,7 @@ class_record_repo <-
                         df_rows(level = 1, tag = "NOTE", value = self@notes),
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@change_date, level_inc = 1)
+                        obj_to_df(self@last_updated, level_inc = 1)
                       )
                       df[,record:= self@xref]
                       data.table::setcolorder(df, c(4,1,2,3))
@@ -404,7 +404,7 @@ class_record_note <-
                         self@refs_df,
                         df_rows(level = 1, tag = "RIN", value = self@auto_id),
                         lst_to_df(self@citations, level_inc = 1),
-                        obj_to_df(self@change_date, level_inc = 1)
+                        obj_to_df(self@last_updated, level_inc = 1)
                       )
                       df[,record:= self@xref]
                       data.table::setcolorder(df, c(4,1,2,3))

@@ -47,6 +47,16 @@ date_to_df <- function(obj, level_inc = 0){
   df_rows(level = level_inc, tag = "DATE", value = date_val)
 }
 
+get_valid_xref <- function(x, xref, type){
+  if (length(xref) == 0) xref <- x@active_record
+  if (length(xref) == 0)
+    stop("No xref is provided and no record is activated.")
+  if(!xref %in% x@xrefs[[type]])
+    stop(sprintf("Appropriate record with xref %s not found.", xref))
+  xref
+}
+
+
 group_it <- function(reg) {
   paste0("(?:", reg, ")")
 }
@@ -85,6 +95,16 @@ reg_year_dual <- function() {
 
 reg_bce <- function() {
   "BCE|BC|B\\.C\\." |> group_it()
+}
+
+reg_time <- function(only = TRUE){
+  hh <- paste(0:23, collapse = "|")
+  mm <- paste(formatC(0:59, width = 2, format = "d", flag = "0"), collapse = "|")
+  ss <- mm
+  fs <- paste(formatC(0:99, width = 2, format = "d", flag = "0"), collapse = "|")
+  reg <- sprintf("(%s):(%s)(:(%s)(\\.(%s))?)?", hh, mm, ss, fs)
+  if(only) reg <- anchor_it(reg)
+  reg
 }
 
 #' Construct a regular expression for an xref

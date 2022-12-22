@@ -1,8 +1,4 @@
 
-add_citation <- function(x, citation){
-  x@citations[[length(x@citations) + 1]] <- citation
-  x
-}
 
 add_indi_family_link <- function(indi, xref_famg, as_child = TRUE, pedigree = "birth"){
   if(as_child){

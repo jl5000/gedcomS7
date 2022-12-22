@@ -2,9 +2,9 @@
 
 class_change_date <- R7::new_class("class_change_date",
                                properties = list(
-                                 change_date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
-                                                            default = date_exact_current()),
-                                 change_time = R7::class_character,
+                                 date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
+                                                         default = date_exact_current()),
+                                 time = R7::class_character,
                                  note_links = R7::class_character,
                                  notes = R7::class_character,
                                  
@@ -13,8 +13,8 @@ class_change_date <- R7::new_class("class_change_date",
                                                         
                                                         rbind(
                                                           df_rows(level = 0, tag = "CHAN", value = ""),
-                                                          date_to_df(self@change_date, level_inc = 1),
-                                                          df_rows(level = 2, tag = "TIME", value = self@change_time),
+                                                          date_to_df(self@date, level_inc = 1),
+                                                          df_rows(level = 2, tag = "TIME", value = self@time),
                                                           df_rows(level = 1, tag = "NOTE", value = self@note_links),
                                                           df_rows(level = 1, tag = "NOTE", value = self@notes)
                                                         )
@@ -23,9 +23,10 @@ class_change_date <- R7::new_class("class_change_date",
                                ),
                                validator = function(self) {
                                  c(
-                                   chk_input_size(self@change_date, "@change_date", 1, 1),
-                                   chk_input_pattern(self@change_date, "@change_date", reg_date_exact()),
-                                   chk_input_size(self@change_time, "@change_time", 0, 1, 7, 12),
+                                   chk_input_size(self@date, "@date", 1, 1),
+                                   chk_input_pattern(self@date, "@date", reg_date_exact()),
+                                   chk_input_size(self@time, "@time", 0, 1, 4, 11), # different from spec
+                                   chk_input_pattern(self@time, "@time", reg_time()),
                                    chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                                    chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                                    chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)

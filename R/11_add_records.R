@@ -6,6 +6,7 @@ add_indi <- function(x, sex = "U", user_reference_numbers = character(), notes =
                                                     user_reference_numbers = user_reference_numbers,
                                                     notes = notes)
   sex <- ifelse(length(sex) == 0, "unknown sex", paste("sex", sex))
+  x@active_record <- xref
   message(sprintf("Individual of %s added with xref %s.", sex, xref))
   x
 }
@@ -18,6 +19,7 @@ add_famg <- function(x, husb_xref = character(), wife_xref = character(), chil_x
                                                     notes = notes)
   # Assign properties here to trigger the setter which does not happen on instantiation
   R7::props(x@famg[[xref]]) <- list(husb_xref = husb_xref, wife_xref = wife_xref, chil_xref = chil_xref)
+  x@active_record <- xref
   message(sprintf("Family group added with xref %s.", xref))
   x
 }
@@ -29,6 +31,7 @@ add_sour <- function(x, title = character(), user_reference_numbers = character(
                                                     user_reference_numbers = user_reference_numbers,
                                                     notes = notes)
   title <- ifelse(length(title) == 0, "unknown title", paste("title", paste0("'", title, "'")))
+  x@active_record <- xref
   message(sprintf("Source with %s added with xref %s.", title, xref))
   x
 }
@@ -39,6 +42,7 @@ add_repo <- function(x, name, user_reference_numbers = character(), notes = char
                                                     name = name,
                                                     user_reference_numbers = user_reference_numbers,
                                                     notes = notes)
+  x@active_record <- xref
   message(sprintf("Repository named %s added with xref %s.", name, xref))
   x
 }
@@ -50,6 +54,7 @@ add_media <- function(x, file_ref, format, user_reference_numbers = character(),
                                                        format = format,
                                                        user_reference_numbers = user_reference_numbers,
                                                        notes = notes)
+  x@active_record <- xref
   message(sprintf("Multimedia %s with ref %s added with xref %s.", format, file_ref, xref))
   x
 }
@@ -59,44 +64,45 @@ add_note <- function(x, text, user_reference_numbers = character()){
   x@note[[length(x@note) + 1]] <- class_record_note(xref = xref, 
                                                     text = text,
                                                     user_reference_numbers = user_reference_numbers)
+  x@active_record <- xref
   start <- substr(text, 1, 20)
   message(sprintf("Note beginning '%s...' added with xref %s.", start, xref))
   x
 }
 
-rm_indi <- function(x, xref){
-  if(xref %notin% x@xrefs[["indi"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_indi <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "indi")
+  x@active_record <- character()
   x@indi[[xref]] <- NULL
   x  
 }
-rm_famg <- function(x, xref){
-  if(xref %notin% x@xrefs[["famg"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_famg <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "famg")
+  x@active_record <- character()
   x@famg[[xref]] <- NULL
   x  
 }
-rm_sour <- function(x, xref){
-  if(xref %notin% x@xrefs[["sour"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_sour <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "sour")
+  x@active_record <- character()
   x@sour[[xref]] <- NULL
   x  
 }
-rm_repo <- function(x, xref){
-  if(xref %notin% x@xrefs[["repo"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_repo <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "repo")
+  x@active_record <- character()
   x@repo[[xref]] <- NULL
   x  
 }
-rm_media <- function(x, xref){
-  if(xref %notin% x@xrefs[["media"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_media <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "media")
+  x@active_record <- character()
   x@media[[xref]] <- NULL
   x  
 }
-rm_note <- function(x, xref){
-  if(xref %notin% x@xrefs[["note"]])
-    warning(sprintf("Record with xref %s not found.", xref))
+rm_note <- function(x, xref = NULL){
+  xref <- get_valid_xref(x, xref, "note")
+  x@active_record <- character()
   x@note[[xref]] <- NULL
   x  
 }
