@@ -1,6 +1,11 @@
 
-add_indi <- function(x, sex = "U", user_reference_numbers = character(), notes = character()){
-  xref <- unname(x@next_xref["indi"])
+add_indi <- function(x, 
+                     sex = "U", 
+                     user_reference_numbers = character(), 
+                     notes = character(), 
+                     xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["indi"])
   x@indi[[length(x@indi) + 1]] <- class_record_indi(xref = xref, 
                                                     sex = sex,
                                                     user_reference_numbers = user_reference_numbers,
@@ -11,9 +16,15 @@ add_indi <- function(x, sex = "U", user_reference_numbers = character(), notes =
   x
 }
 
-add_famg <- function(x, husb_xref = character(), wife_xref = character(), chil_xref = character(),
-                     user_reference_numbers = character(), notes = character()){
-  xref <- unname(x@next_xref["famg"])
+add_famg <- function(x, 
+                     husb_xref = character(), 
+                     wife_xref = character(), 
+                     chil_xref = character(),
+                     user_reference_numbers = character(), 
+                     notes = character(), 
+                     xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["famg"])
   x@famg[[length(x@famg) + 1]] <- class_record_famg(xref = xref,
                                                     user_reference_numbers = user_reference_numbers,
                                                     notes = notes)
@@ -24,8 +35,13 @@ add_famg <- function(x, husb_xref = character(), wife_xref = character(), chil_x
   x
 }
 
-add_sour <- function(x, title = character(), user_reference_numbers = character(), notes = character()){
-  xref <- unname(x@next_xref["sour"])
+add_sour <- function(x, 
+                     title = character(), 
+                     user_reference_numbers = character(), 
+                     notes = character(), 
+                     xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["sour"])
   x@sour[[length(x@sour) + 1]] <- class_record_sour(xref = xref, 
                                                     full_title = title,
                                                     user_reference_numbers = user_reference_numbers,
@@ -36,8 +52,13 @@ add_sour <- function(x, title = character(), user_reference_numbers = character(
   x
 }
 
-add_repo <- function(x, name, user_reference_numbers = character(), notes = character()){
-  xref <- unname(x@next_xref["repo"])
+add_repo <- function(x, 
+                     name, 
+                     user_reference_numbers = character(), 
+                     notes = character(), 
+                     xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["repo"])
   x@repo[[length(x@repo) + 1]] <- class_record_repo(xref = xref, 
                                                     name = name,
                                                     user_reference_numbers = user_reference_numbers,
@@ -47,8 +68,14 @@ add_repo <- function(x, name, user_reference_numbers = character(), notes = char
   x
 }
 
-add_media <- function(x, file_ref, format, user_reference_numbers = character(), notes = character()){
-  xref <- unname(x@next_xref["media"])
+add_media <- function(x, 
+                      file_ref, 
+                      format, 
+                      user_reference_numbers = character(), 
+                      notes = character(), 
+                      xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["media"])
   x@media[[length(x@media) + 1]] <- class_record_media(xref = xref, 
                                                        file_ref = file_ref, 
                                                        format = format,
@@ -59,8 +86,12 @@ add_media <- function(x, file_ref, format, user_reference_numbers = character(),
   x
 }
 
-add_note <- function(x, text, user_reference_numbers = character()){
-  xref <- unname(x@next_xref["note"])
+add_note <- function(x, 
+                     text, 
+                     user_reference_numbers = character(), 
+                     xref = NULL){
+  
+  if(is.null(xref)) xref <- unname(x@next_xref["note"])
   x@note[[length(x@note) + 1]] <- class_record_note(xref = xref, 
                                                     text = text,
                                                     user_reference_numbers = user_reference_numbers)

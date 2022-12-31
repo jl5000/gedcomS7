@@ -106,49 +106,49 @@ chk_input_dates <- function(start_date, end_date){
     
 }
 
-chk_xref_pointers_valid <- function(x){
-  xrefs <- unname(unlist(x@xrefs))
-  if(sum(duplicated(xrefs)) > 0)
-    return(paste0("Duplicate record xrefs found: ", 
-                  paste(xrefs[which(duplicated(xrefs))], collapse = ", ")))
-  
-  if(length(x@xref_subm) > 0 && x@subm@xref != x@xref_subm)
-    return("Inconsistent submitter record xref.")
-  
-  xdf <- x@as_df
-  
-  husbands <- dplyr::filter(xdf, tag == "HUSB") |>
-    dplyr::pull(value)
-  fictional_husbands <- setdiff(husbands, x@xrefs["indi"])
-  if(length(fictional_husbands) > 0)
-    return(paste("Husband not found:", fictional_husbands))
-  
-  
-  
-  # xrefs in famg record and corresponding Famc/fams structures
-  # for(famg in x@famg){
-  #   famg_xref <- famg@xref
-  #   for(husb in famg@husb_xref){
-  #     if(!husb %in% x@xrefs[["indi"]])
-  #       return(sprintf("Husband {husb} does not exist."))
-  #     for(link in x@indi@links){
-  #       
-  #     }
-  #   }
-  #   for(wife in famg@wife_xref){
-  #     if(!wife %in% x@xrefs[["indi"]])
-  #       return(sprintf("Wife {wife} does not exist."))
-  #   }
-  #   for(chil in famg@chil_xref){
-  #     if(!chil %in% x@xrefs[["indi"]])
-  #       return(sprintf("Child {chil} does not exist."))
-  #   }
-  # }
-  # associations
-  # media links
-  # notes links
-  # citation links
-  # source repo link
-  
-  NULL
-}
+# chk_xref_pointers_valid <- function(x){
+#   xrefs <- unname(unlist(x@xrefs))
+#   if(sum(duplicated(xrefs)) > 0)
+#     return(paste0("Duplicate record xrefs found: ", 
+#                   paste(xrefs[which(duplicated(xrefs))], collapse = ", ")))
+#   
+#   if(length(x@xref_subm) > 0 && x@subm@xref != x@xref_subm)
+#     return("Inconsistent submitter record xref.")
+#   
+#   xdf <- x@as_df
+#   
+#   husbands <- dplyr::filter(xdf, tag == "HUSB") |>
+#     dplyr::pull(value)
+#   fictional_husbands <- setdiff(husbands, x@xrefs["indi"])
+#   if(length(fictional_husbands) > 0)
+#     return(paste("Husband not found:", fictional_husbands))
+#   
+#   
+#   
+#   # xrefs in famg record and corresponding Famc/fams structures
+#   # for(famg in x@famg){
+#   #   famg_xref <- famg@xref
+#   #   for(husb in famg@husb_xref){
+#   #     if(!husb %in% x@xrefs[["indi"]])
+#   #       return(sprintf("Husband {husb} does not exist."))
+#   #     for(link in x@indi@links){
+#   #       
+#   #     }
+#   #   }
+#   #   for(wife in famg@wife_xref){
+#   #     if(!wife %in% x@xrefs[["indi"]])
+#   #       return(sprintf("Wife {wife} does not exist."))
+#   #   }
+#   #   for(chil in famg@chil_xref){
+#   #     if(!chil %in% x@xrefs[["indi"]])
+#   #       return(sprintf("Child {chil} does not exist."))
+#   #   }
+#   # }
+#   # associations
+#   # media links
+#   # notes links
+#   # citation links
+#   # source repo link
+#   
+#   NULL
+# }

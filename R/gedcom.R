@@ -1,3 +1,5 @@
+#' @include helpers.R dates.R locations.R record.R validators.R
+NULL
 
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 properties = list(
@@ -20,6 +22,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   file_name = R7::class_character,
                                   gedcom_copyright = R7::class_character,
                                   content_description = R7::class_character,
+                                  
                                   # Not currently used
                                   update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
                                   
@@ -124,7 +127,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                                  }
                                                                  
                                                                  paste0("@", self@xref_prefixes, idx, "@") |>
-                                                                   purrr::set_names(names(self@xref_prefixes))
+                                                                   setNames(names(self@xref_prefixes))
                                                                }),
                                   
                                   df_indi = R7::new_property(
@@ -228,7 +231,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     chk_input_R7classes(self@repo, "@repo", class_record_repo),
                                     chk_input_R7classes(self@media, "@media", class_record_media),
                                     chk_input_R7classes(self@note, "@note", class_record_note),
-                                    chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 1, 1),
+                                    chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
                                     chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
                                     chk_input_size(self@active_record, "@active_record", 0, 1, 3, 22),
                                     chk_input_pattern(self@active_record, "@active_record", reg_xref(TRUE))

@@ -21,3 +21,21 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Collate: 
+    'add_records.R'
+    'add_subrecords.R'
+    'validators.R'
+    'helpers.R'
+    'dates.R'
+    'common.R'
+    'locations.R'
+    'facts.R'
+    'record.R'
+    'gedcom.R'
+    'io_export.R'
+    'io_import.R'
+    'links.R'
+    'lookups.R'
+    'personal_name.R'
+    'regex_patterns.R'
+    'zzz.R'

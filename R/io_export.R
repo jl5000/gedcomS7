@@ -23,7 +23,7 @@
 #' file.remove("555Sample.ged")
 write_gedcom <- function(x, 
                          filepath = file.choose()) {
-  #"/home/jamie/Desktop/Untitled_1.ged"
+  
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
     stop("Output is not being saved as a GEDCOM file (*.ged)")
   
@@ -41,7 +41,7 @@ write_gedcom <- function(x,
   
   xdf[!grepl(reg_xref(TRUE), value), value:= gsub("@", "@@", value)]
   
-  xdf <- split_gedcom_values(xdf, char_limit = 100)#.pkgenv$gedcom_phys_value_limit
+  xdf <- split_gedcom_values(xdf, char_limit = .pkgenv$gedcom_phys_value_limit)
   xdf[record == data.table::shift(record), record:= ""]
   xdf[record %in% c("HD","TR"), record:= ""] #First/last line
   

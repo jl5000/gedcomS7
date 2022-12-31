@@ -1,4 +1,5 @@
-
+#' @include helpers.R dates.R validators.R
+NULL
 
 class_change_date <- R7::new_class("class_change_date",
                                properties = list(

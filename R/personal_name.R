@@ -1,4 +1,5 @@
-
+#' @include helpers.R validators.R
+NULL
 
 class_name_pieces <- R7::new_class("class_name_pieces", #abstract = TRUE,
                          properties = list(

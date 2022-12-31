@@ -1,3 +1,5 @@
+#' @include helpers.R common.R locations.R facts.R validators.R
+NULL
 
 class_record <- 
   R7::new_class("class_record", #abstract = TRUE,
@@ -236,7 +238,7 @@ class_record_indi <-
                     chk_input_size(self@sex, "@sex", 0, 1),
                     chk_input_choice(self@sex, "@sex", val_sexes()),
                     chk_input_R7classes(self@facts, "@facts", class_indi_fact),
-                    chk_input_R7classes(self@family_links, "@family_links", class_family_link),
+                    chk_input_R7classes(self@family_links, "@family_links", class_spouse_to_family_link),
                     chk_input_R7classes(self@associations, "@associations", class_association)
                   )
                 }
@@ -331,7 +333,8 @@ class_record_sour <-
                       if (length(self@date_period) + length(self@jurisdiction_place) == 0)
                         sour_df <- sour_df[tag != "EVEN"]
                       
-                      if (length(self@events_recorded) + length(self@responsible_agency) + length(self@data_notes) == 0)
+                      if (length(self@events_recorded) + length(self@responsible_agency) + 
+                          length(self@data_notes) + length(self@data_note_links) == 0)
                         sour_df <- sour_df[tag != "DATA"]
                       
                       sour_df
@@ -339,10 +342,10 @@ class_record_sour <-
                 ),
                 validator = function(self){
                   c(
-                    # chk_input_size(self@events_recorded, "@events_recorded", 1, 1, 1, 259), # TODO
+                    chk_input_size(self@events_recorded, "@events_recorded", 0, 1, 1, 90),
                     chk_input_size(self@date_period, "@date_period", 0, 1),
                     chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
-                    # chk_input_size(self@jurisdiction_place, "@jurisdiction_place", 1, 1, 1, 259), # TODO
+                    chk_input_size(self@jurisdiction_place, "@jurisdiction_place", 0, 1, 1, 120),
                     chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1, 120),
                     chk_input_size(self@data_note_links, "@data_note_links", 0, 10000, 3, 22),
                     chk_input_pattern(self@data_note_links, "@data_note_links", reg_xref(TRUE)),

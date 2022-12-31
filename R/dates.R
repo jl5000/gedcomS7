@@ -1,3 +1,5 @@
+#' @include helpers.R validators.R
+NULL
 
 class_date_exact <- R7::new_class("class_date_exact",
                               properties = list(
@@ -37,6 +39,7 @@ date_exact_current <- function(){
                    month = as.integer(format(Sys.Date(), "%m")),
                    day = as.integer(format(Sys.Date(), "%d")))
 }
+
 
 class_date_calendar <- R7::new_class("class_date_calendar",
                              properties = list(

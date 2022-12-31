@@ -1,3 +1,5 @@
+#' @include helpers.R dates.R locations.R validators.R
+NULL
 
 class_event_detail <- R7::new_class("class_event_detail",
                                     properties = list(
@@ -734,7 +736,7 @@ relationship <- R7::new_class("relationship", parent = class_famg_fact,
                                       self@as_df_no_context
                                     )
                                   })))
-famg_event <- R7::new_class("will", parent = class_famg_fact,
+famg_event <- R7::new_class("famg_event", parent = class_famg_fact,
                             properties = list(
                               event_descriptor = R7::class_character,
                               
