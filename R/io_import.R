@@ -177,11 +177,11 @@ parse_records <- function(records_lst){
   # parse subm and header
   x <- create_gedcom(records_lst)
   
-  # for(i in seq_along(records_lst)){
-  #   if(i < 3) next
-  # 
-  #   x <- parse_record(x, records_lst[[i]])
-  # }
+  for(i in seq_along(records_lst)){
+    if(i < 3) next
+    
+    x <- parse_record(x, records_lst[[i]])
+  }
   
   x
 }
@@ -189,13 +189,11 @@ parse_records <- function(records_lst){
 create_gedcom <- function(records_lst){
   
   subm_lines <- records_lst[[2]]
-  
-  subm_xref <- extract_xref(subm_lines)
-  subm_lines <- subm_lines[-1]
+
   subm_nts <- extract_ged_values(subm_lines, "NOTE")
   
   subm <- class_record_subm(
-    xref = subm_xref,
+    xref = extract_ged_values(subm_lines, return_xref = TRUE),
     name = extract_ged_values(subm_lines, "NAME"),
     address = extract_address(subm_lines),
     media_links = extract_ged_values(subm_lines, "OBJE"),
@@ -206,25 +204,24 @@ create_gedcom <- function(records_lst){
   )
   
   hd_lines <- records_lst[[1]]
-  hd_lines <- hd_lines[-1]
   
-  x <- class_gedcomR7(
-    system_id = extract_ged_values(hd_lines, "SOUR"),
-    product_name = extract_ged_values(hd_lines, c("SOUR","NAME")),
-    product_version = extract_ged_values(hd_lines, c("SOUR","VERS")),
-    business_name = extract_ged_values(hd_lines, c("SOUR","CORP")),
-    business_address = extract_address(hd_lines, c("SOUR","CORP")),
-    source_data_name = extract_ged_values(hd_lines, c("SOUR","DATA")),
-    source_data_pubdate = extract_ged_values(hd_lines, c("SOUR","DATA","DATE")),
-    source_data_copyright = extract_ged_values(hd_lines, c("SOUR","DATA","COPR")),
-    receiving_system = extract_ged_values(hd_lines, "DEST"),
-    creation_date = extract_ged_values(hd_lines, "DATE"),
-    creation_time = extract_ged_values(hd_lines, c("DATE","TIME")),
-    language = extract_ged_values(hd_lines, "LANG"),
-    xref_subm = extract_ged_values(hd_lines, "SUBM"),
-    file_name = extract_ged_values(hd_lines, "FILE"),
-    gedcom_copyright = extract_ged_values(hd_lines, "COPR"),
-    content_description = extract_ged_values(hd_lines, "NOTE"),
+  class_gedcomR7(
+    system_id = extract_ged_values(hd_lines, c("HEAD","SOUR")),
+    product_name = extract_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
+    product_version = extract_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
+    business_name = extract_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
+    business_address = extract_address(hd_lines, c("HEAD","SOUR","CORP")),
+    source_data_name = extract_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
+    source_data_pubdate = extract_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")),
+    source_data_copyright = extract_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR")),
+    receiving_system = extract_ged_values(hd_lines, c("HEAD","DEST")),
+    creation_date = extract_ged_values(hd_lines, c("HEAD","DATE")),
+    creation_time = extract_ged_values(hd_lines, c("HEAD","DATE","TIME")),
+    language = extract_ged_values(hd_lines, c("HEAD","LANG")),
+    xref_subm = extract_ged_values(hd_lines, c("HEAD","SUBM")),
+    file_name = extract_ged_values(hd_lines, c("HEAD","FILE")),
+    gedcom_copyright = extract_ged_values(hd_lines, c("HEAD","COPR")),
+    content_description = extract_ged_values(hd_lines, c("HEAD","NOTE")),
     subm = subm
   )
   
@@ -233,11 +230,9 @@ create_gedcom <- function(records_lst){
 parse_record <- function(x, rec_lines){
   
   rec_type <- sub(sprintf("^0 %s ([A-Z]{3,5})( .*)?$", reg_xref(FALSE)), "\\1", rec_lines[1])
-  rec_xref <- extract_xref(rec_lines)
+  rec_xref <- extract_ged_values(rec_lines, return_xref = TRUE)
   if(rec_type == "NOTE") #special case
     note_text <- sub(sprintf("^0 %s NOTE (.+)$", reg_xref(FALSE)), "\\1", rec_lines[1])
-  
-  rec_lines <- rec_lines[-1]
   
   nts <- extract_ged_values(rec_lines, "NOTE")
   refns <- extract_refns(rec_lines)
@@ -254,9 +249,9 @@ parse_record <- function(x, rec_lines){
                   notes = nts[!grepl(reg_xref(TRUE), nts)],
                   xref = rec_xref)
     
-    R7::props(x@indi[[xref]]) <- list(
+    R7::props(x@indi[[rec_xref]]) <- list(
       personal_names = extract_personal_names(rec_lines),
-      facts = extract_facts(rec_lines),
+      facts = extract_facts_indi(rec_lines),
       family_links = extract_family_links(rec_lines),
       associations = extract_associations(rec_lines),
       auto_id = auto_id,
@@ -276,8 +271,8 @@ parse_record <- function(x, rec_lines){
                   notes = nts[!grepl(reg_xref(TRUE), nts)], 
                   xref = rec_xref)
     
-    R7::props(x@famg[[xref]]) <- list(
-      events = extract_facts(rec_lines),
+    R7::props(x@famg[[rec_xref]]) <- list(
+      facts = extract_facts_famg(rec_lines),
       num_children = as.integer(extract_ged_values(rec_lines, "NCHI")),
       auto_id = auto_id,
       last_updated = chan,
@@ -296,7 +291,7 @@ parse_record <- function(x, rec_lines){
     
     data_nts <- extract_ged_values(rec_lines, c("DATA","NOTE"))
     
-    R7::props(x@sour[[xref]]) <- list(
+    R7::props(x@sour[[rec_xref]]) <- list(
       events_recorded = extract_ged_values(rec_lines, c("DATA","EVEN")),
       date_period = extract_ged_values(rec_lines, c("DATA","EVEN","DATE")),
       jurisdiction_place = extract_ged_values(rec_lines, c("DATA","EVEN","PLAC")),
@@ -322,7 +317,7 @@ parse_record <- function(x, rec_lines){
                   notes = nts[!grepl(reg_xref(TRUE), nts)],
                   xref = rec_xref)
     
-    R7::props(x@repo[[xref]]) <- list(
+    R7::props(x@repo[[rec_xref]]) <- list(
       address = extract_address(rec_lines),
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       auto_id = auto_id,
@@ -338,7 +333,7 @@ parse_record <- function(x, rec_lines){
                    notes = nts[!grepl(reg_xref(TRUE), nts)],
                    xref = rec_xref)
     
-    R7::props(x@media[[xref]]) <- list(
+    R7::props(x@media[[rec_xref]]) <- list(
       media_type = extract_ged_values(rec_lines, c("FILE","FORM","TYPE")),
       title = extract_ged_values(rec_lines, c("FILE","TITL")),
       auto_id = auto_id,
@@ -354,7 +349,7 @@ parse_record <- function(x, rec_lines){
                   user_reference_numbers = refns, 
                   xref = rec_xref)
     
-    R7::props(x@note[[xref]]) <- list(
+    R7::props(x@note[[rec_xref]]) <- list(
       auto_id = auto_id,
       citations = cits,
       last_updated = chan
@@ -368,10 +363,21 @@ parse_record <- function(x, rec_lines){
 
 extract_ged_values <- function(lines, 
                                tag,
+                               return_xref = FALSE,
                                return_list = FALSE){
   
+  if(return_xref)
+    return(sub(sprintf("^0 (%s) .+$", reg_xref(FALSE)), "\\1", lines[1]))
+  
+  base_level <- as.integer(substr(lines[1], 1, 1)) - 1
+  
+  # Ignore parent if lines describes a whole record
+  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1])){
+    lines <- lines[-1]
+    base_level <- base_level + 1
+  }
+  
   if(length(tag) > length(lines)) return(character())
-  base_level <- as.integer(substr(lines[1], 1, 1)) - 1 # parent level
   
   for(level in seq_along(tag)){
     
@@ -396,12 +402,12 @@ extract_ged_values <- function(lines,
     lines <- unlist(lines_lst)
   }
   
-  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", unname(lines))
+  lines <- unname(lines)
+  # Catch cases where no line value is given
+  lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
+  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
 }
 
-extract_xref <- function(rec_lines){
-  sub(sprintf("^0 (%s) .+$", reg_xref(FALSE)), "\\1", rec_lines[1])
-}
 
 extract_refns <- function(rec_lines){
   refn_lst <- extract_ged_values(rec_lines, "REFN", return_list = TRUE)
@@ -419,6 +425,7 @@ extract_refns <- function(rec_lines){
 extract_change_date <- function(rec_lines){
   change_date <- extract_ged_values(rec_lines, c("CHAN","DATE"))
   if(length(change_date) == 0) return(NULL)
+  
   nts <- extract_ged_values(rec_lines, c("CHAN","NOTE"))
   class_change_date(
     date = change_date,
@@ -428,16 +435,80 @@ extract_change_date <- function(rec_lines){
   )
 }
 
+extract_citations <- function(rec_lines, location = NULL){
+  
+  sour_lst <- extract_ged_values(rec_lines, c(location, "SOUR"), return_list = TRUE)
+  if(length(sour_lst) == 0) return(list())
+  
+  lapply(sour_lst, \(x){
+    nts <- extract_ged_values(x, c("SOUR","NOTE"))
+    
+    class_citation(
+      xref = extract_ged_values(x, "SOUR"),
+      where = extract_ged_values(x, c("SOUR","PAGE")),
+      event_type = extract_ged_values(x, c("SOUR","EVEN")),
+      event_role = extract_ged_values(x, c("SOUR","EVEN","ROLE")),
+      recording_date = extract_ged_values(x, c("SOUR","DATA","DATE")),
+      source_text = extract_ged_values(x, c("SOUR","DATA","TEXT")),
+      media_links = extract_ged_values(x, c("SOUR","OBJE")),
+      note_links = nts[grepl(reg_xref(TRUE), nts)],
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
+      certainty = extract_ged_values(x, c("SOUR","QUAY"))
+    )
+  })
+  
+}
+
+extract_personal_names <- function(rec_lines){
+  
+  name_lst <- extract_ged_values(rec_lines, "NAME", return_list = TRUE)
+  if(length(name_lst) == 0) return(list())
+  
+  lapply(name_lst, \(x){
+    nm <- extract_name_info(x, "NAME")
+    phon_lst <- extract_ged_values(x, c("NAME","FONE"), return_list = TRUE)
+    rom_lst <- extract_ged_values(x, c("NAME","ROMN"), return_list = TRUE)
+    
+    class_personal_name(
+      name = nm,
+      phon_names = lapply(phon_lst, extract_name_info, "FONE"),
+      rom_names = lapply(rom_lst, extract_name_info, "ROMN")
+    )
+  })
+}
+
+extract_name_info <- function(lines, location){
+  
+  nts <- extract_ged_values(lines, c(location, "NOTE"))
+  
+  class_name_info(
+    full = extract_ged_values(lines, location),
+    type = extract_ged_values(lines, c(location, "TYPE")),
+    prefix = extract_ged_values(lines, c(location, "NPFX")),
+    given = extract_ged_values(lines, c(location, "GIVN")),
+    nickname = extract_ged_values(lines, c(location, "NICK")),
+    surname_prefix = extract_ged_values(lines, c(location, "SPFX")),
+    surname = extract_ged_values(lines, c(location, "SURN")),
+    suffix = extract_ged_values(lines, c(location, "NSFX")),
+    note_links = nts[grepl(reg_xref(TRUE), nts)],
+    notes = nts[!grepl(reg_xref(TRUE), nts)],
+    citations = extract_citations(lines[-1])
+  )
+  
+}
+
+
 extract_associations <- function(rec_lines){
   asso_lst <- extract_ged_values(rec_lines, "ASSO", return_list = TRUE)
   if(length(asso_lst) == 0) return(list())
   
   lapply(asso_lst, \(x){
-    nts <- extract_ged_values(x, "NOTE")
+    nts <- extract_ged_values(x, c("ASSO","NOTE"))
+    
     class_association(
       xref = extract_ged_values(x, "ASSO"),
       relation_is = extract_ged_values(x, c("ASSO","RELA")),
-      citations = extract_citations(x, "SOUR"),
+      citations = extract_citations(x, "ASSO"),
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       notes = nts[!grepl(reg_xref(TRUE), nts)]
     )
@@ -456,19 +527,90 @@ extract_repo_citations <- function(rec_lines){
   })
 }
 
-extract_place <- function(rec_lines){
+extract_place <- function(lines, location = NULL){
   
+  place_name <- extract_ged_values(lines, c(location, "PLAC"))
+  if(length(place_name) == 0) return(NULL)
+  
+  nts <- extract_ged_values(lines, c(location, "PLAC", "NOTE"))
+  latlong <- paste(
+    extract_ged_values(lines, c(location, "MAP", "LATI")),
+    extract_ged_values(lines, c(location, "MAP", "LONG"))
+  )
+  
+  class_place(
+    name = place_name,
+    phon_names = character(),
+    rom_names = character(),
+    lat_long = latlong,
+    note_links = nts[grepl(reg_xref(TRUE), nts)],
+    notes = nts[!grepl(reg_xref(TRUE), nts)]
+  )
   
 }
 
-extract_personal_names <- function(rec_lines){
+extract_facts_indi <- function(rec_lines){
+  fact_lst <- extract_ged_values(rec_lines, return_list = TRUE,
+                                 tag = paste(c(val_attribute_types(),
+                                               val_individual_event_types()),
+                                             collapse = "|"))
+  if(length(fact_lst) == 0) return(list())
   
-  
+  lapply(fact_lst, \(x){
+    tag <- sub("^1 ([A-Z]{3,4})( .+)?$", "\\1", x[1])
+    
+    nts <- extract_ged_values(x, c(tag, "NOTE"))
+    
+    class_fact_indi(
+      fact = tag,
+      description = extract_ged_values(x, tag),
+      age = extract_ged_values(x, c(tag, "AGE")),
+      famg_xref = extract_ged_values(x, c(tag, "FAMC")),
+      adopting_parent = extract_ged_values(x, c(tag, "FAMC","ADOP")),
+      type = extract_ged_values(x, c(tag, "TYPE")),
+      date = extract_ged_values(x, c(tag, "DATE")),
+      place = extract_place(x, tag),
+      address = extract_address(x, tag),
+      agency = extract_ged_values(x, c(tag, "AGNC")),
+      relig_affil = extract_ged_values(x, c(tag, "RELI")),
+      cause = extract_ged_values(x, c(tag, "CAUS")),
+      note_links = nts[grepl(reg_xref(TRUE), nts)],
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
+      citations = extract_citations(x, tag),
+      media_links = extract_ged_values(x, c(tag, "OBJE"))
+    )
+  })
 }
 
-extract_facts <- function(rec_lines){
+extract_facts_famg <- function(rec_lines){
+  fact_lst <- extract_ged_values(rec_lines, return_list = TRUE,
+                                 tag = paste(val_family_event_types(),
+                                             collapse = "|"))
+  if(length(fact_lst) == 0) return(list())
   
-  
+  lapply(fact_lst, \(x){
+    tag <- sub("^1 ([A-Z]{3,4})( .+)?$", "\\1", x[1])
+
+    nts <- extract_ged_values(x, c(tag, "NOTE"))
+    
+    class_fact_famg(
+      fact = tag,
+      description = extract_ged_values(x, tag),
+      husband_age = extract_ged_values(x, c(tag, "HUSB","AGE")),
+      wife_age = extract_ged_values(x, c(tag, "WIFE","AGE")),
+      type = extract_ged_values(x, c(tag, "TYPE")),
+      date = extract_ged_values(x, c(tag, "DATE")),
+      place = extract_place(x, tag),
+      address = extract_address(x, tag),
+      agency = extract_ged_values(x, c(tag, "AGNC")),
+      relig_affil = extract_ged_values(x, c(tag, "RELI")),
+      cause = extract_ged_values(x, c(tag, "CAUS")),
+      note_links = nts[grepl(reg_xref(TRUE), nts)],
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
+      citations = extract_citations(x, tag),
+      media_links = extract_ged_values(x, c(tag, "OBJE"))
+    )
+  })
 }
 
 extract_address <- function(lines, location = NULL){
@@ -488,74 +630,34 @@ extract_address <- function(lines, location = NULL){
   )
 }
 
-extract_citations <- function(rec_lines, location = NULL){
-  sour_lst <- extract_ged_values(rec_lines, "SOUR", return_list = TRUE)
-  if(length(sour_lst) == 0) return(list())
-  
-  lapply(sour_lst, \(x){
-    nts <- extract_ged_values(x, c("SOUR","NOTE"))
-    class_citation(
-      xref = sour_xref,
-      where = extract_ged_values(x, c("SOUR","PAGE")),
-      event_type = extract_ged_values(x, c("SOUR","EVEN")),
-      event_role = extract_ged_values(x, c("SOUR","EVEN","ROLE")),
-      recording_date = extract_ged_values(x, c("SOUR","DATA","DATE")),
-      source_text = extract_ged_values(x, c("SOUR","DATA","TEXT")),
-      media_links = extract_ged_values(x, c("SOUR","OBJE")),
-      note_links = nts[grepl(reg_xref(TRUE), nts)],
-      notes = nts[!grepl(reg_xref(TRUE), nts)],
-      certainty = extract_ged_values(x, c("SOUR","QUAY"))
-    )
-  })
-  
-}
 
 
 extract_family_links <- function(rec_lines){
+  link_lst <- extract_ged_values(rec_lines, "FAMS|FAMC", return_list = TRUE) 
+  if(length(link_lst) == 0) return(list())
   
-  
+  lapply(link_lst, \(x){
+    nts <- extract_ged_values(x, c("FAMS|FAMC", "NOTE"))
+    xref <- extract_ged_values(x, "FAMC|FAMS")
+    
+    if(grepl("FAMC", x[1])){
+      class_child_to_family_link(
+        xref = xref,
+        pedigree = extract_ged_values(x, c("FAMC", "PEDI")),
+        note_links = nts[grepl(reg_xref(TRUE), nts)],
+        notes = nts[!grepl(reg_xref(TRUE), nts)]
+      )
+    } else {
+      class_spouse_to_family_link(
+        xref = xref,
+        note_links = nts[grepl(reg_xref(TRUE), nts)],
+        notes = nts[!grepl(reg_xref(TRUE), nts)]
+      )
+    }
+    
+  })
 }
 
-extract_ged_structure <- function(rec_lines,
-                                  tag) {
-  
-     if(tag == "REFN"){
-       
-     } else if(tag == "ADDR") {
-       
-     } else if(tag == "REPO") { # could be multiple
-       
-       
-       
-     } else if(tag == "ASSO") { # could be multiple
-       asso_lst <- extract_ged_values(rec_lines, "ASSO", return_list = TRUE)
-       if(length(asso_lst) == 0) return(list())
-       
-       
-     } else if(tag == "NAME") { # could be multiple
-       names_lst <- extract_ged_values(rec_lines, "NAME", return_list = TRUE)
-       if(length(names_lst) == 0) return(list())
-       
-       personal_names <- lapply(names_lst, \(x){
-         class_personal_name(
-           name = extract_ged_structure(x, "NAME_INFO"),
-           phon_names = extract_ged_structure(x, "FONE"),
-           rom_names = extract_ged_structure(x, "ROMN")
-         )
-       })
-       
-       return(personal_names)
-     } else if(tag == "SOUR") { # could be multiple
-       
-       
-       return(citations)
-     } else if(tag == "CHAN") {
-       
-       
-     }                             
-  
-  
-}
 
 #' Capitalise tags and certain keywords
 #' 

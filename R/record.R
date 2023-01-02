@@ -83,7 +83,7 @@ class_record_subm <-
 class_record_famg <- 
   R7::new_class("class_record_famg", parent = class_record,
                 properties = list(
-                  events = R7::class_list,
+                  facts = R7::class_list,
                   husb_xref = R7::class_character,
                   wife_xref = R7::class_character,
                   chil_xref = R7::class_character,
@@ -94,7 +94,7 @@ class_record_famg <-
                     getter = function(self){
                       df <- rbind(
                         df_rows(level = 0, tag = "FAM", value = ""),
-                        lst_to_df(self@events, level_inc = 1),
+                        lst_to_df(self@facts, level_inc = 1),
                         df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
                         df_rows(level = 1, tag = "WIFE", value = self@wife_xref),
                         df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
@@ -114,7 +114,7 @@ class_record_famg <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_R7classes(self@events, "@events", class_famg_fact),
+                    chk_input_R7classes(self@facts, "@facts", class_fact_famg),
                     chk_input_size(self@husb_xref, "@husb_xref", 0, 1, 3, 22),
                     chk_input_pattern(self@husb_xref, "@husb_xref", reg_xref(TRUE)),
                     chk_input_size(self@wife_xref, "@wife_xref", 0, 1, 3, 22),
@@ -237,7 +237,7 @@ class_record_indi <-
                     chk_input_R7classes(self@personal_names, "@personal_names", class_personal_name),
                     chk_input_size(self@sex, "@sex", 0, 1),
                     chk_input_choice(self@sex, "@sex", val_sexes()),
-                    chk_input_R7classes(self@facts, "@facts", class_indi_fact),
+                    chk_input_R7classes(self@facts, "@facts", class_fact_indi),
                     chk_input_R7classes(self@family_links, "@family_links", class_spouse_to_family_link),
                     chk_input_R7classes(self@associations, "@associations", class_association)
                   )
