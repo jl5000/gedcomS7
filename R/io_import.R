@@ -174,16 +174,24 @@ parse_records <- function(records_lst){
   if(records_lst[[length(records_lst)]][1] != "0 TRLR")
     stop("The file does not end with a TRLR record")
   
+  records_lst <- records_lst[-length(records_lst)]
+  
   # parse subm and header
   x <- create_gedcom(records_lst)
+  records_lst <- records_lst[-(1:2)]
   
-  for(i in seq_along(records_lst)){
-    if(i < 3) next
-    
-    x <- parse_record(x, records_lst[[i]])
-  }
-  
+  #x <- do_it(x, records_lst)
+  # for(i in seq_along(records_lst)){
+  #   x <- parse_record(x, records_lst[[i]])
+  # }
+  x <- Reduce(parse_record, records_lst, init = x)
   x
+}
+
+do_it <- function(x, records_lst){
+  R7::valid_eventually(x, function(object) {
+    Reduce(parse_record, records_lst, init = object)
+  })
 }
 
 create_gedcom <- function(records_lst){
@@ -372,7 +380,7 @@ extract_ged_values <- function(lines,
   base_level <- as.integer(substr(lines[1], 1, 1)) - 1
   
   # Ignore parent if lines describes a whole record
-  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1])){
+  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1], perl = TRUE)){
     lines <- lines[-1]
     base_level <- base_level + 1
   }
@@ -383,7 +391,7 @@ extract_ged_values <- function(lines,
     
     lines_lst <- split(lines, cumsum(substr(lines, 1, 1) == as.character(base_level + level)))
     
-    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( .*)?$", base_level + level, tag[level]), x[1]), 
+    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( .*)?$", base_level + level, tag[level]), x[1], perl = TRUE), 
                         lines_lst)
     
     if(level == length(tag)){ # final tag
@@ -405,7 +413,7 @@ extract_ged_values <- function(lines,
   lines <- unname(lines)
   # Catch cases where no line value is given
   lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
-  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
+  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
 }
 
 
@@ -481,14 +489,20 @@ extract_name_info <- function(lines, location){
   
   nts <- extract_ged_values(lines, c(location, "NOTE"))
   
+  surn <- extract_ged_values(lines, c(location, "SURN"))
+  full <- extract_ged_values(lines, location)
+  if(length(surn) == 0){
+    surn <- sub("^.*/(.+)/.*$", "\\1", full)
+  }
+  
   class_name_info(
-    full = extract_ged_values(lines, location),
+    full = full,
     type = extract_ged_values(lines, c(location, "TYPE")),
     prefix = extract_ged_values(lines, c(location, "NPFX")),
     given = extract_ged_values(lines, c(location, "GIVN")),
     nickname = extract_ged_values(lines, c(location, "NICK")),
     surname_prefix = extract_ged_values(lines, c(location, "SPFX")),
-    surname = extract_ged_values(lines, c(location, "SURN")),
+    surname = surn,
     suffix = extract_ged_values(lines, c(location, "NSFX")),
     note_links = nts[grepl(reg_xref(TRUE), nts)],
     notes = nts[!grepl(reg_xref(TRUE), nts)],
@@ -540,8 +554,8 @@ extract_place <- function(lines, location = NULL){
   
   class_place(
     name = place_name,
-    phon_names = character(),
-    rom_names = character(),
+    phon_names = character(),#TODO
+    rom_names = character(),#TODO
     lat_long = latlong,
     note_links = nts[grepl(reg_xref(TRUE), nts)],
     notes = nts[!grepl(reg_xref(TRUE), nts)]
