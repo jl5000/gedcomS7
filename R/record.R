@@ -168,7 +168,7 @@ class_record_indi <-
                     R7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, birth)) return(fact@details@event_date)
+                        if(fact@fact == "BIRT") return(fact@fact_date)
                       }
                       character()
                     }),
@@ -177,7 +177,7 @@ class_record_indi <-
                     R7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, birth)) return(fact@details@event_location)
+                        if(fact@fact == "BIRT") return(fact@fact_location)
                       }
                       character()
                     }),
@@ -186,7 +186,7 @@ class_record_indi <-
                     R7::class_logical,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, death)) return(FALSE)
+                        if(fact@fact == "DEAT") return(FALSE)
                       }
                       TRUE
                     }),
@@ -195,7 +195,7 @@ class_record_indi <-
                     R7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, death)) return(fact@details@event_date)
+                        if(fact@fact == "DEAT") return(fact@fact_date)
                       }
                       character()
                     }),
@@ -204,7 +204,7 @@ class_record_indi <-
                     R7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
-                        if(R7::R7_inherits(fact, death)) return(fact@details@event_location)
+                        if(fact@fact == "DEAT") return(fact@fact_location)
                       }
                       character()
                     }),
