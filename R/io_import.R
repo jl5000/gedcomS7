@@ -305,7 +305,7 @@ parse_record <- function(x, rec_lines){
     
     x@sour[[rec_xref]] <- class_record_sour(
       xref = rec_xref,
-      title = extract_ged_values(rec_lines, "TITL"),
+      full_title = extract_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
       notes = nts[!grepl(reg_xref(TRUE), nts)],
       events_recorded = extract_ged_values(rec_lines, c("DATA","EVEN")),

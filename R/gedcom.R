@@ -145,12 +145,37 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                             birth_place = pop(ind@birth_place),
                                             is_alive = ind@is_alive,
                                             death_date = pop(ind@death_date),
-                                            death_place = pop(ind@death_place),
-                                            mother = "",
-                                            mother_xref = "",
-                                            father = "",
-                                            father_xref = "",
-                                            num_siblings = ""
+                                            death_place = pop(ind@death_place)
+                                          )
+                                        }) |>
+                                        data.table::rbindlist()
+                                    }),
+                                  
+                                  df_famg = R7::new_property(
+                                    R7::class_data.frame,
+                                    getter = function(self){
+                                      if(length(self@famg) == 0) return(NULL)
+                                      lapply(
+                                        self@famg,
+                                        function(fam){
+                                          
+                                          husb_name <- ""
+                                          wife_name <- ""
+                                          if(length(fam@husb_xref) == 1)
+                                            husb_name <- self@indi[[fam@husb_xref]]@primary_name
+                                          if(length(fam@wife_xref) == 1)
+                                            wife_name <- self@indi[[fam@wife_xref]]@primary_name
+                                          num_chil <- 0
+                                          if(length(fam@num_children) == 1)
+                                            num_chil <- fam@num_children
+                                          
+                                          data.table::data.table(
+                                            xref = fam@xref,
+                                            husband = pop(husb_name),
+                                            wife = pop(wife_name),
+                                            relationship_date = pop(fam@relationship_date),
+                                            relationship_place = pop(fam@relationship_place),
+                                            num_children = max(length(fam@chil_xref), num_chil)
                                           )
                                         }) |>
                                         data.table::rbindlist()

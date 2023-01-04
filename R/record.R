@@ -89,6 +89,24 @@ class_record_famg <-
                   chil_xref = R7::class_character,
                   num_children = R7::class_integer,
                   
+                  relationship_date = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(fact@fact == "MARR") return(fact@fact_date)
+                      }
+                      character()
+                    }),
+                  
+                  relationship_place = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      for(fact in self@facts){
+                        if(fact@fact == "MARR") return(fact@fact_location)
+                      }
+                      character()
+                    }),
+                  
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
