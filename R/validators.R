@@ -22,7 +22,7 @@ chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_c
 chk_input_pattern <- function(input, name, pattern) {
   if (length(input) > 0 && is.character(input)) {
     for (i in input) {
-      if (!grepl(pattern, i, perl = TRUE))
+      if (!grepl(pattern, i))
         return(sprintf("%s is in an invalid format.", name))
     }
   }

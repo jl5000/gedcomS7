@@ -380,7 +380,7 @@ extract_ged_values <- function(lines,
   base_level <- as.integer(substr(lines[1], 1, 1)) - 1
   
   # Ignore parent if lines describes a whole record
-  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1], perl = TRUE)){
+  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1])){
     lines <- lines[-1]
     base_level <- base_level + 1
   }
@@ -391,7 +391,7 @@ extract_ged_values <- function(lines,
     
     lines_lst <- split(lines, cumsum(substr(lines, 1, 1) == as.character(base_level + level)))
     
-    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( .*)?$", base_level + level, tag[level]), x[1], perl = TRUE), 
+    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( .*)?$", base_level + level, tag[level]), x[1]), 
                         lines_lst)
     
     if(level == length(tag)){ # final tag
@@ -413,7 +413,7 @@ extract_ged_values <- function(lines,
   lines <- unname(lines)
   # Catch cases where no line value is given
   lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
-  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
+  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
 }
 
 
