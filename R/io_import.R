@@ -251,13 +251,11 @@ parse_record <- function(x, rec_lines){
   
   if(rec_type == "INDI"){
     
-    x <- add_indi(x,
-                  sex = extract_ged_values(rec_lines, "SEX"),
-                  user_reference_numbers = refns,
-                  notes = nts[!grepl(reg_xref(TRUE), nts)],
-                  xref = rec_xref)
-    
-    R7::props(x@indi[[rec_xref]]) <- list(
+    x@indi[[rec_xref]] <- class_record_indi(
+      xref = rec_xref,
+      sex = extract_ged_values(rec_lines, "SEX"),
+      user_reference_numbers = refns,
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
       personal_names = extract_personal_names(rec_lines),
       facts = extract_facts_indi(rec_lines),
       family_links = extract_family_links(rec_lines),
@@ -271,15 +269,13 @@ parse_record <- function(x, rec_lines){
 
   } else if(rec_type == "FAM"){
     
-    x <- add_famg(x,
-                  husb_xref = extract_ged_values(rec_lines, "HUSB"),
-                  wife_xref = extract_ged_values(rec_lines, "WIFE"),
-                  chil_xref = extract_ged_values(rec_lines, "CHIL"),
-                  user_reference_numbers = refns, 
-                  notes = nts[!grepl(reg_xref(TRUE), nts)], 
-                  xref = rec_xref)
-    
-    R7::props(x@famg[[rec_xref]]) <- list(
+    x@famg[[rec_xref]] <- class_record_famg(
+      xref = rec_xref,
+      husb_xref = extract_ged_values(rec_lines, "HUSB"),
+      wife_xref = extract_ged_values(rec_lines, "WIFE"),
+      chil_xref = extract_ged_values(rec_lines, "CHIL"),
+      user_reference_numbers = refns, 
+      notes = nts[!grepl(reg_xref(TRUE), nts)], 
       facts = extract_facts_famg(rec_lines),
       num_children = as.integer(extract_ged_values(rec_lines, "NCHI")),
       auto_id = auto_id,
@@ -291,15 +287,13 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "SOUR"){
     
-    x <- add_sour(x,
-                  title = extract_ged_values(rec_lines, "TITL"),
-                  user_reference_numbers = refns, 
-                  notes = nts[!grepl(reg_xref(TRUE), nts)],
-                  xref = rec_xref)
-    
     data_nts <- extract_ged_values(rec_lines, c("DATA","NOTE"))
     
-    R7::props(x@sour[[rec_xref]]) <- list(
+    x@sour[[rec_xref]] <- class_record_sour(
+      xref = rec_xref,
+      title = extract_ged_values(rec_lines, "TITL"),
+      user_reference_numbers = refns, 
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
       events_recorded = extract_ged_values(rec_lines, c("DATA","EVEN")),
       date_period = extract_ged_values(rec_lines, c("DATA","EVEN","DATE")),
       jurisdiction_place = extract_ged_values(rec_lines, c("DATA","EVEN","PLAC")),
@@ -319,13 +313,11 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "REPO"){
     
-    x <- add_repo(x,
-                  name = extract_ged_values(rec_lines, "NAME"), 
-                  user_reference_numbers = refns, 
-                  notes = nts[!grepl(reg_xref(TRUE), nts)],
-                  xref = rec_xref)
-    
-    R7::props(x@repo[[rec_xref]]) <- list(
+    x@repo[[rec_xref]] <- class_record_repo(
+      xref = rec_xref,
+      name = extract_ged_values(rec_lines, "NAME"), 
+      user_reference_numbers = refns, 
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
       address = extract_address(rec_lines),
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       auto_id = auto_id,
@@ -334,14 +326,12 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "OBJE"){
     
-    x <- add_media(x,
-                   file_ref = extract_ged_values(rec_lines, "FILE"),
-                   format = extract_ged_values(rec_lines, c("FILE","FORM")),
-                   user_reference_numbers = refns,
-                   notes = nts[!grepl(reg_xref(TRUE), nts)],
-                   xref = rec_xref)
-    
-    R7::props(x@media[[rec_xref]]) <- list(
+    x@media[[rec_xref]] <- class_record_media(
+      xref = rec_xref,
+      file_ref = extract_ged_values(rec_lines, "FILE"),
+      format = extract_ged_values(rec_lines, c("FILE","FORM")),
+      user_reference_numbers = refns,
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
       media_type = extract_ged_values(rec_lines, c("FILE","FORM","TYPE")),
       title = extract_ged_values(rec_lines, c("FILE","TITL")),
       auto_id = auto_id,
@@ -352,12 +342,10 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "NOTE"){
     
-    x <- add_note(x,
-                  text = note_text, 
-                  user_reference_numbers = refns, 
-                  xref = rec_xref)
-    
-    R7::props(x@note[[rec_xref]]) <- list(
+    x@note[[rec_xref]] <- class_record_note(
+      xref = rec_xref,
+      text = note_text, 
+      user_reference_numbers = refns, 
       auto_id = auto_id,
       citations = cits,
       last_updated = chan

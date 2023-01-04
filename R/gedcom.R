@@ -38,7 +38,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     R7::class_list,
                                     setter = function(self, value){
                                       self@indi <- value
-                                      names(self@indi) <- sapply(self@indi, \(rec) rec@xref, 
+                                      names(self@indi) <- sapply(self@indi, \(rec) rec@xref,
                                                                  USE.NAMES = FALSE)
                                      # self <- refresh_family_links(self, TRUE)
                                       self
