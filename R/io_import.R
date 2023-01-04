@@ -267,7 +267,7 @@ parse_record <- function(x, rec_lines){
     
     x@indi[[rec_xref]] <- class_record_indi(
       xref = rec_xref,
-      sex = extract_ged_values(rec_lines, "SEX"),
+      sex = toupper(extract_ged_values(rec_lines, "SEX")),
       user_reference_numbers = refns,
       notes = nts[!grepl(reg_xref(TRUE), nts)],
       personal_names = extract_personal_names(rec_lines),
@@ -308,7 +308,7 @@ parse_record <- function(x, rec_lines){
       full_title = extract_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
       notes = nts[!grepl(reg_xref(TRUE), nts)],
-      events_recorded = extract_ged_values(rec_lines, c("DATA","EVEN")),
+      events_recorded = toupper(extract_ged_values(rec_lines, c("DATA","EVEN"))),
       date_period = extract_ged_values(rec_lines, c("DATA","EVEN","DATE")),
       jurisdiction_place = extract_ged_values(rec_lines, c("DATA","EVEN","PLAC")),
       responsible_agency = extract_ged_values(rec_lines, c("DATA","AGNC")),
@@ -401,10 +401,10 @@ extract_ged_values <- function(lines,
         return(unname(lines_lst))
       } else {
       # strip out subordinates
-      lines_lst <- lapply(lines_lst, \(x) x[1])
+      lines_lst <- lapply(lines_lst, `[`, 1)
       }
     } else { # remove parent tag ready for splitting again
-      lines_lst <- lapply(lines_lst, \(x) x[-1])
+      lines_lst <- lapply(lines_lst, `[`, -1)
     }
     
     if(length(lines_lst) == 0) return(character())
@@ -415,7 +415,8 @@ extract_ged_values <- function(lines,
   lines <- unname(lines)
   # Catch cases where no line value is given
   lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
-  sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
+  vals <- sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
+  gsub("@@", "@", vals)
 }
 
 
@@ -558,7 +559,7 @@ extract_place <- function(lines, location = NULL){
     name = place_name,
     phon_names = character(),#TODO
     rom_names = character(),#TODO
-    lat_long = latlong,
+    lat_long = toupper(latlong),
     note_links = nts[grepl(reg_xref(TRUE), nts)],
     notes = nts[!grepl(reg_xref(TRUE), nts)]
   )
@@ -582,7 +583,7 @@ extract_facts_indi <- function(rec_lines){
       description = extract_ged_values(x, tag),
       age = extract_ged_values(x, c(tag, "AGE")),
       famg_xref = extract_ged_values(x, c(tag, "FAMC")),
-      adopting_parent = extract_ged_values(x, c(tag, "FAMC","ADOP")),
+      adopting_parent = toupper(extract_ged_values(x, c(tag, "FAMC","ADOP"))),
       type = extract_ged_values(x, c(tag, "TYPE")),
       date = extract_ged_values(x, c(tag, "DATE")),
       place = extract_place(x, tag),
@@ -659,7 +660,7 @@ extract_family_links <- function(rec_lines){
     if(grepl("FAMC", x[1])){
       class_child_to_family_link(
         xref = xref,
-        pedigree = extract_ged_values(x, c("FAMC", "PEDI")),
+        pedigree = tolower(extract_ged_values(x, c("FAMC", "PEDI"))),
         note_links = nts[grepl(reg_xref(TRUE), nts)],
         notes = nts[!grepl(reg_xref(TRUE), nts)]
       )
@@ -675,27 +676,11 @@ extract_family_links <- function(rec_lines){
 }
 
 
-#' Capitalise tags and certain keywords
-#' 
-#' This function capitalises all tags and certain values such as SEX values and DATE values.
-#' 
-#' @details The function also ensures certain values are lowercase such as PEDI
-#' and ADOP values, and removes explicit GREGORIAN date escape sequences (as they are implied).
-#'
-#' @param gedcom A tidyged object.
-#'
-#' @return A tidyged object with appropriately capitalised tags and keywords.
 capitalise_tags_and_keywords <- function(gedcom){
   
   gedcom |> 
     dplyr::mutate(tag = toupper(tag)) |> 
-    dplyr::mutate(value = dplyr::if_else(tag == "SEX", toupper(value), value),
-                  value = dplyr::if_else(tag == "PEDI", tolower(value), value),
-                  value = dplyr::if_else(tag == "ADOP", toupper(value), value),
-                  value = dplyr::if_else(level == 2 & tag == "EVEN", toupper(value), value),
-                  value = dplyr::if_else(tag == "LATI", toupper(value), value),
-                  value = dplyr::if_else(tag == "LONG", toupper(value), value),
-                  value = dplyr::if_else(tag == "ROLE" & 
+    dplyr::mutate(value = dplyr::if_else(tag == "ROLE" & 
                                            !stringr::str_detect(value, tidyged.internals::reg_custom_value()), 
                                          toupper(value), value),
                   value = dplyr::if_else(tag == "DATE" &
