@@ -180,17 +180,31 @@ parse_records <- function(records_lst){
   x <- create_gedcom(records_lst)
   records_lst <- records_lst[-(1:2)]
   
-  #x <- do_it(x, records_lst)
-  # for(i in seq_along(records_lst)){
-  #   x <- parse_record(x, records_lst[[i]])
-  # }
-  x <- Reduce(parse_record, records_lst, init = x)
+  x <- parse_records2(x, records_lst)
+  #x <- Reduce(parse_record, records_lst, init = x)
+  
   x
 }
 
-do_it <- function(x, records_lst){
-  R7::valid_eventually(x, function(object) {
-    Reduce(parse_record, records_lst, init = object)
+parse_records2 <- function(x, records_lst){
+  R7::valid_eventually(x, function(ged) {
+    
+    options(width = 80)
+    for(i in seq_along(records_lst)){
+      extra <- nchar('||100% (1000/1000)')
+      width <- options()$width
+      step <- round(i / length(records_lst) * (width - extra))
+      text <- sprintf('|%s%s|% 3s%% (%s/%s)', 
+                      strrep('=', step),
+                      strrep(' ', width - step - extra), 
+                      round(i / length(records_lst) * 100),
+                      i, length(records_lst))
+      cat(text)
+      ged <- parse_record(ged, records_lst[[i]])
+      cat(if (i == length(records_lst)) '\n' else '\014')
+    }
+    
+    ged
   })
 }
 
