@@ -298,11 +298,11 @@ reg_date_approximated <- function(flatten = TRUE) {
 #' @return Either a single regex string or a vector of them
 reg_date_value <- function() {
   
-  #date_phrase not implemented
   c(reg_date(FALSE,FALSE),
     reg_date_period(FALSE),
     reg_date_range(FALSE),
-    reg_date_approximated(FALSE)) |> 
+    reg_date_approximated(FALSE),
+    reg_custom_value()) |> 
     anchor_it() |> 
     paste(collapse = "|")
 }

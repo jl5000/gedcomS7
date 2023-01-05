@@ -19,7 +19,7 @@ df_rows <- function(level, tag, value, record = NULL){
 lst_to_df <- function(lst, level_inc = 0){
   if(length(lst) == 0) return(NULL)
   
-  lst_df <- lapply(lst, function(obj) obj@as_df) |>
+  lst_df <- lapply(lst, `@`, as_df) |>
     data.table::rbindlist()
   
   if(lst_df[,.N] == 0) return(NULL)

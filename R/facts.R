@@ -27,7 +27,7 @@ class_fact_detail <- R7::new_class("class_fact_detail",
                                       fact_date = R7::new_property(
                                         R7::class_character,
                                         getter = function(self){
-                                          self@as_df[tag == "DATE",value]
+                                          date_to_df(self@date)[tag == "DATE",value]
                                         }),
                                       
                                       fact_location = R7::new_property(
@@ -45,7 +45,7 @@ class_fact_detail <- R7::new_class("class_fact_detail",
                                     validator = function(self) {
                                       c(
                                         chk_input_size(self@type, "@type", 0, 1, 1, 90),
-                                        chk_input_size(self@date, "@date", 0, 1),
+                                        chk_input_size(self@date, "@date", 0, 1, 1, 35),
                                         chk_input_pattern(self@date, "@date", reg_date_value()),
                                         chk_input_size(self@place, "@place", 0, 1),
                                         chk_input_size(self@address, "@address", 0, 1),
