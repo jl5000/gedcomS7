@@ -46,8 +46,12 @@ read_gedcom <- function(filepath = file.choose()) {
   
   records_lst <- split(ged_lines, cumsum(substr(ged_lines, 1, 1) == "0"))
   
-  parse_records(records_lst)
+  x <- parse_records(records_lst)
   
+  x@file_path <- filepath
+  message("If you would like to enable quicksave set @quicksave = TRUE. This will allow you to use @save to save your changes to the same file. Exercise care with this option as it will not ask for confirmation before overwriting changes.")
+  
+  x
 }
 
 
@@ -181,7 +185,7 @@ parse_records <- function(records_lst){
   # parse subm and header
   x <- create_gedcom(records_lst)
   records_lst <- records_lst[-(1:2)]
-  #records_lst <- records_lst[1:20]
+  #records_lst <- records_lst[1:10]
   
   indi_recs <- Filter(\(x) grepl(sprintf("^0 %s INDI$", reg_xref(FALSE)), x[1]), records_lst)
   famg_recs <- Filter(\(x) grepl(sprintf("^0 %s FAM$", reg_xref(FALSE)), x[1]), records_lst)

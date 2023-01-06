@@ -3,6 +3,10 @@ NULL
 
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 properties = list(
+                                  quicksave_enabled = R7::new_property(R7::class_logical, default = FALSE),
+                                  file_path = R7::class_character,
+                                  active_record = R7::class_character,
+                                  
                                   gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
                                   gedcom_form = R7::new_property(getter = function(self) "LINEAGE-LINKED"),
                                   character_encoding = R7::new_property(getter = function(self) "UTF-8"),
@@ -25,6 +29,22 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   
                                   # Not currently used
                                   update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
+                                  
+                                  save = R7::new_property(
+                                    R7::class_logical,
+                                    getter = function(self){
+                                      if(!self@quicksave_enabled)
+                                        stop("File cannot be saved. Enable quicksave with the @quicksave parameter.")
+                                      
+                                      if(length(self@file_path) == 0 || !file.exists(self@file_path))
+                                        stop("File cannot be saved. Set an existing file path with the @file_path parameter.")
+                                      
+                                      file.remove(self@file_path)
+                                      write_gedcom(self, self@file_path)
+                                      message("GEDCOM saved")
+                                      invisible(TRUE)
+                                    }
+                                  ),
                                   
                                   # This serves as both a record of prefixes and order of records
                                   xref_prefixes = R7::new_property(R7::class_character,
@@ -111,9 +131,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                                lapply(\(rec_list) purrr::map_chr(unname(rec_list), \(rec) rec@xref)) |>
                                                                setNames(names(self@xref_prefixes))
                                                            }),
-                                  
-                                  active_record = R7::class_character,
-                                  
+
                                   next_xref = R7::new_property(R7::class_character,
                                                                getter = function(self){
                                                                  idx <- integer(6L)
@@ -231,6 +249,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 ),
                                 validator = function(self){
                                   c(
+                                    chk_input_size(self@quicksave_enabled, "@quicksave_enabled", 1, 1),
                                     chk_input_size(self@system_id, "@system_id", 1, 1, 1, 20),
                                     chk_input_size(self@product_name, "@product_name", 0, 1, 1, 90),
                                     chk_input_size(self@product_version, "@product_version", 0, 1, 3, 15),
