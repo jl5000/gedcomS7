@@ -380,12 +380,12 @@ extract_ged_values <- function(lines,
                                return_list = FALSE){
   
   if(return_xref)
-    return(sub(sprintf("^0 (%s) .+$", reg_xref(FALSE)), "\\1", lines[1]))
+    return(sub(sprintf("^0 (%s) (?s).+$", reg_xref(FALSE)), "\\1", lines[1], perl = TRUE))
   
   base_level <- as.integer(substr(lines[1], 1, 1)) - 1
   
   # Ignore parent if lines describes a whole record
-  if(grepl(sprintf("^0 (%s) .+$", reg_xref(FALSE)), lines[1])){
+  if(grepl(sprintf("^0 (%s) (?s).+$", reg_xref(FALSE)), lines[1], perl = TRUE)){
     lines <- lines[-1]
     base_level <- base_level + 1
   }
@@ -396,7 +396,7 @@ extract_ged_values <- function(lines,
     
     lines_lst <- split(lines, cumsum(substr(lines, 1, 1) == as.character(base_level + level)))
     
-    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( .*)?$", base_level + level, tag[level]), x[1]), 
+    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( (?s).*)?$", base_level + level, tag[level]), x[1], perl = TRUE), 
                         lines_lst)
     
     if(level == length(tag)){ # final tag
@@ -418,7 +418,7 @@ extract_ged_values <- function(lines,
   lines <- unname(lines)
   # Catch cases where no line value is given
   lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
-  vals <- sub(sprintf("^%s (%s) (.*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines)
+  vals <- sub(sprintf("^%s (%s) ((?s).*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
   gsub("@@", "@", vals)
 }
 
@@ -675,7 +675,7 @@ extract_family_links <- function(rec_lines){
     nts <- extract_ged_values(x, c("FAMS|FAMC", "NOTE"))
     xref <- extract_ged_values(x, "FAMC|FAMS")
     
-    if(grepl("FAMC", x[1])){
+    if(grepl("FAMC", x[1], fixed = TRUE)){
       class_child_to_family_link(
         xref = xref,
         pedigree = tolower(extract_ged_values(x, c("FAMC", "PEDI"))),
