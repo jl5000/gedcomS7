@@ -106,6 +106,12 @@ validate_lines <- function(lines){
                  paste(invalid_lines, lines[invalid_lines], sep = ": ")), 
                collapse = "\n"))
   
+  unsupp_calendars <- c("HEBREW","FRENCH R","JULIAN","UNKNOWN")
+  unsupp_calendars <- paste0("@#D", unsupp_calendars, "@", collapse = "|")
+  
+  if(any(grepl(sprintf("^[1-6] DATE (%s)", unsupp_calendars), lines)))
+    stop("Non-Gregorian calendar dates are not supported.")
+  
   NULL
 }
 
