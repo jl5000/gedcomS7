@@ -454,13 +454,18 @@ extract_citations <- function(rec_lines, location = NULL){
   
   lapply(sour_lst, \(x){
     nts <- extract_ged_values(x, c("SOUR","NOTE"))
+    rec_date <- extract_ged_values(x, c("SOUR","DATA","DATE"))
+    if(length(rec_date) == 1 && !grepl(reg_custom_value(), rec_date)){
+      rec_date <- toupper(rec_date)
+      rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
+    }
     
     class_citation(
       xref = extract_ged_values(x, "SOUR"),
       where = extract_ged_values(x, c("SOUR","PAGE")),
       event_type = extract_ged_values(x, c("SOUR","EVEN")),
       event_role = extract_ged_values(x, c("SOUR","EVEN","ROLE")),
-      recording_date = extract_ged_values(x, c("SOUR","DATA","DATE")),
+      recording_date = rec_date,
       source_text = extract_ged_values(x, c("SOUR","DATA","TEXT")),
       media_links = extract_ged_values(x, c("SOUR","OBJE")),
       note_links = nts[grepl(reg_xref(TRUE), nts)],
@@ -578,6 +583,11 @@ extract_facts_indi <- function(rec_lines){
     tag <- sub("^1 ([A-Z]{3,4})( .+)?$", "\\1", x[1])
     
     nts <- extract_ged_values(x, c(tag, "NOTE"))
+    fact_date <- extract_ged_values(x, c(tag, "DATE"))
+    if(length(fact_date) == 1 && !grepl(reg_custom_value(), fact_date)){
+      fact_date <- toupper(fact_date)
+      fact_date <- sub("@#DGREGORIAN@ ", "", fact_date)
+    }
     
     class_fact_indi(
       fact = tag,
@@ -586,7 +596,7 @@ extract_facts_indi <- function(rec_lines){
       famg_xref = extract_ged_values(x, c(tag, "FAMC")),
       adopting_parent = toupper(extract_ged_values(x, c(tag, "FAMC","ADOP"))),
       type = extract_ged_values(x, c(tag, "TYPE")),
-      date = extract_ged_values(x, c(tag, "DATE")),
+      date = fact_date,
       place = extract_place(x, tag),
       address = extract_address(x, tag),
       agency = extract_ged_values(x, c(tag, "AGNC")),
@@ -610,6 +620,11 @@ extract_facts_famg <- function(rec_lines){
     tag <- sub("^1 ([A-Z]{3,4})( .+)?$", "\\1", x[1])
 
     nts <- extract_ged_values(x, c(tag, "NOTE"))
+    fact_date <- extract_ged_values(x, c(tag, "DATE"))
+    if(length(fact_date) == 1 && !grepl(reg_custom_value(), fact_date)){
+      fact_date <- toupper(fact_date)
+      fact_date <- sub("@#DGREGORIAN@ ", "", fact_date)
+    }
     
     class_fact_famg(
       fact = tag,
@@ -617,7 +632,7 @@ extract_facts_famg <- function(rec_lines){
       husband_age = extract_ged_values(x, c(tag, "HUSB","AGE")),
       wife_age = extract_ged_values(x, c(tag, "WIFE","AGE")),
       type = extract_ged_values(x, c(tag, "TYPE")),
-      date = extract_ged_values(x, c(tag, "DATE")),
+      date = fact_date,
       place = extract_place(x, tag),
       address = extract_address(x, tag),
       agency = extract_ged_values(x, c(tag, "AGNC")),
@@ -683,13 +698,7 @@ capitalise_tags_and_keywords <- function(gedcom){
     dplyr::mutate(tag = toupper(tag)) |> 
     dplyr::mutate(value = dplyr::if_else(tag == "ROLE" & 
                                            !stringr::str_detect(value, tidyged.internals::reg_custom_value()), 
-                                         toupper(value), value),
-                  value = dplyr::if_else(tag == "DATE" &
-                                           !stringr::str_detect(value, tidyged.internals::reg_custom_value()), 
-                                         toupper(value), value),
-                  value = dplyr::if_else(tag == "DATE" &
-                                           !stringr::str_detect(value, tidyged.internals::reg_custom_value()),
-                                         stringr::str_remove(value, "@#DGREGORIAN@ "), value))
+                                         toupper(value), value))
   
   
 }
