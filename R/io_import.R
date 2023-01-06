@@ -143,6 +143,9 @@ validate_header <- function(header_lines, expected_encoding) {
 combine_gedcom_values <- function(lines) {
   
   reg_cont_conc <- sprintf("^[1-6] (CONT|CONC) (.*)$")
+  cont_conc_lines <- grep(reg_cont_conc, lines)
+  if(length(cont_conc_lines) == 0) return(lines)
+  
   unique_delim <- "<><>unique_delim<><>"
   
   lines <- lines |> 
@@ -151,7 +154,6 @@ combine_gedcom_values <- function(lines) {
     sub(pattern = "CONT ", replacement = "CONT \n")
   
   # Prepare lines for merging
-  cont_conc_lines <- grep(reg_cont_conc, lines)
   lines[cont_conc_lines] <- sub(reg_cont_conc, "\\2",
                                 lines[cont_conc_lines])
   lines[-cont_conc_lines] <- paste0(unique_delim,
