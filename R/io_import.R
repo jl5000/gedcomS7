@@ -465,12 +465,16 @@ extract_citations <- function(rec_lines, location = NULL){
       rec_date <- toupper(rec_date)
       rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
     }
+    role <- extract_ged_values(x, c("SOUR","EVEN","ROLE"))
+    if(length(role) == 1 && !grepl(reg_custom_value(), role)){
+      role <- toupper(role)
+    }
     
     class_citation(
       xref = extract_ged_values(x, "SOUR"),
       where = extract_ged_values(x, c("SOUR","PAGE")),
       event_type = extract_ged_values(x, c("SOUR","EVEN")),
-      event_role = extract_ged_values(x, c("SOUR","EVEN","ROLE")),
+      event_role = role,
       recording_date = rec_date,
       source_text = extract_ged_values(x, c("SOUR","DATA","TEXT")),
       media_links = extract_ged_values(x, c("SOUR","OBJE")),
@@ -697,14 +701,3 @@ extract_family_links <- function(rec_lines){
   })
 }
 
-
-capitalise_tags_and_keywords <- function(gedcom){
-  
-  gedcom |> 
-    dplyr::mutate(tag = toupper(tag)) |> 
-    dplyr::mutate(value = dplyr::if_else(tag == "ROLE" & 
-                                           !stringr::str_detect(value, tidyged.internals::reg_custom_value()), 
-                                         toupper(value), value))
-  
-  
-}
