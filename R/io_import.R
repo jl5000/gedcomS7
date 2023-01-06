@@ -155,7 +155,7 @@ combine_gedcom_values <- function(lines) {
   lines <- lines |> 
     gsub(pattern = "\n\r|\r\n", replacement = "\n") |> 
     gsub(pattern = "\r", replacement = "\n") |>
-    sub(pattern = "CONT ", replacement = "CONT \n")
+    sub(pattern = "^([1-6] CONT )", replacement = "\\1\n")
   
   # Prepare lines for merging
   lines[cont_conc_lines] <- sub(reg_cont_conc, "\\2",
