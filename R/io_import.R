@@ -179,34 +179,35 @@ parse_records <- function(records_lst){
   # parse subm and header
   x <- create_gedcom(records_lst)
   records_lst <- records_lst[-(1:2)]
+  #records_lst <- records_lst[1:20]
   
-  x <- parse_records2(x, records_lst)
-  #x <- Reduce(parse_record, records_lst, init = x)
+  indi_recs <- Filter(\(x) grepl(sprintf("^0 %s INDI$", reg_xref(FALSE)), x[1]), records_lst)
+  famg_recs <- Filter(\(x) grepl(sprintf("^0 %s FAM$", reg_xref(FALSE)), x[1]), records_lst)
+  sour_recs <- Filter(\(x) grepl(sprintf("^0 %s SOUR$", reg_xref(FALSE)), x[1]), records_lst)
+  repo_recs <- Filter(\(x) grepl(sprintf("^0 %s REPO$", reg_xref(FALSE)), x[1]), records_lst)
+  media_recs <- Filter(\(x) grepl(sprintf("^0 %s OBJE$", reg_xref(FALSE)), x[1]), records_lst)
+  note_recs <- Filter(\(x) grepl(sprintf("^0 %s NOTE .+$", reg_xref(FALSE)), x[1]), records_lst)
   
+  pb <- progress::progress_bar$new(
+    total = length(records_lst),
+    format = "Record :current/:total [:bar] :percent eta: :eta",
+    show_after = 0,
+    clear = FALSE
+  )
+  pb$tick(0)
+  
+  R7::props(x) <- list(
+    indi = lapply(indi_recs, parse_record, rec_type = "INDI", pb),
+    famg = lapply(famg_recs, parse_record, rec_type = "FAM", pb),
+    sour = lapply(sour_recs, parse_record, rec_type = "SOUR", pb),
+    repo = lapply(repo_recs, parse_record, rec_type = "REPO", pb),
+    media = lapply(media_recs, parse_record, rec_type = "OBJE", pb),
+    note = lapply(note_recs, parse_record, rec_type = "NOTE", pb)
+  )
+
   x
 }
 
-parse_records2 <- function(x, records_lst){
-  R7::valid_eventually(x, function(ged) {
-    
-    options(width = 80)
-    for(i in seq_along(records_lst)){
-      extra <- nchar('||100% (1000/1000)')
-      width <- options()$width
-      step <- round(i / length(records_lst) * (width - extra))
-      text <- sprintf('|%s%s|% 3s%% (%s/%s)', 
-                      strrep('=', step),
-                      strrep(' ', width - step - extra), 
-                      round(i / length(records_lst) * 100),
-                      i, length(records_lst))
-      cat(text)
-      ged <- parse_record(ged, records_lst[[i]])
-      cat(if (i == length(records_lst)) '\n' else '\014')
-    }
-    
-    ged
-  })
-}
 
 create_gedcom <- function(records_lst){
   
@@ -249,9 +250,8 @@ create_gedcom <- function(records_lst){
   
 }
 
-parse_record <- function(x, rec_lines){
+parse_record <- function(rec_lines, rec_type, pb){
   
-  rec_type <- sub(sprintf("^0 %s ([A-Z]{3,5})( .*)?$", reg_xref(FALSE)), "\\1", rec_lines[1])
   rec_xref <- extract_ged_values(rec_lines, return_xref = TRUE)
   if(rec_type == "NOTE") #special case
     note_text <- sub(sprintf("^0 %s NOTE (.+)$", reg_xref(FALSE)), "\\1", rec_lines[1])
@@ -265,7 +265,7 @@ parse_record <- function(x, rec_lines){
   
   if(rec_type == "INDI"){
     
-    x@indi[[rec_xref]] <- class_record_indi(
+    rec <- class_record_indi(
       xref = rec_xref,
       sex = toupper(extract_ged_values(rec_lines, "SEX")),
       user_reference_numbers = refns,
@@ -283,7 +283,7 @@ parse_record <- function(x, rec_lines){
 
   } else if(rec_type == "FAM"){
     
-    x@famg[[rec_xref]] <- class_record_famg(
+    rec <- class_record_famg(
       xref = rec_xref,
       husb_xref = extract_ged_values(rec_lines, "HUSB"),
       wife_xref = extract_ged_values(rec_lines, "WIFE"),
@@ -303,7 +303,7 @@ parse_record <- function(x, rec_lines){
     
     data_nts <- extract_ged_values(rec_lines, c("DATA","NOTE"))
     
-    x@sour[[rec_xref]] <- class_record_sour(
+    rec <- class_record_sour(
       xref = rec_xref,
       full_title = extract_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
@@ -327,7 +327,7 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "REPO"){
     
-    x@repo[[rec_xref]] <- class_record_repo(
+    rec <- class_record_repo(
       xref = rec_xref,
       name = extract_ged_values(rec_lines, "NAME"), 
       user_reference_numbers = refns, 
@@ -340,7 +340,7 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "OBJE"){
     
-    x@media[[rec_xref]] <- class_record_media(
+    rec <- class_record_media(
       xref = rec_xref,
       file_ref = extract_ged_values(rec_lines, "FILE"),
       format = extract_ged_values(rec_lines, c("FILE","FORM")),
@@ -356,7 +356,7 @@ parse_record <- function(x, rec_lines){
     
   } else if(rec_type == "NOTE"){
     
-    x@note[[rec_xref]] <- class_record_note(
+    rec <- class_record_note(
       xref = rec_xref,
       text = note_text, 
       user_reference_numbers = refns, 
@@ -366,7 +366,8 @@ parse_record <- function(x, rec_lines){
     )
   }
   
-  x
+  pb$tick()
+  rec
   
 }
 
