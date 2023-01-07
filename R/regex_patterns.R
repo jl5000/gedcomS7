@@ -29,7 +29,7 @@ reg_month <- function() {
 }
 
 reg_year <- function() {
-  "\\d{4}" |> group_it()
+  "\\d{3,4}" |> group_it()
 }
 
 reg_year_dual <- function() {
