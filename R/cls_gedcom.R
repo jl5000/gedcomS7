@@ -1,4 +1,4 @@
-#' @include helpers.R dates.R locations.R record.R validators.R
+#' @include helpers.R cls_dates.R cls_locations.R cls_record.R validators.R
 NULL
 
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
@@ -53,76 +53,82 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   
                                   # Records
                                   subm = class_record_subm,
+                                  indi = R7::class_list,
+                                  famg = R7::class_list,
+                                  sour = R7::class_list,
+                                  repo = R7::class_list,
+                                  media = R7::class_list,
+                                  note = R7::class_list,
                                   
-                                  indi = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@indi <- value
-                                      names(self@indi) <- sapply(self@indi, \(rec) rec@xref,
-                                                                 USE.NAMES = FALSE)
-                                     # self <- refresh_family_links(self, TRUE)
-                                      self
-                                    }),
+                                  # indi = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@indi <- value
+                                  #     names(self@indi) <- sapply(self@indi, \(rec) rec@xref,
+                                  #                                USE.NAMES = FALSE)
+                                  #    # self <- refresh_family_links(self, TRUE)
+                                  #     self
+                                  #   }),
+                                  # 
+                                  # famg = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@famg <- value
+                                  #     names(self@famg) <- sapply(self@famg, \(rec) rec@xref,
+                                  #                                USE.NAMES = FALSE)
+                                  #     #self <- refresh_family_links(self, FALSE)
+                                  #     self
+                                  #   }),
+                                  # 
+                                  # sour = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@sour <- value
+                                  #     names(self@sour) <- sapply(self@sour, \(rec) rec@xref,
+                                  #                               USE.NAMES = FALSE)
+                                  #     self
+                                  #   }),
+                                  # 
+                                  # repo = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@repo <- value
+                                  #     names(self@repo) <- sapply(self@repo, \(rec) rec@xref,
+                                  #                                USE.NAMES = FALSE)
+                                  #     self
+                                  #   }),
+                                  # 
+                                  # media = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@media <- value
+                                  #     names(self@media) <- sapply(self@media, \(rec) rec@xref,
+                                  #                                 USE.NAMES = FALSE)
+                                  #     self
+                                  #   }),
+                                  # 
+                                  # note = R7::new_property(
+                                  #   R7::class_list,
+                                  #   setter = function(self, value){
+                                  #     self@note <- value
+                                  #     names(self@note) <- sapply(self@note, \(rec) rec@xref,
+                                  #                                USE.NAMES = FALSE)
+                                  #     self
+                                  #   }),
                                   
-                                  famg = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@famg <- value
-                                      names(self@famg) <- sapply(self@famg, \(rec) rec@xref,
-                                                                 USE.NAMES = FALSE)
-                                      #self <- refresh_family_links(self, FALSE)
-                                      self
-                                    }),
-                                  
-                                  sour = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@sour <- value
-                                      names(self@sour) <- sapply(self@sour, \(rec) rec@xref,
-                                                                USE.NAMES = FALSE)
-                                      self
-                                    }),
-                                  
-                                  repo = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@repo <- value
-                                      names(self@repo) <- sapply(self@repo, \(rec) rec@xref,
-                                                                 USE.NAMES = FALSE)
-                                      self
-                                    }),
-                                  
-                                  media = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@media <- value
-                                      names(self@media) <- sapply(self@media, \(rec) rec@xref,
-                                                                  USE.NAMES = FALSE)
-                                      self
-                                    }),
-                                  
-                                  note = R7::new_property(
-                                    R7::class_list,
-                                    setter = function(self, value){
-                                      self@note <- value
-                                      names(self@note) <- sapply(self@note, \(rec) rec@xref,
-                                                                 USE.NAMES = FALSE)
-                                      self
-                                    }),
-                                  
-                                  get_indi = R7::new_property(
-                                    R7::class_list,
-                                    getter = function(self){
-                                      self@indi  
-                                    }
-                                  ),
-                                  
-                                  get_famg = R7::new_property(
-                                    R7::class_list,
-                                    getter = function(self){
-                                      self@famg  
-                                    }
-                                  ),
+                                  # get_indi = R7::new_property(
+                                  #   R7::class_list,
+                                  #   getter = function(self){
+                                  #     self@indi  
+                                  #   }
+                                  # ),
+                                  # 
+                                  # get_famg = R7::new_property(
+                                  #   R7::class_list,
+                                  #   getter = function(self){
+                                  #     self@famg  
+                                  #   }
+                                  # ),
                                   
                                   # List of xrefs for each record type
                                   xrefs = R7::new_property(R7::class_list,
@@ -152,21 +158,31 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     R7::class_data.frame,
                                     getter = function(self){
                                       if(length(self@indi) == 0) return(NULL)
-                                      lapply(
-                                        self@indi,
-                                        function(ind){
-                                          data.table::data.table(
-                                            xref = ind@xref,
-                                            name = pop(ind@primary_name),
-                                            sex = pop(ind@sex),
-                                            birth_date = pop(ind@birth_date),
-                                            birth_place = pop(ind@birth_place),
-                                            is_alive = ind@is_alive,
-                                            death_date = pop(ind@death_date),
-                                            death_place = pop(ind@death_place)
-                                          )
-                                        }) |>
-                                        data.table::rbindlist()
+                                      data.frame(
+                                        xref = names(self@indi),
+                                        name = apply_extract_ged_values(self@indi, "NAME"),
+                                        sex = apply_extract_ged_values(self@indi, "SEX"),
+                                        birth_date = apply_extract_ged_values(self@indi, c("BIRT","DATE")),
+                                        birth_place = "",#pop(ind@birth_place),
+                                        is_alive = "",#ind@is_alive,
+                                        death_date = apply_extract_ged_values(self@indi, c("DEAT","DATE")),
+                                        death_place = ""#pop(ind@death_place)
+                                      )
+                                      # lapply(
+                                      #   self@indi,
+                                      #   function(ind){
+                                      #     data.table::data.table(
+                                      #       xref = ind@xref,
+                                      #       name = pop(ind@primary_name),
+                                      #       sex = pop(ind@sex),
+                                      #       birth_date = pop(ind@birth_date),
+                                      #       birth_place = pop(ind@birth_place),
+                                      #       is_alive = ind@is_alive,
+                                      #       death_date = pop(ind@death_date),
+                                      #       death_place = pop(ind@death_place)
+                                      #     )
+                                      #   }) |>
+                                      #   data.table::rbindlist()
                                     }),
                                   
                                   df_famg = R7::new_property(
@@ -199,50 +215,46 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                         data.table::rbindlist()
                                     }),
                                   
-                                  as_df = R7::new_property(
-                                    R7::class_data.frame, 
+                                  as_ged = R7::new_property(
+                                    R7::class_character, 
                                     getter = function(self){
                                       
-                                      hd <- rbind(
-                                        df_rows(level = 0, tag = "HEAD", value = ""),
-                                        df_rows(level = 1, tag = "GEDC", value = ""),
-                                        df_rows(level = 2, tag = "VERS", value = self@gedcom_version),
-                                        df_rows(level = 2, tag = "FORM", value = self@gedcom_form),
-                                        df_rows(level = 3, tag = "VERS", value = self@gedcom_version),
-                                        df_rows(level = 1, tag = "CHAR", value = self@character_encoding),
-                                        df_rows(level = 1, tag = "SOUR", value = self@system_id),
-                                        df_rows(level = 2, tag = "NAME", value = self@product_name),
-                                        df_rows(level = 2, tag = "VERS", value = self@product_version),
-                                        df_rows(level = 2, tag = "CORP", value = self@business_name),
-                                        obj_to_df(self@business_address, level_inc = 3),
-                                        df_rows(level = 2, tag = "DATA", value = self@source_data_name),
-                                        date_to_df(self@source_data_pubdate, level_inc = 3),
-                                        df_rows(level = 3, tag = "COPR", value = self@source_data_copyright),
-                                        df_rows(level = 1, tag = "DEST", value = self@receiving_system),
-                                        date_to_df(self@creation_date, level_inc = 1),
-                                        df_rows(level = 2, tag = "TIME", value = self@creation_time),
-                                        df_rows(level = 1, tag = "LANG", value = self@language),
-                                        df_rows(level = 1, tag = "SUBM", value = self@subm@xref),
-                                        df_rows(level = 1, tag = "FILE", value = self@file_name),
-                                        df_rows(level = 1, tag = "COPR", value = self@gedcom_copyright),
-                                        df_rows(level = 1, tag = "NOTE", value = self@content_description)
+                                      hd <- c(
+                                        "0 HEAD",
+                                        "1 GEDC",
+                                        sprintf("2 VERS %s", self@gedcom_version),
+                                        sprintf("2 FORM %s", self@gedcom_form),
+                                        sprintf("3 VERS %s", self@gedcom_version),
+                                        sprintf("1 CHAR %s", self@character_encoding),
+                                        sprintf("1 SOUR %s", self@system_id),
+                                        sprintf("2 NAME %s", self@product_name),
+                                        sprintf("2 VERS %s", self@product_version),
+                                        sprintf("2 CORP %s", self@business_name),
+                                        obj_to_ged(self@business_address) |> increase_level(by = 3),
+                                        sprintf("2 DATA %s", self@source_data_name),
+                                        sprintf("3 DATE %s", date_to_val(self@source_data_pubdate)),
+                                        sprintf("3 COPR %s", self@source_data_copyright),
+                                        sprintf("1 DEST %s", self@receiving_system),
+                                        sprintf("1 DATE %s", date_to_val(self@creation_date)),
+                                        sprintf("2 TIME %s", self@creation_time),
+                                        sprintf("1 LANG %s", self@language),
+                                        sprintf("1 SUBM %s", self@subm@xref),
+                                        sprintf("1 FILE %s", self@file_name),
+                                        sprintf("1 COPR %s", self@gedcom_copyright),
+                                        sprintf("1 NOTE %s", self@content_description)
                                       )
-                                      hd$record <- "HD"
-                                      hd <- hd[,c(4,1,2,3)]
                                       
-                                      tr <- df_rows(record = "TR", level = 0, tag = "TRLR", value = "")
-                                      
-                                      rbind(
+                                      c(
                                         hd,
-                                        obj_to_df(self@subm, level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[1]), level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[2]), level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[3]), level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[4]), level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[5]), level_inc = 0),
-                                        lst_to_df(R7::prop(self, names(self@xref_prefixes)[6]), level_inc = 0),
-                                        tr
-                                      )
+                                        obj_to_ged(self@subm),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[1])),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[2])),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[3])),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[4])),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[5])),
+                                        unlist(R7::prop(self, names(self@xref_prefixes)[6])),
+                                        "0 TRLR"
+                                      ) |> unname()
                                     }
                                   )
                                   
@@ -269,12 +281,12 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     chk_input_size(self@file_name, "@file_name", 0, 1, 5, 248),
                                     chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1, 248),
                                     chk_input_size(self@content_description, "@content_description", 0, 1, 1, 248),
-                                    chk_input_R7classes(self@indi, "@indi", class_record_indi),
-                                    chk_input_R7classes(self@famg, "@famg", class_record_famg),
-                                    chk_input_R7classes(self@sour, "@sour", class_record_sour),
-                                    chk_input_R7classes(self@repo, "@repo", class_record_repo),
-                                    chk_input_R7classes(self@media, "@media", class_record_media),
-                                    chk_input_R7classes(self@note, "@note", class_record_note),
+                                    # chk_input_R7classes(self@indi, "@indi", class_record_indi),
+                                    # chk_input_R7classes(self@famg, "@famg", class_record_famg),
+                                    # chk_input_R7classes(self@sour, "@sour", class_record_sour),
+                                    # chk_input_R7classes(self@repo, "@repo", class_record_repo),
+                                    # chk_input_R7classes(self@media, "@media", class_record_media),
+                                    # chk_input_R7classes(self@note, "@note", class_record_note),
                                     chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
                                     chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
                                     chk_input_size(self@active_record, "@active_record", 0, 1, 3, 22),

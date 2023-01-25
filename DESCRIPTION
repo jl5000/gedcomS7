@@ -11,13 +11,11 @@ Description: Import, create and edit family tree GEDCOM files.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd"))
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1)
 Imports:
-    R7,
-    data.table,
-    progress
+    R7
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -26,16 +24,17 @@ Collate:
     'add_subrecords.R'
     'validators.R'
     'helpers.R'
-    'dates.R'
-    'common.R'
-    'locations.R'
-    'facts.R'
-    'record.R'
-    'gedcom.R'
+    'cls_dates.R'
+    'cls_common.R'
+    'cls_locations.R'
+    'cls_facts.R'
+    'cls_record.R'
+    'cls_gedcom.R'
+    'cls_links.R'
+    'cls_personal_name.R'
     'io_export.R'
     'io_import.R'
-    'links.R'
     'lookups.R'
-    'personal_name.R'
+    'parse.R'
     'regex_patterns.R'
     'zzz.R'

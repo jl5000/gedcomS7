@@ -9,6 +9,10 @@ anchor_it <- function(reg) {
   paste0("^", reg, "$")
 }
 
+reg_ged_line <- function(){
+  # \\1 is level, \\2 is xref, \\3 is tag, \\4 is value
+  sprintf("^([0-6])(?: (%s))? ([A-Z1-3]{3,5})(?: (.+))?$", reg_xref(FALSE))
+}
 
 #' Enumerate all combinations of regex patterns
 #'

@@ -6,12 +6,12 @@ class_repository_citation <- R7::new_class("class_repository_citation",
                                              xref = R7::class_character,
                                              source_call_number = R7::class_character,
                                              
-                                             as_df = R7::new_property(
-                                               R7::class_data.frame,
+                                             as_ged = R7::new_property(
+                                               R7::class_character,
                                                getter = function(self){
-                                                 rbind(
-                                                   df_rows(level = 0, tag = "REPO", value = self@xref),
-                                                   df_rows(level = 1, tag = "CALN", value = self@source_call_number)
+                                                 c(
+                                                   sprintf("0 REPO %s", self@xref),
+                                                   sprintf("1 CALN %s", self@source_call_number)
                                                  )
                                                })
                                            ),
@@ -34,15 +34,15 @@ class_association <- R7::new_class("class_association",
                                      note_links = R7::class_character,
                                      notes = R7::class_character,
                                      
-                                     as_df = R7::new_property(
-                                       R7::class_data.frame,
+                                     as_ged = R7::new_property(
+                                       R7::class_character,
                                        getter = function(self){
-                                         rbind(
-                                           df_rows(level = 0, tag = "ASSO", value = self@xref),
-                                           df_rows(level = 1, tag = "RELA", value = self@relation_is),
-                                           lst_to_df(self@citations, level_inc = 1),
-                                           df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                           df_rows(level = 1, tag = "NOTE", value = self@notes)
+                                         c(
+                                           sprintf("0 ASSO %s", self@xref),
+                                           sprintf("1 RELA %s", self@relation_is),
+                                           lst_to_ged(self@citations) |> increase_level(by = 1),
+                                           sprintf("1 NOTE %s", self@note_links),
+                                           sprintf("1 NOTE %s", self@notes)
                                          )
                                        })
                                    ),
@@ -66,13 +66,13 @@ class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link",
                                                note_links = R7::class_character,
                                                notes = R7::class_character,
                                                
-                                               as_df = R7::new_property(
-                                                 R7::class_data.frame,
+                                               as_ged = R7::new_property(
+                                                 R7::class_character,
                                                  getter = function(self){
-                                                   rbind(
-                                                     df_rows(level = 0, tag = "FAMS", value = self@xref),
-                                                     df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                                     df_rows(level = 1, tag = "NOTE", value = self@notes)
+                                                   c(
+                                                     sprintf("0 FAMS %s", self@xref),
+                                                     sprintf("1 NOTE %s", self@note_links),
+                                                     sprintf("1 NOTE %s", self@notes)
                                                    )
                                                  })
                                              ),
@@ -91,14 +91,14 @@ class_child_to_family_link <- R7::new_class("class_child_to_family_link", parent
                                             properties = list(
                                               pedigree = R7::new_property(R7::class_character, default = "birth"),
                                               
-                                              as_df = R7::new_property(
-                                                R7::class_data.frame,
+                                              as_ged = R7::new_property(
+                                                R7::class_character,
                                                 getter = function(self){
-                                                  rbind(
-                                                    df_rows(level = 0, tag = "FAMC", value = self@xref),
-                                                    df_rows(level = 1, tag = "PEDI", value = self@pedigree),
-                                                    df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                                    df_rows(level = 1, tag = "NOTE", value = self@notes)
+                                                  c(
+                                                    sprintf("0 FAMC %s", self@xref),
+                                                    sprintf("1 PEDI %s", self@pedigree),
+                                                    sprintf("1 NOTE %s", self@note_links),
+                                                    sprintf("1 NOTE %s", self@notes)
                                                   )
                                                 })
                                             ),

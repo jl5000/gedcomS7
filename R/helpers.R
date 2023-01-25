@@ -1,50 +1,106 @@
 
 `@` <- R7::`@`
-.datatable.aware = TRUE
+
+extract_ged_level <- function(lines){
+  as.integer(sub(reg_ged_line(), "\\1", lines))
+}
+extract_ged_xref <- function(lines){
+  sub(reg_ged_line(), "\\2", lines)
+}
+extract_ged_tag <- function(lines){
+  sub(reg_ged_line(), "\\3", lines)
+}
+extract_ged_value <- function(lines){
+  sub(reg_ged_line(), "\\4", lines)
+}
+
+find_ged_values <- function(lines, 
+                               tag,
+                               return_list = FALSE){
+  
+  base_level <- extract_ged_level(lines[1]) - 1
+  
+  # Ignore parent if lines describes a whole record
+  if(extract_ged_xref(lines[1]) != ""){
+    lines <- lines[-1]
+    base_level <- base_level + 1
+  }
+  
+  if(length(tag) > length(lines)) return(character())
+  
+  for(level in seq_along(tag)){
+    
+    lines_lst <- split(lines, cumsum(extract_ged_level(lines) == base_level + level))
+    
+    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( (?s).*)?$", base_level + level, tag[level]), x[1], perl = TRUE), 
+                        lines_lst)
+    
+    if(level == length(tag)){ # final tag
+      if(return_list){
+        return(unname(lines_lst))
+      } else {
+        # strip out subordinates
+        lines_lst <- lapply(lines_lst, `[`, 1)
+      }
+    } else { # remove parent tag ready for splitting again
+      lines_lst <- lapply(lines_lst, `[`, -1)
+    }
+    
+    if(length(lines_lst) == 0) return(character())
+    
+    lines <- unlist(lines_lst)
+  }
+  
+  lines <- unname(lines)
+  # Catch cases where no line value is given
+  lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
+  sub(sprintf("^%s (%s) ((?s).*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
+}
+
+
+apply_extract_ged_values <- function(recs, tag){
+  
+  recs |>
+    lapply(\(x) find_ged_values(x, tag)) |>
+    lapply(\(x) if(length(x) == 0) pop(x) else x[1]) |>
+    unlist() |>
+    unname()
+  
+}
+
 
 pop <- function(x){
   paste(x, collapse = "")
 }
 
-df_rows <- function(level, tag, value, record = NULL){
-  if(length(value) == 0) return(NULL)
-  df <- data.table::data.table(level = level, tag = tag, value = value)
-  if(!is.null(record)){
-    df[,record:=record]
-    data.table::setcolorder(df, c(4,1,2,3))
-  }
-  df[]
+increase_level <- function(ged, by = 1){
+  if(length(ged) == 0) return(character())
+  
+  cur_level <- as.integer(substr(ged, 1, 1))
+  remainder <- substr(ged, 3, nchar(ged))
+  paste(cur_level + by, remainder)
 }
 
-lst_to_df <- function(lst, level_inc = 0){
-  if(length(lst) == 0) return(NULL)
+
+lst_to_ged <- function(lst){
+  if(length(lst) == 0) return(character())
   
-  lst_df <- lapply(lst, `@`, as_df) |>
-    data.table::rbindlist()
-  
-  if(lst_df[,.N] == 0) return(NULL)
-  
-  lst_df$level <- lst_df$level + level_inc
-  
-  lst_df
+  lapply(lst, `@`, as_ged) |>
+    unlist()
 }
 
-obj_to_df <- function(obj, level_inc = 0){
-  if(is.null(obj)) return(NULL)
-  df <- obj@as_df
-  if(is.null(df)) return(NULL)
-  df$level = df$level + level_inc
-  df
+obj_to_ged <- function(obj){
+  if(is.null(obj)) return(character())
+  obj@as_ged
 }
 
-date_to_df <- function(obj, level_inc = 0){
-  if(is.null(obj)) return(NULL)
-  if(is.character(obj)){
-    date_val <- obj
-  } else {
+date_to_val <- function(obj){
+  if(R7::R7_inherits(obj, class_date)){
     date_val <- obj@as_val
+  } else {
+    date_val <- obj
   }
-  df_rows(level = level_inc, tag = "DATE", value = date_val)
+  date_val
 }
 
 get_valid_xref <- function(x, xref, type){

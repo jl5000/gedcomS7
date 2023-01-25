@@ -32,10 +32,10 @@ test_that("Extraction functions", {
     "1 REFN 789"
   )
   
-  expect_equal(extract_ged_values(lines, return_xref = TRUE), "@I123@")
-  expect_equal(extract_ged_values(lines, "NAME"), "Joe /Bloggs/")
-  expect_equal(extract_ged_values(lines, c("NAME","SURN")), "Bloggs")
-  expect_equal(extract_ged_values(lines, c("NAME","NOTE")), "This is a\nnew line")
+  expect_equal(find_ged_values(lines, return_xref = TRUE), "@I123@")
+  expect_equal(find_ged_values(lines, "NAME"), "Joe /Bloggs/")
+  expect_equal(find_ged_values(lines, c("NAME","SURN")), "Bloggs")
+  expect_equal(find_ged_values(lines, c("NAME","NOTE")), "This is a\nnew line")
   expect_equal(extract_refns(lines), c("123", refn2 = "456", "789"))
   expect_snapshot_value(extract_change_date(lines), "serialize")
   expect_snapshot_value(extract_citations(lines), "serialize")

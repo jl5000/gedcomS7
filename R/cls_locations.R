@@ -55,40 +55,40 @@ class_place <- R7::new_class("class_place",
                                as_val = R7::new_property(R7::class_character, 
                                                          getter = function(self) self@name),
                                
-                               as_df = R7::new_property(R7::class_data.frame,
+                               as_ged = R7::new_property(R7::class_character,
                                                         getter = function(self){
                                                           
-                                                          pla_df <- df_rows(level = 0, tag = "PLAC", value = self@name)
+                                                          pla <- sprintf("0 PLAC %s", self@name)
                                                           
                                                           for (i in seq_along(self@phon_names)) {
-                                                            pla_df <- rbind(
-                                                              pla_df,
-                                                              df_rows(level = 1, tag = "FONE", value = self@phon_names[i]),
-                                                              df_rows(level = 2, tag = "TYPE", value = names(self@phon_names)[i])
+                                                            pla <- c(
+                                                              pla,
+                                                              sprintf("1 FONE %s", self@phon_names[i]),
+                                                              sprintf("2 TYPE %s", names(self@phon_names)[i])
                                                             )
                                                           }
                                                           
                                                           for (i in seq_along(self@rom_names)) {
-                                                            pla_df <- rbind(
-                                                              pla_df,
-                                                              df_rows(level = 1, tag = "ROMN", value = self@rom_names[i]),
-                                                              df_rows(level = 2, tag = "TYPE", value = names(self@rom_names)[i])
+                                                            pla <- c(
+                                                              pla,
+                                                              sprintf("1 ROMN %s", self@rom_names[i]),
+                                                              sprintf("2 TYPE %s", names(self@rom_names)[i])
                                                             )
                                                           }
                                                           
                                                           if(length(self@lat_long) == 1){
-                                                            pla_df <- rbind(
-                                                              pla_df,
-                                                              df_rows(level = 1, tag = "MAP", value = ""),
-                                                              df_rows(level = 2, tag = "LATI", value = self@lat),
-                                                              df_rows(level = 2, tag = "LONG", value = self@long)
+                                                            pla <- c(
+                                                              pla,
+                                                              "1 MAP",
+                                                              sprintf("2 LATI %s", self@lat),
+                                                              sprintf("2 LONG %s", self@long)
                                                             )
                                                           }
                                                           
-                                                          rbind(
-                                                            pla_df,
-                                                            df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                                            df_rows(level = 1, tag = "NOTE", value = self@notes)
+                                                          c(
+                                                            pla,
+                                                            sprintf("1 NOTE %s", self@note_links),
+                                                            sprintf("1 NOTE %s", self@notes)
                                                           )
                                                           
                                                         })
@@ -153,25 +153,25 @@ class_address <- R7::new_class("class_address",
                                        sub(pattern = ", $", replacement = "")
                                    }),
                                  
-                                 as_df = R7::new_property(
-                                   R7::class_data.frame,
+                                 as_ged = R7::new_property(
+                                   R7::class_character,
                                    getter = function(self){
                                      
-                                     add_df <- rbind(
-                                       df_rows(level = 0, tag = "ADDR", value = ""),
-                                       df_rows(level = 1, tag = paste0("ADR", seq_along(self@local_address_lines)), value = self@local_address_lines),
-                                       df_rows(level = 1, tag = "CITY", value = self@city),
-                                       df_rows(level = 1, tag = "STAE", value = self@state),
-                                       df_rows(level = 1, tag = "POST", value = self@postal_code),
-                                       df_rows(level = 1, tag = "CTRY", value = self@country),
-                                       df_rows(level = 0, tag = "PHON", value = self@phone_numbers),
-                                       df_rows(level = 0, tag = "EMAIL", value = self@emails),
-                                       df_rows(level = 0, tag = "FAX", value = self@faxes),
-                                       df_rows(level = 0, tag = "WWW", value = self@web_pages)
+                                     addr <- c(
+                                       "0 ADDR",
+                                       sprintf("1 %s %s", paste0("ADR", seq_along(self@local_address_lines)), self@local_address_lines),
+                                       sprintf("1 CITY %s", self@city),
+                                       sprintf("1 STAE %s", self@state),
+                                       sprintf("1 POST %s", self@postal_code),
+                                       sprintf("1 CTRY %s", self@country),
+                                       sprintf("0 PHON %s", self@phone_numbers),
+                                       sprintf("0 EMAIL %s", self@emails),
+                                       sprintf("0 FAX %s", self@faxes),
+                                       sprintf("0 WWW %s", self@web_pages)
                                      )
                                      
-                                     if(nrow(add_df) == 1) return(NULL)
-                                     add_df
+                                     if(length(addr) == 1) return(character())
+                                     addr
                                    })
                                ),
                                

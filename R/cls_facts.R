@@ -1,4 +1,4 @@
-#' @include helpers.R dates.R locations.R validators.R
+#' @include helpers.R cls_dates.R cls_locations.R validators.R
 NULL
 
 class_fact_detail <- R7::new_class("class_fact_detail",
@@ -27,7 +27,7 @@ class_fact_detail <- R7::new_class("class_fact_detail",
                                       fact_date = R7::new_property(
                                         R7::class_character,
                                         getter = function(self){
-                                          date_to_df(self@date)[tag == "DATE",value]
+                                          date_to_val(self@date)
                                         }),
                                       
                                       fact_location = R7::new_property(
@@ -67,31 +67,31 @@ class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
                                    husband_age = R7::class_character,
                                    wife_age = R7::class_character,
 
-                                   as_df = R7::new_property(
-                                     R7::class_data.frame,
+                                   as_ged = R7::new_property(
+                                     R7::class_character,
                                      getter = function(self){
                                        if(length(self@description) == 0){
                                          desc <- ""
                                        } else {
-                                         desc <- self@description
+                                         desc <- paste0(" ", self@description)
                                        }
-                                       rbind(
-                                         df_rows(level = 0, tag = self@fact, value = desc),
-                                         df_rows(level = 1, tag = "HUSB", value = rep("", length(self@husband_age))),
-                                         df_rows(level = 2, tag = "AGE", value = self@husband_age),
-                                         df_rows(level = 1, tag = "WIFE", value = rep("", length(self@wife_age))),
-                                         df_rows(level = 2, tag = "AGE", value = self@wife_age),
-                                         df_rows(level = 1, tag = "TYPE", value = self@type),
-                                         date_to_df(self@date, level_inc = 1),
-                                         obj_to_df(self@place, level_inc = 1),
-                                         obj_to_df(self@address, level_inc = 1),
-                                         df_rows(level = 1, tag = "AGNC", value = self@agency),
-                                         df_rows(level = 1, tag = "RELI", value = self@relig_affil),
-                                         df_rows(level = 1, tag = "CAUS", value = self@cause),
-                                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                         df_rows(level = 1, tag = "NOTE", value = self@notes),
-                                         lst_to_df(self@citations, level_inc = 1),
-                                         df_rows(level = 1, tag = "OBJE", value = self@media_links)
+                                       c(
+                                         sprintf("0 %s%s", self@fact, desc),
+                                         rep("1 HUSB", length(self@husband_age)),
+                                         sprintf("2 AGE %s", self@husband_age),
+                                         rep("1 WIFE", length(self@wife_age)),
+                                         sprintf("2 AGE %s", self@wife_age),
+                                         sprintf("1 TYPE %s", self@type),
+                                         sprintf("1 DATE %s", date_to_val(self@date)),
+                                         obj_to_ged(self@place) |> increase_level(by = 1),
+                                         obj_to_ged(self@address) |> increase_level(by = 1),
+                                         sprintf("1 AGNC %s", self@agency),
+                                         sprintf("1 RELI %s", self@relig_affil),
+                                         sprintf("1 CAUS %s", self@cause),
+                                         sprintf("1 NOTE %s", self@note_links),
+                                         sprintf("1 NOTE %s", self@notes),
+                                         lst_to_ged(self@citations) |> increase_level(by = 1),
+                                         sprintf("1 OBJE %s", self@media_links)
                                        )
                                      })
                                  ),
@@ -119,30 +119,30 @@ class_fact_indi <- R7::new_class("class_fact_indi", parent = class_fact_detail,
                                    famg_xref = R7::class_character,
                                    adopting_parent = R7::class_character,
                                    
-                                   as_df = R7::new_property(
-                                     R7::class_data.frame,
+                                   as_ged = R7::new_property(
+                                     R7::class_character,
                                      getter = function(self){
                                        if(length(self@description) == 0){
                                          desc <- ""
                                        } else {
-                                         desc <- self@description
+                                         desc <- paste0(" ", self@description)
                                        }
-                                       rbind(
-                                         df_rows(level = 0, tag = self@fact, value = desc),
-                                         df_rows(level = 1, tag = "FAMC", value = self@famg_xref),
-                                         df_rows(level = 2, tag = "ADOP", value = self@adopting_parent),
-                                         df_rows(level = 1, tag = "AGE", value = self@age),
-                                         df_rows(level = 1, tag = "TYPE", value = self@type),
-                                         date_to_df(self@date, level_inc = 1),
-                                         obj_to_df(self@place, level_inc = 1),
-                                         obj_to_df(self@address, level_inc = 1),
-                                         df_rows(level = 1, tag = "AGNC", value = self@agency),
-                                         df_rows(level = 1, tag = "RELI", value = self@relig_affil),
-                                         df_rows(level = 1, tag = "CAUS", value = self@cause),
-                                         df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                                         df_rows(level = 1, tag = "NOTE", value = self@notes),
-                                         lst_to_df(self@citations, level_inc = 1),
-                                         df_rows(level = 1, tag = "OBJE", value = self@media_links)
+                                       c(
+                                         sprintf("0 %s%s", self@fact, desc),
+                                         sprintf("1 FAMC %s", self@famg_xref),
+                                         sprintf("2 ADOP %s", self@adopting_parent),
+                                         sprintf("1 AGE %s", self@age),
+                                         sprintf("1 TYPE %s", self@type),
+                                         sprintf("1 DATE %s", date_to_val(self@date)),
+                                         obj_to_ged(self@place) |> increase_level(by = 1),
+                                         obj_to_ged(self@address) |> increase_level(by = 1),
+                                         sprintf("1 AGNC %s", self@agency),
+                                         sprintf("1 RELI %s", self@relig_affil),
+                                         sprintf("1 CAUS %s", self@cause),
+                                         sprintf("1 NOTE %s", self@note_links),
+                                         sprintf("1 NOTE %s", self@notes),
+                                         lst_to_ged(self@citations) |> increase_level(by = 1),
+                                         sprintf("1 OBJE %s", self@media_links)
                                        )
                                      })
                                  ),

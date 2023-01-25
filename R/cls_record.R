@@ -1,4 +1,4 @@
-#' @include helpers.R common.R locations.R facts.R validators.R
+#' @include helpers.R cls_common.R cls_locations.R cls_facts.R validators.R
 NULL
 
 class_record <- 
@@ -13,17 +13,18 @@ class_record <-
                   citations = R7::class_list,
                   last_updated = R7::new_property(R7::new_union(NULL, class_change_date)),
                   
-                  refs_df = R7::new_property(
-                    R7::class_data.frame,
+                  refs_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      tmp <- NULL
+                      tmp <- character()
                       for(i in seq_along(self@user_reference_numbers)){
-                        tmp <- rbind(
+                        tmp <- c(
                           tmp,
-                          df_rows(level = 1, tag = "REFN", value = self@user_reference_numbers[i]),
-                          df_rows(level = 2, tag = "TYPE", value = names(self@user_reference_numbers)[i])
-                        )[!(tag == "TYPE" & value == "")]
+                          sprintf("1 REFN %s", self@user_reference_numbers[i]),
+                          sprintf("2 TYPE %s", names(self@user_reference_numbers)[i])
+                        )
                       }
+                      tmp <- tmp[tmp != "2 TYPE "]
                       tmp
                     })
                 ),
@@ -52,22 +53,19 @@ class_record_subm <-
                   name = R7::new_property(R7::class_character, default = unname(Sys.info()["user"])),
                   address = R7::new_property(R7::new_union(NULL, class_address)),
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "SUBM", value = ""),
-                        df_rows(level = 1, tag = "NAME", value = self@name),
-                        obj_to_df(self@address, level_inc = 1),
-                        df_rows(level = 1, tag = "OBJE", value = self@media_links),
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        obj_to_df(self@last_updated, level_inc = 1)
+                      c(
+                        sprintf("0 %s SUBM", self@xref),
+                        sprintf("1 NAME %s", self@name),
+                        obj_to_ged(self@address) |> increase_level(by = 1),
+                        sprintf("1 OBJE %s", self@media_links),
+                        sprintf("1 RIN %s", self@auto_id),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){
@@ -107,27 +105,24 @@ class_record_famg <-
                       character()
                     }),
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "FAM", value = ""),
-                        lst_to_df(self@facts, level_inc = 1),
-                        df_rows(level = 1, tag = "HUSB", value = self@husb_xref),
-                        df_rows(level = 1, tag = "WIFE", value = self@wife_xref),
-                        df_rows(level = 1, tag = "CHIL", value = self@chil_xref),
-                        df_rows(level = 1, tag = "NCHI", value = as.character(self@num_children)),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@last_updated, level_inc = 1),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        lst_to_df(self@citations, level_inc = 1),
-                        df_rows(level = 1, tag = "OBJE", value = self@media_links)
+                      c(
+                        sprintf("0 %s FAM", self@xref),
+                        lst_to_ged(self@facts) |> increase_level(by = 1),
+                        sprintf("1 HUSB %s", self@husb_xref),
+                        sprintf("1 WIFE %s", self@wife_xref),
+                        sprintf("1 CHIL %s", self@chil_xref),
+                        sprintf("1 NCHI %s", self@num_children),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        lst_to_ged(self@citations) |> increase_level(by = 1),
+                        sprintf("1 OBJE %s", self@media_links)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){
@@ -227,27 +222,24 @@ class_record_indi <-
                       character()
                     }),
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "INDI", value = ""),
-                        lst_to_df(self@personal_names, level_inc = 1),
-                        df_rows(level = 1, tag = "SEX", value = self@sex),
-                        lst_to_df(self@facts, level_inc = 1),
-                        lst_to_df(self@family_links, level_inc = 1),
-                        lst_to_df(self@associations, level_inc = 1),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@last_updated, level_inc = 1),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        lst_to_df(self@citations, level_inc = 1),
-                        df_rows(level = 1, tag = "OBJE", value = self@media_links)
+                      c(
+                        sprintf("0 %s INDI", self@xref),
+                        lst_to_ged(self@personal_names) |> increase_level(by = 1),
+                        sprintf("1 SEX %s", self@sex),
+                        lst_to_ged(self@facts) |> increase_level(by = 1),
+                        lst_to_ged(self@family_links) |> increase_level(by = 1),
+                        lst_to_ged(self@associations) |> increase_level(by = 1),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        lst_to_ged(self@citations) |> increase_level(by = 1),
+                        sprintf("1 OBJE %s", self@media_links)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){
@@ -270,25 +262,22 @@ class_record_media <-
                   media_type = R7::class_character,
                   title = R7::class_character,
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "OBJE", value = ""),
-                        df_rows(level = 1, tag = "FILE", value = self@file_ref),
-                        df_rows(level = 2, tag = "FORM", value = self@format),
-                        df_rows(level = 3, tag = "TYPE", value = rep(self@media_type, length(self@format))),
-                        df_rows(level = 2, tag = "TITL", value = rep(self@title, length(self@file_ref))),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        lst_to_df(self@citations, level_inc = 1),
-                        obj_to_df(self@last_updated, level_inc = 1)
+                      c(
+                        sprintf("0 %s OBJE", self@xref),
+                        sprintf("1 FILE %s", self@file_ref),
+                        sprintf("2 FORM %s", self@format),
+                        sprintf("3 TYPE %s", self@media_type),
+                        sprintf("2 TITL %s", self@title),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        lst_to_ged(self@citations) |> increase_level(by = 1),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){
@@ -320,42 +309,40 @@ class_record_sour <-
                   source_text = R7::class_character,
                   repo_citations = R7::class_list,
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      sour_df <- rbind(
-                        df_rows(level = 0, tag = "SOUR", value = ""),
-                        df_rows(level = 1, tag = "DATA", value = ""),
-                        df_rows(level = 2, tag = "EVEN", value = self@events_recorded),
-                        date_to_df(self@date_period, level_inc = 3),
-                        df_rows(level = 3, tag = "PLAC", value = self@jurisdiction_place),
-                        df_rows(level = 2, tag = "AGNC", value = self@responsible_agency),
-                        df_rows(level = 2, tag = "NOTE", value = self@data_note_links),
-                        df_rows(level = 2, tag = "NOTE", value = self@data_notes),
-                        df_rows(level = 1, tag = "AUTH", value = self@originator),
-                        df_rows(level = 1, tag = "TITL", value = self@full_title),
-                        df_rows(level = 1, tag = "ABBR", value = self@short_title),
-                        df_rows(level = 1, tag = "PUBL", value = self@publication_facts),
-                        df_rows(level = 1, tag = "TEXT", value = self@source_text),
-                        lst_to_df(self@repo_citations, level_inc = 1),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@last_updated, level_inc = 1),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        df_rows(level = 1, tag = "OBJE", value = self@media_links)
+                      sour <- c(
+                        sprintf("0 %s SOUR", self@xref),
+                        "1 DATA",
+                        sprintf("2 EVEN %s", self@events_recorded),
+                        sprintf("3 DATE %s", date_to_val(self@date_period)),
+                        sprintf("3 PLAC %s", self@jurisdiction_place),
+                        sprintf("2 AGNC %s", self@responsible_agency),
+                        sprintf("2 NOTE %s", self@data_note_links),
+                        sprintf("2 NOTE %s", self@data_notes),
+                        sprintf("1 AUTH %s", self@originator),
+                        sprintf("1 TITL %s", self@full_title),
+                        sprintf("1 ABBR %s", self@short_title),
+                        sprintf("1 PUBL %s", self@publication_facts),
+                        sprintf("1 TEXT %s", self@source_text),
+                        lst_to_ged(self@repo_citations) |> increase_level(by = 1),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        sprintf("1 OBJE %s", self@media_links)
                       )
-                      sour_df[,record:= self@xref]
-                      data.table::setcolorder(sour_df, c(4,1,2,3))
                       
-                      if (length(self@date_period) + length(self@jurisdiction_place) == 0)
-                        sour_df <- sour_df[tag != "EVEN"]
+                      # if (length(self@date_period) + length(self@jurisdiction_place) == 0)
+                      #   sour_df <- sour_df[tag != "EVEN"]
                       
                       if (length(self@events_recorded) + length(self@responsible_agency) + 
                           length(self@data_notes) + length(self@data_note_links) == 0)
-                        sour_df <- sour_df[tag != "DATA"]
+                        sour <- sour[sour != "1 DATA"]
                       
-                      sour_df
+                      sour
                     })
                 ),
                 validator = function(self){
@@ -384,22 +371,19 @@ class_record_repo <-
                   name = R7::class_character,
                   address = R7::new_property(R7::new_union(NULL, class_address)),
                   
-                  as_df = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = R7::new_property(
+                    R7::class_character,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "REPO", value = ""),
-                        df_rows(level = 1, tag = "NAME", value = self@name),
-                        obj_to_df(self@address, level_inc = 1),
-                        df_rows(level = 1, tag = "NOTE", value = self@note_links),
-                        df_rows(level = 1, tag = "NOTE", value = self@notes),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        obj_to_df(self@last_updated, level_inc = 1)
+                      c(
+                        sprintf("0 %s REPO", self@xref),
+                        sprintf("1 NAME %s", self@name),
+                        obj_to_ged(self@address) |> increase_level(by = 1),
+                        sprintf("1 NOTE %s", self@note_links),
+                        sprintf("1 NOTE %s", self@notes),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){
@@ -420,16 +404,13 @@ class_record_note <-
                   as_df = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
-                      df <- rbind(
-                        df_rows(level = 0, tag = "NOTE", value = self@text),
-                        self@refs_df,
-                        df_rows(level = 1, tag = "RIN", value = self@auto_id),
-                        lst_to_df(self@citations, level_inc = 1),
-                        obj_to_df(self@last_updated, level_inc = 1)
+                      c(
+                        sprintf("0 %s SUBM %s", self@xref, self@text),
+                        self@refs_ged,
+                        sprintf("1 RIN %s", self@auto_id),
+                        lst_to_ged(self@citations) |> increase_level(by = 1),
+                        obj_to_ged(self@last_updated) |> increase_level(by = 1)
                       )
-                      df[,record:= self@xref]
-                      data.table::setcolorder(df, c(4,1,2,3))
-                      df[]
                     })
                 ),
                 validator = function(self){

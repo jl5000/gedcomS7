@@ -1,7 +1,9 @@
 #' @include helpers.R validators.R
 NULL
 
-class_date_exact <- R7::new_class("class_date_exact",
+class_date <- R7::new_class("class_date")
+
+class_date_exact <- R7::new_class("class_date_exact", parent = class_date,
                               properties = list(
                                 year = R7::class_integer,
                                 month = R7::class_integer,
@@ -41,7 +43,7 @@ date_exact_current <- function(){
 }
 
 
-class_date_calendar <- R7::new_class("class_date_calendar",
+class_date_calendar <- R7::new_class("class_date_calendar", parent = class_date,
                              properties = list(
                                year = R7::class_integer,
                                month = R7::class_integer,
@@ -84,7 +86,7 @@ class_date_calendar <- R7::new_class("class_date_calendar",
                              }
 )
 
-class_date_approx <- R7::new_class("class_date_approx",
+class_date_approx <- R7::new_class("class_date_approx", parent = class_date,
                                    properties = list(
                                      date = class_date_calendar,
                                      about = R7::new_property(R7::class_logical, default = TRUE),
@@ -116,7 +118,7 @@ class_date_approx <- R7::new_class("class_date_approx",
 
 
 
-class_date_period <- R7::new_class("class_date_period",
+class_date_period <- R7::new_class("class_date_period", parent = class_date,
                                properties = list(
                                  start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
                                  end_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
