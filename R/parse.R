@@ -59,9 +59,7 @@ pull_record <- function(rec_lines){
       full_title = find_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
       notes = nts[!grepl(reg_xref(TRUE), nts)],
-      events_recorded = toupper(find_ged_values(rec_lines, c("DATA","EVEN"))),
-      date_period = find_ged_values(rec_lines, c("DATA","EVEN","DATE")),
-      jurisdiction_place = find_ged_values(rec_lines, c("DATA","EVEN","PLAC")),
+      events_recorded = extract_events_recorded(rec_lines),
       responsible_agency = find_ged_values(rec_lines, c("DATA","AGNC")),
       data_note_links = data_nts[grepl(reg_xref(TRUE), data_nts)],
       data_notes = data_nts[!grepl(reg_xref(TRUE), data_nts)],
@@ -135,6 +133,20 @@ extract_refns <- function(rec_lines){
   })
   names(refns) <- types
   refns
+}
+
+extract_events_recorded <- function(rec_lines){
+  even_lst <- find_ged_values(rec_lines, c("DATA","EVEN"), return_list = TRUE)
+  if(length(even_lst) == 0) return(character())
+  
+  lapply(even_lst, \(x){
+    class_events_recorded(
+      events = find_ged_values(x, "EVEN"),
+      date_period = find_ged_values(x, c("EVEN","DATE")),
+      jurisdiction_place = find_ged_values(x, c("EVEN","PLAC"))
+    )
+  })
+  
 }
 
 extract_change_date <- function(rec_lines){

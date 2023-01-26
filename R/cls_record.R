@@ -293,12 +293,37 @@ class_record_media <-
                 }
   )
 
+
+class_events_recorded <- 
+  R7::new_class("class_events_recorded",
+                properties = list(
+                  events = R7::class_character,
+                  date_period = R7::new_property(R7::new_union(NULL, class_date_period, R7::class_character)),
+                  jurisdiction_place = R7::class_character,
+                  
+                  as_ged = R7::new_property(
+                    R7::class_character,
+                    getter = function(self){
+                      c(
+                        sprintf("0 EVEN %s", self@events),
+                        sprintf("1 DATE %s", date_to_val(self@date_period)),
+                        sprintf("1 PLAC %s", self@jurisdiction_place)
+                      )
+                    })
+                ),
+                validator = function(self){
+                  c(
+                    chk_input_size(self@events, "@events", 1, 1, 1, 90),
+                    chk_input_size(self@date_period, "@date_period", 0, 1),
+                    chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
+                    chk_input_size(self@jurisdiction_place, "@jurisdiction_place", 0, 1, 1, 120)
+                  )
+                })
+
 class_record_sour <- 
   R7::new_class("class_record_sour", parent = class_record,
                 properties = list(
-                  events_recorded = R7::class_character,
-                  date_period = R7::new_property(R7::new_union(NULL, class_date_period, R7::class_character)),
-                  jurisdiction_place = R7::class_character,
+                  events_recorded = R7::class_list,
                   responsible_agency = R7::class_character,
                   data_note_links = R7::class_character,
                   data_notes = R7::class_character,
@@ -315,9 +340,7 @@ class_record_sour <-
                       sour <- c(
                         sprintf("0 %s SOUR", self@xref),
                         "1 DATA",
-                        sprintf("2 EVEN %s", self@events_recorded),
-                        sprintf("3 DATE %s", date_to_val(self@date_period)),
-                        sprintf("3 PLAC %s", self@jurisdiction_place),
+                        lst_to_ged(self@events_recorded) |> increase_level(by = 2),
                         sprintf("2 AGNC %s", self@responsible_agency),
                         sprintf("2 NOTE %s", self@data_note_links),
                         sprintf("2 NOTE %s", self@data_notes),
@@ -335,9 +358,6 @@ class_record_sour <-
                         sprintf("1 OBJE %s", self@media_links)
                       )
                       
-                      # if (length(self@date_period) + length(self@jurisdiction_place) == 0)
-                      #   sour_df <- sour_df[tag != "EVEN"]
-                      
                       if (length(self@events_recorded) + length(self@responsible_agency) + 
                           length(self@data_notes) + length(self@data_note_links) == 0)
                         sour <- sour[sour != "1 DATA"]
@@ -347,10 +367,7 @@ class_record_sour <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_size(self@events_recorded, "@events_recorded", 0, 1, 1, 90),
-                    chk_input_size(self@date_period, "@date_period", 0, 1),
-                    chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
-                    chk_input_size(self@jurisdiction_place, "@jurisdiction_place", 0, 1, 1, 120),
+                    chk_input_R7classes(self@events_recorded, "@events_recorded", class_events_recorded),
                     chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1, 120),
                     chk_input_size(self@data_note_links, "@data_note_links", 0, 10000, 3, 22),
                     chk_input_pattern(self@data_note_links, "@data_note_links", reg_xref(TRUE)),
@@ -422,3 +439,4 @@ class_record_note <-
                   )
                 }
   )
+
