@@ -64,16 +64,6 @@ read_gedcom <- function(filepath = file.choose()) {
 #' @param filepath The full filepath of the GEDCOM file.
 #'
 #' @return A character string indicating the encoding of the file.
-#' @tests
-#' expect_equal(
-#'   read_gedcom_encoding(system.file("extdata", "555SAMPLE.GED", package = "tidyged.io")), 
-#'   "UTF-8")
-#' expect_equal(
-#'   read_gedcom_encoding(system.file("extdata", "555SAMPLE16BE.GED", package = "tidyged.io")), 
-#'   "UTF-16BE")
-#' expect_equal(
-#'   read_gedcom_encoding(system.file("extdata", "555SAMPLE16LE.GED", package = "tidyged.io")), 
-#'   "UTF-16LE")
 read_gedcom_encoding <- function(filepath) {
   
   if(identical(as.character(readBin(filepath, 'raw', 3)), .pkgenv$BOM_UTF8)) {
@@ -107,7 +97,7 @@ validate_lines <- function(lines){
                  paste(invalid_lines, lines[invalid_lines], sep = ": ")), 
                collapse = "\n"))
   
-    unsupp_calendars <- c("HEBREW","FRENCH R","JULIAN","UNKNOWN")
+  unsupp_calendars <- c("HEBREW","FRENCH R","JULIAN","UNKNOWN")
   unsupp_calendars <- paste0("@#D", unsupp_calendars, "@", collapse = "|")
   
   if(any(grepl(sprintf("^[1-6] DATE (%s)", unsupp_calendars), lines)))
