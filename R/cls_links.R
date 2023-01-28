@@ -60,7 +60,7 @@ class_association <- R7::new_class("class_association",
                                    }
 )
 
-class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link",
+class_spouse_family_link <- R7::new_class("class_spouse_family_link",
                                              properties = list(
                                                xref = R7::class_character,
                                                note_links = R7::class_character,
@@ -87,9 +87,10 @@ class_spouse_to_family_link <- R7::new_class("class_spouse_to_family_link",
                                              }
 )
 
-class_child_to_family_link <- R7::new_class("class_child_to_family_link", parent = class_spouse_to_family_link,
+class_child_family_link_biol <- R7::new_class("class_child_family_link_biol", parent = class_spouse_family_link,
                                             properties = list(
-                                              pedigree = R7::new_property(R7::class_character, default = "birth"),
+                                              pedigree = R7::new_property(R7::class_character,
+                                                                          getter = function(self) "birth"),
                                               
                                               as_ged = R7::new_property(
                                                 R7::class_character,
@@ -101,13 +102,20 @@ class_child_to_family_link <- R7::new_class("class_child_to_family_link", parent
                                                     sprintf("1 NOTE %s", self@notes)
                                                   )
                                                 })
-                                            ),
-                                            
-                                            validator = function(self){
-                                              c(
-                                                chk_input_size(self@pedigree, "@pedigree", 0, 1, 5, 7),
-                                                chk_input_choice(self@pedigree, "@pedigree", val_pedigree_linkage_types())
-                                              )
-                                            }
+                                            )
+)
+
+class_child_family_link_adop <- R7::new_class("class_child_family_link_adop", parent = class_child_family_link_biol,
+                                             properties = list(
+                                               pedigree = R7::new_property(R7::class_character,
+                                                                           getter = function(self) "adopted")
+                                             )
+)
+
+class_child_family_link_fost <- R7::new_class("class_child_family_link_fost", parent = class_child_family_link_biol,
+                                             properties = list(
+                                               pedigree = R7::new_property(R7::class_character,
+                                                                           getter = function(self) "foster")
+                                             )
 )
 

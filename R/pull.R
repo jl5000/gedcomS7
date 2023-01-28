@@ -1,11 +1,17 @@
 
+#' Parse a GEDCOM record into an editable object
+#'
+#' @param rec_lines A character vector of lines of the GEDCOM record.
+#'
+#' @return An R7 object representing the record.
+#' @export
 pull_record <- function(rec_lines){
   
   rec_type <- extract_ged_tag(rec_lines[1])
-  rec_xref <- extract_ged_xref(rec_lines[1])
+  if(!rec_type %in% c("INDI","FAM","SOUR","REPO","NOTE","OBJE"))
+    stop("Record type not recognised: ", rec_type)
   
-  if(rec_type == "NOTE") #special case
-    note_text <- extract_ged_value(rec_lines[1])
+  rec_xref <- extract_ged_xref(rec_lines[1])
   
   nts <- find_ged_values(rec_lines, "NOTE")
   refns <- extract_refns(rec_lines)
@@ -16,7 +22,7 @@ pull_record <- function(rec_lines){
   
   if(rec_type == "INDI"){
     
-    rec <- class_record_indi(
+    class_record_indi(
       xref = rec_xref,
       sex = toupper(find_ged_values(rec_lines, "SEX")),
       user_reference_numbers = refns,
@@ -34,7 +40,7 @@ pull_record <- function(rec_lines){
     
   } else if(rec_type == "FAM"){
     
-    rec <- class_record_famg(
+    class_record_famg(
       xref = rec_xref,
       husb_xref = find_ged_values(rec_lines, "HUSB"),
       wife_xref = find_ged_values(rec_lines, "WIFE"),
@@ -54,7 +60,7 @@ pull_record <- function(rec_lines){
     
     data_nts <- find_ged_values(rec_lines, c("DATA","NOTE"))
     
-    rec <- class_record_sour(
+    class_record_sour(
       xref = rec_xref,
       full_title = find_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
@@ -76,7 +82,7 @@ pull_record <- function(rec_lines){
     
   } else if(rec_type == "REPO"){
     
-    rec <- class_record_repo(
+    class_record_repo(
       xref = rec_xref,
       name = find_ged_values(rec_lines, "NAME"), 
       user_reference_numbers = refns, 
@@ -89,7 +95,7 @@ pull_record <- function(rec_lines){
     
   } else if(rec_type == "OBJE"){
     
-    rec <- class_record_media(
+    class_record_media(
       xref = rec_xref,
       file_ref = find_ged_values(rec_lines, "FILE"),
       format = find_ged_values(rec_lines, c("FILE","FORM")),
@@ -105,21 +111,17 @@ pull_record <- function(rec_lines){
     
   } else if(rec_type == "NOTE"){
     
-    rec <- class_record_note(
+    class_record_note(
       xref = rec_xref,
-      text = note_text, 
+      text = extract_ged_value(rec_lines[1]), 
       user_reference_numbers = refns, 
       auto_id = auto_id,
       citations = cits,
       last_updated = chan
     )
   }
-  
-  rec
-  
+
 }
-
-
 
 
 extract_refns <- function(rec_lines){
@@ -390,17 +392,37 @@ extract_family_links <- function(rec_lines){
   
   lapply(link_lst, \(x){
     nts <- find_ged_values(x, c("FAMS|FAMC", "NOTE"))
+    note_links <- nts[grepl(reg_xref(TRUE), nts)]
+    notes <- nts[!grepl(reg_xref(TRUE), nts)]
     xref <- find_ged_values(x, "FAMC|FAMS")
     
     if(grepl("FAMC", x[1], fixed = TRUE)){
-      class_child_to_family_link(
-        xref = xref,
-        pedigree = tolower(find_ged_values(x, c("FAMC", "PEDI"))),
-        note_links = nts[grepl(reg_xref(TRUE), nts)],
-        notes = nts[!grepl(reg_xref(TRUE), nts)]
-      )
+      pedi <- find_ged_values(x, c("FAMC", "PEDI"))
+      
+      if(length(pedi) == 0 || pedi == "birth"){
+        class_child_family_link_biol(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else if(pedi == "adopted") {
+        class_child_family_link_adop(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else if(pedi == "foster") {
+        class_child_family_link_fost(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else {
+        stop("Unrecognised pedigree linkage type: ", pedi)
+      }
+      
     } else {
-      class_spouse_to_family_link(
+      class_spouse_family_link(
         xref = xref,
         note_links = nts[grepl(reg_xref(TRUE), nts)],
         notes = nts[!grepl(reg_xref(TRUE), nts)]
