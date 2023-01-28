@@ -14,6 +14,16 @@ extract_ged_value <- function(lines){
   sub(reg_ged_line(), "\\4", lines)
 }
 
+delete_ged_section <- function(lines, line_no){
+  lvl <- as.integer(substr(lines[line_no], 1, 1))
+  lines <- lines[-line_no]
+  while(line_no <= length(lines) && 
+        as.integer(substr(lines[line_no], 1, 1)) > lvl){
+    lines <- lines[-line_no]
+  }
+  lines
+}
+
 find_ged_values <- function(lines, 
                                tag,
                                return_list = FALSE){
