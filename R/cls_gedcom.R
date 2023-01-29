@@ -63,10 +63,11 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   
                                   # List of xrefs for each record type
                                   xrefs = R7::new_property(R7::class_list,
-                                                           getter = function(self){ # TODO: get rid of purrr
-                                                             lapply(names(self@xref_prefixes), \(rec_type) R7::prop(self, rec_type)) |> 
-                                                               lapply(\(rec_list) purrr::map_chr(unname(rec_list), \(rec) rec@xref)) |>
-                                                               setNames(names(self@xref_prefixes))
+                                                           getter = function(self){
+                                                             rec_types <- names(self@xref_prefixes)
+                                                             rec_xrefs <- lapply(rec_types, \(rec_type) names(R7::prop(self, rec_type)))
+                                                             setNames(rec_xrefs, rec_types)
+                                                             rec_xrefs
                                                            }),
 
                                   next_xref = R7::new_property(R7::class_character,
