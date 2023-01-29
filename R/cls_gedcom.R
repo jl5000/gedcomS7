@@ -52,7 +52,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                                                repo = "R", media = "M", note = "N")),
                                   
                                   # Records
-                                  subm = class_record_subm,
+                                  subm = class_subm,
                                   indi = R7::class_list,
                                   famg = R7::class_list,
                                   sour = R7::class_list,
@@ -236,7 +236,7 @@ new_gedcomR7 <- function(my_name = unname(Sys.info()["user"]),
                  business_address = class_address(emails = "jalendrum@gmail.com"),
                  creation_date = date_exact_current(),
                  language = my_language,
-                 subm = class_record_subm(xref = "@U1@", name = my_name),
+                 subm = class_subm(xref = "@U1@", name = my_name),
                  xref_subm = "@U1@"
   )
 }

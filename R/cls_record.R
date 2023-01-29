@@ -47,8 +47,8 @@ class_record <-
   )
 
 
-class_record_subm <- 
-  R7::new_class("class_record_subm", parent = class_record,
+class_subm <- 
+  R7::new_class("class_subm", parent = class_record,
                 properties = list(
                   name = R7::new_property(R7::class_character, default = unname(Sys.info()["user"])),
                   address = R7::new_property(R7::new_union(NULL, class_address)),

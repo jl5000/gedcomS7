@@ -208,7 +208,7 @@ create_gedcom <- function(records_lst){
 
   subm_nts <- find_ged_values(subm_lines, "NOTE")
   
-  subm <- class_record_subm(
+  subm <- class_subm(
     xref = extract_ged_xref(subm_lines[1]),
     name = find_ged_values(subm_lines, "NAME"),
     address = extract_address(subm_lines),
