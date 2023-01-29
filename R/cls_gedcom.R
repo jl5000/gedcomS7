@@ -5,7 +5,26 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 properties = list(
                                   quicksave_enabled = R7::new_property(R7::class_logical, default = FALSE),
                                   file_path = R7::class_character,
-                                  active_record = R7::class_character,
+                                  
+                                  save = R7::new_property(
+                                    R7::class_logical,
+                                    getter = function(self){
+                                      if(!self@quicksave_enabled)
+                                        stop("File cannot be saved. Enable quicksave with the @quicksave parameter.")
+                                      
+                                      if(length(self@file_path) == 0)
+                                        stop("File cannot be saved. Set an existing file path with the @file_path parameter.")
+                                      
+                                      if(file.exists(self@file_path))
+                                        file.remove(self@file_path)
+                                      
+                                      write_gedcom(self, self@file_path)
+                                      message("GEDCOM saved")
+                                      invisible(TRUE)
+                                    }
+                                  ),
+                                  
+                                  update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
                                   
                                   gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
                                   gedcom_form = R7::new_property(getter = function(self) "LINEAGE-LINKED"),
@@ -26,25 +45,6 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   file_name = R7::class_character,
                                   gedcom_copyright = R7::class_character,
                                   content_description = R7::class_character,
-                                  
-                                  # Not currently used
-                                  update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
-                                  
-                                  save = R7::new_property(
-                                    R7::class_logical,
-                                    getter = function(self){
-                                      if(!self@quicksave_enabled)
-                                        stop("File cannot be saved. Enable quicksave with the @quicksave parameter.")
-                                      
-                                      if(length(self@file_path) == 0 || !file.exists(self@file_path))
-                                        stop("File cannot be saved. Set an existing file path with the @file_path parameter.")
-                                      
-                                      file.remove(self@file_path)
-                                      write_gedcom(self, self@file_path)
-                                      message("GEDCOM saved")
-                                      invisible(TRUE)
-                                    }
-                                  ),
                                   
                                   # This serves as both a record of prefixes and order of records
                                   xref_prefixes = R7::new_property(R7::class_character,
@@ -219,9 +219,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     # chk_input_R7classes(self@media, "@media", class_record_media),
                                     # chk_input_R7classes(self@note, "@note", class_record_note),
                                     chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
-                                    chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note")),
-                                    chk_input_size(self@active_record, "@active_record", 0, 1, 3, 22),
-                                    chk_input_pattern(self@active_record, "@active_record", reg_xref(TRUE))
+                                    chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))
                                     # TODO: names and values must be unique
                                     # Check all xrefs point to a record
                                     #chk_xref_pointers_valid(self)

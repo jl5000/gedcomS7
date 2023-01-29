@@ -11,7 +11,6 @@ add_indi <- function(x,
                                       user_reference_numbers = user_reference_numbers,
                                       notes = notes)
   sex <- ifelse(length(sex) == 0, "unknown sex", paste("sex", sex))
-  x@active_record <- xref
   message(sprintf("Individual of %s added with xref %s.", sex, xref))
   x
 }
@@ -26,11 +25,11 @@ add_famg <- function(x,
   
   if(is.null(xref)) xref <- unname(x@next_xref["famg"])
   x@famg[[xref]] <- class_record_famg(xref = xref,
+                                      husb_xref = husb_xref, 
+                                      wife_xref = wife_xref, 
+                                      chil_xref = chil_xref,
                                       user_reference_numbers = user_reference_numbers,
                                       notes = notes)
-  # Assign properties here to trigger the setter which does not happen on instantiation
-  R7::props(x@famg[[xref]]) <- list(husb_xref = husb_xref, wife_xref = wife_xref, chil_xref = chil_xref)
-  x@active_record <- xref
   message(sprintf("Family group added with xref %s.", xref))
   x
 }
@@ -47,7 +46,6 @@ add_sour <- function(x,
                                       user_reference_numbers = user_reference_numbers,
                                       notes = notes)
   title <- ifelse(length(title) == 0, "unknown title", paste("title", paste0("'", title, "'")))
-  x@active_record <- xref
   message(sprintf("Source with %s added with xref %s.", title, xref))
   x
 }
@@ -63,7 +61,6 @@ add_repo <- function(x,
                                       name = name,
                                       user_reference_numbers = user_reference_numbers,
                                       notes = notes)
-  x@active_record <- xref
   message(sprintf("Repository named %s added with xref %s.", name, xref))
   x
 }
@@ -81,7 +78,6 @@ add_media <- function(x,
                                         format = format,
                                         user_reference_numbers = user_reference_numbers,
                                         notes = notes)
-  x@active_record <- xref
   message(sprintf("Multimedia %s with ref %s added with xref %s.", format, file_ref, xref))
   x
 }
@@ -95,45 +91,38 @@ add_note <- function(x,
   x@note[[xref]] <- class_record_note(xref = xref, 
                                       text = text,
                                       user_reference_numbers = user_reference_numbers)
-  x@active_record <- xref
   start <- substr(text, 1, 20)
   message(sprintf("Note beginning '%s...' added with xref %s.", start, xref))
   x
 }
 
-rm_indi <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "indi")
-  x@active_record <- character()
+rm_indi <- function(x, xref){
+  chk_valid_xref(x, xref, "indi")
   x@indi[[xref]] <- NULL
   x  
 }
-rm_famg <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "famg")
-  x@active_record <- character()
+rm_famg <- function(x, xref){
+  chk_valid_xref(x, xref, "famg")
   x@famg[[xref]] <- NULL
   x  
 }
-rm_sour <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "sour")
-  x@active_record <- character()
+rm_sour <- function(x, xref){
+  chk_valid_xref(x, xref, "sour")
   x@sour[[xref]] <- NULL
   x  
 }
-rm_repo <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "repo")
-  x@active_record <- character()
+rm_repo <- function(x, xref){
+  chk_valid_xref(x, xref, "repo")
   x@repo[[xref]] <- NULL
   x  
 }
-rm_media <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "media")
-  x@active_record <- character()
+rm_media <- function(x, xref){
+  chk_valid_xref(x, xref, "media")
   x@media[[xref]] <- NULL
   x  
 }
-rm_note <- function(x, xref = NULL){
-  xref <- get_valid_xref(x, xref, "note")
-  x@active_record <- character()
+rm_note <- function(x, xref){
+  chk_valid_xref(x, xref, "note")
   x@note[[xref]] <- NULL
   x  
 }

@@ -113,14 +113,6 @@ date_to_val <- function(obj){
   date_val
 }
 
-get_valid_xref <- function(x, xref, type){
-  if (length(xref) == 0) xref <- x@active_record
-  if (length(xref) == 0)
-    stop("No xref is provided and no record is activated.")
-  if(!xref %in% x@xrefs[[type]])
-    stop(sprintf("Appropriate record with xref %s not found.", xref))
-  xref
-}
 
 life_story <- function(sex = NULL,
                        name = NULL,
