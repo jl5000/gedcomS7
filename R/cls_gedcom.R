@@ -141,7 +141,7 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                             wife = pop(wife_name),
                                             relationship_date = pop(fam@relationship_date),
                                             relationship_place = pop(fam@relationship_place),
-                                            num_children = max(length(fam@chil_xref), num_chil)
+                                            num_children = max(length(c(fam@chil_biol_xref,fam@chil_adop_xref,fam@chil_fost_xref)), num_chil)
                                           )
                                         }) |>
                                         data.table::rbindlist()

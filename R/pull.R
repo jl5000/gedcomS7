@@ -1,11 +1,15 @@
 
-#' Parse a GEDCOM record into an editable object
+#' Pull a record from a GEDCOM object for editing
 #'
-#' @param rec_lines A character vector of lines of the GEDCOM record.
+#' @param x 
+#' @param xref
 #'
 #' @return An R7 object representing the record.
 #' @export
-pull_record <- function(rec_lines){
+pull_record <- function(x, xref){
+  
+  rec_lines <- c(x@indi, x@famg, x@sour,
+                 x@repo, x@media, x@note)[[xref]]
   
   rec_type <- extract_ged_tag(rec_lines[1])
   if(!rec_type %in% c("INDI","FAM","SOUR","REPO","NOTE","OBJE"))
@@ -40,11 +44,33 @@ pull_record <- function(rec_lines){
     
   } else if(rec_type == "FAM"){
     
+    chil_xref <- find_ged_values(rec_lines, "CHIL")
+    biol_xref <- adop_xref <- fost_xref <- character()
+    for(chil in chil_xref){
+      chil_lines <- x@indi[[chil]]
+      links <- extract_family_links(chil_lines)
+      
+      for(lnk in links){
+        if(lnk@xref == rec_xref){
+          if(R7::R7_inherits(lnk, class_child_family_link_adop)){
+            adop_xref <- c(adop_xref, chil)
+          } else if(R7::R7_inherits(lnk, class_child_family_link_fost)){
+            fost_xref <- c(fost_xref, chil)
+          } else if(R7::R7_inherits(lnk, class_child_family_link_biol)){
+            biol_xref <- c(biol_xref, chil)
+          }
+        }
+       
+      }
+    }
+    
     class_record_famg(
       xref = rec_xref,
       husb_xref = find_ged_values(rec_lines, "HUSB"),
       wife_xref = find_ged_values(rec_lines, "WIFE"),
-      chil_xref = find_ged_values(rec_lines, "CHIL"),
+      chil_biol_xref = biol_xref,
+      chil_adop_xref = adop_xref,
+      chil_fost_xref = fost_xref,
       user_reference_numbers = refns, 
       notes = nts[!grepl(reg_xref(TRUE), nts)], 
       facts = extract_facts_famg(rec_lines),

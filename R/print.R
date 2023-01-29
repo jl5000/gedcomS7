@@ -37,8 +37,8 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
 }
 
 
-R7::method(print, class_record_indi) <- function(x, ...){
-  
-   
-  
-}
+# R7::method(print, class_record_indi) <- function(x, ...){
+#   
+#    
+#   
+# }

@@ -1,5 +1,5 @@
 
-#' Place an edited record object back into a GEDCOM object
+#' Push an edited record back into a GEDCOM object
 #' 
 #' @details 
 #' The function will automatically keep family links for individuals updated.
@@ -18,23 +18,19 @@ push_record <- function(gedcom, record){
     record@last_updated <- class_change_date()
   }
   
-  if(R7::R7_inherits(record, class_record_indi)){
-    gedcom@indi[[record@xref]] <- record
+  rec_type <- get_record_type(record)
+  
+  if(record@xref == "@gedcomR7orphan@")
+    record@xref <- unname(gedcom@next_xref[rec_type])
+  
+  R7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
+  
+  if(rec_type == "indi"){
     gedcom <- refresh_indi_links(gedcom, record)
-  } else if(R7::R7_inherits(record, class_record_famg)){
-    gedcom@famg[[record@xref]] <- record
+  } else if(rec_type == "famg"){
     gedcom <- refresh_fam_links(gedcom, record)
-  } else if(R7::R7_inherits(record, class_record_sour)){
-    gedcom@sour[[record@xref]] <- record
-  } else if(R7::R7_inherits(record, class_record_repo)){
-    gedcom@repo[[record@xref]] <- record
-  } else if(R7::R7_inherits(record, class_record_media)){
-    gedcom@media[[record@xref]] <- record
-  } else if(R7::R7_inherits(record, class_record_note)){
-    gedcom@note[[record@xref]] <- record
-  } else {
-    stop("Unrecognised record")
   }
+  
   gedcom
 }
 
@@ -46,7 +42,7 @@ refresh_fam_links <- function(gedcom, record){
   
   # Who are the members of this family?
   spou_xref <- c(record@husb_xref, record@wife_xref)
-  chil_xref <- record@chil_xref
+  chil_xref <- c(record@chil_biol_xref, record@chil_adop_xref, record@chil_fost_xref)
   
   # Ensure these members have the family link
   for(spou in spou_xref){
@@ -62,19 +58,28 @@ refresh_fam_links <- function(gedcom, record){
   
   for(chil in chil_xref){
     chil_rec <- gedcom@indi[[chil]]
-    famc <- find_ged_values(chil_rec, "FAMC")
+    famc <- find_ged_values(spou_rec, "FAMC")
     if(!record@xref %in% famc){
+      
+      if(chil %in% record@chil_adop_xref){
+        pedi <- "adopted"
+      } else if(chil %in% record@chil_fost_xref){
+        pedi <- "foster"
+      } else if(chil %in% record@chil_biol_xref){
+        pedi <- "birth"
+      }
+      
       gedcom@indi[[chil]] <- c(
         gedcom@indi[[chil]],
         sprintf("1 FAMC %s", record@xref),
-        sprintf("2 PEDI %s", "birth") #TODO: Assume birth for now
+        sprintf("2 PEDI %s", pedi)
       )
     }
   }
   
   # Ensure no one else has the family link
   for(indi in names(gedcom@indi)){
-    if(indi %in% c(record@husb_xref, record@wife_xref, record@chil_xref)) next
+    if(indi %in% c(spou_xref, chil_xref)) next
     
     rec <- gedcom@indi[[indi]]
     
@@ -93,7 +98,7 @@ refresh_indi_links <- function(gedcom, record){
   
   # Individual record has changed
   # Ensure members of family records are correct
-  
+  gedcom
 }
 
 

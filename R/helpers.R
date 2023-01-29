@@ -114,6 +114,26 @@ date_to_val <- function(obj){
 }
 
 
+get_record_type <- function(record){
+  
+  if(R7::R7_inherits(record, class_record_indi)){
+    "indi"
+  } else if(R7::R7_inherits(record, class_record_famg)){
+    "famg"
+  } else if(R7::R7_inherits(record, class_record_sour)){
+    "sour"
+  } else if(R7::R7_inherits(record, class_record_repo)){
+    "repo"
+  } else if(R7::R7_inherits(record, class_record_media)){
+    "media"
+  } else if(R7::R7_inherits(record, class_record_note)){
+    "note"
+  } else {
+    stop("Unrecognised record")
+  }
+  
+}
+
 life_story <- function(sex = NULL,
                        name = NULL,
                        dob = NULL,

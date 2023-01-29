@@ -4,7 +4,7 @@ NULL
 class_record <- 
   R7::new_class("class_record", #abstract = TRUE,
                 properties = list(
-                  xref = R7::class_character,
+                  xref = R7::new_property(R7::class_character, default = "@gedcomR7orphan@"),
                   user_reference_numbers = R7::class_character,
                   auto_id = R7::class_character,
                   media_links = R7::class_character,
@@ -84,7 +84,9 @@ class_record_famg <-
                   facts = R7::class_list,
                   husb_xref = R7::class_character,
                   wife_xref = R7::class_character,
-                  chil_xref = R7::class_character,
+                  chil_biol_xref = R7::class_character,
+                  chil_adop_xref = R7::class_character,
+                  chil_fost_xref = R7::class_character,
                   num_children = R7::class_integer,
                   
                   relationship_date = R7::new_property(
@@ -113,7 +115,9 @@ class_record_famg <-
                         lst_to_ged(self@facts) |> increase_level(by = 1),
                         sprintf("1 HUSB %s", self@husb_xref),
                         sprintf("1 WIFE %s", self@wife_xref),
-                        sprintf("1 CHIL %s", self@chil_xref),
+                        sprintf("1 CHIL %s", c(self@chil_biol_xref,
+                                               self@chil_adop_xref,
+                                               self@chil_fost_xref)),
                         sprintf("1 NCHI %s", self@num_children),
                         self@refs_ged,
                         sprintf("1 RIN %s", self@auto_id),
@@ -132,8 +136,12 @@ class_record_famg <-
                     chk_input_pattern(self@husb_xref, "@husb_xref", reg_xref(TRUE)),
                     chk_input_size(self@wife_xref, "@wife_xref", 0, 1, 3, 22),
                     chk_input_pattern(self@wife_xref, "@wife_xref", reg_xref(TRUE)),
-                    chk_input_size(self@chil_xref, "@chil_xref", 0, 10000, 3, 22),
-                    chk_input_pattern(self@chil_xref, "@chil_xref", reg_xref(TRUE)),
+                    chk_input_size(self@chil_biol_xref, "@chil_biol_xref", 0, 10000, 3, 22),
+                    chk_input_pattern(self@chil_biol_xref, "@chil_biol_xref", reg_xref(TRUE)),
+                    chk_input_size(self@chil_adop_xref, "@chil_adop_xref", 0, 10000, 3, 22),
+                    chk_input_pattern(self@chil_adop_xref, "@chil_adop_xref", reg_xref(TRUE)),
+                    chk_input_size(self@chil_fost_xref, "@chil_fost_xref", 0, 10000, 3, 22),
+                    chk_input_pattern(self@chil_fost_xref, "@chil_fost_xref", reg_xref(TRUE)),
                     chk_input_size(self@num_children, "@num_children", 0, 1, 1, 3)
                   )
                 })
