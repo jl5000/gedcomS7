@@ -105,8 +105,3 @@ chk_input_dates <- function(start_date, end_date){
     return("Start date comes after end date")
     
 }
-
-chk_valid_xref <- function(x, xref, type){
-  if(!xref %in% x@xrefs[[type]])
-    stop(sprintf("Appropriate record with xref %s not found.", xref))
-}
