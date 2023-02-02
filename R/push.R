@@ -44,6 +44,12 @@ refresh_fam_links <- function(gedcom, record){
   spou_xref <- c(record@husb_xref, record@wife_xref)
   chil_xref <- c(record@chil_biol_xref, record@chil_adop_xref, record@chil_fost_xref)
   
+  for(indi in c(spou_xref, chil_xref)){
+    if(!indi %in% names(gedcom@indi)){
+      stop("There is no individual with xref ", indi)
+    }
+  }
+  
   # Ensure these members have the family link
   for(spou in spou_xref){
     spou_rec <- gedcom@indi[[spou]]
@@ -101,6 +107,12 @@ refresh_indi_links <- function(gedcom, record){
   
   # Go through each family link
   # Ensure record@xref is properly reflected in family record membership
+  famg_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
+  for(famg in famg_lnks){
+    if(!famg %in% names(gedcom@famg)){
+      stop("There is no Family Group with xref ", famg)
+    }
+  }
   
   for(lnk in record@family_links){
     fam_xref <- lnk@xref
@@ -149,7 +161,6 @@ refresh_indi_links <- function(gedcom, record){
   }
   
   # Ensure this individual (record@xref) appears in no other famg records
-  famg_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
   for(famg in names(gedcom@famg)){
     
     if(famg %in% famg_lnks) next
