@@ -98,166 +98,72 @@ refresh_indi_links <- function(gedcom, record){
   
   # Individual record has changed
   # Ensure members of family records are correct
+  
+  # Go through each family link
+  # Ensure record@xref is properly reflected in family record membership
+  
+  for(lnk in record@family_links){
+    fam_xref <- lnk@xref
+    
+    fam_rec <- gedcom@famg[[fam_xref]]
+    
+    if(R7::R7_inherits(lnk, class_child_family_link_biol)){ # also covers fost/adop
+      fam_chil <- find_ged_values(fam_rec, "CHIL")
+      
+      if(!record@xref %in% fam_chil){
+        gedcom@famg[[fam_xref]] <- c(
+          gedcom@famg[[fam_xref]],
+          sprintf("1 CHIL %s", record@xref)
+        )
+      }
+
+    } else if(R7::R7_inherits(lnk, class_spouse_family_link)){
+      fam_husb <- find_ged_values(fam_rec, "HUSB")
+      fam_wife <- find_ged_values(fam_rec, "WIFE")
+      fam_spou <- c(fam_husb, fam_wife)
+      
+      if(!record@xref %in% fam_spou){
+        if(length(fam_spou) == 0){
+          # use sex as determinant
+          if(record@sex == "M"){
+            spou_type <- "HUSB"
+          } else {
+            spou_type <- "WIFE"
+          }
+          
+        } else if(length(fam_husb) == 0) {
+          spou_type <- "HUSB"
+        } else if(length(fam_wife) == 0) {
+          spou_type <- "WIFE"
+        } else {
+          # Both a HUSB and WIFE already exist
+          stop("This individual cannot be a spouse of a family that already has two spouses.")
+        }
+        
+        gedcom@famg[[fam_xref]] <- c(
+          gedcom@famg[[fam_xref]],
+          sprintf("1 %s %s", spou_type, record@xref)
+        )
+      }
+    }
+  }
+  
+  # Ensure this individual (record@xref) appears in no other famg records
+  famg_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
+  for(famg in names(gedcom@famg)){
+    
+    if(famg %in% famg_lnks) next
+    
+    rec <- gedcom@famg[[famg]]
+    
+    memb_row <- grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), rec)
+    
+    if(length(memb_row) == 1){
+      gedcom@famg[[famg]] <- delete_ged_section(rec, memb_row)
+    }
+    
+  }
+  
   gedcom
 }
 
-
-refresh_spouse_links <- function(x, modify_famg_members){
-  
-  xdf <- x@as_df
-  
-  spou_links <- dplyr::filter(xdf, level == 1,
-                              tag %in% c("HUSB","WIFE","FAMS")) |>
-    dplyr::mutate(famg = dplyr::if_else(tag == "FAMS", value,  record)) |>
-    dplyr::mutate(indi = dplyr::if_else(tag == "FAMS", record, value)) |>
-    dplyr::mutate(pair = paste(famg, indi)) |>
-    dplyr::add_count(pair) |>
-    dplyr::filter(n < 2)
-  
-  # spou_links2 <- xdf[level == 1 & tag %chin% c("HUSB","WIFE","FAMS")
-  #                   ][,famg:= ifelse(tag == "FAMS", value,  record)
-  #                     ][,indi:= ifelse(tag == "FAMS", record,  value)
-  #                       ][,pair:= paste(famg, indi)
-  #                         ][, .SD[.N < 2], by = pair]
-  
-  for(i in seq_len(nrow(spou_links))){
-    tag <- spou_links$tag[i]
-    indi <- spou_links$indi[i]
-    famg <- spou_links$famg[i]
-    husb <- x@get_famg[[famg]]@husb_xref
-    wife <- x@get_famg[[famg]]@wife_xref
-    
-    if(tag == "FAMS"){ # add spouse to famg
-      
-      if(modify_famg_members){
-        
-        if(length(c(husb, wife)) == 0){
-          # use sex as determinant
-          if(x@get_indi[[indi]]@sex == "M"){
-            x@famg[[famg]]@husb_xref <- indi
-          } else {
-            x@famg[[famg]]@wife_xref <- indi
-          }
-          
-        } else if(length(husb) == 0) {
-          x@famg[[famg]]@husb_xref <- indi
-        } else {
-          x@famg[[famg]]@wife_xref <- indi
-        }
-        
-      } else { # remove indi spouse link
-        
-      }
-      
-      
-      
-    } else { # remove spouse from famg
-      
-      if(modify_famg_members){
-        if(husb == indi){
-          x@famg[[famg]]@husb_xref <- character()
-        } else if (wife == indi){
-          x@famg[[famg]]@wife_xref <- character()
-        }
-      } else { # add indi spouse link
-        x@indi[[indi]] <- add_indi_family_link(x@get_indi[[indi]], famg, as_child = FALSE)
-      }
-      
-      
-    }
-    
-  }
-  
-  x
-}
-
-refresh_child_links <- function(x, modify_famg_members){
-  
-  xdf <- x@as_df
-  
-  chil_links <- dplyr::filter(xdf, level == 1,
-                              tag %in% c("CHIL","FAMC")) |>
-    dplyr::mutate(famg = dplyr::if_else(tag == "FAMC", value,  record)) |>
-    dplyr::mutate(indi = dplyr::if_else(tag == "FAMC", record, value)) |>
-    dplyr::mutate(pair = paste(famg, indi)) |>
-    dplyr::add_count(pair) |>
-    dplyr::filter(n < 2)
-  
-  for(i in seq_len(nrow(chil_links))){
-    tag <- chil_links$tag[i]
-    indi <- chil_links$indi[i]
-    famg <- chil_links$famg[i]
-    chil <- x@get_famg[[famg]]@chil_xref
-    
-    if(tag == "FAMC"){ 
-      
-      if(modify_famg_members){ # add child to famg
-        x@famg[[famg]]@chil_xref <- c(chil, indi)
-      } else { # remove indi family link
-        
-      }
-      
-      
-    } else { # tag = "CHIL"
-      
-      if(modify_famg_members){ # remove child from famg
-        x@famg[[famg]]@chil_xref <- chil[chil != indi]
-      } else { # add indi family link
-        x@indi[[indi]] <- add_indi_family_link(x@get_indi[[indi]], famg, as_child = TRUE)
-      }
-      
-      
-    }
-    
-  }
-  
-  x
-}
-
-
-# 
-# 
-# for(fam in famg){
-#   for(spou in c(fam@husb_xref, fam@wife_xref)){
-#     
-#     x@indi[[spou]] <- add_indi_family_link(x@indi[[spou]],
-#                                            xref_famg = xref,
-#                                            as_child = FALSE)
-#   }
-#   
-#   if(is.null(names(chil_xref)))
-#     names(chil_xref) <- rep("birth", length(chil_xref))
-#   
-#   for(chil in fam@chil_xref){
-#     ped <- names(chil_xref[chil_xref == chil])
-#     x@indi[[chil]] <- add_indi_family_link(x@indi[[chil]],
-#                                            xref_famg = xref,
-#                                            as_child = TRUE,
-#                                            pedigree = ped)
-#   }
-# }
-# 
-# 
-# 
-# 
-
-# 
-# for(fam in famg){
-#   for(spou in c(fam@husb_xref, fam@wife_xref)){
-#     
-#     x@indi[[spou]] <- add_indi_family_link(x@indi[[spou]],
-#                                            xref_famg = xref,
-#                                            as_child = FALSE)
-#   }
-#   
-#   if(is.null(names(chil_xref)))
-#     names(chil_xref) <- rep("birth", length(chil_xref))
-#   
-#   for(chil in fam@chil_xref){
-#     ped <- names(chil_xref[chil_xref == chil])
-#     x@indi[[chil]] <- add_indi_family_link(x@indi[[chil]],
-#                                            xref_famg = xref,
-#                                            as_child = TRUE,
-#                                            pedigree = ped)
-#   }
-# }
