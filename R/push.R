@@ -119,7 +119,7 @@ refresh_indi_links <- function(gedcom, record){
     
     fam_rec <- gedcom@famg[[fam_xref]]
     
-    if(R7::R7_inherits(lnk, class_child_family_link_biol)){ # also covers fost/adop
+    if(is_child_link(lnk)){
       fam_chil <- find_ged_values(fam_rec, "CHIL")
       
       if(!record@xref %in% fam_chil){
@@ -129,7 +129,7 @@ refresh_indi_links <- function(gedcom, record){
         )
       }
 
-    } else if(R7::R7_inherits(lnk, class_spouse_family_link)){
+    } else if(is_spouse_link(lnk)){
       fam_husb <- find_ged_values(fam_rec, "HUSB")
       fam_wife <- find_ged_values(fam_rec, "WIFE")
       fam_spou <- c(fam_husb, fam_wife)

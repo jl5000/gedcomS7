@@ -52,11 +52,11 @@ pull_record <- function(x, xref){
       
       for(lnk in links){
         if(lnk@xref == rec_xref){
-          if(R7::R7_inherits(lnk, class_child_family_link_adop)){
+          if(is_adop_child_link(lnk)){
             adop_xref <- c(adop_xref, chil)
-          } else if(R7::R7_inherits(lnk, class_child_family_link_fost)){
+          } else if(is_fost_child_link(lnk)){
             fost_xref <- c(fost_xref, chil)
-          } else if(R7::R7_inherits(lnk, class_child_family_link_biol)){
+          } else if(is_birth_child_link(lnk)){
             biol_xref <- c(biol_xref, chil)
           }
         }
@@ -183,16 +183,16 @@ extract_change_date <- function(rec_lines){
   
   nts <- find_ged_values(rec_lines, c("CHAN","NOTE"))
   class_change_date(
-    date = change_date,
+    date = toupper(change_date),
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
     notes = nts[!grepl(reg_xref(TRUE), nts)],
     note_links = nts[grepl(reg_xref(TRUE), nts)]
   )
 }
 
-extract_citations <- function(rec_lines, location = NULL){
+extract_citations <- function(lines, location = NULL){
   
-  sour_lst <- find_ged_values(rec_lines, c(location, "SOUR"), return_list = TRUE)
+  sour_lst <- find_ged_values(lines, c(location, "SOUR"), return_list = TRUE)
   if(length(sour_lst) == 0) return(list())
   
   lapply(sour_lst, \(x){
@@ -262,7 +262,7 @@ extract_name_info <- function(lines, location){
     suffix = find_ged_values(lines, c(location, "NSFX")),
     note_links = nts[grepl(reg_xref(TRUE), nts)],
     notes = nts[!grepl(reg_xref(TRUE), nts)],
-    citations = extract_citations(lines[-1])
+    citations = extract_citations(lines, location)
   )
   
 }
