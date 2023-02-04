@@ -20,8 +20,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
-    'add_records.R'
-    'add_subrecords.R'
+    'add_family_members.R'
     'validators.R'
     'helpers.R'
     'cls_dates.R'
@@ -32,6 +31,8 @@ Collate:
     'cls_gedcom.R'
     'cls_links.R'
     'cls_personal_name.R'
+    'get_xrefs.R'
+    'interrogate.R'
     'io_export.R'
     'io_import.R'
     'lookups.R'
@@ -39,4 +40,5 @@ Collate:
     'pull.R'
     'push.R'
     'regex_patterns.R'
+    'rm_records.R'
     'zzz.R'

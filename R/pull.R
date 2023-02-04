@@ -18,7 +18,7 @@ pull_record <- function(x, xref){
   rec_xref <- extract_ged_xref(rec_lines[1])
   
   nts <- find_ged_values(rec_lines, "NOTE")
-  refns <- extract_refns(rec_lines)
+  refns <- extract_vals_and_types(rec_lines, "REFN")
   chan <- extract_change_date(rec_lines) 
   media <- find_ged_values(rec_lines, "OBJE")
   cits <- extract_citations(rec_lines)
@@ -150,17 +150,17 @@ pull_record <- function(x, xref){
 }
 
 
-extract_refns <- function(rec_lines){
-  refn_lst <- find_ged_values(rec_lines, "REFN", return_list = TRUE)
-  if(length(refn_lst) == 0) return(character())
+extract_vals_and_types <- function(lines, val_tag){
+  val_lst <- find_ged_values(lines, val_tag, return_list = TRUE)
+  if(length(val_lst) == 0) return(character())
   
-  refns <- sapply(refn_lst, \(x) sub("^1 REFN (.*)$", "\\1", x[1]))
-  types <- sapply(refn_lst, \(x) {
+  vals <- sapply(val_lst, \(x) extract_ged_value(x[1]))
+  types <- sapply(val_lst, \(x) {
     if(length(x) == 1) return("")
-    sub("^2 TYPE (.*)$", "\\1", x[2])
+    extract_ged_value(x[2])
   })
-  names(refns) <- types
-  refns
+  names(vals) <- types
+  vals
 }
 
 extract_events_recorded <- function(rec_lines){
@@ -304,14 +304,14 @@ extract_place <- function(lines, location = NULL){
   
   nts <- find_ged_values(lines, c(location, "PLAC", "NOTE"))
   latlong <- paste(
-    find_ged_values(lines, c(location, "MAP", "LATI")),
-    find_ged_values(lines, c(location, "MAP", "LONG"))
+    find_ged_values(lines, c(location, "PLAC", "MAP", "LATI")),
+    find_ged_values(lines, c(location, "PLAC", "MAP", "LONG"))
   )
   
   class_place(
     name = place_name,
-    phon_names = character(),#TODO
-    rom_names = character(),#TODO
+    phon_names = extract_vals_and_types(lines, c(location, "PLAC", "FONE")),
+    rom_names = extract_vals_and_types(lines, c(location, "PLAC", "ROMN")),
     lat_long = toupper(latlong),
     note_links = nts[grepl(reg_xref(TRUE), nts)],
     notes = nts[!grepl(reg_xref(TRUE), nts)]

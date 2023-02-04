@@ -37,8 +37,41 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
 }
 
 
-# R7::method(print, class_record_indi) <- function(x, ...){
-#   
-#    
-#   
-# }
+R7::method(print, class_record_indi) <- function(x, ...){
+
+  eol <- "\n"
+  exdent <- 32 # nchar("10 Other individual attribute:") + 2 = 32
+  
+  to_console("xref:", x@xref, exdent)
+  to_console("Name(s):", paste(x@all_names, collapse = ", "), exdent)
+  to_console("Sex:", names(which(val_sexes() == x@sex)), exdent)
+  for(i in seq_along(x@user_reference_numbers)){
+    num <- x@user_reference_numbers[i]
+    typ <- names(x@user_reference_numbers)[i]
+    if(typ != "") typ <- sprintf(" (%s)", typ) 
+    to_console("User ref:", paste0(num, typ), exdent)
+  }
+  cat(eol)
+  
+  i <- 0
+  for(fac in x@facts){
+    i <- i + 1
+    lbl <- sprintf("%s %s:", i, names(which(c(val_attribute_types(),
+                                        val_individual_event_types()) == fac@fact)))
+    dat <- fac@fact_date
+    if(length(dat) == 1) dat <- sprintf("(%s)", dat)
+    age <- fac@age
+    if(length(age) == 1) age <- sprintf("(%s)", age)
+    to_console(lbl, paste(fac@description, dat, fac@fact_location, age), exdent)
+  }
+  cat(eol)
+  
+  for(nt in x@notes){
+    nt_len <- 100
+    if(nchar(nt) > nt_len){
+      nt <- paste0(substr(nt, 1, nt_len), "...")
+    }
+    to_console("Note:", nt, exdent)
+  }
+
+}
