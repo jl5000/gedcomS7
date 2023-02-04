@@ -426,7 +426,7 @@ class_record_note <-
                 properties = list(
                   text = R7::class_character,
                   
-                  as_df = R7::new_property(
+                  as_ged = R7::new_property(
                     R7::class_data.frame,
                     getter = function(self){
                       c(

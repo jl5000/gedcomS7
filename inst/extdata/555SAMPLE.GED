@@ -18,7 +18,7 @@
 1 SUBM @U1@
 0 @U1@ SUBM
 1 NAME Reldon Poulson
-1 ADDR
+1 ADDR 
 2 ADR1 1900 43rd Street West
 2 CITY Billings
 2 STAE Montana
@@ -42,7 +42,7 @@
 2 PLAC Spring Hill Cemetery, Stamford, Fairfield, Connecticut, United States of America
 1 FAMS @F1@
 1 FAMS @F2@
-1 RESI
+1 RESI 
 2 DATE from 1900 to 1905
 0 @I2@ INDI
 1 NAME Mary Ann /Wilson/
@@ -64,7 +64,7 @@
 1 FAMC @F1@
 1 FAMC @F2@
 2 PEDI adopted
-1 ADOP
+1 ADOP 
 2 DATE 16 Mar 1864
 0 @F1@ FAM
 1 HUSB @I1@

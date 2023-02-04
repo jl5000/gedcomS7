@@ -1,0 +1,32 @@
+# delete_ged_section
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 HEAD", "1 CHAR UTF-8", "1 SOUR gedcom.org", "0 @U@ SUBM", "1 NAME gedcom.org", "0 TRLR"]
+    }
+
+---
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 HEAD", "1 GEDC", "2 VERS 5.5.5", "1 CHAR UTF-8", "1 SOUR gedcom.org", "0 @U@ SUBM", "1 NAME gedcom.org", "0 TRLR"]
+    }
+
+---
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 HEAD", "1 GEDC", "2 VERS 5.5.5", "2 FORM LINEAGE-LINKED", "3 VERS 5.5.5", "1 SOUR gedcom.org", "0 @U@ SUBM", "1 NAME gedcom.org", "0 TRLR"]
+    }
+
+---
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 HEAD", "1 GEDC", "2 VERS 5.5.5", "2 FORM LINEAGE-LINKED", "3 VERS 5.5.5", "1 CHAR UTF-8", "1 SOUR gedcom.org", "0 @U@ SUBM", "1 NAME gedcom.org"]
+    }
+

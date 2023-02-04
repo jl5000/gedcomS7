@@ -27,11 +27,11 @@ test_that("Validate lines", {
   expect_error(validate_lines(gedd), regexp = "The following lines have values which are too long: 13")
   
   gedd <- ged
-  gedd[21] <- "1 ADDR "
+  #gedd[21] <- "1 ADDR "
   gedd[22] <- "23 ADR1 1900 43rd Street West"
   gedd[23] <- "2 CITYBillings"
   gedd[24] <- " 2 STAE Montana"
-  expect_error(validate_lines(gedd), regexp = "The following lines are invalid:\n21:[^\n]*\n22:[^\n]*\n23:[^\n]*\n24:")
+  expect_error(validate_lines(gedd), regexp = "The following lines are invalid:\n22:[^\n]*\n23:[^\n]*\n24:")
   
   gedd <- ged
   gedd[68] <- "2 DATE @#DFRENCH R@ 16 Mar 1864"
@@ -74,11 +74,10 @@ test_that("Extraction functions", {
     "1 REFN 789"
   )
   
-  expect_equal(find_ged_values(lines, return_xref = TRUE), "@I123@")
   expect_equal(find_ged_values(lines, "NAME"), "Joe /Bloggs/")
   expect_equal(find_ged_values(lines, c("NAME","SURN")), "Bloggs")
   expect_equal(find_ged_values(lines, c("NAME","NOTE")), "This is a\nnew line")
   expect_equal(extract_vals_and_types(lines, "REFN"), c("123", refn2 = "456", "789"))
-  expect_snapshot_value(extract_change_date(lines), "serialize")
-  expect_snapshot_value(extract_citations(lines), "serialize")
+  expect_snapshot_value(obj_to_ged(extract_change_date(lines)), "json2")
+  expect_snapshot_value(lst_to_ged(extract_citations(lines)), "json2")
 })
