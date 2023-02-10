@@ -64,7 +64,7 @@ refresh_fam_links <- function(gedcom, record){
   
   for(chil in chil_xref){
     chil_rec <- gedcom@indi[[chil]]
-    famc <- find_ged_values(spou_rec, "FAMC")
+    famc <- find_ged_values(chil_rec, "FAMC")
     if(!record@xref %in% famc){
       
       if(chil %in% record@chil_adop_xref){

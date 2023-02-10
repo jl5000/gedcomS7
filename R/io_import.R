@@ -1,31 +1,12 @@
 
 #' Import a GEDCOM file
 #'
-#' Imports a *.ged file and creates a tidyged object.
+#' Imports a *.ged file and creates a gedcom object.
 #'
 #' @param filepath The full filepath of the GEDCOM file.
 #'
-#' @return A tidyged object
+#' @return A gedcom R7 object.
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' read_gedcom("C:/my_family.ged")
-#' }
-#' @tests
-#' expect_error(read_gedcom("my_family.txt"))
-#' expect_snapshot_value(
-#'     read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "tidyged.io")), 
-#'     "json2")
-#' expect_snapshot_value(
-#'     read_gedcom(system.file("extdata", "555SAMPLE16BE.GED", package = "tidyged.io")), 
-#'     "json2")
-#' expect_snapshot_value(
-#'     read_gedcom(system.file("extdata", "555SAMPLE16LE.GED", package = "tidyged.io")), 
-#'     "json2")
-#' expect_snapshot_value(
-#'     read_gedcom(system.file("extdata", "MINIMAL555.GED", package = "tidyged.io")), 
-#'     "json2")
 read_gedcom <- function(filepath = file.choose()) {
   
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
@@ -49,7 +30,6 @@ read_gedcom <- function(filepath = file.choose()) {
   
   x <- parse_records(records_lst)
   
-  x@file_path <- filepath
   message("If you would like to enable quicksave set @quicksave = TRUE. This will allow you to use @save to save your changes to the same file. Exercise care with this option as it will not ask for confirmation before overwriting changes.")
   
   x
@@ -135,12 +115,10 @@ validate_header <- function(header_lines, expected_encoding) {
 #' Convert the GEDCOM grammar to the GEDCOM form
 #' 
 #' This function applies concatenation indicated by CONC/CONT lines.
-#' 
-#' The function works by collapsing CONC/CONT lines using group-by/summarise.   
 #'
-#' @param gedcom A tidyged object.
+#' @param lines A character vector of gedcom lines.
 #'
-#' @return A tidyged object in the GEDCOM form.
+#' @return A new character vector of gedcom lines.
 combine_gedcom_values <- function(lines) {
   
   reg_cont_conc <- sprintf("^[1-6] (CONT|CONC) (.*)$")

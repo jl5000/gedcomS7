@@ -35,25 +35,25 @@ get_famg_children <- function(x,
   
   if(!is_famg_xref(x, xref)) stop("The xref is not a Family Group record.")
   
-  famg_rec <- x@famg[[xref]]
-  all_chil <- find_ged_values(famg_rec, "CHIL")
+  famg_ged <- x@famg[[xref]]
+  all_chil_xref <- find_ged_values(famg_ged, "CHIL")
   
-  if(!birth_only) return(all_chil)
+  if(!birth_only) return(all_chil_xref)
   
-  birth_chil <- character()
-  for(chil in all_chil){
-    chil_rec <- x@indi[[chil]]
-    links <- extract_family_links(chil_rec)
+  birth_chil_xref <- character()
+  for(chil_xref in all_chil_xref){
+    chil_ged <- x@indi[[chil_xref]]
+    links <- extract_family_links(chil_ged)
     
     for(lnk in links){
       if(lnk@xref == xref && is_birth_child_link(lnk)){
-        birth_chil <- c(birth_chil, chil)
+        birth_chil_xref <- c(birth_chil_xref, chil_xref)
         break
       }
     }
     
   }
-  birth_chil
+  birth_chil_xref
 }
 
 #' Identify all families for an individual where they are a child
@@ -70,23 +70,23 @@ get_famg_as_child <- function(x,
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  indi_rec <- x@indi[[xref]]
-  all_fam <- find_ged_values(indi_rec, "FAMC")
+  indi_ged <- x@indi[[xref]]
+  all_fam_xref <- find_ged_values(indi_ged, "FAMC")
   
-  if(!birth_only) return(all_fam)
+  if(!birth_only) return(all_fam_xref)
   
-  links <- extract_family_links(indi_rec)
+  links <- extract_family_links(indi_ged)
   
-  famg <- character()
+  famc_xref <- character()
   for(lnk in links){
-    if(is_birth_child_link(lnk)) famg <- c(famg, lnk@xref)
+    if(is_birth_child_link(lnk)) famc_xref <- c(famc_xref, lnk@xref)
   }
-  famg
+  famc_xref
 }
 
 #' Identify all families for an individual where they are a partner
 #' 
-#' @param gedcom A gedcom object.
+#' @param x A gedcom object.
 #' @param xref The xref of an Individual record.
 #'
 #' @return A character vector of family xrefs.
@@ -95,9 +95,9 @@ get_famg_as_partner <- function(x, xref){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  indi_rec <- x@indi[[xref]]
+  indi_ged <- x@indi[[xref]]
   
-  find_ged_values(indi_rec, "FAMS")
+  find_ged_values(indi_ged, "FAMS")
 }
 
 
@@ -112,13 +112,13 @@ get_indi_partners <- function(x, xref){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  fams <- get_famg_as_partner(x, xref)
+  fams_xref <- get_famg_as_partner(x, xref)
   
-  parts <- lapply(fams, \(fam) get_famg_partners(x, fam)) |>
+  spou_xref <- lapply(fams_xref, \(fam) get_famg_partners(x, fam)) |>
     unlist()
-  if(is.null(parts)) return(character())
+  if(is.null(spou_xref)) return(character())
   
-  parts[parts != xref]
+  spou_xref[spou_xref != xref]
 }
 
 #' Identify all children for an individual
@@ -135,13 +135,13 @@ get_indi_children <- function(x,
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  fams <- get_famg_as_partner(x, xref)
+  fams_xref <- get_famg_as_partner(x, xref)
   
-  chil <- lapply(fams, \(fam) get_famg_children(x, fam, birth_only)) |>
+  chil_xref <- lapply(fams_xref, \(fam) get_famg_children(x, fam, birth_only)) |>
     unlist()
-  if(is.null(chil)) return(character())
+  if(is.null(chil_xref)) return(character())
   
-  unique(chil)
+  unique(chil_xref)
 }
 
 #' Identify all parents for an individual
@@ -158,13 +158,13 @@ get_indi_parents <- function(x,
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  famc <- get_famg_as_child(x, xref, birth_only)
+  famc_xref <- get_famg_as_child(x, xref, birth_only)
   
-  pars <- lapply(famc, \(fam) get_famg_partners(x, fam)) |>
+  spou_xref <- lapply(famc_xref, \(fam) get_famg_partners(x, fam)) |>
     unlist()
-  if(is.null(pars)) return(character())
+  if(is.null(spou_xref)) return(character())
   
-  unique(pars)
+  unique(spou_xref)
 }
 
 #' Identify all siblings for an individual
@@ -183,22 +183,21 @@ get_indi_siblings <- function(x,
   
   if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
   
-  sibs <- character()
   if(inc_half){
-    pars <- get_indi_parents(x, xref, birth_only)
+    spou_xref <- get_indi_parents(x, xref, birth_only)
     
-    sibs <- lapply(pars, \(par) get_indi_children(x, par, birth_only)) |>
+    sibs_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, birth_only)) |>
       unlist()
     
   } else {
-    famc <- get_famg_as_child(x, xref, birth_only)
+    famc_xref <- get_famg_as_child(x, xref, birth_only)
     
-    sibs <- lapply(famc, \(fam) get_famg_children(x, fam, birth_only)) |>
+    sibs_xref <- lapply(famc_xref, \(fam) get_famg_children(x, fam, birth_only)) |>
       unlist()
   }
   
-  if(is.null(sibs)) return(character())
-  unique(sibs[sibs != xref])
+  if(is.null(sibs_xref)) return(character())
+  unique(sibs_xref[sibs_xref != xref])
 }
 
 #' Identify all cousins for an individual
@@ -219,23 +218,23 @@ get_indi_cousins <- function(x,
   if(degree < 1) stop("The degree must be at least 1.")
   degree <- floor(degree)
   
-  pars <- xref
+  pars_xref <- xref
   for(i in seq_len(degree)){
-    pars <- lapply(pars, \(par) get_indi_parents(x, par, birth_only = TRUE)) |>
+    pars_xref <- lapply(pars_xref, \(par) get_indi_parents(x, par, birth_only = TRUE)) |>
       unlist()
   }
   
-  sibs <- lapply(pars, \(par) get_indi_siblings(x, par, birth_only = TRUE, inc_half)) |>
+  sibs_xref <- lapply(pars_xref, \(par) get_indi_siblings(x, par, birth_only = TRUE, inc_half)) |>
     unlist()
 
-  chil <- sibs
+  chil_xref <- sibs_xref
   for(i in seq_len(degree)){
-    chil <- lapply(chil, \(ch) get_indi_children(x, ch, birth_only = TRUE)) |>
+    chil_xref <- lapply(chil_xref, \(ch) get_indi_children(x, ch, birth_only = TRUE)) |>
       unlist()
   }
   
-  if(is.null(chil)) return(character())
-  chil
+  if(is.null(chil_xref)) return(character())
+  chil_xref
 }
 
 #' Identify all supporting records for a set of records
@@ -312,32 +311,32 @@ get_descendants <- function(x,
   
   return_xrefs <- character()
   
-  part <- get_indi_partners(x, xref)
-  chil <- get_indi_children(x, xref, birth_only)
-  fams <- get_famg_as_partner(x, xref)
+  spou_xref <- get_indi_partners(x, xref)
+  chil_xref <- get_indi_children(x, xref, birth_only)
+  fams_xref <- get_famg_as_partner(x, xref)
   
   # if partner is to be included, add their children to be included
   if (inc_part) {
-    part_chil <- lapply(part, \(par) get_indi_children(x, par, birth_only)) |> 
+    part_chil_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, birth_only)) |> 
       unlist()
     
-    chil <- unique(c(chil, part_chil))
+    chil_xref <- unique(c(chil_xref, part_chil_xref))
   }
   
   #deal with family groups first (while the individuals are still in them)
-  if (inc_famg) return_xrefs <- c(return_xrefs, fams)
-  if (inc_part) return_xrefs <- c(return_xrefs, part)
+  if (inc_famg) return_xrefs <- c(return_xrefs, fams_xref)
+  if (inc_part) return_xrefs <- c(return_xrefs, spou_xref)
   if (inc_indi) return_xrefs <- c(return_xrefs, xref)
   
   # identify children
-  for(i in seq_along(chil)) {
+  for(i in seq_along(chil_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_descendants(x, chil[i], TRUE, inc_part, inc_famg, FALSE, birth_only))
+                      get_descendants(x, chil_xref[i], TRUE, inc_part, inc_famg, FALSE, birth_only))
   }
   
   # only get supporting records if this is the top level call
   if (inc_supp && length(as.character(sys.call())) == 8 && 
-      any(as.character(sys.call()) != c("get_descendants","x","chil[i]","TRUE",
+      any(as.character(sys.call()) != c("get_descendants","x","chil_xref[i]","TRUE",
                                         "inc_part","inc_famg","FALSE","birth_only"))){
     
     c(return_xrefs,
@@ -375,29 +374,29 @@ get_ancestors <- function(x,
   
   return_xrefs <- character()
   
-  sibs <- get_indi_siblings(x, xref, birth_only)
-  pars <- get_indi_parents(x, xref, birth_only)
-  famc <- get_famg_as_child(x, xref, birth_only)
+  sibs_xref <- get_indi_siblings(x, xref, birth_only)
+  pars_xref <- get_indi_parents(x, xref, birth_only)
+  famc_xref <- get_famg_as_child(x, xref, birth_only)
   
   if (inc_indi & inc_sibs) {
-    sib_par <- lapply(sibs, \(sib) get_indi_parents(x, sib, birth_only)) |>
+    sib_par_xref <- lapply(sibs_xref, \(sib) get_indi_parents(x, sib, birth_only)) |>
       unlist()
     
-    pars <- unique(c(pars, sib_par))
+    pars_xref <- unique(c(pars_xref, sib_par_xref))
   }
   
-  if (inc_famg) return_xrefs <- c(return_xrefs, famc)
-  if (inc_indi & inc_sibs) return_xrefs <- c(return_xrefs, sibs)
+  if (inc_famg) return_xrefs <- c(return_xrefs, famc_xref)
+  if (inc_indi & inc_sibs) return_xrefs <- c(return_xrefs, sibs_xref)
   if (inc_indi) return_xrefs <- c(return_xrefs, xref)
   
-  for(i in seq_along(pars)) {
+  for(i in seq_along(pars_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_ancestors(x, pars[i], TRUE, inc_sibs, inc_famg, FALSE, birth_only))
+                      get_ancestors(x, pars_xref[i], TRUE, inc_sibs, inc_famg, FALSE, birth_only))
   }
   
   # only get supporting records if this is the top level call
   if (inc_supp && length(as.character(sys.call())) == 8 && 
-      any(as.character(sys.call()) != c("get_ancestors","x","pars[i]","TRUE",
+      any(as.character(sys.call()) != c("get_ancestors","x","pars_xref[i]","TRUE",
                                         "inc_sibs","inc_famg","FALSE"))) {
     
     c(return_xrefs,

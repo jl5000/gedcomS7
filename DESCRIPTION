@@ -42,3 +42,5 @@ Collate:
     'regex_patterns.R'
     'rm_records.R'
     'zzz.R'
+Remotes: 
+     RConsortium/OOP-WG

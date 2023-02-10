@@ -9,12 +9,14 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                   save = R7::new_property(
                                     R7::class_logical,
                                     getter = function(self){
-                                      if(!self@quicksave_enabled)
-                                        stop("File cannot be saved. Enable quicksave with the @quicksave parameter.")
-                                      
-                                      if(length(self@file_path) == 0)
-                                        stop("File cannot be saved. Set an existing file path with the @file_path parameter.")
-                                      
+                                      if(!self@quicksave_enabled){
+                                        warning("File cannot be saved. Enable quicksave with the @quicksave_enabled parameter.")
+                                        return(invisible(FALSE))
+                                      }
+                                      if(length(self@file_path) == 0){
+                                        warning("File cannot be saved. Set an existing file path with the @file_path parameter.")
+                                        return(invisible(FALSE))
+                                      }
                                       if(file.exists(self@file_path))
                                         file.remove(self@file_path)
                                       
@@ -117,35 +119,35 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                       #   data.table::rbindlist()
                                     }),
                                   
-                                  df_famg = R7::new_property(
-                                    R7::class_data.frame,
-                                    getter = function(self){
-                                      if(length(self@famg) == 0) return(NULL)
-                                      lapply(
-                                        self@famg,
-                                        function(fam){
-                                          
-                                          husb_name <- ""
-                                          wife_name <- ""
-                                          if(length(fam@husb_xref) == 1)
-                                            husb_name <- self@indi[[fam@husb_xref]]@primary_name
-                                          if(length(fam@wife_xref) == 1)
-                                            wife_name <- self@indi[[fam@wife_xref]]@primary_name
-                                          num_chil <- 0
-                                          if(length(fam@num_children) == 1)
-                                            num_chil <- fam@num_children
-                                          
-                                          data.table::data.table(
-                                            xref = fam@xref,
-                                            husband = pop(husb_name),
-                                            wife = pop(wife_name),
-                                            relationship_date = pop(fam@relationship_date),
-                                            relationship_place = pop(fam@relationship_place),
-                                            num_children = max(length(c(fam@chil_biol_xref,fam@chil_adop_xref,fam@chil_fost_xref)), num_chil)
-                                          )
-                                        }) |>
-                                        data.table::rbindlist()
-                                    }),
+                                  # df_famg = R7::new_property(
+                                  #   R7::class_data.frame,
+                                  #   getter = function(self){
+                                  #     if(length(self@famg) == 0) return(NULL)
+                                  #     lapply(
+                                  #       self@famg,
+                                  #       function(fam){
+                                  #         
+                                  #         husb_name <- ""
+                                  #         wife_name <- ""
+                                  #         if(length(fam@husb_xref) == 1)
+                                  #           husb_name <- self@indi[[fam@husb_xref]]@primary_name
+                                  #         if(length(fam@wife_xref) == 1)
+                                  #           wife_name <- self@indi[[fam@wife_xref]]@primary_name
+                                  #         num_chil <- 0
+                                  #         if(length(fam@num_children) == 1)
+                                  #           num_chil <- fam@num_children
+                                  #         
+                                  #         data.table::data.table(
+                                  #           xref = fam@xref,
+                                  #           husband = pop(husb_name),
+                                  #           wife = pop(wife_name),
+                                  #           relationship_date = pop(fam@relationship_date),
+                                  #           relationship_place = pop(fam@relationship_place),
+                                  #           num_children = max(length(c(fam@chil_biol_xref,fam@chil_adop_xref,fam@chil_fost_xref)), num_chil)
+                                  #         )
+                                  #       }) |>
+                                  #       data.table::rbindlist()
+                                  #   }),
                                   
                                   as_ged = R7::new_property(
                                     R7::class_character, 
@@ -228,6 +230,14 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 }
 )
 
+
+#' Create a new gedcom object
+#'
+#' @param my_name Your name, as creator/submitter.
+#' @param my_language The primary language in which data will be stored.
+#'
+#' @return A minimal gedcom R7 object.
+#' @export
 new_gedcomR7 <- function(my_name = unname(Sys.info()["user"]),
                          my_language = "English"){
   class_gedcomR7(system_id = "gedcomR7",

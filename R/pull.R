@@ -1,8 +1,10 @@
 
 #' Pull a record from a GEDCOM object for editing
+#' 
+#' @details The record is not removed from the gedcom object, rather a copy is taken.
 #'
-#' @param x 
-#' @param xref
+#' @param x A gedcom object.
+#' @param xref The xref of the record to pull.
 #'
 #' @return An R7 object representing the record.
 #' @export
