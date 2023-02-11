@@ -10,7 +10,6 @@
     
 }
 
-
 .pkgenv <- new.env(parent=emptyenv())
 
 .pkgenv$gedcom_phys_value_limit <- 248

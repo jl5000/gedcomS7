@@ -1,4 +1,8 @@
 
+val_record_types <- function(){
+  c(Individual = "indi", `Family Group` = "famg", Source = "sour",
+    Repository = "repo", Multimedia = "media", Note = "note")
+}
 
 #' Get valid values for inputs
 #' 

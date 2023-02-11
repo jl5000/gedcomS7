@@ -8,6 +8,7 @@ to_console <- function(label, val, exdent){
       fill = TRUE)
 }
 
+
 R7::method(print, class_gedcomR7) <- function(x, ...){
   
   eol <- "\n"

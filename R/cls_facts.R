@@ -1,4 +1,4 @@
-#' @include helpers.R cls_dates.R cls_locations.R validators.R
+#' @include utils_at.R cls_dates.R cls_locations.R cls_validators.R
 NULL
 
 class_fact_detail <- R7::new_class("class_fact_detail",
@@ -62,6 +62,7 @@ class_fact_detail <- R7::new_class("class_fact_detail",
                                     }
 )
 
+#' @export
 class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
                                  properties = list(
                                    husband_age = R7::class_character,
@@ -75,7 +76,7 @@ class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
                                        } else {
                                          desc <- paste0(" ", self@description)
                                        }
-                                       c(
+                                       ged <- c(
                                          sprintf("0 %s%s", self@fact, desc),
                                          rep("1 HUSB", length(self@husband_age)),
                                          sprintf("2 AGE %s", self@husband_age),
@@ -93,13 +94,24 @@ class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
                                          lst_to_ged(self@citations) |> increase_level(by = 1),
                                          sprintf("1 OBJE %s", self@media_links)
                                        )
+                                       
+                                       if(length(ged) == 1 && self@fact %in% c("MARR")){
+                                         sprintf("0 %s Y", self@fact)
+                                       } else {
+                                         ged
+                                       }
                                      })
                                  ),
                                  validator = function(self) {
                                    # Only EVEN needs description
                                    desc_error <- NULL
-                                   if(self@fact != "EVEN" && length(self@description) == 1)
-                                     desc_error <- "Non-EVEN facts do not require a description"
+                                   if(self@fact == "MARR"){
+                                     if(length(self@description) == 1 && self@description != "Y")
+                                       desc_error <- "Invalid descriptor for marriage event"
+                                   } else if(self@fact != "EVEN"){
+                                     desc_error <- chk_input_size(self@description, "@description", 0, 0)
+                                   }
+                                   
                                    c(
                                      chk_input_size(self@fact, "@fact", 1, 1),
                                      chk_input_choice(self@fact, "@fact", val_family_event_types()),
@@ -113,6 +125,7 @@ class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
                                  }
 )
 
+#' @export
 class_fact_indi <- R7::new_class("class_fact_indi", parent = class_fact_detail,
                                  properties = list(
                                    age = R7::class_character,
@@ -127,7 +140,7 @@ class_fact_indi <- R7::new_class("class_fact_indi", parent = class_fact_detail,
                                        } else {
                                          desc <- paste0(" ", self@description)
                                        }
-                                       c(
+                                       ged <- c(
                                          sprintf("0 %s%s", self@fact, desc),
                                          sprintf("1 FAMC %s", self@famg_xref),
                                          sprintf("2 ADOP %s", self@adopting_parent),
@@ -144,16 +157,31 @@ class_fact_indi <- R7::new_class("class_fact_indi", parent = class_fact_detail,
                                          lst_to_ged(self@citations) |> increase_level(by = 1),
                                          sprintf("1 OBJE %s", self@media_links)
                                        )
+                                       
+                                       if(length(ged) == 1 && self@fact %in% c("CHR","DEAT")){
+                                         sprintf("0 %s Y", self@fact)
+                                       } else {
+                                         ged
+                                       }
                                      })
                                  ),
                                  validator = function(self) {
                                    # Some facts (do not) require descriptions
                                    fact_desc_error <- NULL
-                                   if(self@fact %in% val_attribute_types() && self@fact != "RESI"){
-                                     fact_desc_error <- chk_input_size(self@description, "@description", 1, 1)
-                                   } else {
-                                     if(self@fact != "EVEN")
+                                   if(self@fact %in% val_attribute_types()){
+                                     if(self@fact == "RESI"){
                                        fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
+                                     } else {
+                                       fact_desc_error <- chk_input_size(self@description, "@description", 1, 1)
+                                     }
+                                   } else if(self@fact %in% val_individual_event_types()){
+                                     if(self@fact %in% c("CHR","DEAT","EVEN")){
+                                       if(self@fact %in% c("CHR","DEAT") && length(self@description) == 1 && self@description != "Y"){
+                                         fact_desc_error <- "Invalid descriptor for christening/death event"
+                                       }
+                                     } else {
+                                       fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
+                                     }
                                    }
                                    
                                    # Some facts require types

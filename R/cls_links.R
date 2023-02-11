@@ -1,6 +1,7 @@
-#' @include helpers.R validators.R
+#' @include utils_at.R cls_validators.R
 NULL
 
+#' @export
 class_repository_citation <- R7::new_class("class_repository_citation",
                                            properties = list(
                                              xref = R7::class_character,
@@ -25,7 +26,7 @@ class_repository_citation <- R7::new_class("class_repository_citation",
                                            }
 )
 
-
+#' @export
 class_association <- R7::new_class("class_association",
                                    properties = list(
                                      xref = R7::class_character,
@@ -60,6 +61,7 @@ class_association <- R7::new_class("class_association",
                                    }
 )
 
+#' @export
 class_spouse_family_link <- R7::new_class("class_spouse_family_link",
                                              properties = list(
                                                xref = R7::class_character,
@@ -87,6 +89,7 @@ class_spouse_family_link <- R7::new_class("class_spouse_family_link",
                                              }
 )
 
+#' @export
 class_child_family_link_biol <- R7::new_class("class_child_family_link_biol", parent = class_spouse_family_link,
                                             properties = list(
                                               pedigree = R7::new_property(R7::class_character,
@@ -105,6 +108,7 @@ class_child_family_link_biol <- R7::new_class("class_child_family_link_biol", pa
                                             )
 )
 
+#' @export
 class_child_family_link_adop <- R7::new_class("class_child_family_link_adop", parent = class_child_family_link_biol,
                                              properties = list(
                                                pedigree = R7::new_property(R7::class_character,
@@ -112,6 +116,7 @@ class_child_family_link_adop <- R7::new_class("class_child_family_link_adop", pa
                                              )
 )
 
+#' @export
 class_child_family_link_fost <- R7::new_class("class_child_family_link_fost", parent = class_child_family_link_biol,
                                              properties = list(
                                                pedigree = R7::new_property(R7::class_character,

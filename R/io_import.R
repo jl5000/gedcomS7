@@ -28,11 +28,8 @@ read_gedcom <- function(filepath = file.choose()) {
   
   records_lst <- split(ged_lines, cumsum(substr(ged_lines, 1, 1) == "0"))
   
-  x <- parse_records(records_lst)
-  
-  message("If you would like to enable quicksave set @quicksave = TRUE. This will allow you to use @save to save your changes to the same file. Exercise care with this option as it will not ask for confirmation before overwriting changes.")
-  
-  x
+  parse_records(records_lst)
+
 }
 
 

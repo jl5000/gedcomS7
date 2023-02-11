@@ -1,4 +1,4 @@
-#' @include helpers.R validators.R
+#' @include utils_at.R cls_validators.R
 NULL
 
 class_name_pieces <- R7::new_class("class_name_pieces", #abstract = TRUE,
@@ -30,7 +30,7 @@ class_name_pieces <- R7::new_class("class_name_pieces", #abstract = TRUE,
                                    
 )
 
-
+#' @export
 class_name_info <- R7::new_class("class_name_info", parent = class_name_pieces,
                                  properties = list(
                                    full = R7::class_character,
@@ -68,7 +68,7 @@ class_name_info <- R7::new_class("class_name_info", parent = class_name_pieces,
                                  }
 )
 
-
+#' @export
 class_personal_name <- R7::new_class("class_personal_name",
                                      properties = list(
                                        name = class_name_info,

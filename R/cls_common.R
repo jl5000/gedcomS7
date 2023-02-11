@@ -1,6 +1,7 @@
-#' @include helpers.R cls_dates.R validators.R
+#' @include utils_at.R cls_dates.R cls_validators.R
 NULL
 
+#' @export
 class_change_date <- R7::new_class("class_change_date",
                                    properties = list(
                                      date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
@@ -37,7 +38,7 @@ class_change_date <- R7::new_class("class_change_date",
 
 
 
-
+#' @export
 class_citation <- R7::new_class("class_citation",
                                 properties = list(
                                   xref = R7::class_character,

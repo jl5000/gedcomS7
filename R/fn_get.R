@@ -1,12 +1,4 @@
 
-describe_indi = function(x, xrefs){
-  nms = character()
-  for(xref in xrefs){
-    nms = c(nms, pull_record(x,xref)@primary_name)
-  }
-  nms
-}
-
 #' Identify all partners in a Family Group
 #'
 #' @param x A gedcom object.

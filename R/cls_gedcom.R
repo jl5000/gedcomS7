@@ -1,31 +1,8 @@
-#' @include helpers.R cls_dates.R cls_locations.R cls_record.R validators.R
+#' @include utils_at.R cls_dates.R cls_locations.R cls_record.R cls_validators.R
 NULL
 
 class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 properties = list(
-                                  quicksave_enabled = R7::new_property(R7::class_logical, default = FALSE),
-                                  file_path = R7::class_character,
-                                  
-                                  save = R7::new_property(
-                                    R7::class_logical,
-                                    getter = function(self){
-                                      if(!self@quicksave_enabled){
-                                        warning("File cannot be saved. Enable quicksave with the @quicksave_enabled parameter.")
-                                        return(invisible(FALSE))
-                                      }
-                                      if(length(self@file_path) == 0){
-                                        warning("File cannot be saved. Set an existing file path with the @file_path parameter.")
-                                        return(invisible(FALSE))
-                                      }
-                                      if(file.exists(self@file_path))
-                                        file.remove(self@file_path)
-                                      
-                                      write_gedcom(self, self@file_path)
-                                      message("GEDCOM saved")
-                                      invisible(TRUE)
-                                    }
-                                  ),
-                                  
                                   update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
                                   
                                   gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
@@ -195,7 +172,6 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                 ),
                                 validator = function(self){
                                   c(
-                                    chk_input_size(self@quicksave_enabled, "@quicksave_enabled", 1, 1),
                                     chk_input_size(self@system_id, "@system_id", 1, 1, 1, 20),
                                     chk_input_size(self@product_name, "@product_name", 0, 1, 1, 90),
                                     chk_input_size(self@product_version, "@product_version", 0, 1, 3, 15),
@@ -215,12 +191,6 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                     chk_input_size(self@file_name, "@file_name", 0, 1, 5, 248),
                                     chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1, 248),
                                     chk_input_size(self@content_description, "@content_description", 0, 1, 1, 248),
-                                    # chk_input_R7classes(self@indi, "@indi", class_record_indi),
-                                    # chk_input_R7classes(self@famg, "@famg", class_record_famg),
-                                    # chk_input_R7classes(self@sour, "@sour", class_record_sour),
-                                    # chk_input_R7classes(self@repo, "@repo", class_record_repo),
-                                    # chk_input_R7classes(self@media, "@media", class_record_media),
-                                    # chk_input_R7classes(self@note, "@note", class_record_note),
                                     chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
                                     chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))
                                     # TODO: names and values must be unique

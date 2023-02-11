@@ -1,4 +1,4 @@
-#' @include helpers.R cls_common.R cls_locations.R cls_facts.R validators.R
+#' @include utils_at.R cls_common.R cls_locations.R cls_facts.R cls_validators.R
 NULL
 
 class_record <- 
@@ -78,6 +78,7 @@ class_subm <-
                 }
   )
 
+#' @export
 class_record_famg <- 
   R7::new_class("class_record_famg", parent = class_record,
                 properties = list(
@@ -146,6 +147,7 @@ class_record_famg <-
                   )
                 })
 
+#' @export
 class_record_indi <- 
   R7::new_class("class_record_indi", parent = class_record,
                 properties = list(
@@ -262,6 +264,7 @@ class_record_indi <-
                 }
   )
 
+#' @export
 class_record_media <- 
   R7::new_class("class_record_media", parent = class_record,
                 properties = list(
@@ -301,7 +304,7 @@ class_record_media <-
                 }
   )
 
-
+#' @export
 class_events_recorded <- 
   R7::new_class("class_events_recorded",
                 properties = list(
@@ -328,6 +331,7 @@ class_events_recorded <-
                   )
                 })
 
+#' @export
 class_record_sour <- 
   R7::new_class("class_record_sour", parent = class_record,
                 properties = list(
@@ -390,6 +394,7 @@ class_record_sour <-
                   )
                 })
 
+#' @export
 class_record_repo <- 
   R7::new_class("class_record_repo", parent = class_record,
                 properties = list(
@@ -421,6 +426,7 @@ class_record_repo <-
                 }
   )
 
+#' @export
 class_record_note <- 
   R7::new_class("class_record_note", parent = class_record,
                 properties = list(

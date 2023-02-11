@@ -1,8 +1,9 @@
-#' @include helpers.R validators.R
+#' @include utils_at.R cls_validators.R
 NULL
 
 class_date <- R7::new_class("class_date")
 
+#' @export
 class_date_exact <- R7::new_class("class_date_exact", parent = class_date,
                               properties = list(
                                 year = R7::class_integer,
@@ -36,13 +37,14 @@ class_date_exact <- R7::new_class("class_date_exact", parent = class_date,
                               }
 )
 
+#' @export
 date_exact_current <- function(){
   class_date_exact(year = as.integer(format(Sys.Date(), "%Y")),
                    month = as.integer(format(Sys.Date(), "%m")),
                    day = as.integer(format(Sys.Date(), "%d")))
 }
 
-
+#' @export
 class_date_calendar <- R7::new_class("class_date_calendar", parent = class_date,
                              properties = list(
                                year = R7::class_integer,
@@ -86,6 +88,7 @@ class_date_calendar <- R7::new_class("class_date_calendar", parent = class_date,
                              }
 )
 
+#' @export
 class_date_approx <- R7::new_class("class_date_approx", parent = class_date,
                                    properties = list(
                                      date = class_date_calendar,
@@ -117,7 +120,7 @@ class_date_approx <- R7::new_class("class_date_approx", parent = class_date,
 )
 
 
-
+#' @export
 class_date_period <- R7::new_class("class_date_period", parent = class_date,
                                properties = list(
                                  start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
@@ -148,6 +151,7 @@ class_date_period <- R7::new_class("class_date_period", parent = class_date,
                                }
 )
 
+#' @export
 class_date_range <- R7::new_class("class_date_range", parent = class_date_period,
                               properties = list(
                                 

@@ -1,5 +1,5 @@
-
-`@` <- R7::`@`
+#' @include utils_at.R
+NULL
 
 extract_ged_level <- function(lines){
   as.integer(sub(reg_ged_line(), "\\1", lines))
@@ -63,8 +63,11 @@ find_ged_values <- function(lines,
   
   lines <- unname(lines)
   # Catch cases where no line value is given
-  lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
-  sub(sprintf("^%s (%s) ((?s).*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
+  vals <- extract_ged_value(lines)
+  vals[vals != ""]
+  
+  # lines <- lines[lines != paste(base_level + length(tag), tag[length(tag)])]
+  # sub(sprintf("^%s (%s) ((?s).*)$", base_level + length(tag), tag[length(tag)]), "\\2", lines, perl = TRUE)
 }
 
 
@@ -86,7 +89,7 @@ pop <- function(x){
 increase_level <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   
-  cur_level <- as.integer(substr(ged, 1, 1))
+  cur_level <- extract_ged_level(ged)
   remainder <- substr(ged, 3, nchar(ged))
   paste(cur_level + by, remainder)
 }
