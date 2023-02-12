@@ -74,38 +74,6 @@ add_parents <- function(x, xref, inc_sex = TRUE){
   x
 }
 
-#' Create multiple children for a Family Group
-#'
-#' @param x A gedcom object.
-#' @param xref The xref of a Family Group record.
-#' @param sexes A character string giving the sexes of each child. For example,
-#' "FFM" to add two daughters and one son.
-#'
-#' @return A gedcom object with additional child records.
-#' @export
-add_children <- function(x, xref, sexes = NULL){
-  if(is.null(sexes)) return(x)
-  if(!is_famg_xref(x, xref)) stop("The xref is not a Family Group record.")
-  
-  sexes_vec <- unlist(strsplit(sexes, split = NULL))
-  
-  for(sx in sexes_vec){
-    if(!sx %in% val_sexes()){
-      warning("Skipping child with unknown sex: ", sx)
-      next
-    }
-    
-    chil_rec <- class_record_indi(
-      sex = sx,
-      family_links = list(class_child_family_link_biol(xref = xref))
-    )
-
-    x <- push_record(x, chil_rec)
-  }
-  
-  x
-}
-
 #' Create siblings for an Individual
 #' 
 #' @details This function may also create a Family Group record and will 
@@ -153,6 +121,40 @@ add_siblings <- function(x, xref, sexes = NULL){
   x
 }
 
+#' Create multiple children for a Family Group
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of a Family Group record.
+#' @param sexes A character string giving the sexes of each child. For example,
+#' "FFM" to add two daughters and one son.
+#'
+#' @return A gedcom object with additional child records.
+#' @export
+add_children <- function(x, xref, sexes = NULL){
+  if(is.null(sexes)) return(x)
+  if(!is_famg_xref(x, xref)) stop("The xref is not a Family Group record.")
+  
+  sexes_vec <- unlist(strsplit(sexes, split = NULL))
+  
+  for(sx in sexes_vec){
+    if(!sx %in% val_sexes()){
+      warning("Skipping child with unknown sex: ", sx)
+      next
+    }
+    
+    chil_rec <- class_record_indi(
+      sex = sx,
+      family_links = list(class_child_family_link_biol(xref = xref))
+    )
+
+    x <- push_record(x, chil_rec)
+  }
+  
+  x
+}
+
+
+
 #' Add a spouse for an individual
 #' 
 #' This creates a record for a spouse and their Family Group record.
@@ -197,4 +199,13 @@ add_spouse <- function(x, xref, sex = "U"){
   )
   
   push_record(x, fams_rec)
+}
+
+
+add_family_as_child <- function(x, xref){
+  # add parents and siblings
+}
+
+add_family_as_spouse <- function(x, xref){
+  # add spouse and children
 }

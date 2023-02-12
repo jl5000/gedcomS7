@@ -1,0 +1,127 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# gedcomR7
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of gedcomR7 is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. It has just one dependency - the R7 package for Object Oriented Programming, which will at some point be subsumed into base R. NOTE: this package is likely to change name soon.
+
+> This package is still in development. Be wary of editing your file with it for the time being.
+
+## Installation
+
+You can install the development version of gedcomR7 from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("jl5000/gedcomR7")
+```
+
+## Import / creation
+
+The intent is to allow the user to import GEDCOM files or create them from scratch, creating an R7 object representation:
+
+```{r example}
+library(gedcomR7)
+
+ged <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+ged
+
+ged <- new_gedcomR7(my_name = "Jamie")
+ged
+```
+
+Once you have created or imported your file, you can set various high level options for your file. 
+
+## Options
+
+You can influence how the gedcom object is modified as you add and edit records within it. 
+
+The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 6 types). This vector must be of a particular length with these specific names.
+
+```{r}
+ged@xref_prefixes
+```
+
+Since we have no existing records in our gedcom object, the next xrefs of each type will be:
+
+```{r}
+ged@next_xref
+```
+
+You can also use the `update_change_dates` property to determine whether records should include the date an edit was made.
+
+```{r}
+ged@update_change_dates <- TRUE
+```
+
+## GEDCOM metadata
+
+The metadata for the gedcom object (ged@...) and the submitter (ged@subm@...) can be modified.
+
+```{r}
+ged@content_description <- "This file contains my family tree"
+ged@subm@name <- "Jamie Lendrum"
+ged
+```
+
+## New records
+
+New records are created using the set of `class_record_*()` functions:
+
+```{r}
+luke <- class_record_indi(
+  sex = "M",
+)
+```
+
+An individual can have many names, which are created using `class_personal_name()` and `class_name_info()` and must be stored in a list:
+
+```{r}
+main_name <- class_personal_name(name = class_name_info(full = "Luke /Skywalker/",
+                                                        type = "birth",
+                                                        given = "Luke",
+                                                        surname = "Skywalker"))
+
+luke@personal_names <- list(main_name) 
+luke
+```
+
+## The push/pull paradigm
+
+New record objects are added to an existing gedcom by using `push_record()`:
+
+```{r}
+ged <- push_record(ged, luke)
+ged
+```
+
+Once in the gedcom object, they are stored as raw gedcom data as a character vector:
+
+```{r}
+ged@indi[[1]]
+```
+
+If you want to edit a record, you must pull it from the GEDCOM object, which will take a copy and parse it into an editable R7 object:
+
+```{r}
+pull_record(ged, "@I1@")
+```
+
+## References
+
+* [The GEDCOM 5.5.5 Specification](https://www.gedcom.org/gedcom.html)

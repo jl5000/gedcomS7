@@ -275,6 +275,29 @@ get_supporting_recs <- function(x,
   )
 }
 
+#' Identify unreferenced records
+#' 
+#' This function identifies records that are not referenced in any other records.
+#' 
+#' @details You would expect every record to be referenced by another in some way. For example, Individual
+#' records should reference Family Group records (and vice-versa), Repository records should be referenced
+#' by Source records, and Source records should be cited by other records.
+#'
+#' @param x A gedcom object.
+#'
+#' @return A character vector of xrefs that are not referenced anywhere else in the gedcom object.
+#' @export
+get_unused_recs <- function(x){
+  
+  ged <- x@as_ged
+  
+  xrefs <- unlist(x@xrefs)
+  vals <- extract_ged_value(ged)
+  xref_vals <- vals[grep(reg_xref(TRUE), vals)]
+
+  setdiff(xrefs, xref_vals)  
+}
+
 #' Identify all descendants for an individual
 #' 
 #' This function identifies records in an entire branch of the family tree below a certain individual.
