@@ -2,13 +2,13 @@
 NULL
 
 #' @export
-class_repository_citation <- R7::new_class("class_repository_citation",
+class_repository_citation <- S7::new_class("class_repository_citation",
                                            properties = list(
-                                             xref = R7::class_character,
-                                             source_call_number = R7::class_character,
+                                             xref = S7::class_character,
+                                             source_call_number = S7::class_character,
                                              
-                                             as_ged = R7::new_property(
-                                               R7::class_character,
+                                             as_ged = S7::new_property(
+                                               S7::class_character,
                                                getter = function(self){
                                                  c(
                                                    sprintf("0 REPO %s", self@xref),
@@ -27,16 +27,16 @@ class_repository_citation <- R7::new_class("class_repository_citation",
 )
 
 #' @export
-class_association <- R7::new_class("class_association",
+class_association <- S7::new_class("class_association",
                                    properties = list(
-                                     xref = R7::class_character,
-                                     relation_is = R7::class_character,
-                                     citations = R7::class_list,
-                                     note_links = R7::class_character,
-                                     notes = R7::class_character,
+                                     xref = S7::class_character,
+                                     relation_is = S7::class_character,
+                                     citations = S7::class_list,
+                                     note_links = S7::class_character,
+                                     notes = S7::class_character,
                                      
-                                     as_ged = R7::new_property(
-                                       R7::class_character,
+                                     as_ged = S7::new_property(
+                                       S7::class_character,
                                        getter = function(self){
                                          c(
                                            sprintf("0 ASSO %s", self@xref),
@@ -53,7 +53,7 @@ class_association <- R7::new_class("class_association",
                                        chk_input_size(self@xref, "@xref", 1, 1, 3, 22),
                                        chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
                                        chk_input_size(self@relation_is, "@relation_is", 1, 1, 1, 25),
-                                       chk_input_R7classes(self@citations, "@citations", class_citation),
+                                       chk_input_S7classes(self@citations, "@citations", class_citation),
                                        chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                                        chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                                        chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
@@ -62,14 +62,14 @@ class_association <- R7::new_class("class_association",
 )
 
 #' @export
-class_spouse_family_link <- R7::new_class("class_spouse_family_link",
+class_spouse_family_link <- S7::new_class("class_spouse_family_link",
                                              properties = list(
-                                               xref = R7::class_character,
-                                               note_links = R7::class_character,
-                                               notes = R7::class_character,
+                                               xref = S7::class_character,
+                                               note_links = S7::class_character,
+                                               notes = S7::class_character,
                                                
-                                               as_ged = R7::new_property(
-                                                 R7::class_character,
+                                               as_ged = S7::new_property(
+                                                 S7::class_character,
                                                  getter = function(self){
                                                    c(
                                                      sprintf("0 FAMS %s", self@xref),
@@ -90,13 +90,13 @@ class_spouse_family_link <- R7::new_class("class_spouse_family_link",
 )
 
 #' @export
-class_child_family_link_biol <- R7::new_class("class_child_family_link_biol", parent = class_spouse_family_link,
+class_child_family_link_biol <- S7::new_class("class_child_family_link_biol", parent = class_spouse_family_link,
                                             properties = list(
-                                              pedigree = R7::new_property(R7::class_character,
+                                              pedigree = S7::new_property(S7::class_character,
                                                                           getter = function(self) "birth"),
                                               
-                                              as_ged = R7::new_property(
-                                                R7::class_character,
+                                              as_ged = S7::new_property(
+                                                S7::class_character,
                                                 getter = function(self){
                                                   c(
                                                     sprintf("0 FAMC %s", self@xref),
@@ -109,17 +109,17 @@ class_child_family_link_biol <- R7::new_class("class_child_family_link_biol", pa
 )
 
 #' @export
-class_child_family_link_adop <- R7::new_class("class_child_family_link_adop", parent = class_child_family_link_biol,
+class_child_family_link_adop <- S7::new_class("class_child_family_link_adop", parent = class_child_family_link_biol,
                                              properties = list(
-                                               pedigree = R7::new_property(R7::class_character,
+                                               pedigree = S7::new_property(S7::class_character,
                                                                            getter = function(self) "adopted")
                                              )
 )
 
 #' @export
-class_child_family_link_fost <- R7::new_class("class_child_family_link_fost", parent = class_child_family_link_biol,
+class_child_family_link_fost <- S7::new_class("class_child_family_link_fost", parent = class_child_family_link_biol,
                                              properties = list(
-                                               pedigree = R7::new_property(R7::class_character,
+                                               pedigree = S7::new_property(S7::class_character,
                                                                            getter = function(self) "foster")
                                              )
 )

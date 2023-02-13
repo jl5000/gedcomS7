@@ -10,7 +10,7 @@ read_gedcom(filepath = file.choose())
 \item{filepath}{The full filepath of the GEDCOM file.}
 }
 \value{
-A gedcom R7 object.
+A gedcom S7 object.
 }
 \description{
 Imports a *.ged file and creates a gedcom object.

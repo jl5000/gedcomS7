@@ -6,7 +6,7 @@
 #' @param x A gedcom object.
 #' @param xref The xref of the record to pull.
 #'
-#' @return An R7 object representing the record.
+#' @return An S7 object representing the record.
 #' @export
 pull_record <- function(x, xref){
   

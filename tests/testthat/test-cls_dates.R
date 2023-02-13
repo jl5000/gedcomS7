@@ -5,7 +5,7 @@ test_that("class_date_exact", {
   expect_error(class_date_exact(2001L))
   expect_error(class_date_exact(2001L, 5L))
   expect_error(class_date_exact(2001L, 5L, 12))
-  expect_error(class_date_exact(2001L, 5L, 32))
+  expect_error(class_date_exact(2001L, 5L, 32L), regexp = "Invalid date")
   expect_equal(class_date_exact(2001L, 5L, 12L)@as_val, "12 MAY 2001")
   expect_equal(class_date_exact(2001L, 5L, 12L)@as_date, as.Date("2001-05-12"))
   expect_equal(date_exact_current()@as_date, Sys.Date())

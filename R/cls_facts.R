@@ -1,37 +1,37 @@
 #' @include utils_at.R cls_dates.R cls_locations.R cls_validators.R
 NULL
 
-class_fact_detail <- R7::new_class("class_fact_detail",
+class_fact_detail <- S7::new_class("class_fact_detail",
                                     properties = list(
                                       # Not part of detail, but want them to appear first
-                                      fact = R7::class_character,
-                                      description = R7::class_character,
+                                      fact = S7::class_character,
+                                      description = S7::class_character,
                                       
-                                      type = R7::class_character,
-                                      date = R7::new_property(R7::new_union(NULL, 
+                                      type = S7::class_character,
+                                      date = S7::new_property(S7::new_union(NULL, 
                                                                             class_date_calendar,
                                                                             class_date_period,
                                                                             class_date_range,
                                                                             class_date_approx, 
-                                                                            R7::class_character)),
-                                      place = R7::new_property(R7::new_union(NULL, class_place)),
-                                      address = R7::new_property(R7::new_union(NULL, class_address)),
-                                      agency = R7::class_character,
-                                      relig_affil = R7::class_character,
-                                      cause = R7::class_character,
-                                      note_links = R7::class_character,
-                                      notes = R7::class_character,
-                                      citations = R7::class_list,
-                                      media_links = R7::class_character,
+                                                                            S7::class_character)),
+                                      place = S7::new_property(S7::new_union(NULL, class_place)),
+                                      address = S7::new_property(S7::new_union(NULL, class_address)),
+                                      agency = S7::class_character,
+                                      relig_affil = S7::class_character,
+                                      cause = S7::class_character,
+                                      note_links = S7::class_character,
+                                      notes = S7::class_character,
+                                      citations = S7::class_list,
+                                      media_links = S7::class_character,
                                       
-                                      fact_date = R7::new_property(
-                                        R7::class_character,
+                                      fact_date = S7::new_property(
+                                        S7::class_character,
                                         getter = function(self){
                                           date_to_val(self@date)
                                         }),
                                       
-                                      fact_location = R7::new_property(
-                                        R7::class_character,
+                                      fact_location = S7::new_property(
+                                        S7::class_character,
                                         getter = function(self){
                                           if(length(self@place) == 1){
                                             self@place@as_val
@@ -55,7 +55,7 @@ class_fact_detail <- R7::new_class("class_fact_detail",
                                         chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                                         chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                                         chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
-                                        chk_input_R7classes(self@citations, "@citations", class_citation),
+                                        chk_input_S7classes(self@citations, "@citations", class_citation),
                                         chk_input_size(self@media_links, "@media_links", 0, 10000, 3, 22),
                                         chk_input_pattern(self@media_links, "@media_links", reg_xref(TRUE))
                                       )
@@ -63,13 +63,13 @@ class_fact_detail <- R7::new_class("class_fact_detail",
 )
 
 #' @export
-class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
+class_fact_famg <- S7::new_class("class_fact_famg", parent = class_fact_detail,
                                  properties = list(
-                                   husband_age = R7::class_character,
-                                   wife_age = R7::class_character,
+                                   husband_age = S7::class_character,
+                                   wife_age = S7::class_character,
 
-                                   as_ged = R7::new_property(
-                                     R7::class_character,
+                                   as_ged = S7::new_property(
+                                     S7::class_character,
                                      getter = function(self){
                                        if(length(self@description) == 0){
                                          desc <- ""
@@ -126,14 +126,14 @@ class_fact_famg <- R7::new_class("class_fact_famg", parent = class_fact_detail,
 )
 
 #' @export
-class_fact_indi <- R7::new_class("class_fact_indi", parent = class_fact_detail,
+class_fact_indi <- S7::new_class("class_fact_indi", parent = class_fact_detail,
                                  properties = list(
-                                   age = R7::class_character,
-                                   famg_xref = R7::class_character,
-                                   adopting_parent = R7::class_character,
+                                   age = S7::class_character,
+                                   famg_xref = S7::class_character,
+                                   adopting_parent = S7::class_character,
                                    
-                                   as_ged = R7::new_property(
-                                     R7::class_character,
+                                   as_ged = S7::new_property(
+                                     S7::class_character,
                                      getter = function(self){
                                        if(length(self@description) == 0){
                                          desc <- ""

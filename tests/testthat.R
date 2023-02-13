@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(gedcomR7)
+library(gedcomS7)
 
-test_check("gedcomR7")
+test_check("gedcomS7")

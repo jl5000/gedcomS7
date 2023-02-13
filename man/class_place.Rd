@@ -21,7 +21,7 @@ terminated by a full stop or anything else.}
 \item{notes}{A list of \code{class_note} objects to record or reference notes about the place.}
 }
 \value{
-An R7 Place object.
+An S7 Place object.
 }
 \description{
 Create a Place object

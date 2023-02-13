@@ -1,17 +1,17 @@
 #' @include utils_at.R cls_validators.R
 NULL
 
-class_name_pieces <- R7::new_class("class_name_pieces", #abstract = TRUE,
+class_name_pieces <- S7::new_class("class_name_pieces", #abstract = TRUE,
                                    properties = list(
-                                     prefix = R7::class_character,
-                                     given = R7::class_character,
-                                     nickname = R7::class_character,
-                                     surname_prefix = R7::class_character,
-                                     surname = R7::class_character,
-                                     suffix = R7::class_character,
-                                     note_links = R7::class_character,
-                                     notes = R7::class_character,
-                                     citations = R7::class_list
+                                     prefix = S7::class_character,
+                                     given = S7::class_character,
+                                     nickname = S7::class_character,
+                                     surname_prefix = S7::class_character,
+                                     surname = S7::class_character,
+                                     suffix = S7::class_character,
+                                     note_links = S7::class_character,
+                                     notes = S7::class_character,
+                                     citations = S7::class_list
                                    ),
                                    validator = function(self) {
                                      c(
@@ -24,20 +24,20 @@ class_name_pieces <- R7::new_class("class_name_pieces", #abstract = TRUE,
                                        chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                                        chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                                        chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
-                                       chk_input_R7classes(self@citations, "@citations", class_citation)
+                                       chk_input_S7classes(self@citations, "@citations", class_citation)
                                      )
                                    }
                                    
 )
 
 #' @export
-class_name_info <- R7::new_class("class_name_info", parent = class_name_pieces,
+class_name_info <- S7::new_class("class_name_info", parent = class_name_pieces,
                                  properties = list(
-                                   full = R7::class_character,
-                                   type = R7::class_character,
+                                   full = S7::class_character,
+                                   type = S7::class_character,
                                    
-                                   as_ged = R7::new_property(
-                                     R7::class_character,
+                                   as_ged = S7::new_property(
+                                     S7::class_character,
                                      getter = function(self){
                                        c(
                                          sprintf("0 NAME %s", self@full),
@@ -69,14 +69,14 @@ class_name_info <- R7::new_class("class_name_info", parent = class_name_pieces,
 )
 
 #' @export
-class_personal_name <- R7::new_class("class_personal_name",
+class_personal_name <- S7::new_class("class_personal_name",
                                      properties = list(
                                        name = class_name_info,
-                                       phon_names = R7::class_list,
-                                       rom_names = R7::class_list,
+                                       phon_names = S7::class_list,
+                                       rom_names = S7::class_list,
                                        
-                                       as_ged = R7::new_property(
-                                         R7::class_character,
+                                       as_ged = S7::new_property(
+                                         S7::class_character,
                                          getter = function(self){
                                            
                                            phon <- lst_to_ged(self@phon_names) |> increase_level(by = 1)
@@ -108,8 +108,8 @@ class_personal_name <- R7::new_class("class_personal_name",
                                        
                                        c(
                                          chk_input_size(self@name, "@name", 1, 1),
-                                         chk_input_R7classes(self@phon_names, "@phon_names", class_name_info),
-                                         chk_input_R7classes(self@rom_names, "@rom_names", class_name_info),
+                                         chk_input_S7classes(self@phon_names, "@phon_names", class_name_info),
+                                         chk_input_S7classes(self@rom_names, "@rom_names", class_name_info),
                                          type_error
                                        )
                                      }

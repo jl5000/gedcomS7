@@ -16,6 +16,16 @@ test_that("class_citation", {
   
   expect_snapshot_value(class_citation(xref = "@S1@",
                                        where = "Page 1",
+                                       event_role = "FATH",
+                                       recording_date = "JAN 1994",
+                                       source_text = c("This is","source text"))@as_ged, "json2")
+  expect_snapshot_value(class_citation(xref = "@S1@",
+                                       where = "Page 1",
+                                       event_type = "BIRT",
+                                       event_role = "FATH",
+                                       media_links = "@O1@")@as_ged, "json2")
+  expect_snapshot_value(class_citation(xref = "@S1@",
+                                       where = "Page 1",
                                        event_type = "BIRT",
                                        event_role = "FATH",
                                        recording_date = "JAN 1994",

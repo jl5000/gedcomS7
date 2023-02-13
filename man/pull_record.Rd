@@ -12,7 +12,7 @@ pull_record(x, xref)
 \item{xref}{The xref of the record to pull.}
 }
 \value{
-An R7 object representing the record.
+An S7 object representing the record.
 }
 \description{
 Pull a record from a GEDCOM object for editing

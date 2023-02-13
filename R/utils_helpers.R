@@ -71,19 +71,17 @@ find_ged_values <- function(lines,
 }
 
 
-apply_extract_ged_values <- function(recs, tag){
-  
-  recs |>
-    lapply(\(x) find_ged_values(x, tag)) |>
-    lapply(\(x) if(length(x) == 0) pop(x) else x[1]) |>
-    unlist() |>
-    unname()
-  
-}
-
-
-pop <- function(x){
-  paste(x, collapse = "")
+#' Force a vector to be a length 1 character vector
+#' 
+#' The name comes from 'Chr-one-ify'.
+#'
+#' @param x An atomic vector of any length.
+#'
+#' @return A character vector of length one. It is either an empty string for a
+#' zero length input, or takes the value of the first element.
+chronify <- function(x){
+  if(length(x) == 0) return("")
+  as.character(x)[1]
 }
 
 increase_level <- function(ged, by = 1){
@@ -108,7 +106,7 @@ obj_to_ged <- function(obj){
 }
 
 date_to_val <- function(obj){
-  if(R7::R7_inherits(obj, class_date)){
+  if(S7::S7_inherits(obj, class_date)){
     date_val <- obj@as_val
   } else {
     date_val <- obj
@@ -119,17 +117,17 @@ date_to_val <- function(obj){
 
 get_record_type <- function(record){
   
-  if(R7::R7_inherits(record, class_record_indi)){
+  if(S7::S7_inherits(record, class_record_indi)){
     "indi"
-  } else if(R7::R7_inherits(record, class_record_famg)){
+  } else if(S7::S7_inherits(record, class_record_famg)){
     "famg"
-  } else if(R7::R7_inherits(record, class_record_sour)){
+  } else if(S7::S7_inherits(record, class_record_sour)){
     "sour"
-  } else if(R7::R7_inherits(record, class_record_repo)){
+  } else if(S7::S7_inherits(record, class_record_repo)){
     "repo"
-  } else if(R7::R7_inherits(record, class_record_media)){
+  } else if(S7::S7_inherits(record, class_record_media)){
     "media"
-  } else if(R7::R7_inherits(record, class_record_note)){
+  } else if(S7::S7_inherits(record, class_record_note)){
     "note"
   } else {
     stop("Unrecognised record")

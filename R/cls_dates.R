@@ -1,23 +1,23 @@
 #' @include utils_at.R cls_validators.R
 NULL
 
-class_date <- R7::new_class("class_date")
+class_date <- S7::new_class("class_date")
 
 #' @export
-class_date_exact <- R7::new_class("class_date_exact", parent = class_date,
+class_date_exact <- S7::new_class("class_date_exact", parent = class_date,
                               properties = list(
-                                year = R7::class_integer,
-                                month = R7::class_integer,
-                                day = R7::class_integer,
+                                year = S7::class_integer,
+                                month = S7::class_integer,
+                                day = S7::class_integer,
                                 
-                                as_val = R7::new_property(
-                                  R7::class_character,
+                                as_val = S7::new_property(
+                                  S7::class_character,
                                   getter = function(self){
                                     paste(self@day, toupper(month.abb[self@month]), self@year)
                                   }),
                                 
-                                as_date = R7::new_property(
-                                  R7::class_Date,
+                                as_date = S7::new_property(
+                                  S7::class_Date,
                                   getter = function(self){
                                     day <- self@day
                                     month <- self@month
@@ -45,16 +45,16 @@ date_exact_current <- function(){
 }
 
 #' @export
-class_date_calendar <- R7::new_class("class_date_calendar", parent = class_date,
+class_date_calendar <- S7::new_class("class_date_calendar", parent = class_date,
                              properties = list(
-                               year = R7::class_integer,
-                               month = R7::class_integer,
-                               day = R7::class_integer,
-                               year_is_bce = R7::new_property(R7::class_logical, default = FALSE),
-                               year_is_dual = R7::new_property(R7::class_logical, default = FALSE),
+                               year = S7::class_integer,
+                               month = S7::class_integer,
+                               day = S7::class_integer,
+                               year_is_bce = S7::new_property(S7::class_logical, default = FALSE),
+                               year_is_dual = S7::new_property(S7::class_logical, default = FALSE),
                                
-                               as_val = R7::new_property(
-                                 R7::class_character,
+                               as_val = S7::new_property(
+                                 S7::class_character,
                                  getter = function(self){
                                    val <- ""
                                    if (length(self@day) == 1) 
@@ -89,15 +89,15 @@ class_date_calendar <- R7::new_class("class_date_calendar", parent = class_date,
 )
 
 #' @export
-class_date_approx <- R7::new_class("class_date_approx", parent = class_date,
+class_date_approx <- S7::new_class("class_date_approx", parent = class_date,
                                    properties = list(
                                      date = class_date_calendar,
-                                     about = R7::new_property(R7::class_logical, default = TRUE),
-                                     calc = R7::new_property(R7::class_logical, default = FALSE),
-                                     est = R7::new_property(R7::class_logical, default = FALSE),
+                                     about = S7::new_property(S7::class_logical, default = TRUE),
+                                     calc = S7::new_property(S7::class_logical, default = FALSE),
+                                     est = S7::new_property(S7::class_logical, default = FALSE),
                                      
-                                     as_val = R7::new_property(
-                                       R7::class_character,
+                                     as_val = S7::new_property(
+                                       S7::class_character,
                                        getter = function(self){
                                          if(self@calc) {
                                            paste("CAL", self@date@as_val)
@@ -121,13 +121,13 @@ class_date_approx <- R7::new_class("class_date_approx", parent = class_date,
 
 
 #' @export
-class_date_period <- R7::new_class("class_date_period", parent = class_date,
+class_date_period <- S7::new_class("class_date_period", parent = class_date,
                                properties = list(
-                                 start_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
-                                 end_date = R7::new_property(R7::new_union(NULL, class_date_calendar)),
+                                 start_date = S7::new_property(S7::new_union(NULL, class_date_calendar)),
+                                 end_date = S7::new_property(S7::new_union(NULL, class_date_calendar)),
                                  
-                                 as_val = R7::new_property(
-                                   R7::class_character,
+                                 as_val = S7::new_property(
+                                   S7::class_character,
                                    getter = function(self){
                                      if (length(self@start_date) + length(self@end_date) == 2) {
                                        paste("FROM", self@start_date@as_val, 
@@ -152,11 +152,11 @@ class_date_period <- R7::new_class("class_date_period", parent = class_date,
 )
 
 #' @export
-class_date_range <- R7::new_class("class_date_range", parent = class_date_period,
+class_date_range <- S7::new_class("class_date_range", parent = class_date_period,
                               properties = list(
                                 
-                                as_val = R7::new_property(
-                                  R7::class_character,
+                                as_val = S7::new_property(
+                                  S7::class_character,
                                   getter = function(self){
                                     if (length(self@start_date) + length(self@end_date) == 2) {
                                       paste("BET", self@start_date@as_val, 

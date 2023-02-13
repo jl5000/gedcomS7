@@ -40,10 +40,10 @@ chk_input_choice <- function(input, name, choices) {
 }
 
 
-chk_input_R7classes <- function(inputs, name, target_class){
+chk_input_S7classes <- function(inputs, name, target_class){
   target_class_name <- target_class@name
   for(inp in inputs){
-    if(!R7::R7_inherits(inp, target_class))
+    if(!S7::S7_inherits(inp, target_class))
       return(sprintf("%s contains an invalid object not of %s.", 
                      name, target_class_name))
   }

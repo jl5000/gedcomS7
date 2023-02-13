@@ -2,19 +2,19 @@
 NULL
 
 class_record <- 
-  R7::new_class("class_record", #abstract = TRUE,
+  S7::new_class("class_record", #abstract = TRUE,
                 properties = list(
-                  xref = R7::new_property(R7::class_character, default = "@gedcomR7orphan@"),
-                  user_reference_numbers = R7::class_character,
-                  auto_id = R7::class_character,
-                  media_links = R7::class_character,
-                  note_links = R7::class_character,
-                  notes = R7::class_character,
-                  citations = R7::class_list,
-                  last_updated = R7::new_property(R7::new_union(NULL, class_change_date)),
+                  xref = S7::new_property(S7::class_character, default = "@gedcomS7orphan@"),
+                  user_reference_numbers = S7::class_character,
+                  auto_id = S7::class_character,
+                  media_links = S7::class_character,
+                  note_links = S7::class_character,
+                  notes = S7::class_character,
+                  citations = S7::class_list,
+                  last_updated = S7::new_property(S7::new_union(NULL, class_change_date)),
                   
-                  refs_ged = R7::new_property(
-                    R7::class_character,
+                  refs_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       tmp <- character()
                       for(i in seq_along(self@user_reference_numbers)){
@@ -40,7 +40,7 @@ class_record <-
                     chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                     chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                     chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
-                    chk_input_R7classes(self@citations, "@citations", class_citation),
+                    chk_input_S7classes(self@citations, "@citations", class_citation),
                     chk_input_size(self@last_updated, "@last_updated", 0, 1)
                   )
                 }
@@ -48,13 +48,13 @@ class_record <-
 
 
 class_subm <- 
-  R7::new_class("class_subm", parent = class_record,
+  S7::new_class("class_subm", parent = class_record,
                 properties = list(
-                  name = R7::new_property(R7::class_character, default = unname(Sys.info()["user"])),
-                  address = R7::new_property(R7::new_union(NULL, class_address)),
+                  name = S7::new_property(S7::class_character, default = unname(Sys.info()["user"])),
+                  address = S7::new_property(S7::new_union(NULL, class_address)),
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 %s SUBM", self@xref),
@@ -80,18 +80,18 @@ class_subm <-
 
 #' @export
 class_record_famg <- 
-  R7::new_class("class_record_famg", parent = class_record,
+  S7::new_class("class_record_famg", parent = class_record,
                 properties = list(
-                  facts = R7::class_list,
-                  husb_xref = R7::class_character,
-                  wife_xref = R7::class_character,
-                  chil_biol_xref = R7::class_character,
-                  chil_adop_xref = R7::class_character,
-                  chil_fost_xref = R7::class_character,
-                  num_children = R7::class_integer,
+                  facts = S7::class_list,
+                  husb_xref = S7::class_character,
+                  wife_xref = S7::class_character,
+                  chil_biol_xref = S7::class_character,
+                  chil_adop_xref = S7::class_character,
+                  chil_fost_xref = S7::class_character,
+                  num_children = S7::class_integer,
                   
-                  relationship_date = R7::new_property(
-                    R7::class_character,
+                  relationship_date = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "MARR") return(fact@fact_date)
@@ -99,8 +99,8 @@ class_record_famg <-
                       character()
                     }),
                   
-                  relationship_place = R7::new_property(
-                    R7::class_character,
+                  relationship_place = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "MARR") return(fact@fact_location)
@@ -108,8 +108,8 @@ class_record_famg <-
                       character()
                     }),
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 %s FAM", self@xref),
@@ -132,7 +132,7 @@ class_record_famg <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_R7classes(self@facts, "@facts", class_fact_famg),
+                    chk_input_S7classes(self@facts, "@facts", class_fact_famg),
                     chk_input_size(self@husb_xref, "@husb_xref", 0, 1, 3, 22),
                     chk_input_pattern(self@husb_xref, "@husb_xref", reg_xref(TRUE)),
                     chk_input_size(self@wife_xref, "@wife_xref", 0, 1, 3, 22),
@@ -149,16 +149,16 @@ class_record_famg <-
 
 #' @export
 class_record_indi <- 
-  R7::new_class("class_record_indi", parent = class_record,
+  S7::new_class("class_record_indi", parent = class_record,
                 properties = list(
-                  personal_names = R7::class_list,
-                  sex = R7::new_property(R7::class_character, default = "U"),
-                  facts = R7::class_list,
-                  family_links = R7::class_list,
-                  associations = R7::class_list,
+                  personal_names = S7::class_list,
+                  sex = S7::new_property(S7::class_character, default = "U"),
+                  facts = S7::class_list,
+                  family_links = S7::class_list,
+                  associations = S7::class_list,
                   
-                  primary_name = R7::new_property(
-                    R7::class_character,
+                  primary_name = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       if(length(self@personal_names) == 0){
                         character()
@@ -168,16 +168,16 @@ class_record_indi <-
                       }
                     }),
                   
-                  all_names = R7::new_property(
-                    R7::class_character,
+                  all_names = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       sapply(self@personal_names, \(nm){
                         gsub(nm@name@full, pattern = "/", replacement = "")
                       }, USE.NAMES = FALSE)
                     }),
                   
-                  desc_short = R7::new_property(
-                    R7::class_character,
+                  desc_short = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       if(length(self@primary_name) == 0){
                         name <- "Unnamed individual"
@@ -187,8 +187,8 @@ class_record_indi <-
                       paste0("Individual ", self@xref, ", ", name)
                     }),
                   
-                  birth_date = R7::new_property(
-                    R7::class_character,
+                  birth_date = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "BIRT") return(fact@fact_date)
@@ -196,8 +196,8 @@ class_record_indi <-
                       character()
                     }),
                   
-                  birth_place = R7::new_property(
-                    R7::class_character,
+                  birth_place = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "BIRT") return(fact@fact_location)
@@ -205,8 +205,8 @@ class_record_indi <-
                       character()
                     }),
                   
-                  is_alive = R7::new_property(
-                    R7::class_logical,
+                  is_alive = S7::new_property(
+                    S7::class_logical,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "DEAT") return(FALSE)
@@ -214,8 +214,8 @@ class_record_indi <-
                       TRUE
                     }),
                   
-                  death_date = R7::new_property(
-                    R7::class_character,
+                  death_date = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "DEAT") return(fact@fact_date)
@@ -223,8 +223,8 @@ class_record_indi <-
                       character()
                     }),
                   
-                  death_place = R7::new_property(
-                    R7::class_character,
+                  death_place = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       for(fact in self@facts){
                         if(fact@fact == "DEAT") return(fact@fact_location)
@@ -232,8 +232,8 @@ class_record_indi <-
                       character()
                     }),
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 %s INDI", self@xref),
@@ -254,27 +254,27 @@ class_record_indi <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_R7classes(self@personal_names, "@personal_names", class_personal_name),
+                    chk_input_S7classes(self@personal_names, "@personal_names", class_personal_name),
                     chk_input_size(self@sex, "@sex", 0, 1),
                     chk_input_choice(self@sex, "@sex", val_sexes()),
-                    chk_input_R7classes(self@facts, "@facts", class_fact_indi),
-                    chk_input_R7classes(self@family_links, "@family_links", class_spouse_family_link),
-                    chk_input_R7classes(self@associations, "@associations", class_association)
+                    chk_input_S7classes(self@facts, "@facts", class_fact_indi),
+                    chk_input_S7classes(self@family_links, "@family_links", class_spouse_family_link),
+                    chk_input_S7classes(self@associations, "@associations", class_association)
                   )
                 }
   )
 
 #' @export
 class_record_media <- 
-  R7::new_class("class_record_media", parent = class_record,
+  S7::new_class("class_record_media", parent = class_record,
                 properties = list(
-                  file_ref = R7::class_character,
-                  format = R7::class_character,
-                  media_type = R7::class_character,
-                  title = R7::class_character,
+                  file_ref = S7::class_character,
+                  format = S7::class_character,
+                  media_type = S7::class_character,
+                  title = S7::class_character,
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 %s OBJE", self@xref),
@@ -306,14 +306,14 @@ class_record_media <-
 
 #' @export
 class_events_recorded <- 
-  R7::new_class("class_events_recorded",
+  S7::new_class("class_events_recorded",
                 properties = list(
-                  events = R7::class_character,
-                  date_period = R7::new_property(R7::new_union(NULL, class_date_period, R7::class_character)),
-                  jurisdiction_place = R7::class_character,
+                  events = S7::class_character,
+                  date_period = S7::new_property(S7::new_union(NULL, class_date_period, S7::class_character)),
+                  jurisdiction_place = S7::class_character,
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 EVEN %s", self@events),
@@ -333,21 +333,21 @@ class_events_recorded <-
 
 #' @export
 class_record_sour <- 
-  R7::new_class("class_record_sour", parent = class_record,
+  S7::new_class("class_record_sour", parent = class_record,
                 properties = list(
-                  events_recorded = R7::class_list,
-                  responsible_agency = R7::class_character,
-                  data_note_links = R7::class_character,
-                  data_notes = R7::class_character,
-                  originator = R7::class_character,
-                  full_title = R7::class_character,
-                  short_title = R7::class_character,
-                  publication_facts = R7::class_character,
-                  source_text = R7::class_character,
-                  repo_citations = R7::class_list,
+                  events_recorded = S7::class_list,
+                  responsible_agency = S7::class_character,
+                  data_note_links = S7::class_character,
+                  data_notes = S7::class_character,
+                  originator = S7::class_character,
+                  full_title = S7::class_character,
+                  short_title = S7::class_character,
+                  publication_facts = S7::class_character,
+                  source_text = S7::class_character,
+                  repo_citations = S7::class_list,
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       sour <- c(
                         sprintf("0 %s SOUR", self@xref),
@@ -379,7 +379,7 @@ class_record_sour <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_R7classes(self@events_recorded, "@events_recorded", class_events_recorded),
+                    chk_input_S7classes(self@events_recorded, "@events_recorded", class_events_recorded),
                     chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1, 120),
                     chk_input_size(self@data_note_links, "@data_note_links", 0, 10000, 3, 22),
                     chk_input_pattern(self@data_note_links, "@data_note_links", reg_xref(TRUE)),
@@ -389,20 +389,20 @@ class_record_sour <-
                     chk_input_size(self@short_title, "@short_title", 0, 1, 1, 60),
                     chk_input_size(self@publication_facts, "@publication_facts", 0, 1, 1, 4095),
                     chk_input_size(self@source_text, "@source_text", 0, 1, 1, 32767),
-                    chk_input_R7classes(self@repo_citations, "@repo_citations", class_repository_citation),
+                    chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
                     chk_input_size(self@citations, "@citations", 0, 0)
                   )
                 })
 
 #' @export
 class_record_repo <- 
-  R7::new_class("class_record_repo", parent = class_record,
+  S7::new_class("class_record_repo", parent = class_record,
                 properties = list(
-                  name = R7::class_character,
-                  address = R7::new_property(R7::new_union(NULL, class_address)),
+                  name = S7::class_character,
+                  address = S7::new_property(S7::new_union(NULL, class_address)),
                   
-                  as_ged = R7::new_property(
-                    R7::class_character,
+                  as_ged = S7::new_property(
+                    S7::class_character,
                     getter = function(self){
                       c(
                         sprintf("0 %s REPO", self@xref),
@@ -428,12 +428,12 @@ class_record_repo <-
 
 #' @export
 class_record_note <- 
-  R7::new_class("class_record_note", parent = class_record,
+  S7::new_class("class_record_note", parent = class_record,
                 properties = list(
-                  text = R7::class_character,
+                  text = S7::class_character,
                   
-                  as_ged = R7::new_property(
-                    R7::class_data.frame,
+                  as_ged = S7::new_property(
+                    S7::class_data.frame,
                     getter = function(self){
                       c(
                         sprintf("0 %s SUBM %s", self@xref, self@text),

@@ -9,7 +9,7 @@ to_console <- function(label, val, exdent){
 }
 
 
-R7::method(print, class_gedcomR7) <- function(x, ...){
+S7::method(print, class_gedcomS7) <- function(x, ...){
   
   eol <- "\n"
   exdent <- 24 # nchar("Source system version:") + 2 = 24
@@ -38,7 +38,7 @@ R7::method(print, class_gedcomR7) <- function(x, ...){
 }
 
 
-R7::method(print, class_record_indi) <- function(x, ...){
+S7::method(print, class_record_indi) <- function(x, ...){
 
   eol <- "\n"
   exdent <- 32 # nchar("10 Other individual attribute:") + 2 = 32

@@ -53,12 +53,12 @@ test_that("Split gedcom values", {
 
 
 test_that("Export gedcom", {
-  expect_error(write_gedcom(read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7")), 
+  expect_error(write_gedcom(read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7")), 
                             "my_family.txt"), regexp = "Output is not being saved as a GEDCOM file")
   
   expect_identical(
-    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7")),
-    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7")) |> 
+    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7")),
+    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7")) |> 
       write_gedcom("555Sample.ged") |> 
       read_gedcom()
   )

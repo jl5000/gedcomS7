@@ -1,6 +1,6 @@
 
 test_that("Function get_families_as_partner() @ L63", {
-  sample555 <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+  sample555 <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
   
   expect_equal(get_famg_as_partner(sample555, "@I1@"), c("@F1@", "@F2@"))
   expect_equal(get_famg_as_partner(sample555, "@I2@"), "@F1@")

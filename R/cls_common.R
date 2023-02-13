@@ -2,16 +2,16 @@
 NULL
 
 #' @export
-class_change_date <- R7::new_class("class_change_date",
+class_change_date <- S7::new_class("class_change_date",
                                    properties = list(
-                                     date = R7::new_property(R7::new_union(class_date_exact, R7::class_character), 
+                                     date = S7::new_property(S7::new_union(class_date_exact, S7::class_character), 
                                                              default = date_exact_current()),
-                                     time = R7::class_character,
-                                     note_links = R7::class_character,
-                                     notes = R7::class_character,
+                                     time = S7::class_character,
+                                     note_links = S7::class_character,
+                                     notes = S7::class_character,
                                      
-                                     as_ged = R7::new_property(
-                                       R7::class_character,
+                                     as_ged = S7::new_property(
+                                       S7::class_character,
                                        getter = function(self){
                                          c(
                                            "0 CHAN",
@@ -39,26 +39,26 @@ class_change_date <- R7::new_class("class_change_date",
 
 
 #' @export
-class_citation <- R7::new_class("class_citation",
+class_citation <- S7::new_class("class_citation",
                                 properties = list(
-                                  xref = R7::class_character,
-                                  where = R7::class_character,
-                                  event_type = R7::class_character,
-                                  event_role = R7::class_character,
-                                  recording_date = R7::new_property(R7::new_union(NULL, 
+                                  xref = S7::class_character,
+                                  where = S7::class_character,
+                                  event_type = S7::class_character,
+                                  event_role = S7::class_character,
+                                  recording_date = S7::new_property(S7::new_union(NULL, 
                                                                                   class_date_calendar,
                                                                                   class_date_period,
                                                                                   class_date_range,
                                                                                   class_date_approx, 
-                                                                                  R7::class_character)),
-                                  source_text = R7::class_character,
-                                  media_links = R7::class_character,
-                                  note_links = R7::class_character,
-                                  notes = R7::class_character,
-                                  certainty = R7::class_character,
+                                                                                  S7::class_character)),
+                                  source_text = S7::class_character,
+                                  media_links = S7::class_character,
+                                  note_links = S7::class_character,
+                                  notes = S7::class_character,
+                                  certainty = S7::class_character,
                                   
-                                  as_ged = R7::new_property(
-                                    R7::class_character,
+                                  as_ged = S7::new_property(
+                                    S7::class_character,
                                     getter = function(self){
                                       
                                       rec_date <- date_to_val(self@recording_date)
@@ -68,7 +68,7 @@ class_citation <- R7::new_class("class_citation",
                                         sprintf("1 PAGE %s", self@where),
                                         sprintf("1 EVEN %s", self@event_type),
                                         sprintf("2 ROLE %s", rep(self@event_role, length(self@event_type))),
-                                        rep("1 DATA", length(rec_date) || length(self@source_text) > 0),
+                                        rep("1 DATA", length(rec_date) + length(self@source_text) > 0),
                                         sprintf("2 DATE %s", rec_date),
                                         sprintf("2 TEXT %s", self@source_text),
                                         sprintf("1 OBJE %s", self@media_links),

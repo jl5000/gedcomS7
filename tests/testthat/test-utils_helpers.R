@@ -1,6 +1,6 @@
 
 test_that("Extract line components", {
-  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
   
   expect_snapshot_value(extract_ged_level(ged), "json2")
   expect_snapshot_value(extract_ged_xref(ged), "json2")
@@ -9,7 +9,7 @@ test_that("Extract line components", {
 })
 
 test_that("delete_ged_section", {
-  ged <- readLines(system.file("extdata", "MINIMAL555.GED", package = "gedcomR7"))
+  ged <- readLines(system.file("extdata", "MINIMAL555.GED", package = "gedcomS7"))
   
   expect_snapshot_value(delete_ged_section(ged, 2), "json2")
   expect_snapshot_value(delete_ged_section(ged, 4), "json2")
@@ -19,7 +19,7 @@ test_that("delete_ged_section", {
 
 test_that("Extraction functions", {
   # record
-  lines <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))[28:46]
+  lines <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))[28:46]
   lines <- c(lines,
              "1 REFN 123",
              "1 CHAN",
@@ -41,7 +41,7 @@ test_that("Extraction functions", {
 })
 
 test_that("Increase level", {
-  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
   
   expect_snapshot_value(increase_level(ged, by = 2), "json2")
 })

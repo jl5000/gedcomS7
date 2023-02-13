@@ -1,31 +1,64 @@
 
 df_indi <- function(x){
+  if(length(x@indi) == 0) return(NULL)
   
+  xrefs <- names(x@indi)
+  nms <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, "NAME")))
+  nms <- gsub("/", "", nms)
+  sexes <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, "SEX")))
+  dobs <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))))
+  pobs <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))))
+  alive <- sapply(x@indi, \(lines) length(grep("^1 DEAT", lines)) == 0)
+  dods <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))))
+  pods <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))))
+  moth_xref <- sapply(xrefs, \(xref) chronify(get_indi_mothers(x, xref, TRUE)))
+  moth_nm <- sapply(moth_xref, \(xref) if(xref == "") "" else chronify(find_ged_values(x@indi[[xref]], "NAME")))
+  moth_nm <- gsub("/", "", moth_nm)
+  fath_xref <- sapply(xrefs, \(xref) chronify(get_indi_fathers(x, xref, TRUE)))
+  fath_nm <- sapply(fath_xref, \(xref) if(xref == "") "" else chronify(find_ged_values(x@indi[[xref]], "NAME")))
+  fath_nm <- gsub("/", "", fath_nm)
+  chan_dt <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))))
+  
+  data.frame(
+    xref = xrefs,
+    name = nms,
+    sex = sexes,
+    birth_date = dobs,
+    birth_place = pobs,
+    is_alive = alive,
+    death_date = dods,
+    death_place = pods,
+    mother_xref = moth_xref,
+    mother_name = moth_nm,
+    father_xref = fath_xref,
+    father_name = fath_nm,
+    last_modified = chan_dt
+  )
   
 }
 
-df_famg<- function(x){
-  
+df_famg <- function(x){
+  if(length(x@famg) == 0) return(NULL)
   
 }
 
 df_sour <- function(x){
-  
+  if(length(x@sour) == 0) return(NULL)
   
 }
 
 df_repo <- function(x){
-  
+  if(length(x@repo) == 0) return(NULL)
   
 }
 
 df_media <- function(x){
-  
+  if(length(x@media) == 0) return(NULL)
   
 }
 
 df_note <- function(x){
-  
+  if(length(x@note) == 0) return(NULL)
   
 }
 
@@ -40,63 +73,3 @@ df_famg_facts <- function(x, xref){
   
 }
 
-# df_indi = R7::new_property(
-#   R7::class_data.frame,
-#   getter = function(self){
-#     if(length(self@indi) == 0) return(NULL)
-#     data.frame(
-#       xref = names(self@indi),
-#       name = apply_extract_ged_values(self@indi, "NAME"),
-#       sex = apply_extract_ged_values(self@indi, "SEX"),
-#       birth_date = apply_extract_ged_values(self@indi, c("BIRT","DATE")),
-#       birth_place = "",#pop(ind@birth_place),
-#       is_alive = "",#ind@is_alive,
-#       death_date = apply_extract_ged_values(self@indi, c("DEAT","DATE")),
-#       death_place = ""#pop(ind@death_place)
-#     )
-    # lapply(
-    #   self@indi,
-    #   function(ind){
-    #     data.table::data.table(
-    #       xref = ind@xref,
-    #       name = pop(ind@primary_name),
-    #       sex = pop(ind@sex),
-    #       birth_date = pop(ind@birth_date),
-    #       birth_place = pop(ind@birth_place),
-    #       is_alive = ind@is_alive,
-    #       death_date = pop(ind@death_date),
-    #       death_place = pop(ind@death_place)
-    #     )
-    #   }) |>
-    #   data.table::rbindlist()
-  # }),
-
-# df_famg = R7::new_property(
-#   R7::class_data.frame,
-#   getter = function(self){
-#     if(length(self@famg) == 0) return(NULL)
-#     lapply(
-#       self@famg,
-#       function(fam){
-#         
-#         husb_name <- ""
-#         wife_name <- ""
-#         if(length(fam@husb_xref) == 1)
-#           husb_name <- self@indi[[fam@husb_xref]]@primary_name
-#         if(length(fam@wife_xref) == 1)
-#           wife_name <- self@indi[[fam@wife_xref]]@primary_name
-#         num_chil <- 0
-#         if(length(fam@num_children) == 1)
-#           num_chil <- fam@num_children
-#         
-#         data.table::data.table(
-#           xref = fam@xref,
-#           husband = pop(husb_name),
-#           wife = pop(wife_name),
-#           relationship_date = pop(fam@relationship_date),
-#           relationship_place = pop(fam@relationship_place),
-#           num_children = max(length(c(fam@chil_biol_xref,fam@chil_adop_xref,fam@chil_fost_xref)), num_chil)
-#         )
-#       }) |>
-#       data.table::rbindlist()
-#   }),

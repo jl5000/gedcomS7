@@ -1,30 +1,26 @@
 
-desc_indi = function(x, xrefs){
-  nms = character()
+desc_indi_name = function(x, xrefs, unnamed = "Unnamed individual"){
+  nms <- character()
   for(xref in xrefs){
-    nms = c(nms, pull_record(x,xref)@primary_name)
+    if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+    nm <- chronify(find_ged_values(x@indi[[xref]], "NAME"))
+    nms = c(nms, nm)
   }
+  nms <- gsub("/", "", nms)
+  nms[nms == ""] <- unnamed
   nms
 }
 
-life_story <- function(sex = NULL,
-                       name = NULL,
-                       dob = NULL,
-                       pob = NULL,
-                       mother_name = NULL,
-                       father_name = NULL,
-                       mother_dob = NULL,
-                       mother_dod = NULL,
-                       father_dob = NULL,
-                       father_dod = NULL,
-                       partner_name = NULL,
-                       partner_sex = NULL,
-                       married = NULL,
-                       num_chil = NULL,
-                       dom = NULL,
-                       pom = NULL,
-                       dod = NULL,
-                       pod = NULL){
+desc_indi_short = function(x, xref){
+  sprintf("Individual %s, %s", xref, desc_indi_name(x, xref))
+}
+
+
+desc_indi_long = function(x, xref){
+  
+}
+
+desc_indi_full <- function(x, xref){
   
   "When {name} was born in {dob} in {pob}, 
   {sex} father, {father_name}, was {father_dob/father_dod} and

@@ -159,6 +159,55 @@ get_indi_parents <- function(x,
   unique(spou_xref)
 }
 
+
+#' Identify all mothers for an individual
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of an Individual record.
+#' @param birth_only Whether to only return the biological mother.
+#'
+#' @return A character vector of mother xrefs.
+#' @export
+get_indi_mothers <- function(x,
+                             xref,
+                             birth_only = FALSE){
+  
+  get_indi_parents_fathmoth(x, xref, birth_only, FALSE)
+}
+
+#' Identify all fathers for an individual
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of an Individual record.
+#' @param birth_only Whether to only return the biological father.
+#'
+#' @return A character vector of father xrefs.
+#' @export
+get_indi_fathers <- function(x,
+                             xref,
+                             birth_only = FALSE){
+  
+  get_indi_parents_fathmoth(x, xref, birth_only, TRUE)
+}
+
+get_indi_parents_fathmoth <- function(x,
+                                      xref,
+                                      birth_only = FALSE,
+                                      father = TRUE){
+  
+  famc_xref <- get_famg_as_child(x, xref, birth_only)
+  if(father) tag <- "HUSB" else tag <- "WIFE"
+  
+  spou_xref <- character()
+  for(xref in famc_xref){
+    spou_xref <- c(
+      spou_xref,
+      find_ged_values(x@famg[[xref]], tag)
+    )
+  }
+  unique(spou_xref)
+}
+
 #' Identify all siblings for an individual
 #'
 #' @param x A gedcom object.

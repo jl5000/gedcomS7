@@ -1,5 +1,5 @@
-Package: gedcomR7
-Title: Create Family Tree GEDCOM Files with R7 Objects
+Package: gedcomS7
+Title: Create Family Tree GEDCOM Files with S7 Objects
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jamie", 
@@ -15,7 +15,7 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1)
 Imports:
-    R7
+    S7
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

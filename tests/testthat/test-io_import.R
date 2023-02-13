@@ -3,37 +3,37 @@ test_that("Import gedcom", {
   expect_error(read_gedcom("my_family.txt"), regexp = "GEDCOM file should have a .ged extension")
   
   expect_snapshot_value(
-    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))@as_ged, 
+    read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))@as_ged, 
     "json2")
   expect_snapshot_value(
-    read_gedcom(system.file("extdata", "555SAMPLE16BE.GED", package = "gedcomR7"))@as_ged, 
+    read_gedcom(system.file("extdata", "555SAMPLE16BE.GED", package = "gedcomS7"))@as_ged, 
     "json2")
   expect_snapshot_value(
-    read_gedcom(system.file("extdata", "555SAMPLE16LE.GED", package = "gedcomR7"))@as_ged, 
+    read_gedcom(system.file("extdata", "555SAMPLE16LE.GED", package = "gedcomS7"))@as_ged, 
     "json2")
   expect_snapshot_value(
-    read_gedcom(system.file("extdata", "MINIMAL555.GED", package = "gedcomR7"))@as_ged, 
+    read_gedcom(system.file("extdata", "MINIMAL555.GED", package = "gedcomS7"))@as_ged, 
     "json2")
 })
 
 test_that("Read GEDCOM encoding", {
   expect_equal(
-    read_gedcom_encoding(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7")),
+    read_gedcom_encoding(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7")),
     "UTF-8"
   )
   expect_equal(
-    read_gedcom_encoding(system.file("extdata", "555SAMPLE16BE.GED", package = "gedcomR7")),
+    read_gedcom_encoding(system.file("extdata", "555SAMPLE16BE.GED", package = "gedcomS7")),
     "UTF-16BE"
   )
   expect_equal(
-    read_gedcom_encoding(system.file("extdata", "555SAMPLE16LE.GED", package = "gedcomR7")),
+    read_gedcom_encoding(system.file("extdata", "555SAMPLE16LE.GED", package = "gedcomS7")),
     "UTF-16LE"
   )
 })
 
 test_that("Validate lines", {
   
-  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+  ged <- readLines(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
   
   gedd <- ged # a copy
   gedd[20] <- paste(rep("a", .pkgenv$gedcom_line_length_limit + 1), collapse = "")

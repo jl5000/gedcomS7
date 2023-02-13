@@ -20,12 +20,12 @@ push_record <- function(gedcom, record){
   
   rec_type <- get_record_type(record)
   
-  if(record@xref == "@gedcomR7orphan@"){
+  if(record@xref == "@gedcomS7orphan@"){
     record@xref <- unname(gedcom@next_xref[rec_type])
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }
     
-  R7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
+  S7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
   
   if(rec_type == "indi"){
     gedcom <- refresh_indi_links(gedcom, record)

@@ -23,7 +23,7 @@
 \item{web_pages}{A character vector containing up to three web pages.}
 }
 \value{
-An R7 Address object.
+An S7 Address object.
 }
 \description{
 Create an Address object

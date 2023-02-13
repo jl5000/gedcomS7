@@ -26,36 +26,36 @@ NULL
 #' @param lat_long A character string giving the latitude and longitude separated by a space. See Details.
 #' @param notes A list of `class_note` objects to record or reference notes about the place.
 #'
-#' @return An R7 Place object.
+#' @return An S7 Place object.
 #' @export
 #' @name class_place
 NULL
-class_place <- R7::new_class("class_place",
+class_place <- S7::new_class("class_place",
                              properties = list(
-                               name = R7::class_character,
-                               phon_names = R7::class_character,
-                               rom_names = R7::class_character,
-                               lat_long = R7::class_character,
-                               note_links = R7::class_character,
-                               notes = R7::class_character,
+                               name = S7::class_character,
+                               phon_names = S7::class_character,
+                               rom_names = S7::class_character,
+                               lat_long = S7::class_character,
+                               note_links = S7::class_character,
+                               notes = S7::class_character,
                                
-                               lat = R7::new_property(R7::class_character,
+                               lat = S7::new_property(S7::class_character,
                                                       getter = function(self){
                                                         if(length(self@lat_long) == 1){
                                                           unlist(strsplit(self@lat_long, split = " "))[1]
                                                         } else { character() }
                                                       }),
-                               long = R7::new_property(R7::class_character,
+                               long = S7::new_property(S7::class_character,
                                                        getter = function(self){
                                                          if(length(self@lat_long) == 1){
                                                            unlist(strsplit(self@lat_long, split = " "))[2]
                                                          } else { character() }
                                                        }),
                                
-                               as_val = R7::new_property(R7::class_character, 
+                               as_val = S7::new_property(S7::class_character, 
                                                          getter = function(self) self@name),
                                
-                               as_ged = R7::new_property(R7::class_character,
+                               as_ged = S7::new_property(S7::class_character,
                                                         getter = function(self){
                                                           
                                                           pla <- sprintf("0 PLAC %s", self@name)
@@ -123,24 +123,24 @@ class_place <- R7::new_class("class_place",
 #' @param faxes A character vector containing up to three fax numbers.
 #' @param web_pages A character vector containing up to three web pages.
 #'
-#' @return An R7 Address object.
+#' @return An S7 Address object.
 #' @export
 #' @name class_address
 NULL
-class_address <- R7::new_class("class_address",
+class_address <- S7::new_class("class_address",
                                properties = list(
-                                 local_address_lines = R7::class_character,
-                                 city = R7::class_character,
-                                 state = R7::class_character,
-                                 postal_code = R7::class_character,
-                                 country = R7::class_character,
-                                 phone_numbers = R7::class_character,
-                                 emails = R7::class_character,
-                                 faxes = R7::class_character,
-                                 web_pages = R7::class_character,
+                                 local_address_lines = S7::class_character,
+                                 city = S7::class_character,
+                                 state = S7::class_character,
+                                 postal_code = S7::class_character,
+                                 country = S7::class_character,
+                                 phone_numbers = S7::class_character,
+                                 emails = S7::class_character,
+                                 faxes = S7::class_character,
+                                 web_pages = S7::class_character,
                                  
-                                 as_val = R7::new_property(
-                                   R7::class_character,
+                                 as_val = S7::new_property(
+                                   S7::class_character,
                                    getter = function(self){
                                      paste(
                                        self@city,
@@ -153,8 +153,8 @@ class_address <- R7::new_class("class_address",
                                        sub(pattern = ", $", replacement = "")
                                    }),
                                  
-                                 as_ged = R7::new_property(
-                                   R7::class_character,
+                                 as_ged = S7::new_property(
+                                   S7::class_character,
                                    getter = function(self){
                                      
                                      addr <- c(

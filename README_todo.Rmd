@@ -13,35 +13,35 @@ knitr::opts_chunk$set(
 )
 ```
 
-# gedcomR7
+# gedcomS7
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of gedcomR7 is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. It has just one dependency - the R7 package for Object Oriented Programming, which will at some point be subsumed into base R. NOTE: this package is likely to change name soon.
+The goal of gedcomS7 is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. It has just one dependency - the S7 package for Object Oriented Programming, which will at some point be subsumed into base R. NOTE: this package is likely to change name soon.
 
 > This package is still in development. Be wary of editing your file with it for the time being.
 
 ## Installation
 
-You can install the development version of gedcomR7 from [GitHub](https://github.com/) with:
+You can install the development version of gedcomS7 from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("jl5000/gedcomR7")
+remotes::install_github("jl5000/gedcomS7")
 ```
 
 ## Import / creation
 
-The intent is to allow the user to import GEDCOM files or create them from scratch, creating an R7 object representation:
+The intent is to allow the user to import GEDCOM files or create them from scratch, creating an S7 object representation:
 
 ```{r example}
-library(gedcomR7)
+library(gedcomS7)
 
-ged <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomR7"))
+ged <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
 ged
 
-ged <- new_gedcomR7(my_name = "Jamie")
+ged <- new_gedcomS7(my_name = "Jamie")
 ged
 ```
 
@@ -116,7 +116,7 @@ Once in the gedcom object, they are stored as raw gedcom data as a character vec
 ged@indi[[1]]
 ```
 
-If you want to edit a record, you must pull it from the GEDCOM object, which will take a copy and parse it into an editable R7 object:
+If you want to edit a record, you must pull it from the GEDCOM object, which will take a copy and parse it into an editable S7 object:
 
 ```{r}
 pull_record(ged, "@I1@")

@@ -5,7 +5,7 @@
 #'
 #' @param filepath The full filepath of the GEDCOM file.
 #'
-#' @return A gedcom R7 object.
+#' @return A gedcom S7 object.
 #' @export
 read_gedcom <- function(filepath = file.choose()) {
   
@@ -164,7 +164,7 @@ parse_records <- function(records_lst){
     recs
   }
 
-  R7::props(x) <- list(
+  S7::props(x) <- list(
     indi = subset_recs(records_lst, "^0 %s INDI$"),
     famg = subset_recs(records_lst, "^0 %s FAM$"),
     sour = subset_recs(records_lst, "^0 %s SOUR$"),
@@ -196,7 +196,7 @@ create_gedcom <- function(records_lst){
   
   hd_lines <- records_lst[[1]]
   
-  class_gedcomR7(
+  class_gedcomS7(
     system_id = find_ged_values(hd_lines, c("HEAD","SOUR")),
     product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
     product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),

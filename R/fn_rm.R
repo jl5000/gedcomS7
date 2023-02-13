@@ -65,14 +65,14 @@ rm_sour <- function(x, xref){
   # Remove citations
   rec_types <- c("indi", "famg", "media", "note")
   for(rec_type in rec_types){
-    for(i in seq_along(R7::prop(x, rec_type))){
+    for(i in seq_along(S7::prop(x, rec_type))){
       cit_rows <- grep(sprintf("^[1-6] SOUR %s$", xref), 
-                       R7::prop(x, rec_type)[[i]])
+                       S7::prop(x, rec_type)[[i]])
       while(length(cit_rows) > 0){
-        R7::prop(x, rec_type)[[i]] <- delete_ged_section(R7::prop(x, rec_type)[[i]], 
+        S7::prop(x, rec_type)[[i]] <- delete_ged_section(S7::prop(x, rec_type)[[i]], 
                                                          cit_rows[1])
         cit_rows <- grep(sprintf("^[1-6] SOUR %s$", xref), 
-                         R7::prop(x, rec_type)[[i]])
+                         S7::prop(x, rec_type)[[i]])
       }
     }
   }
@@ -101,11 +101,11 @@ rm_media <- function(x, xref){
   
   rec_types <- c("indi", "famg", "media", "note", "sour")
   for(rec_type in rec_types){
-    for(i in seq_along(R7::prop(x, rec_type))){
-      vals <- extract_ged_value(R7::prop(x, rec_type)[[i]])
+    for(i in seq_along(S7::prop(x, rec_type))){
+      vals <- extract_ged_value(S7::prop(x, rec_type)[[i]])
       link_rows <- which(vals == xref)
       if(link_rows > 0)
-        R7::prop(x, rec_type)[[i]] <- R7::prop(x, rec_type)[[i]][-link_rows]
+        S7::prop(x, rec_type)[[i]] <- S7::prop(x, rec_type)[[i]][-link_rows]
     }
   }
   x  
@@ -120,11 +120,11 @@ rm_note <- function(x, xref){
   
   rec_types <- c("indi", "famg", "media", "note", "sour")
   for(rec_type in rec_types){
-    for(i in seq_along(R7::prop(x, rec_type))){
-      vals <- extract_ged_value(R7::prop(x, rec_type)[[i]])
+    for(i in seq_along(S7::prop(x, rec_type))){
+      vals <- extract_ged_value(S7::prop(x, rec_type)[[i]])
       note_rows <- which(vals == xref)
       if(note_rows > 0)
-        R7::prop(x, rec_type)[[i]] <- R7::prop(x, rec_type)[[i]][-note_rows]
+        S7::prop(x, rec_type)[[i]] <- S7::prop(x, rec_type)[[i]][-note_rows]
     }
   }
   x  

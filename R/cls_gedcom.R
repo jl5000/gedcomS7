@@ -1,55 +1,55 @@
 #' @include utils_at.R cls_dates.R cls_locations.R cls_record.R cls_validators.R
 NULL
 
-class_gedcomR7 <- R7::new_class("class_gedcomR7",
+class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                 properties = list(
-                                  update_change_dates = R7::new_property(R7::class_logical, default = FALSE),
+                                  update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
                                   
-                                  gedcom_version = R7::new_property(getter = function(self) "5.5.5"),
-                                  gedcom_form = R7::new_property(getter = function(self) "LINEAGE-LINKED"),
-                                  character_encoding = R7::new_property(getter = function(self) "UTF-8"),
-                                  system_id = R7::class_character,
-                                  product_name = R7::class_character,
-                                  product_version = R7::class_character,
-                                  business_name = R7::class_character,
-                                  business_address = R7::new_property(R7::new_union(NULL, class_address)),
-                                  source_data_name = R7::class_character,
-                                  source_data_pubdate = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
-                                  source_data_copyright = R7::class_character,
-                                  receiving_system = R7::class_character,
-                                  creation_date = R7::new_property(R7::new_union(NULL, class_date_exact, R7::class_character)),
-                                  creation_time = R7::class_character,
-                                  language = R7::class_character,
-                                  xref_subm = R7::class_character,
-                                  file_name = R7::class_character,
-                                  gedcom_copyright = R7::class_character,
-                                  content_description = R7::class_character,
+                                  gedcom_version = S7::new_property(getter = function(self) "5.5.5"),
+                                  gedcom_form = S7::new_property(getter = function(self) "LINEAGE-LINKED"),
+                                  character_encoding = S7::new_property(getter = function(self) "UTF-8"),
+                                  system_id = S7::class_character,
+                                  product_name = S7::class_character,
+                                  product_version = S7::class_character,
+                                  business_name = S7::class_character,
+                                  business_address = S7::new_property(S7::new_union(NULL, class_address)),
+                                  source_data_name = S7::class_character,
+                                  source_data_pubdate = S7::new_property(S7::new_union(NULL, class_date_exact, S7::class_character)),
+                                  source_data_copyright = S7::class_character,
+                                  receiving_system = S7::class_character,
+                                  creation_date = S7::new_property(S7::new_union(NULL, class_date_exact, S7::class_character)),
+                                  creation_time = S7::class_character,
+                                  language = S7::class_character,
+                                  xref_subm = S7::class_character,
+                                  file_name = S7::class_character,
+                                  gedcom_copyright = S7::class_character,
+                                  content_description = S7::class_character,
                                   
                                   # This serves as both a record of prefixes and order of records
-                                  xref_prefixes = R7::new_property(R7::class_character,
+                                  xref_prefixes = S7::new_property(S7::class_character,
                                                                    default = c(indi = "I", famg = "F", sour = "S", 
                                                                                repo = "R", media = "M", note = "N")),
                                   
                                   # Records
                                   subm = class_subm,
-                                  indi = R7::class_list,
-                                  famg = R7::class_list,
-                                  sour = R7::class_list,
-                                  repo = R7::class_list,
-                                  media = R7::class_list,
-                                  note = R7::class_list,
+                                  indi = S7::class_list,
+                                  famg = S7::class_list,
+                                  sour = S7::class_list,
+                                  repo = S7::class_list,
+                                  media = S7::class_list,
+                                  note = S7::class_list,
                                   
                                   
                                   # List of xrefs for each record type
-                                  xrefs = R7::new_property(R7::class_list,
+                                  xrefs = S7::new_property(S7::class_list,
                                                            getter = function(self){
                                                              rec_types <- names(self@xref_prefixes)
-                                                             rec_xrefs <- lapply(rec_types, \(rec_type) names(R7::prop(self, rec_type)))
+                                                             rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
                                                              setNames(rec_xrefs, rec_types)
                                                              rec_xrefs
                                                            }),
 
-                                  next_xref = R7::new_property(R7::class_character,
+                                  next_xref = S7::new_property(S7::class_character,
                                                                getter = function(self){
                                                                  idx <- integer(6L)
                                                                  existing_xrefs <- unname(unlist(self@xrefs))
@@ -65,8 +65,8 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                                                    setNames(names(self@xref_prefixes))
                                                                }),
                                   
-                                  as_ged = R7::new_property(
-                                    R7::class_character, 
+                                  as_ged = S7::new_property(
+                                    S7::class_character, 
                                     getter = function(self){
                                       
                                       hd <- c(
@@ -97,12 +97,12 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
                                       c(
                                         hd,
                                         obj_to_ged(self@subm),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[1])),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[2])),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[3])),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[4])),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[5])),
-                                        unlist(R7::prop(self, names(self@xref_prefixes)[6])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[1])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[2])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[3])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[4])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[5])),
+                                        unlist(S7::prop(self, names(self@xref_prefixes)[6])),
                                         "0 TRLR"
                                       ) |> unname()
                                     }
@@ -145,12 +145,12 @@ class_gedcomR7 <- R7::new_class("class_gedcomR7",
 #' @param my_name Your name, as creator/submitter.
 #' @param my_language The primary language in which data will be stored.
 #'
-#' @return A minimal gedcom R7 object.
+#' @return A minimal gedcom S7 object.
 #' @export
-new_gedcomR7 <- function(my_name = unname(Sys.info()["user"]),
+new_gedcomS7 <- function(my_name = unname(Sys.info()["user"]),
                          my_language = "English"){
-  class_gedcomR7(system_id = "gedcomR7",
-                 product_name = "The 'gedcomR7' package for the R language",
+  class_gedcomS7(system_id = "gedcomS7",
+                 product_name = "The 'gedcomS7' package for the R language",
                  business_name = "Jamie Lendrum",
                  business_address = class_address(emails = "jalendrum@gmail.com"),
                  creation_date = date_exact_current(),
