@@ -9,7 +9,7 @@
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files.
 This package succeeds the `tidyged` package and the other packages in
 the `gedcompendium`. It has just one dependency - the S7 package for
-Object Oriented Programming. NOTE: this package is likely to change name soon.
+Object Oriented Programming.
 
 > This package is still in development. Be wary of editing your file
 > with it for the time being.

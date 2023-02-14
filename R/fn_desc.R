@@ -11,8 +11,8 @@ desc_indi_name = function(x, xrefs, unnamed = "Unnamed individual"){
   nms
 }
 
-desc_indi_short = function(x, xref){
-  sprintf("Individual %s, %s", xref, desc_indi_name(x, xref))
+desc_indi_short = function(x, xrefs){
+  sprintf("Individual %s, %s", xrefs, desc_indi_name(x, xrefs))
 }
 
 
@@ -32,4 +32,21 @@ desc_indi_full <- function(x, xref){
   {sex} died in {dod} in {pod} at the age of {dod - dob}."
   
   
+}
+
+desc_famg <- function(x, xrefs){
+  spou_chr <- character()
+  for(xref in xrefs){
+    if(!is_famg_xref(x, xref)) stop("The xref is not an Family Group record.")
+    
+    spou_nms <- get_famg_partners(x, xref) |>
+      desc_indi_name(unnamed = "", x = x)
+    spou_nms <- spou_nms[spou_nms != ""]
+    if(length(spou_nms) == 0){
+      spou_chr <- c(spou_chr, "no individuals")
+    } else {
+      spou_chr <- c(spou_chr, paste(spou_nms, collapse = " and "))
+    }
+  }
+  sprintf("Family %s, headed by %s", xrefs, spou_chr)
 }
