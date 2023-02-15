@@ -1,6 +1,30 @@
 #' @include utils_at.R cls_validators.R
 NULL
 
+# dont need this!! named vector will do
+class_place_name_trans <- S7::new_class("class_place_name_trans",
+                                           properties = list(
+                                             name = S7::class_character,
+                                             language = S7::class_character,
+                                             
+                                             as_ged = S7::new_property(
+                                               S7::class_character,
+                                               getter = function(self){
+                                                 c(
+                                                   sprintf("0 TRAN %s", self@name),
+                                                   sprintf("1 LANG %s", self@language)
+                                                 )
+                                               })
+                                           ),
+                                           validator = function(self){
+                                             c(
+                                               chk_input_size(self@name, "@name", 1, 1, 1),
+                                               chk_input_size(self@language, "@language", 1, 1)
+                                               #TODO: language option
+                                             )
+                                           })
+
+
 #' Create a Place object
 #' 
 #' @details 
@@ -33,11 +57,13 @@ NULL
 class_place <- S7::new_class("class_place",
                              properties = list(
                                name = S7::class_character,
-                               phon_names = S7::class_character,
-                               rom_names = S7::class_character,
+                               form = S7::class_character,
+                               language = S7::class_character,
+                               names_alt = S7::class_character,
                                lat_long = S7::class_character,
+                               external_ids = S7::class_character,
                                note_links = S7::class_character,
-                               notes = S7::class_character,
+                               notes = S7::class_list,
                                
                                lat = S7::new_property(S7::class_character,
                                                       getter = function(self){
@@ -58,21 +84,17 @@ class_place <- S7::new_class("class_place",
                                as_ged = S7::new_property(S7::class_character,
                                                         getter = function(self){
                                                           
-                                                          pla <- sprintf("0 PLAC %s", self@name)
+                                                          pla <- c(
+                                                            sprintf("0 PLAC %s", self@name),
+                                                            sprintf("1 FORM %s", self@form),
+                                                            sprintf("1 LANG %s", self@language)
+                                                          )
                                                           
-                                                          for (i in seq_along(self@phon_names)) {
+                                                          for (i in seq_along(self@names_alt)) {
                                                             pla <- c(
                                                               pla,
-                                                              sprintf("1 FONE %s", self@phon_names[i]),
-                                                              sprintf("2 TYPE %s", names(self@phon_names)[i])
-                                                            )
-                                                          }
-                                                          
-                                                          for (i in seq_along(self@rom_names)) {
-                                                            pla <- c(
-                                                              pla,
-                                                              sprintf("1 ROMN %s", self@rom_names[i]),
-                                                              sprintf("2 TYPE %s", names(self@rom_names)[i])
+                                                              sprintf("1 TRAN %s", self@names_alt[i]),
+                                                              sprintf("2 LANG %s", names(self@names_alt)[i])
                                                             )
                                                           }
                                                           
@@ -85,10 +107,18 @@ class_place <- S7::new_class("class_place",
                                                             )
                                                           }
                                                           
+                                                          for (i in seq_along(self@external_ids)) {
+                                                            pla <- c(
+                                                              pla,
+                                                              sprintf("1 EXID %s", self@external_ids[i]),
+                                                              sprintf("2 TYPE %s", names(self@external_ids)[i])
+                                                            )
+                                                          }
+                                                          
                                                           c(
                                                             pla,
-                                                            sprintf("1 NOTE %s", self@note_links),
-                                                            sprintf("1 NOTE %s", self@notes)
+                                                            lst_to_ged(self@notes) |> increase_level(by = 1),
+                                                            sprintf("1 SNOTE %s", self@note_links)
                                                           )
                                                           
                                                         })
@@ -96,48 +126,35 @@ class_place <- S7::new_class("class_place",
                              
                              validator = function(self) {
                                c(
-                                 chk_input_size(self@name, "@name", 1, 1, 1, 120),
-                                 chk_input_size(self@phon_names, "@phon_names", 0, 10000, 1, 120),
-                                 chk_input_size(names(self@phon_names), "@phon_names names", length(self@phon_names), length(self@phon_names), 5, 30),
-                                 chk_input_size(self@rom_names, "@rom_names", 0, 10000, 1, 120),
-                                 chk_input_size(names(self@rom_names), "@rom_names names", length(self@rom_names), length(self@rom_names), 5, 30),
-                                 chk_input_size(self@lat_long, "@lat_long", 0, 1, 2+1+2, 10+1+11),
+                                 chk_input_size(self@name, "@name", 1, 1, 1),
+                                 chk_input_size(self@form, "@form", 0, 1, 1),
+                                 chk_input_size(self@language, "@language", 0, 1),
+                                 #TODO: language lookup
+                                 chk_input_size(self@names_alt, "@names_alt", min_char = 1),
+                                 chk_input_size(names(self@names_alt), "@names_alt names", length(self@names_alt), length(self@names_alt)),
+                                 #TODO: language lookup
+                                 chk_input_size(self@lat_long, "@lat_long", 0, 1),
                                  chk_input_pattern(self@lat_long, "@lat_long", "^[NS]\\d{1,2}(\\.\\d{1,6})? [EW]\\d{1,3}(\\.\\d{2,6})?$"),
-                                 chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
+                                 chk_input_size(self@external_ids, "@external_ids", min_char = 1),
+                                 chk_input_size(names(self@external_ids), "@external_ids names", length(self@external_ids), length(self@external_ids)),
+                                 #TODO: EXID and TYPE pattern
                                  chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
-                                 chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767)
+                                 chk_input_S7classes(self@notes, "@notes", class_note)
                                )
                              }
 )
 
 
-#' Create an Address object
-#' 
-#' @param local_address_lines A character vector containing up to three local address lines.
-#' @param city The city of the address.
-#' @param state The state/county of the address.
-#' @param postal_code The postal code of the address.
-#' @param country The country of the address.
-#' @param phone_numbers A character vector containing up to three phone numbers.
-#' @param emails A character vector containing up to three email addresses.
-#' @param faxes A character vector containing up to three fax numbers.
-#' @param web_pages A character vector containing up to three web pages.
-#'
-#' @return An S7 Address object.
+
 #' @export
-#' @name class_address
-NULL
 class_address <- S7::new_class("class_address",
                                properties = list(
+                                 full = S7::class_character,
                                  local_address_lines = S7::class_character,
                                  city = S7::class_character,
                                  state = S7::class_character,
                                  postal_code = S7::class_character,
                                  country = S7::class_character,
-                                 phone_numbers = S7::class_character,
-                                 emails = S7::class_character,
-                                 faxes = S7::class_character,
-                                 web_pages = S7::class_character,
                                  
                                  as_val = S7::new_property(
                                    S7::class_character,
@@ -156,22 +173,14 @@ class_address <- S7::new_class("class_address",
                                  as_ged = S7::new_property(
                                    S7::class_character,
                                    getter = function(self){
-                                     
-                                     addr <- c(
-                                       "0 ADDR",
+                                     c(
+                                       sprintf("0 ADDR %s", self@full),
                                        sprintf("1 %s %s", paste0("ADR", seq_along(self@local_address_lines)), self@local_address_lines),
                                        sprintf("1 CITY %s", self@city),
                                        sprintf("1 STAE %s", self@state),
                                        sprintf("1 POST %s", self@postal_code),
-                                       sprintf("1 CTRY %s", self@country),
-                                       sprintf("0 PHON %s", self@phone_numbers),
-                                       sprintf("0 EMAIL %s", self@emails),
-                                       sprintf("0 FAX %s", self@faxes),
-                                       sprintf("0 WWW %s", self@web_pages)
+                                       sprintf("1 CTRY %s", self@country)
                                      )
-                                     
-                                     if(length(addr) == 1) return(character())
-                                     addr
                                    })
                                ),
                                
@@ -181,11 +190,8 @@ class_address <- S7::new_class("class_address",
                                    chk_input_size(self@city, "@city", 0, 1, 1, 60),
                                    chk_input_size(self@state, "@state", 0, 1, 1, 60),
                                    chk_input_size(self@postal_code, "@postal_code", 0, 1, 1, 10),
-                                   chk_input_size(self@country, "@country", 0, 1, 1, 60),
-                                   chk_input_size(self@phone_numbers, "@phone_numbers", 0, 3, 1, 90),
-                                   chk_input_size(self@emails, "@emails", 0, 3, 5, 120),
-                                   chk_input_size(self@faxes, "@faxes", 0, 3, 5, 60),
-                                   chk_input_size(self@web_pages, "@web_pages", 0, 3, 4, 2047)
+                                   chk_input_size(self@country, "@country", 0, 1, 1, 60)
+                                   
                                  )
                                }
 )

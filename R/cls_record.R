@@ -52,6 +52,10 @@ class_subm <-
                 properties = list(
                   name = S7::new_property(S7::class_character, default = unname(Sys.info()["user"])),
                   address = S7::new_property(S7::new_union(NULL, class_address)),
+                  phone_numbers = S7::class_character,
+                  emails = S7::class_character,
+                  faxes = S7::class_character,
+                  web_pages = S7::class_character,
                   
                   as_ged = S7::new_property(
                     S7::class_character,
@@ -60,6 +64,10 @@ class_subm <-
                         sprintf("0 %s SUBM", self@xref),
                         sprintf("1 NAME %s", self@name),
                         obj_to_ged(self@address) |> increase_level(by = 1),
+                        sprintf("0 PHON %s", self@phone_numbers),
+                        sprintf("0 EMAIL %s", self@emails),
+                        sprintf("0 FAX %s", self@faxes),
+                        sprintf("0 WWW %s", self@web_pages),
                         sprintf("1 OBJE %s", self@media_links),
                         sprintf("1 RIN %s", self@auto_id),
                         sprintf("1 NOTE %s", self@note_links),
@@ -72,6 +80,10 @@ class_subm <-
                   c(
                     chk_input_size(self@name, "@name", 1, 1, 1, 60),
                     chk_input_size(self@address, "@address", 0, 1),
+                    chk_input_size(self@phone_numbers, "@phone_numbers", 0, 3, 1, 90),
+                    chk_input_size(self@emails, "@emails", 0, 3, 5, 120),
+                    chk_input_size(self@faxes, "@faxes", 0, 3, 5, 60),
+                    chk_input_size(self@web_pages, "@web_pages", 0, 3, 4, 2047),
                     chk_input_size(self@user_reference_numbers, "@user_reference_numbers", 0, 0),
                     chk_input_size(self@citations, "@citations", 0, 0)
                   )
@@ -400,6 +412,10 @@ class_record_repo <-
                 properties = list(
                   name = S7::class_character,
                   address = S7::new_property(S7::new_union(NULL, class_address)),
+                  phone_numbers = S7::class_character,
+                  emails = S7::class_character,
+                  faxes = S7::class_character,
+                  web_pages = S7::class_character,
                   
                   as_ged = S7::new_property(
                     S7::class_character,
@@ -408,6 +424,10 @@ class_record_repo <-
                         sprintf("0 %s REPO", self@xref),
                         sprintf("1 NAME %s", self@name),
                         obj_to_ged(self@address) |> increase_level(by = 1),
+                        sprintf("0 PHON %s", self@phone_numbers),
+                        sprintf("0 EMAIL %s", self@emails),
+                        sprintf("0 FAX %s", self@faxes),
+                        sprintf("0 WWW %s", self@web_pages),
                         sprintf("1 NOTE %s", self@note_links),
                         sprintf("1 NOTE %s", self@notes),
                         self@refs_ged,
@@ -420,6 +440,10 @@ class_record_repo <-
                   c(
                     chk_input_size(self@name, "@name", 1, 1, 1, 90),
                     chk_input_size(self@address, "@address", 0, 1),
+                    chk_input_size(self@phone_numbers, "@phone_numbers", 0, 3, 1, 90),
+                    chk_input_size(self@emails, "@emails", 0, 3, 5, 120),
+                    chk_input_size(self@faxes, "@faxes", 0, 3, 5, 60),
+                    chk_input_size(self@web_pages, "@web_pages", 0, 3, 4, 2047),
                     chk_input_size(self@citations, "@citations", 0, 0),
                     chk_input_size(self@media_links, "@media_links", 0, 0)
                   )

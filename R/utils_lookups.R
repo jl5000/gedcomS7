@@ -22,7 +22,7 @@ val_languages <- function() {
 #' @rdname val_languages
 #' @export
 val_sexes <- function() {
-  c(Unknown = "U", Male = "M", Female = "F", Intersex = "X", `Not recorded` = "N")
+  c(Unknown = "U", Male = "M", Female = "F", `Non-binary` = "X")
 }
 
 #' @rdname val_languages
@@ -35,16 +35,16 @@ val_multimedia_formats <- function() {
 #' @rdname val_languages
 #' @export
 val_pedigree_linkage_types <- function() {
-  vals <- c("birth", "adopted", "foster")
+  vals <- c("BIRTH", "ADOPTED", "FOSTER", "OTHER")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
 #' @rdname val_languages
 #' @export
 val_source_media_types <- function() {
-  vals <- c("audio", "book", "card", "electronic", "fiche", 
-    "film", "magazine", "manuscript", "map", 
-    "newspaper", "photo", "tombstone", "video")
+  vals <- c("AUDIO","BOOK","CARD","ELECTRONIC","FICHE","FILM",
+            "MAGAZINE","MANUSCRIPT","MAP","NEWSPAPER","PHOTO",
+            "TOMBSTONE","VIDEO","OTHER")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
@@ -56,13 +56,29 @@ val_adoptive_parents <- function() {
 
 #' @rdname val_languages
 #' @export
+val_restriction <- function(){
+  vals <- c("CONFIDENTIAL", "LOCKED", "PRIVACY")
+  stats::setNames(vals, tools::toTitleCase(vals))
+}
+
+#' @rdname val_languages
+#' @export
 val_roles <- function() {
   c(Child = "CHIL",
+    `Religious official` = "CLERGY",
+    Father = "FATH",
+    Friend = "FRIEND",
+    Godparent = "GODP",
     Husband = "HUSB", 
-    Wife = "WIFE", 
-    Spouse = "SPOU",
     Mother = "MOTH",
-    Father = "FATH")
+    Multiple = "MULTIPLE",
+    Neighbor = "NGHBR",
+    Officiator = "OFFICIATOR",
+    Parent = "PARENT",
+    Spouse = "SPOU",
+    Wife = "WIFE", 
+    Witness = "WITN",
+    Other = "OTHER")
 }
 
 #' @rdname val_languages

@@ -1,10 +1,15 @@
 
-chk_input_size <- function(input, name, min_dim, max_dim, min_char = NULL, max_char = NULL) {
+chk_input_size <- function(input, 
+                           name, 
+                           min_dim = NULL, 
+                           max_dim = NULL, 
+                           min_char = NULL, 
+                           max_char = NULL) {
   
-  if (length(input) < min_dim) 
+  if (!is.null(min_dim) && length(input) < min_dim) 
     return(sprintf("%s has too few dimensions. The minimum is %s.", name, min_dim))
   
-  if (length(input) > max_dim) 
+  if (!is.null(max_dim) && length(input) > max_dim) 
     return(sprintf("%s has too many dimensions. The maximum is %s.", name, max_dim))
   
   if (length(input) > 0) {

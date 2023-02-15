@@ -9,10 +9,21 @@ anchor_it <- function(reg) {
   paste0("^", reg, "$")
 }
 
+
+reg_tag <- function(std = TRUE){
+  if(std){
+    "[A-Z][A-Z0-9_]*"
+  } else {
+    "_[A-Z0-9_]+"
+  }
+}
+
 reg_ged_line <- function(){
   # \\1 is level, \\2 is xref, \\3 is tag, \\4 is value
-  # .* should really be .+ (space after tag requires a value)
-  sprintf("^([0-6])(?: (%s))? ([A-Z1-3]{3,5})(?: (.*))?$", reg_xref(FALSE))
+  sprintf("^([0-9])(?: (%s))? (%s|%s)(?: (.+))?$", 
+          reg_xref(FALSE), 
+          reg_tag(TRUE), 
+          reg_tag(FALSE))
 }
 
 #' Enumerate all combinations of regex patterns
@@ -64,8 +75,7 @@ reg_time <- function(only = TRUE){
 #' @return A regular expression pattern for an xref.
 #' @export
 reg_xref <- function(only = TRUE) {
-  #p31
-  reg <- "@[a-zA-Z0-9]{1,20}@"
+  reg <- "@[A-Z0-9_]+@"
   if(only) reg <- anchor_it(reg)
   reg
 }

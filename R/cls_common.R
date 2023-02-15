@@ -1,6 +1,111 @@
 #' @include utils_at.R cls_dates.R cls_validators.R
 NULL
 
+class_identifier <- S7::new_class("class_identifier",
+                                  properties = list(
+                                    user_ids = S7::class_character,
+                                    unique_ids = S7::class_character,
+                                    external_ids = S7::class_character,
+                                    
+                                    as_ged = S7::new_property(
+                                      S7::class_character,
+                                      getter = function(self){
+                                        tmp <- character()
+                                        for(i in seq_along(self@user_ids)){
+                                          tmp <- c(
+                                            tmp,
+                                            sprintf("0 REFN %s", self@user_ids[i]),
+                                            sprintf("1 TYPE %s", names(self@user_ids)[i])
+                                          )
+                                        }
+                                        tmp <- c(
+                                          tmp,
+                                          sprintf("0 UID %s", self@unique_ids),
+                                        )
+                                        for(i in seq_along(self@external_ids)){
+                                          tmp <- c(
+                                            tmp,
+                                            sprintf("0 EXID %s", self@external_ids[i]),
+                                            sprintf("1 TYPE %s", names(self@external_ids)[i])
+                                          )
+                                        }
+                                        tmp <- tmp[tmp != "1 TYPE "]
+                                        tmp
+                                      }
+                                  ))
+                                  )
+
+#' @export
+class_media_link <- S7::new_class("media_link",
+                                  properties = list(
+                                    xref = S7::class_character,
+                                    title = S7::class_character,
+                                    top = S7::class_integer,
+                                    left = S7::class_integer,
+                                    height = S7::class_integer,
+                                    width = S7::class_integer,
+                                    
+                                    as_ged = S7::new_property(
+                                      S7::class_character,
+                                      getter = function(self){
+                                        c(
+                                          sprintf("0 OBJE %s", self@xref),
+                                          "1 CROP",
+                                          sprintf("2 TOP %s", self@top),
+                                          sprintf("2 LEFT %s", self@left),
+                                          sprintf("2 HEIGHT %s", self@height),
+                                          sprintf("2 WIDTH %s", self@width),
+                                          sprintf("1 TITL %s", self@title)
+                                        )
+                                      })
+                                  ),
+                                  validator = function(self) {
+                                    c(
+                                      chk_input_size(self@xref, "@xref", 1, 1),
+                                      chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
+                                      chk_input_size(self@title, "@title", 0, 1, 1),
+                                      chk_input_size(self@top, "@top", 0, 1, 1),
+                                      chk_input_size(self@left, "@left", 0, 1, 1),
+                                      chk_input_size(self@height, "@height", 0, 1, 1),
+                                      chk_input_size(self@width, "@width", 0, 1, 1)
+                                    )
+                                  }
+)
+
+#' @export
+class_note <- S7::new_class("class_note",
+                            properties = list(
+                              text = S7::class_character,
+                              language = S7::class_character,
+                              media_type = S7::class_character,
+                              translations = class_list,
+                              citations = S7::class_list,
+                              
+                              as_ged = S7::new_property(
+                                S7::class_character,
+                                getter = function(self){
+                                  c(
+                                    sprintf("0 NOTE %s", self@text),
+                                    sprintf("1 MIME %s", self@media_type),
+                                    sprintf("1 LANG %s", self@language),
+                                    lst_to_ged(self@translations) |> increase_level(by = 1),
+                                    lst_to_ged(self@citations) |> increase_level(by = 1),
+                                  )
+                                })
+                            ),
+                            validator = function(self){
+                              c(
+                                chk_input_size(self@text, "@text", 1, 1, 1),
+                                chk_input_size(self@language, "@language", 0, 1),
+                                #TODO: language option
+                                chk_input_size(self@media_type, "@media_type", 0, 1),
+                                #TODO: media type pattern
+                                chk_input_S7classes(self@translations, "@translations", class_translation_note),
+                                chk_input_S7classes(self@citations, "@citations", class_citation)
+                              )
+                            }
+                            )
+
 #' @export
 class_change_date <- S7::new_class("class_change_date",
                                    properties = list(
@@ -8,7 +113,7 @@ class_change_date <- S7::new_class("class_change_date",
                                                              default = date_exact_current()),
                                      time = S7::class_character,
                                      note_links = S7::class_character,
-                                     notes = S7::class_character,
+                                     notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                      
                                      as_ged = S7::new_property(
                                        S7::class_character,
@@ -17,8 +122,8 @@ class_change_date <- S7::new_class("class_change_date",
                                            "0 CHAN",
                                            sprintf("1 DATE %s", date_to_val(self@date)),
                                            sprintf("2 TIME %s", self@time),
-                                           sprintf("1 NOTE %s", self@note_links),
-                                           sprintf("1 NOTE %s", self@notes)
+                                           sprintf("1 SNOTE %s", self@note_links),
+                                           lst_to_ged(self@notes) |> increase_level(by = 1)
                                          )
                                          
                                        })
