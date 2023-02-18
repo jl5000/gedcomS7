@@ -1,59 +1,9 @@
-#' @include utils_at.R cls_validators.R
+#' @include cls_validators.R
 NULL
 
-# dont need this!! named vector will do
-class_place_name_trans <- S7::new_class("class_place_name_trans",
-                                           properties = list(
-                                             name = S7::class_character,
-                                             language = S7::class_character,
-                                             
-                                             as_ged = S7::new_property(
-                                               S7::class_character,
-                                               getter = function(self){
-                                                 c(
-                                                   sprintf("0 TRAN %s", self@name),
-                                                   sprintf("1 LANG %s", self@language)
-                                                 )
-                                               })
-                                           ),
-                                           validator = function(self){
-                                             c(
-                                               chk_input_size(self@name, "@name", 1, 1, 1),
-                                               chk_input_size(self@language, "@language", 1, 1)
-                                               #TODO: language option
-                                             )
-                                           })
 
-
-#' Create a Place object
-#' 
-#' @details 
-#' The latitude coordinate is
-#' the direction North or South from the equator in degrees and fraction of degrees carried out
-#' to give the desired accuracy. For example: 18 degrees, 9 minutes, and 3.4 seconds North
-#' would be formatted as N18.150944.
-#' 
-#' The longitude
-#' coordinate is Degrees and fraction of degrees east or west of the zero or base meridian
-#' coordinate. For example: 168 degrees, 9 minutes, and 3.4 seconds East would be formatted
-#' as E168.150944.
-#' 
-#' @param name The jurisdictional name of the place where the event took place. Jurisdictions are separated
-#' by a comma and space combination. For example: "Cove, Cache, Utah, United States of
-#' America".
-#' No part of the place name may be replaced by an abbreviation. Place names are not
-#' terminated by a full stop or anything else.
-#' @param phon_names A named vector of phonetic variations of the place name written in the same form as 
-#' `name`. The names of the vector contain the phonetisation method used for creating the phonetic text.
-#' @param rom_names A named vector of romanised variations of the place name written in the same form as 
-#' `name`. The names of the vector contain the romanisation method used for creating the romanised text.
-#' @param lat_long A character string giving the latitude and longitude separated by a space. See Details.
-#' @param notes A list of `class_note` objects to record or reference notes about the place.
-#'
-#' @return An S7 Place object.
 #' @export
-#' @name class_place
-NULL
+#' @include cls_common.R
 class_place <- S7::new_class("class_place",
                              properties = list(
                                name = S7::class_character,
@@ -63,7 +13,7 @@ class_place <- S7::new_class("class_place",
                                lat_long = S7::class_character,
                                external_ids = S7::class_character,
                                note_links = S7::class_character,
-                               notes = S7::class_list,
+                               notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                
                                lat = S7::new_property(S7::class_character,
                                                       getter = function(self){

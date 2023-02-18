@@ -1,4 +1,4 @@
-#' @include utils_at.R cls_validators.R
+#' @include cls_validators.R
 NULL
 
 #' @export
@@ -64,6 +64,7 @@ class_personal_name_trans <- S7::new_class("class_personal_name_trans",
                                              })
 
 #' @export
+#' @include cls_common.R
 class_personal_name <- S7::new_class("class_personal_name",
                                      properties = list(
                                        name = S7::class_character,
@@ -71,7 +72,7 @@ class_personal_name <- S7::new_class("class_personal_name",
                                        type_phrase = S7::class_character,
                                        name_pieces = S7::new_property(S7::new_union(NULL, class_name_pieces)),
                                        name_alts = S7::class_list,
-                                       notes = S7::class_list,
+                                       notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                        note_links = S7::class_character,
                                        citations = S7::class_list,
                                        

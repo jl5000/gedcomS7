@@ -105,6 +105,19 @@ obj_to_ged <- function(obj){
   obj@as_ged
 }
 
+named_vec_to_ged <- function(vec, tag1, tag2){
+  ged <- character()
+  for(i in seq_along(vec)){
+    ged <- c(
+      ged,
+      sprintf("0 %s %s", tag1, vec[i]),
+      sprintf("1 %s %s", tag2, names(vec)[i])
+    )
+  }
+  ged <- ged[ged != sprintf("1 %s ", tag2)]
+  ged
+}
+
 date_to_val <- function(obj){
   if(S7::S7_inherits(obj, class_date)){
     date_val <- obj@as_val
@@ -119,7 +132,7 @@ get_record_type <- function(record){
   
   if(S7::S7_inherits(record, class_record_indi)){
     "indi"
-  } else if(S7::S7_inherits(record, class_record_famg)){
+  } else if(S7::S7_inherits(record, class_record_fam)){
     "famg"
   } else if(S7::S7_inherits(record, class_record_sour)){
     "sour"

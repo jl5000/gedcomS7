@@ -1,5 +1,33 @@
-#' @include utils_at.R cls_dates.R cls_locations.R cls_validators.R
+#' @include cls_validators.R
 NULL
+
+#' @export
+#' @include cls_dates.R cls_common.R
+class_non_event <- S7::new_class("class_non_event",
+                                 properties = list(
+                                   event = S7::class_character,
+                                   date_period = S7::new_property(S7::new_union(NULL, class_date_period, S7::class_character)),
+                                   date_phrase = S7::class_character,
+                                   note_links = S7::class_character,
+                                   notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+                                   citations = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+                                   
+                                   as_ged = S7::new_property(
+                                     S7::class_character,
+                                     getter = function(self){
+                                       c(
+                                         
+                                       )
+                                     })
+                                 ),
+                                 validator = function(self){
+                                   c(
+                                     chk_input_size(self@event, "@event", 1, 1)
+                                     #TODO: event choice
+                                     
+                                   )
+                                 }
+)
 
 class_fact_detail <- S7::new_class("class_fact_detail",
                                     properties = list(
@@ -14,6 +42,7 @@ class_fact_detail <- S7::new_class("class_fact_detail",
                                                                             class_date_range,
                                                                             class_date_approx, 
                                                                             S7::class_character)),
+                                      time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
                                       place = S7::new_property(S7::new_union(NULL, class_place)),
                                       address = S7::new_property(S7::new_union(NULL, class_address)),
                                       phone_numbers = S7::class_character,
@@ -23,8 +52,11 @@ class_fact_detail <- S7::new_class("class_fact_detail",
                                       agency = S7::class_character,
                                       relig_affil = S7::class_character,
                                       cause = S7::class_character,
+                                      confidential = S7::new_property(S7::class_logical, default = FALSE),
+                                      locked = S7::new_property(S7::class_logical, default = FALSE),
+                                      private = S7::new_property(S7::class_logical, default = FALSE),
                                       note_links = S7::class_character,
-                                      notes = S7::class_character,
+                                      notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                       citations = S7::class_list,
                                       media_links = S7::class_character,
                                       
@@ -60,6 +92,9 @@ class_fact_detail <- S7::new_class("class_fact_detail",
                                         chk_input_size(self@agency, "@agency", 0, 1, 1, 120),
                                         chk_input_size(self@relig_affil, "@relig_affil", 0, 1, 1, 90),
                                         chk_input_size(self@cause, "@cause", 0, 1, 1, 90),
+                                        chk_input_size(self@confidential, "@confidential", 1, 1),
+                                        chk_input_size(self@locked, "@locked", 1, 1),
+                                        chk_input_size(self@private, "@private", 1, 1),
                                         chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
                                         chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
                                         chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),

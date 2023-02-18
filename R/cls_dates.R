@@ -1,5 +1,37 @@
-#' @include utils_at.R cls_validators.R
+#' @include cls_validators.R
 NULL
+
+class_time <- S7::new_class("class_time",
+                            properties = list(
+                              hour = S7::class_integer,
+                              minute = S7::class_integer,
+                              second = S7::class_integer,
+                              fraction = S7::class_integer,
+                              utc = S7::class_logical,
+                              
+                              as_val = S7::new_property(
+                                S7::class_character,
+                                getter = function(self){
+                                  tim <- paste0(self@hour, ":", self@minute)
+                                  if(length(self@second) == 1)
+                                    tim <- paste0(tim, ":", self@second)
+                                  if(length(self@fraction) == 1)
+                                    tim <- paste0(tim, ".", self@fraction)
+                                  if(self@utc)
+                                    tim <- paste0(tim, "Z")
+                                  tim
+                                }
+                              )
+                            ),
+                            validator = function(self){
+                              c(
+                                chk_input_size(self@hour, "@hour", 1, 1),
+                                chk_input_size(self@minute, "@minute", 1, 1),
+                                chk_input_size(self@second, "@second", 0, 1),
+                                chk_input_size(self@fraction, "@fraction", 0, 1),
+                                chk_input_size(self@utc, "@utc", 0, 1)
+                              )
+                            })
 
 class_date <- S7::new_class("class_date")
 
@@ -9,6 +41,7 @@ class_date_exact <- S7::new_class("class_date_exact", parent = class_date,
                                 year = S7::class_integer,
                                 month = S7::class_integer,
                                 day = S7::class_integer,
+                                time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
                                 
                                 as_val = S7::new_property(
                                   S7::class_character,
@@ -43,6 +76,7 @@ date_exact_current <- function(){
                    month = as.integer(format(Sys.Date(), "%m")),
                    day = as.integer(format(Sys.Date(), "%d")))
 }
+
 
 #' @export
 class_date_calendar <- S7::new_class("class_date_calendar", parent = class_date,

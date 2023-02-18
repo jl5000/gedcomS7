@@ -15,7 +15,7 @@
 push_record <- function(gedcom, record){
   
   if(gedcom@update_change_dates){
-    record@last_updated <- class_change_date()
+    record@updated <- class_change_date()
   }
   
   rec_type <- get_record_type(record)

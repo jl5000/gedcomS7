@@ -18,10 +18,10 @@ reg_tag <- function(std = TRUE){
   }
 }
 
-reg_ged_line <- function(){
+reg_ged_line <- function(xref = TRUE){
   # \\1 is level, \\2 is xref, \\3 is tag, \\4 is value
   sprintf("^([0-9])(?: (%s))? (%s|%s)(?: (.+))?$", 
-          reg_xref(FALSE), 
+          ifelse(xref, reg_xref(FALSE), "@_@"), 
           reg_tag(TRUE), 
           reg_tag(FALSE))
 }
@@ -76,6 +76,12 @@ reg_time <- function(only = TRUE){
 #' @export
 reg_xref <- function(only = TRUE) {
   reg <- "@[A-Z0-9_]+@"
+  if(only) reg <- anchor_it(reg)
+  reg
+}
+
+reg_uuid <- function(only = TRUE){
+  reg <- "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
   if(only) reg <- anchor_it(reg)
   reg
 }

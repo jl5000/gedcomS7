@@ -12,16 +12,12 @@ read_gedcom <- function(filepath = file.choose()) {
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
     stop("GEDCOM file should have a .ged extension")
   
-  gedcom_encoding <- read_gedcom_encoding(filepath)
-  
-  con <- file(filepath, encoding = gedcom_encoding)
+  con <- file(filepath, encoding = "UTF-8")
   on.exit(close(con))
   
   ged_lines <- readLines(con)
   
   validate_lines(ged_lines)
-  
-  validate_header(ged_lines[1:6], gedcom_encoding)
   
   ged_lines <- combine_gedcom_values(ged_lines) |>
     gsub(pattern = "@@", replacement = "@")
@@ -33,40 +29,9 @@ read_gedcom <- function(filepath = file.choose()) {
 }
 
 
-#' Read the Byte Order Mark of the GEDCOM file
-#' 
-#' This function reads the Byte Order Mark of a GEDCOM file in order to determine its encoding.
-#' It only checks for UTF-8 or UTF-16 - if neither of these are found it throws an error.
-#'
-#' @param filepath The full filepath of the GEDCOM file.
-#'
-#' @return A character string indicating the encoding of the file.
-read_gedcom_encoding <- function(filepath) {
-  
-  if(identical(as.character(readBin(filepath, 'raw', 3)), .pkgenv$BOM_UTF8)) {
-    return("UTF-8")  
-  } else if(identical(as.character(readBin(filepath, 'raw', 2)), .pkgenv$BOM_UTF16_BE)) {
-    return("UTF-16BE")
-  } else if(identical(as.character(readBin(filepath, 'raw', 2)), .pkgenv$BOM_UTF16_LE)) {
-    return("UTF-16LE")
-  } else {
-    stop("Invalid file encoding. Only UTF-8 and UTF-16 Byte Order Marks are supported")
-  }
-  
-}
 
 validate_lines <- function(lines){
   
-  if(any(nchar(lines) > .pkgenv$gedcom_line_length_limit)) 
-    stop("This is not a GEDCOM 5.5.5 file. The following lines are too long: ", 
-         paste(which(nchar(lines) > .pkgenv$gedcom_line_length_limit), collapse=","))
-  
-  line_vals <- extract_ged_value(lines)
-  
-  if(any(nchar(line_vals) > .pkgenv$gedcom_phys_value_limit)) 
-    stop("This is not a GEDCOM 5.5.5 file. The following lines have values which are too long: ", 
-         paste(which(nchar(line_vals) > .pkgenv$gedcom_phys_value_limit), collapse=","))
-
   invalid_lines <- grep(reg_ged_line(), lines, invert = TRUE)
   
   if(length(invalid_lines) > 0)
@@ -74,40 +39,10 @@ validate_lines <- function(lines){
                  paste(invalid_lines, lines[invalid_lines], sep = ": ")), 
                collapse = "\n"))
   
-  unsupp_calendars <- c("HEBREW","FRENCH R","JULIAN","UNKNOWN")
-  unsupp_calendars <- paste0("@#D", unsupp_calendars, "@", collapse = "|")
-  
-  if(any(grepl(sprintf("^[1-6] DATE (%s)", unsupp_calendars), lines)))
-    stop("Non-Gregorian calendar dates are not supported.")
-  
   NULL
 }
 
-validate_header <- function(header_lines, expected_encoding) {
-  
-  expected_header = c(
-    "0 HEAD",
-    "1 GEDC",
-    "2 VERS 5.5.5",
-    "2 FORM LINEAGE-LINKED",
-    "3 VERS 5.5.5"
-  )
-  
-  if(!isTRUE(all.equal(header_lines[1:5], expected_header)))
-    stop("Malformed header")
-  
-  char <- sub("1 CHAR ", "", header_lines[6])
-  
-  if(expected_encoding == "UTF-8") {
-    if(char != "UTF-8") stop("Character encodings do not match")
-  } else if(expected_encoding %in% c("UTF-16BE", "UTF-16LE")) {
-    if(char != "UNICODE") stop("Character encodings do not match")
-  } else {
-    stop("Character encoding not recognised")
-  }
-  
-  NULL
-}
+
 
 #' Convert the GEDCOM grammar to the GEDCOM form
 #' 

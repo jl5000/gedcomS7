@@ -38,7 +38,7 @@ pull_record <- function(x, xref){
       family_links = extract_family_links(rec_lines),
       associations = extract_associations(rec_lines),
       auto_id = auto_id,
-      last_updated = chan,
+      updated = chan,
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       citations = cits,
       media_links = media
@@ -66,7 +66,7 @@ pull_record <- function(x, xref){
       }
     }
     
-    class_record_famg(
+    class_record_fam(
       xref = rec_xref,
       husb_xref = find_ged_values(rec_lines, "HUSB"),
       wife_xref = find_ged_values(rec_lines, "WIFE"),
@@ -78,7 +78,7 @@ pull_record <- function(x, xref){
       facts = extract_facts_famg(rec_lines),
       num_children = as.integer(find_ged_values(rec_lines, "NCHI")),
       auto_id = auto_id,
-      last_updated = chan,
+      updated = chan,
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       citations = cits,
       media_links = media
@@ -103,7 +103,7 @@ pull_record <- function(x, xref){
       source_text = find_ged_values(rec_lines, "TEXT"),
       repo_citations = extract_repo_citations(rec_lines),
       auto_id = auto_id,
-      last_updated = chan,
+      updated = chan,
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       media_links = media
     )
@@ -118,7 +118,7 @@ pull_record <- function(x, xref){
       address = extract_address(rec_lines),
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       auto_id = auto_id,
-      last_updated = chan
+      updated = chan
     )
     
   } else if(rec_type == "OBJE"){
@@ -134,7 +134,7 @@ pull_record <- function(x, xref){
       auto_id = auto_id,
       note_links = nts[grepl(reg_xref(TRUE), nts)],
       citations = cits,
-      last_updated = chan
+      updated = chan
     )
     
   } else if(rec_type == "NOTE"){
@@ -145,7 +145,7 @@ pull_record <- function(x, xref){
       user_reference_numbers = refns, 
       auto_id = auto_id,
       citations = cits,
-      last_updated = chan
+      updated = chan
     )
   }
 

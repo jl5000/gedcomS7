@@ -29,7 +29,7 @@ add_parents <- function(x, xref, inc_sex = TRUE){
   if(length(famc_xref) == 0){
     famc_xref <- x@next_xref[["famg"]]
     
-    famc_rec <- class_record_famg(
+    famc_rec <- class_record_fam(
       chil_biol_xref = xref
     )
     
@@ -95,7 +95,7 @@ add_siblings <- function(x, xref, sexes = NULL){
   if(length(famc_xref) == 0){
     famc_xref <- x@next_xref[["famg"]]
     
-    famc_rec <- class_record_famg(
+    famc_rec <- class_record_fam(
       chil_biol_xref = xref
     )
     
@@ -193,7 +193,7 @@ add_spouse <- function(x, xref, sex = "U"){
     }
   }
   
-  fams_rec <- class_record_famg(
+  fams_rec <- class_record_fam(
     husb_xref = husb_xref,
     wife_xref = wife_xref
   )

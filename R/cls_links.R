@@ -1,7 +1,8 @@
-#' @include utils_at.R cls_validators.R
+#' @include cls_validators.R
 NULL
 
 #' @export
+#' @include cls_common.R
 class_repository_citation <- S7::new_class("class_repository_citation",
                                            properties = list(
                                              xref = S7::class_character,
@@ -27,13 +28,14 @@ class_repository_citation <- S7::new_class("class_repository_citation",
 )
 
 #' @export
+#' @include cls_common.R
 class_association <- S7::new_class("class_association",
                                    properties = list(
                                      xref = S7::class_character,
                                      relation_is = S7::class_character,
                                      citations = S7::class_list,
                                      note_links = S7::class_character,
-                                     notes = S7::class_character,
+                                     notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                      
                                      as_ged = S7::new_property(
                                        S7::class_character,
@@ -62,11 +64,12 @@ class_association <- S7::new_class("class_association",
 )
 
 #' @export
+#' @include cls_common.R
 class_spouse_family_link <- S7::new_class("class_spouse_family_link",
                                              properties = list(
                                                xref = S7::class_character,
                                                note_links = S7::class_character,
-                                               notes = S7::class_character,
+                                               notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
                                                
                                                as_ged = S7::new_property(
                                                  S7::class_character,

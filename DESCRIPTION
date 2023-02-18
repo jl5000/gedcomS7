@@ -15,24 +15,26 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1)
 Imports:
-    S7
+    S7,
+    uuid
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
     'cls_validators.R'
-    'utils_at.R'
     'cls_dates.R'
-    'cls_common.R'
     'cls_locations.R'
+    'cls_record_support.R'
+    'cls_common.R'
     'cls_facts.R'
-    'cls_record.R'
     'cls_gedcom.R'
     'cls_links.R'
     'cls_personal_name.R'
+    'cls_record.R'
     'fn_add.R'
     'fn_desc.R'
     'fn_df.R'
+    'fn_find.R'
     'fn_get.R'
     'fn_is.R'
     'fn_print.R'
@@ -41,6 +43,7 @@ Collate:
     'fn_rm.R'
     'io_export.R'
     'io_import.R'
+    'utils_at.R'
     'utils_helpers.R'
     'utils_lookups.R'
     'utils_regex.R'
