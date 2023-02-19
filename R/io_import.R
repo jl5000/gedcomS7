@@ -19,10 +19,12 @@ read_gedcom <- function(filepath = file.choose()) {
   
   validate_lines(ged_lines)
   
-  ged_lines <- combine_gedcom_values(ged_lines) |>
-    gsub(pattern = "@@", replacement = "@")
+  ged_lines <- remove_at_escapes(ged_lines) |> 
+    combine_cont_lines()
   
   records_lst <- split(ged_lines, cumsum(substr(ged_lines, 1, 1) == "0"))
+  
+  records_lst <- create_uuids(records_lst)
   
   parse_records(records_lst)
 
@@ -39,38 +41,60 @@ validate_lines <- function(lines){
                  paste(invalid_lines, lines[invalid_lines], sep = ": ")), 
                collapse = "\n"))
   
+  #check characters in components
+  
+  
+  if(lines[1] != "0 HEAD")
+    stop("The file does not start with a HEAD record")
+  
+  if(lines[length(lines)] != "0 TRLR")
+    stop("The file does not end with a TRLR record")
+  
+  # UIDs should only appear once
+  uid_rows <- grep("^1 UID ", lines)
+  if(length(uid_rows) > 0){
+    vals <- extract_ged_value(lines)
+    uids <- vals[uid_rows]
+    dupes <- duplicated(uids)
+    if(sum(dupes) > 0)
+      stop("Some UIDs are duplicated: ", paste(unique(uids[dupes]), collapse = ", "))
+  }
+  
   NULL
 }
 
+remove_at_escapes <- function(lines){
+  
+  vals <- extract_ged_value(lines)
+  
+  escape_lines <- which(substr(vals, 1, 2) == "@@")
+  
+  if(length(escape_lines) == 0) return(lines)
+  
+  lines[escape_lines] <- sub("^([0-9] [A-Z0-9_]+ )@", "\\1", lines[escape_lines])
+  lines
+}
 
-
-#' Convert the GEDCOM grammar to the GEDCOM form
+#' Combine continuation lines into the parent line
 #' 
-#' This function applies concatenation indicated by CONC/CONT lines.
-#'
 #' @param lines A character vector of gedcom lines.
 #'
 #' @return A new character vector of gedcom lines.
-combine_gedcom_values <- function(lines) {
+combine_cont_lines <- function(lines) {
   
-  reg_cont_conc <- sprintf("^[1-6] (CONT|CONC) (.*)$")
-  cont_conc_lines <- grep(reg_cont_conc, lines)
-  if(length(cont_conc_lines) == 0) return(lines)
+  reg_cont <- sprintf("^[1-9] CONT (.*)$")
+  cont_lines <- grep(reg_cont, lines)
+  if(length(cont_lines) == 0) return(lines)
   
   unique_delim <- "<><>unique_delim<><>"
   
-  lines <- lines |> 
-    gsub(pattern = "\n\r|\r\n", replacement = "\n") |> 
-    gsub(pattern = "\r", replacement = "\n") |>
-    sub(pattern = "^([1-6] CONT )", replacement = "\\1\n")
+  lines <- sub("^([1-9] CONT )", "\\1\n", lines)
   
   # Prepare lines for merging
-  lines[cont_conc_lines] <- sub(reg_cont_conc, "\\2",
-                                lines[cont_conc_lines])
-  lines[-cont_conc_lines] <- paste0(unique_delim,
-                                    lines[-cont_conc_lines])
+  lines[cont_lines] <- sub(reg_cont, "\\1", lines[cont_lines])
+  lines[-cont_lines] <- paste0(unique_delim, lines[-cont_lines])
   
-  # Merge and seperate again
+  # Merge and separate again
   lines <- paste(lines, collapse = "") |>
     strsplit(unique_delim) |>
     unlist()
@@ -78,77 +102,117 @@ combine_gedcom_values <- function(lines) {
   lines[-1] # delete empty line introduced
 }
 
+create_uuids <- function(records_lst){
+  
+  #get all xrefs
+  xrefs <- extract_ged_xref(unlist(records_lst))
+  xrefs <- unique(xrefs[xrefs != ""])
+  
+  #for each xref either extract or generate uuid
+  for(xref in xrefs){
+
+    rec_no <- which(sapply(records_lst, function(x) {
+      grepl(sprintf("^0 %s ", xref), x[1])}
+    ))
+    
+    uid <- find_ged_values(records_lst[[rec_no]], "UID")
+    
+    if(length(uid) == 0){
+      uid <- uuid::UUIDgenerate(n = 1)
+      
+      records_lst[[rec_no]] <- c(
+        records_lst[[rec_no]],
+        sprintf("1 UID %s", uid)
+      )
+    } else {
+      uid <- uid[1]
+    }
+    
+    #replace xref pointers with uid in all records
+    for(i in seq_along(records_lst)){
+      rec_xrefs <- extract_ged_xref(records_lst[[i]])
+      rec_vals <- extract_ged_value(records_lst[[i]])
+      
+      xref_rows <- which(rec_xrefs == xref)
+      val_rows <- which(rec_vals == xref)
+      
+      if(length(xref_rows) > 0)
+        records_lst[[i]][xref_rows] <- sub(xref, "@_@", records_lst[[i]][xref_rows])
+      
+      if(length(val_rows) > 0)
+        records_lst[[i]][val_rows] <- sub(xref, uid, records_lst[[i]][val_rows])
+      
+    }
+    
+  }
+  
+  records_lst
+}
 
 parse_records <- function(records_lst){
   
-  if(!grepl(sprintf("^0 %s SUBM$", reg_xref(FALSE)), records_lst[[2]][1]))
-    stop("The record immediately after the header record must be the Submitter record")
-  
-  if(records_lst[[length(records_lst)]][1] != "0 TRLR")
-    stop("The file does not end with a TRLR record")
-  
+  # Remove TRLR
   records_lst <- records_lst[-length(records_lst)]
   
-  # parse subm and header
-  x <- create_gedcom(records_lst)
-  records_lst <- records_lst[-(1:2)]
+  # parse header
+  x <- create_gedcom(records_lst[[1]])
+  records_lst <- records_lst[-1]
   
-  subset_recs <- function(rec_lst, pattern){
-    recs <- Filter(\(x) grepl(sprintf(pattern, reg_xref(FALSE)), x[1]), rec_lst)
-    names(recs) <- sapply(recs, \(x) regmatches(x[1], regexpr(reg_xref(FALSE), x[1])))
-    recs
+  subset_recs <- function(rec_lst, rec_type){
+    Filter(\(x) grepl(sprintf("^0 @_@ %s", rec_type), x[1]), rec_lst)
   }
 
   S7::props(x) <- list(
-    indi = subset_recs(records_lst, "^0 %s INDI$"),
-    famg = subset_recs(records_lst, "^0 %s FAM$"),
-    sour = subset_recs(records_lst, "^0 %s SOUR$"),
-    repo = subset_recs(records_lst, "^0 %s REPO$"),
-    media = subset_recs(records_lst, "^0 %s OBJE$"),
-    note = subset_recs(records_lst, "^0 %s NOTE .+$")
+    indi = subset_recs(records_lst, "INDI"),
+    fam = subset_recs(records_lst, "FAM"),
+    sour = subset_recs(records_lst, "SOUR"),
+    repo = subset_recs(records_lst, "REPO"),
+    media = subset_recs(records_lst, "OBJE"),
+    note = subset_recs(records_lst, "SNOTE"),
+    subm = subset_recs(records_lst, "SUBM")
   )
 
   x
 }
 
 
-create_gedcom <- function(records_lst){
+create_gedcom <- function(hd_lines){
   
-  subm_lines <- records_lst[[2]]
-
-  subm_nts <- find_ged_values(subm_lines, "NOTE")
+  sour <- NULL
+  product_id <- find_ged_values(hd_lines, c("HEAD","SOUR"))
   
-  subm <- class_subm(
-    xref = extract_ged_xref(subm_lines[1]),
-    name = find_ged_values(subm_lines, "NAME"),
-    address = extract_address(subm_lines),
-    media_links = find_ged_values(subm_lines, "OBJE"),
-    auto_id = find_ged_values(subm_lines, "RIN"),
-    note_links = subm_nts[grepl(reg_xref(TRUE), subm_nts)],
-    notes = subm_nts[!grepl(reg_xref(TRUE), subm_nts)],
-    last_updated = extract_change_date(subm_lines)
-  )
-  
-  hd_lines <- records_lst[[1]]
+  if(length(product_id) == 1){
+    
+    sour <- class_gedcom_source(
+      product_id = find_ged_values(hd_lines, c("HEAD","SOUR")),
+      product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
+      product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
+      business_name = find_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
+      business_address = extract_address(hd_lines, c("HEAD","SOUR","CORP")),
+      phone_numbers = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","PHON")),
+      emails = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","EMAIL")),
+      faxes = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","FAX")),
+      web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW")),
+      data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
+      data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
+      data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","TIME")),
+      data_copyright = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR"))
+    )
+  }
   
   class_gedcomS7(
-    system_id = find_ged_values(hd_lines, c("HEAD","SOUR")),
-    product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
-    product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
-    business_name = find_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
-    business_address = extract_address(hd_lines, c("HEAD","SOUR","CORP")),
-    source_data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
-    source_data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
-    source_data_copyright = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR")),
+    gedcom_version = find_ged_values(hd_lines, c("HEAD","GEDC","VERS")),
+    ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
+    source_details = sour,
     receiving_system = find_ged_values(hd_lines, c("HEAD","DEST")),
     creation_date = find_ged_values(hd_lines, c("HEAD","DATE")) |> toupper(),
     creation_time = find_ged_values(hd_lines, c("HEAD","DATE","TIME")),
-    language = find_ged_values(hd_lines, c("HEAD","LANG")),
-    xref_subm = find_ged_values(hd_lines, c("HEAD","SUBM")),
-    file_name = find_ged_values(hd_lines, c("HEAD","FILE")),
+    subm_uid = find_ged_values(hd_lines, c("HEAD","SUBM")),
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
-    content_description = find_ged_values(hd_lines, c("HEAD","NOTE")),
-    subm = subm
+    language = find_ged_values(hd_lines, c("HEAD","LANG")),
+    default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
+    notes = extract_notes(hd_lines, "HEAD"),
+    note_links = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
   
 }

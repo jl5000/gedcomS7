@@ -110,7 +110,7 @@ class_record_fam <-
                 ),
                 validator = function(self){
                   c(
-                    chk_input_S7classes(self@facts, "@facts", class_fact_famg),
+                    chk_input_S7classes(self@facts, "@facts", class_fact_fam),
                     chk_input_S7classes(self@non_events, "@non_events", class_non_event),
                     chk_input_size(self@husb_xref, "@husb_xref", 0, 1),
                     chk_input_pattern(self@husb_xref, "@husb_xref", reg_xref(TRUE)),

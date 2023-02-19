@@ -63,13 +63,13 @@ df_note <- function(x){
 }
 
 df_indi_facts <- function(x, xref){
-  if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
   
   
 }
 
 df_famg_facts <- function(x, xref){
-  if(!is_famg_xref(x, xref)) stop("The xref is not a Family Group record.")
+  if(!is_fam_uid(x, xref)) stop("The xref is not a Family Group record.")
   
 }
 

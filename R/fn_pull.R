@@ -375,7 +375,7 @@ extract_facts_famg <- function(rec_lines){
       fact_date <- sub("@#DGREGORIAN@ ", "", fact_date)
     }
     
-    class_fact_famg(
+    class_fact_fam(
       fact = tag,
       description = find_ged_values(x, tag),
       husband_age = find_ged_values(x, c(tag, "HUSB","AGE")),

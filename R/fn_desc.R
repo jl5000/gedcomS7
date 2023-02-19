@@ -2,7 +2,7 @@
 desc_indi_name = function(x, xrefs, unnamed = "Unnamed individual"){
   nms <- character()
   for(xref in xrefs){
-    if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+    if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
     nm <- chronify(find_ged_values(x@indi[[xref]], "NAME"))
     nms = c(nms, nm)
   }
@@ -37,9 +37,9 @@ desc_indi_full <- function(x, xref){
 desc_famg <- function(x, xrefs){
   spou_chr <- character()
   for(xref in xrefs){
-    if(!is_famg_xref(x, xref)) stop("The xref is not an Family Group record.")
+    if(!is_fam_uid(x, xref)) stop("The xref is not an Family Group record.")
     
-    spou_nms <- get_famg_partners(x, xref) |>
+    spou_nms <- get_fam_partners(x, xref) |>
       desc_indi_name(unnamed = "", x = x)
     spou_nms <- spou_nms[spou_nms != ""]
     if(length(spou_nms) == 0){

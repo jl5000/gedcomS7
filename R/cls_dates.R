@@ -29,7 +29,7 @@ class_time <- S7::new_class("class_time",
                                 chk_input_size(self@minute, "@minute", 1, 1),
                                 chk_input_size(self@second, "@second", 0, 1),
                                 chk_input_size(self@fraction, "@fraction", 0, 1),
-                                chk_input_size(self@utc, "@utc", 0, 1)
+                                chk_input_size(self@utc, "@utc", 1, 1)
                               )
                             })
 
@@ -41,7 +41,6 @@ class_date_exact <- S7::new_class("class_date_exact", parent = class_date,
                                 year = S7::class_integer,
                                 month = S7::class_integer,
                                 day = S7::class_integer,
-                                time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
                                 
                                 as_val = S7::new_property(
                                   S7::class_character,

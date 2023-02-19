@@ -118,14 +118,17 @@ named_vec_to_ged <- function(vec, tag1, tag2){
   ged
 }
 
-date_to_val <- function(obj){
-  if(S7::S7_inherits(obj, class_date)){
+
+datetime_to_val <- function(obj){
+  if(S7::S7_inherits(obj, class_date) | 
+     S7::S7_inherits(obj, class_time)){
     date_val <- obj@as_val
   } else {
-    date_val <- obj
+    date_val <- obj # ok if NULL
   }
   date_val
 }
+
 
 
 get_record_type <- function(record){

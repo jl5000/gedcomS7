@@ -106,7 +106,7 @@ class_fact_detail <- S7::new_class("class_fact_detail",
 )
 
 #' @export
-class_fact_famg <- S7::new_class("class_fact_famg", parent = class_fact_detail,
+class_fact_fam <- S7::new_class("class_fact_fam", parent = class_fact_detail,
                                  properties = list(
                                    husband_age = S7::class_character,
                                    wife_age = S7::class_character,
@@ -176,7 +176,7 @@ class_fact_famg <- S7::new_class("class_fact_famg", parent = class_fact_detail,
 class_fact_indi <- S7::new_class("class_fact_indi", parent = class_fact_detail,
                                  properties = list(
                                    age = S7::class_character,
-                                   famg_xref = S7::class_character,
+                                   fam_uid = S7::class_character,
                                    adopting_parent = S7::class_character,
                                    
                                    as_ged = S7::new_property(
@@ -189,7 +189,7 @@ class_fact_indi <- S7::new_class("class_fact_indi", parent = class_fact_detail,
                                        }
                                        ged <- c(
                                          sprintf("0 %s%s", self@fact, desc),
-                                         sprintf("1 FAMC %s", self@famg_xref),
+                                         sprintf("1 FAMC %s", self@fam_uid),
                                          sprintf("2 ADOP %s", self@adopting_parent),
                                          sprintf("1 AGE %s", self@age),
                                          sprintf("1 TYPE %s", self@type),
@@ -240,14 +240,14 @@ class_fact_indi <- S7::new_class("class_fact_indi", parent = class_fact_detail,
                                    if(self@fact %in% c("IDNO","FACT"))
                                      fact_type_error <- chk_input_size(self@type, "@type", 1, 1)
                                    
-                                   # famg xref only used for birth, christening, adoption
-                                   famg_xref_error <- NULL
+                                   # fam uid only used for birth, christening, adoption
+                                   fam_uid_error <- NULL
                                    if(!self@fact %in% c("BIRT","CHR","ADOP"))
-                                     famg_xref_error <- chk_input_size(self@famg_xref, "@famg_xref", 0, 0)
+                                     fam_uid_error <- chk_input_size(self@fam_uid, "@fam_uid", 0, 0)
                                    
-                                   # adoptive parent only used for adoption with famg xref
+                                   # adoptive parent only used for adoption with fam uid
                                    adop_par_error <- NULL
-                                   if(self@fact != "ADOP" || length(self@famg_xref) == 0)
+                                   if(self@fact != "ADOP" || length(self@fam_uid) == 0)
                                      adop_par_error <- chk_input_size(self@adopting_parent, "@adopting_parent", 0, 0)
                                    
                                    desc_max_char <- 90
@@ -264,9 +264,9 @@ class_fact_indi <- S7::new_class("class_fact_indi", parent = class_fact_detail,
                                      chk_input_size(self@description, "@description", 0, 1, 1, desc_max_char),
                                      fact_desc_error,
                                      fact_type_error,
-                                     famg_xref_error,
-                                     chk_input_size(self@famg_xref, "@famg_xref", 0, 1, 3, 22),
-                                     chk_input_pattern(self@famg_xref, "@famg_xref", reg_xref(TRUE)),
+                                     fam_uid_error,
+                                     chk_input_size(self@fam_uid, "@fam_uid", 0, 1, 3, 22),
+                                     chk_input_pattern(self@fam_uid, "@fam_uid", reg_xref(TRUE)),
                                      adop_par_error,
                                      chk_input_size(self@adopting_parent, "@adopting_parent", 0, 1, 4, 4),
                                      chk_input_choice(self@adopting_parent, "@adopting_parent", val_adoptive_parents()),

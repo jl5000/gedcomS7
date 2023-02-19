@@ -4,17 +4,17 @@
 rm_records <- function(x, xrefs){
   xrefs <- unique(xrefs)
   for(xref in xrefs){
-    if(is_indi_xref(x, xref)){
+    if(is_indi_uid(x, xref)){
       x <- rm_indi(x, xref)
-    } else if(is_famg_xref(x, xref)){
+    } else if(is_fam_uid(x, xref)){
       x <- rm_famg(x, xref)
-    } else if(is_sour_xref(x, xref)){
+    } else if(is_sour_uid(x, xref)){
       x <- rm_sour(x, xref)
-    } else if(is_repo_xref(x, xref)){
+    } else if(is_repo_uid(x, xref)){
       x <- rm_repo(x, xref)
-    } else if(is_media_xref(x, xref)){
+    } else if(is_media_uid(x, xref)){
       x <- rm_media(x, xref)
-    } else if(is_note_xref(x, xref)){
+    } else if(is_note_uid(x, xref)){
       x <- rm_note(x, xref)
     } else {
       warning("There is no record with xref ", xref)

@@ -106,20 +106,6 @@ class_address <- S7::new_class("class_address",
                                  postal_code = S7::class_character,
                                  country = S7::class_character,
                                  
-                                 as_val = S7::new_property(
-                                   S7::class_character,
-                                   getter = function(self){
-                                     paste(
-                                       self@city,
-                                       self@state,
-                                       self@country,
-                                       sep = ", "
-                                     ) |>
-                                       gsub(pattern = "(, ){2,}", replacement = ", ") |>
-                                       sub(pattern = "^, ", replacement = "") |>
-                                       sub(pattern = ", $", replacement = "")
-                                   }),
-                                 
                                  as_ged = S7::new_property(
                                    S7::class_character,
                                    getter = function(self){

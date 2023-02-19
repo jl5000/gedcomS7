@@ -20,7 +20,7 @@ reg_tag <- function(std = TRUE){
 
 reg_ged_line <- function(xref = TRUE){
   # \\1 is level, \\2 is xref, \\3 is tag, \\4 is value
-  sprintf("^([0-9])(?: (%s))? (%s|%s)(?: (.+))?$", 
+  sprintf("^([0-9])(?: (%s))? (%s|%s)(?: (.*))?$", 
           ifelse(xref, reg_xref(FALSE), "@_@"), 
           reg_tag(TRUE), 
           reg_tag(FALSE))

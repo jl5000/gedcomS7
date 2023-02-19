@@ -32,29 +32,52 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                              sprintf("3 FAX %s", self@faxes),
                                              sprintf("3 WWW %s", self@web_pages),
                                              sprintf("2 DATA %s", self@data_name),
-                                             sprintf("3 DATE %s", date_to_val(self@data_pubdate)),
-                                             sprintf("4 TIME %s", self@data_pubtime),
+                                             sprintf("3 DATE %s", datetime_to_val(self@data_pubdate)),
+                                             sprintf("4 TIME %s", datetime_to_val(self@data_pubtime)),
                                              sprintf("3 COPR %s", self@data_copyright)
                                            )
                                          }
                                        ),
                                        validator = function(self){
+                                         bus_error <- date_error <- time_error <- NULL
+                                         if(length(self@business_name) == 0){
+                                           if(length(self@business_address) +
+                                              length(self@phone_numbers) + length(self@emails) +
+                                              length(self@faxes) + length(self@web_pages) > 0)
+                                             bus_error <- "Business contact details require a business name."
+                                         }
+                                         if(length(self@data_name) == 0){
+                                           if(length(self@data_pubdate) > 1){
+                                             
+                                           }
+                                           if(length(self@data_copyright) > 1){
+                                             
+                                           }
+                                         }
+                                         if(length(self@data_pubdate) == 0){
+                                           
+                                         }
+                                         #date and copyright needs data name
+                                         #time needs date
                                          c(
                                            chk_input_size(self@product_id, "@product_id", 1, 1, 1),
                                            chk_input_size(self@product_name, "@product_name", 0, 1, 1),
                                            chk_input_size(self@product_version, "@product_version", 0, 1),
                                            chk_input_pattern(self@product_version,  "@product_version", "^\\d{1,3}\\.\\d{1,3}(\\.\\d{1,3}(\\.\\d{1,3})?)?$"),
                                            chk_input_size(self@business_name, "@business_name", 0, 1, 1),
+                                           bus_error,
                                            chk_input_size(self@business_address, "@business_address", 0, 1),
                                            chk_input_size(self@phone_numbers, "@phone_numbers", min_char = 1),
                                            chk_input_size(self@emails, "@emails", min_char = 1),
                                            chk_input_size(self@faxes, "@faxes", min_char = 1),
                                            chk_input_size(self@web_pages, "@web_pages", min_char = 1),
                                            chk_input_size(self@data_name, "@data_name", 0, 1, 1),
+                                           date_error,
                                            chk_input_size(self@data_pubdate, "@data_pubdate", 0, 1),
                                            chk_input_pattern(self@data_pubdate, "@data_pubdate", reg_date_exact()),
+                                           time_error,
                                            chk_input_size(self@data_pubtime, "@data_pubtime", 0, 1),
-                                           #TODO: time pattern
+                                           chk_input_pattern(self@data_pubtime, "@data_pubtime", reg_time()),
                                            chk_input_size(self@data_copyright, "@data_copyright", 0, 1, 1)
                                          )
                                        }
@@ -65,15 +88,16 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                 properties = list(
                                   gedcom_version = S7::class_character,
                                   ext_tags = S7::class_character,
-                                  source_details = class_gedcom_source,
+                                  source_details = S7::new_property(S7::new_union(NULL, class_gedcom_source)),
                                   receiving_system = S7::class_character,
                                   creation_date = S7::new_property(S7::new_union(NULL, class_date_exact, S7::class_character)),
                                   creation_time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
-                                  xref_subm = S7::class_character,
+                                  subm_uid = S7::class_character,
                                   gedcom_copyright = S7::class_character,
                                   language = S7::class_character,
                                   default_place_form = S7::class_character,
-                                  content_description = S7::new_property(S7::new_union(NULL, class_note, S7::class_character)),
+                                  notes = S7::new_property(S7::new_union(NULL, class_note, S7::class_character)),
+                                  note_links = S7::class_character,
                                   
                                   update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
                                   add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -81,12 +105,27 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                   # Records
                                   subm = S7::class_list,
                                   indi = S7::class_list,
-                                  famg = S7::class_list,
+                                  fam = S7::class_list,
                                   sour = S7::class_list,
                                   repo = S7::class_list,
                                   media = S7::class_list,
                                   note = S7::class_list,
                                   
+                                  uids = S7::new_property( #EVERY UID
+                                    S7::class_list,
+                                    getter = function(self){
+                                      rec_types <- c("indi","fam","sour","repo","media","note","subm")
+                                      rec_uids <- lapply(rec_types, \(rec_type){
+                                        S7::prop(self, rec_type) |> 
+                                          unlist() |> 
+                                          grep(pattern = "^1 UID ", value = TRUE) |> 
+                                          sub(pattern = "^1 UID ", replacement = "") |> 
+                                          unique()
+                                      })
+                                      setNames(rec_uids, rec_types)
+                                      rec_uids
+                                    }
+                                  ),
                                   
                                   as_ged = S7::new_property(
                                     S7::class_character, 
@@ -136,9 +175,7 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                     chk_input_choice(self@language, "@language", val_languages()),
                                     chk_input_size(self@file_name, "@file_name", 0, 1, 5, 248),
                                     chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1, 248),
-                                    chk_input_size(self@content_description, "@content_description", 0, 1, 1, 248),
-                                    chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
-                                    chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","repo","media","note"))
+                                    chk_input_size(self@content_description, "@content_description", 0, 1, 1, 248)
                                     # TODO: names and values must be unique
                                     # Check all xrefs point to a record
                                     #chk_xref_pointers_valid(self)

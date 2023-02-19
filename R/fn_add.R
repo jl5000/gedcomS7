@@ -15,14 +15,14 @@
 #' @return A gedcom object with additional parent records.
 #' @export
 add_parents <- function(x, xref, inc_sex = TRUE){
-  if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
   
   pars_xref <- get_indi_parents(x, xref, birth_only = TRUE)
   
   if(length(pars_xref) == 2) return(x)
   
   # Get family group xref as child
-  famc_xref <- get_famg_as_child(x, xref, birth_only = TRUE)
+  famc_xref <- get_fam_as_child(x, xref, birth_only = TRUE)
   if(length(famc_xref) > 1) stop("Individual already has more than one birth family.")
   
   # Create new family record if necessary
@@ -88,9 +88,9 @@ add_parents <- function(x, xref, inc_sex = TRUE){
 #' @export
 add_siblings <- function(x, xref, sexes = NULL){
   if(is.null(sexes)) return(x)
-  if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
   
-  famc_xref <- get_famg_as_child(x, xref, birth_only = TRUE)
+  famc_xref <- get_fam_as_child(x, xref, birth_only = TRUE)
   
   if(length(famc_xref) == 0){
     famc_xref <- x@next_xref[["famg"]]
@@ -132,7 +132,7 @@ add_siblings <- function(x, xref, sexes = NULL){
 #' @export
 add_children <- function(x, xref, sexes = NULL){
   if(is.null(sexes)) return(x)
-  if(!is_famg_xref(x, xref)) stop("The xref is not a Family Group record.")
+  if(!is_fam_uid(x, xref)) stop("The xref is not a Family Group record.")
   
   sexes_vec <- unlist(strsplit(sexes, split = NULL))
   
@@ -166,7 +166,7 @@ add_children <- function(x, xref, sexes = NULL){
 #' @return A gedcom object with additional spouse and Family Group records.
 #' @export
 add_spouse <- function(x, xref, sex = "U"){
-  if(!is_indi_xref(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
   
   spou_xref <- x@next_xref[["indi"]]
   
