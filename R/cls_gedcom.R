@@ -39,7 +39,7 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                          }
                                        ),
                                        validator = function(self){
-                                         bus_error <- date_error <- time_error <- NULL
+                                         bus_error <- data_error <- time_error <- NULL
                                          if(length(self@business_name) == 0){
                                            if(length(self@business_address) +
                                               length(self@phone_numbers) + length(self@emails) +
@@ -47,23 +47,20 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                              bus_error <- "Business contact details require a business name."
                                          }
                                          if(length(self@data_name) == 0){
-                                           if(length(self@data_pubdate) > 1){
-                                             
-                                           }
-                                           if(length(self@data_copyright) > 1){
-                                             
+                                           if(length(self@data_pubdate) > 0){
+                                             data_error <- "Data publication date requires a data name."
+                                           } else if(length(self@data_copyright) > 0){
+                                             data_error <- "Data copyright requires a data name."
                                            }
                                          }
                                          if(length(self@data_pubdate) == 0){
-                                           
+                                           if(length(self@data_pubtime) > 0)
+                                             time_error <- "Data publication time requires a date."
                                          }
-                                         #date and copyright needs data name
-                                         #time needs date
                                          c(
                                            chk_input_size(self@product_id, "@product_id", 1, 1, 1),
                                            chk_input_size(self@product_name, "@product_name", 0, 1, 1),
-                                           chk_input_size(self@product_version, "@product_version", 0, 1),
-                                           chk_input_pattern(self@product_version,  "@product_version", "^\\d{1,3}\\.\\d{1,3}(\\.\\d{1,3}(\\.\\d{1,3})?)?$"),
+                                           chk_input_size(self@product_version, "@product_version", 0, 1, 1),
                                            chk_input_size(self@business_name, "@business_name", 0, 1, 1),
                                            bus_error,
                                            chk_input_size(self@business_address, "@business_address", 0, 1),
@@ -72,7 +69,7 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                            chk_input_size(self@faxes, "@faxes", min_char = 1),
                                            chk_input_size(self@web_pages, "@web_pages", min_char = 1),
                                            chk_input_size(self@data_name, "@data_name", 0, 1, 1),
-                                           date_error,
+                                           data_error,
                                            chk_input_size(self@data_pubdate, "@data_pubdate", 0, 1),
                                            chk_input_pattern(self@data_pubdate, "@data_pubdate", reg_date_exact()),
                                            time_error,
@@ -94,7 +91,7 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                   creation_time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
                                   subm_uid = S7::class_character,
                                   gedcom_copyright = S7::class_character,
-                                  language = S7::class_character,
+                                  default_language = S7::class_character,
                                   default_place_form = S7::class_character,
                                   notes = S7::new_property(S7::new_union(NULL, class_note, S7::class_character)),
                                   note_links = S7::class_character,
@@ -143,7 +140,7 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                         sprintf("2 TIME %s", self@creation_time),
                                         sprintf("1 SUBM %s", self@xref_subm),
                                         sprintf("1 COPR %s", self@gedcom_copyright),
-                                        sprintf("1 LANG %s", self@language),
+                                        sprintf("1 LANG %s", self@default_language),
                                         rep("1 PLAC", length(self@default_place_form) > 0),
                                         sprintf("2 FORM %s", self@default_place_form),
                                         obj_to_ged(self@content_description)
@@ -166,19 +163,23 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                 ),
                                 validator = function(self){
                                   c(
-                                    
+                                    chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
+                                    chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+\\.\\d+$"),
+                                    chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
+                                    chk_input_size(self@source_details, "@source_details", 0, 1),
+                                    chk_input_size(self@receiving_system, "@receiving_system", 0, 1, 1),
                                     chk_input_size(self@creation_date, "@creation_date", 0, 1),
                                     chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
-                                    chk_input_size(self@creation_time, "@creation_time", 0, 1, 4, 11), # different from spec
+                                    chk_input_size(self@creation_time, "@creation_time", 0, 1),
                                     chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
-                                    chk_input_size(self@language, "@language", 0, 1, 1, 15),
-                                    chk_input_choice(self@language, "@language", val_languages()),
-                                    chk_input_size(self@file_name, "@file_name", 0, 1, 5, 248),
-                                    chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1, 248),
-                                    chk_input_size(self@content_description, "@content_description", 0, 1, 1, 248)
-                                    # TODO: names and values must be unique
-                                    # Check all xrefs point to a record
-                                    #chk_xref_pointers_valid(self)
+                                    chk_input_size(self@subm_uid, "@subm_uid", 0, 1),
+                                    chk_input_pattern(self@subm_uid, "@subm_uid", reg_uuid(TRUE)),
+                                    chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
+                                    chk_input_size(self@default_language, "@default_language", 0, 1),
+                                    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
+                                    chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
+                                    chk_input_pattern(self@note_links, "@note_links", reg_uuid(TRUE)),
+                                    chk_input_S7classes(self@notes, "@notes", class_note)
                                   )
                                 }
 )

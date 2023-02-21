@@ -12,15 +12,18 @@ chk_input_size <- function(input,
   if (!is.null(max_dim) && length(input) > max_dim) 
     return(sprintf("%s has too many dimensions. The maximum is %s.", name, max_dim))
   
-  if (length(input) > 0) {
+  if (length(input) > 0 && !is.null(min_char) && is.character(input) && min(nchar(input)) < min_char) 
+    return(sprintf("%s has too few characters. The minimum is %s.", name, min_char))
+  
+  if (length(input) > 0 && !is.null(max_char) && is.character(input) && max(nchar(input)) > max_char) 
+    return(sprintf("%s has too many characters. The maximum is %s.", name, max_char))
+  
+  if (length(input) > 0 && !is.null(min_char) && is.numeric(input) && min(input) < min_char) 
+    return(sprintf("%s has a value which is too low. The minimum is %s.", name, min_char))
+  
+  if (length(input) > 0 && !is.null(max_char) && is.numeric(input) && max(input) > max_char) 
+    return(sprintf("%s has a value which is too high. The maximum is %s.", name, max_char))
     
-    if (!is.null(min_char) && min(nchar(input)) < min_char)
-      return(sprintf("%s has too few characters. The minimum is %s.", name, min_char))
-    
-    if (!is.null(max_char) && max(nchar(input)) > max_char)
-      return(sprintf("%s has too many characters. The maximum is %s.", name, max_char))
-    
-  }
 }
 
 
@@ -45,33 +48,28 @@ chk_input_choice <- function(input, name, choices) {
 }
 
 
-chk_input_S7classes <- function(inputs, name, target_class){
-  target_class_name <- target_class@name
+chk_input_S7classes <- function(inputs, name, target_class, backup_pattern = NULL){
+  
   for(inp in inputs){
-    if(!S7::S7_inherits(inp, target_class))
-      return(sprintf("%s contains an invalid object not of %s.", 
-                     name, target_class_name))
+    if(is.character(inp) && !is.null(backup_pattern)){
+      if(!grepl(backup_pattern, inp))
+        return(sprintf("%s is in an invalid format.", name))
+    } else {
+      if(!S7::S7_inherits(inp, target_class))
+        return(sprintf("%s contains an invalid object not of %s.", 
+                       name, target_class@name))
+    }
+    
   }
 }
 
-chk_input_date <- function(year, month, day, bce = FALSE, dual = FALSE){
-  if (length(year) + length(day) == 0)
-    return("Year or day must be defined")
+chk_input_date <- function(year, month, day, bce = FALSE){
+  if (length(year) == 0)
+    return("Year must be defined")
   
   if(bce){
     if(length(year) == 0 || length(month) + length(day) > 0)
       return("BCE date must contain year only")
-  }
-  
-  if(dual){
-    if(length(year) + length(month) == 0){
-      return("Dual year dates require a year and a month")
-    } else {
-      if(year > 1923) return("Dual year dates may only be used for 1923 and earlier")
-      if(month > 3) return("Dual year dates may only be used for 1 January to 24 March")
-      if(month == 3 && length(day) == 1 && day > 24)
-        return("Dual year dates may only be used for 1 January to 24 March")
-    }
   }
   
   if (length(month) < length(day))

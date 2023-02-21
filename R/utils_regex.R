@@ -1,12 +1,12 @@
 
 
 group_it <- function(reg) {
-  paste0("(?:", reg, ")")
+  sprintf("(?:%s)", reg)
 }
 
 
 anchor_it <- function(reg) {
-  paste0("^", reg, "$")
+  sprintf("^%s$", reg)
 }
 
 
@@ -45,22 +45,15 @@ reg_month <- function() {
 }
 
 reg_year <- function() {
-  "\\d{3,4}" |> group_it()
+  "\\d{1,4}" |> group_it()
 }
 
-reg_year_dual <- function() {
-  "\\d{4}/\\d{2}" |> group_it()
-}
-
-reg_bce <- function() {
-  "BCE|BC|B\\.C\\." |> group_it()
-}
 
 reg_time <- function(only = TRUE){
   hh <- paste(0:23, collapse = "|")
   mm <- paste(formatC(0:59, width = 2, format = "d", flag = "0"), collapse = "|")
   ss <- mm
-  fs <- paste(formatC(0:99, width = 2, format = "d", flag = "0"), collapse = "|")
+  fs <- paste(1:9, collapse = "|")
   reg <- sprintf("(%s):(%s)(:(%s)(\\.(%s))?)?", hh, mm, ss, fs)
   if(only) reg <- anchor_it(reg)
   reg
@@ -95,14 +88,16 @@ reg_longitude <- function() {
 }
 
 reg_age_at_event <- function() {
+  y <- "\\d{1,3}y"
+  m <- "\\d{1,2}m"
+  w <- "\\d{1,2}w"
+  d <- "\\d{1,3}d"
+  
   paste0("^(?:[<>] )?",
-         c("\\d{1,3}y \\d{1,2}m \\d{1,3}d$",
-           "\\d{1,3}y \\d{1,2}m$",
-           "\\d{1,3}y \\d{1,3}d$",
-           "\\d{1,2}m \\d{1,3}d$",
-           "\\d{1,3}y$",
-           "\\d{1,2}m$",
-           "\\d{1,3}d$")) |> 
+         c(sprintf("%s( %s)?( %s)?( %s)?$", y, m, w, d),
+           sprintf("%s( %s)?( %s)?$", m, w, d),
+           sprintf("%s( %s)?$", w, d),
+           sprintf("%s$", d))) |> 
     paste(collapse = "|")
   
 }
@@ -111,17 +106,6 @@ reg_role_in_event <- function(){
   paste(anchor_it(val_roles()) , collapse = "|")
 }
 
-#' Construct a regular expression for a custom value
-#' 
-#' @details Custom values are allowed for date values and roles in events.
-#' They are accepted for existing GEDCOM files, but they are not permitted to be created
-#' in the gedcompendium.
-#'
-#' @return A regular expression pattern for a custom value.
-#' @export
-reg_custom_value <- function(){
-  "^\\(.+\\)$"
-}
 
 #' Construct a regular expression for DATE_EXACT values
 #' 
@@ -159,12 +143,9 @@ reg_date_calendar <- function(flatten = TRUE, only = TRUE) {
 
 reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
   combos <- c(reg_year(),
-              paste(reg_year(), reg_bce()),
+              paste(reg_year(), "BCE"),
               paste(reg_month(), reg_year()),
-              paste(reg_day(), reg_month(), reg_year()),
-              paste(reg_day(), reg_month()),
-              paste(reg_month(), reg_year_dual()),
-              paste(reg_day(), reg_month(), reg_year_dual()))
+              paste(reg_day(), reg_month(), reg_year()))
   
   if(only) combos <- anchor_it(combos)
   if(flatten) combos <- paste(combos, collapse = "|")
@@ -236,8 +217,7 @@ reg_date_value <- function() {
   c(reg_date(FALSE,FALSE),
     reg_date_period(FALSE),
     reg_date_range(FALSE),
-    reg_date_approximated(FALSE),
-    reg_custom_value()) |> 
+    reg_date_approximated(FALSE)) |> 
     anchor_it() |> 
     paste(collapse = "|")
 }

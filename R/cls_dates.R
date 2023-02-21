@@ -3,18 +3,18 @@ NULL
 
 class_time <- S7::new_class("class_time",
                             properties = list(
-                              hour = S7::class_integer,
-                              minute = S7::class_integer,
-                              second = S7::class_integer,
-                              fraction = S7::class_integer,
-                              utc = S7::class_logical,
+                              hour = S7::class_numeric,
+                              minute = S7::class_numeric,
+                              second = S7::class_numeric,
+                              fraction = S7::class_numeric,
+                              utc = S7::new_property(S7::class_logical, default = TRUE),
                               
                               as_val = S7::new_property(
                                 S7::class_character,
                                 getter = function(self){
-                                  tim <- paste0(self@hour, ":", self@minute)
+                                  tim <- sprintf("%02d:%02d", self@hour, self@minute)
                                   if(length(self@second) == 1)
-                                    tim <- paste0(tim, ":", self@second)
+                                    tim <- sprintf("%s:%02d", tim, self@second)
                                   if(length(self@fraction) == 1)
                                     tim <- paste0(tim, ".", self@fraction)
                                   if(self@utc)
@@ -24,11 +24,21 @@ class_time <- S7::new_class("class_time",
                               )
                             ),
                             validator = function(self){
+                              hh_err <- mm_err <- ss_err <- ff_err <- NULL
+                              if(length(self@hour) == 1 && floor(self@hour) != self@hour)
+                                hh_err <- "Hour must be a whole number"
+                              if(length(self@minute) == 1 && floor(self@minute) != self@minute)
+                                mm_err <- "Minute must be a whole number"
+                              if(length(self@second) == 1 && floor(self@second) != self@second)
+                                ss_err <- "Second must be a whole number"
+                              if(length(self@fraction) == 1 && floor(self@fraction) != self@fraction)
+                                ff_err <- "Fraction must be a whole number"
                               c(
-                                chk_input_size(self@hour, "@hour", 1, 1),
-                                chk_input_size(self@minute, "@minute", 1, 1),
-                                chk_input_size(self@second, "@second", 0, 1),
-                                chk_input_size(self@fraction, "@fraction", 0, 1),
+                                hh_err, mm_err, ss_err, ff_err,
+                                chk_input_size(self@hour, "@hour", 1, 1, 0, 23),
+                                chk_input_size(self@minute, "@minute", 1, 1, 0, 59),
+                                chk_input_size(self@second, "@second", 0, 1, 0, 59),
+                                chk_input_size(self@fraction, "@fraction", 0, 1, 1, 9),
                                 chk_input_size(self@utc, "@utc", 1, 1)
                               )
                             })
@@ -38,9 +48,9 @@ class_date <- S7::new_class("class_date")
 #' @export
 class_date_exact <- S7::new_class("class_date_exact", parent = class_date,
                               properties = list(
-                                year = S7::class_integer,
-                                month = S7::class_integer,
-                                day = S7::class_integer,
+                                year = S7::class_numeric,
+                                month = S7::class_numeric,
+                                day = S7::class_numeric,
                                 
                                 as_val = S7::new_property(
                                   S7::class_character,
@@ -51,19 +61,25 @@ class_date_exact <- S7::new_class("class_date_exact", parent = class_date,
                                 as_date = S7::new_property(
                                   S7::class_Date,
                                   getter = function(self){
-                                    day <- self@day
-                                    month <- self@month
+                                    day <- sprintf("%02d", self@day)
+                                    month <- sprintf("%02d", self@month)
                                     year <- self@year
-                                    if(nchar(day) == 1) day <- paste0(0, day)
-                                    if(nchar(month) == 1) month <- paste0(0, month)
                                     as.Date(paste(day, month, year), format = "%d %m %Y")
                                   })
                               ),
                               validator = function(self){
+                                dd_err <- mm_err <- yy_err <- NULL
+                                if(length(self@day) == 1 && floor(self@day) != self@day)
+                                  dd_err <- "Day must be a whole number"
+                                if(length(self@month) == 1 && floor(self@month) != self@month)
+                                  mm_err <- "Month must be a whole number"
+                                if(length(self@year) == 1 && floor(self@year) != self@year)
+                                  yy_err <- "Year must be a whole number"
                                 c(
-                                  chk_input_size(self@day, "@day", 1, 1, 1, 2),
-                                  chk_input_size(self@month, "@month", 1, 1, 1, 2),
-                                  chk_input_size(self@year, "@year", 1, 1, 3, 4),
+                                  dd_err, mm_err, yy_err,
+                                  chk_input_size(self@day, "@day", 1, 1, 1, 31),
+                                  chk_input_size(self@month, "@month", 1, 1, 1, 12),
+                                  chk_input_size(self@year, "@year", 1, 1, 1),
                                   chk_input_date(self@year, self@month, self@day)
                                 )
                               }
@@ -80,11 +96,10 @@ date_exact_current <- function(){
 #' @export
 class_date_calendar <- S7::new_class("class_date_calendar", parent = class_date,
                              properties = list(
-                               year = S7::class_integer,
-                               month = S7::class_integer,
-                               day = S7::class_integer,
-                               year_is_bce = S7::new_property(S7::class_logical, default = FALSE),
-                               year_is_dual = S7::new_property(S7::class_logical, default = FALSE),
+                               year = S7::class_numeric,
+                               month = S7::class_numeric,
+                               day = S7::class_numeric,
+                               bce = S7::new_property(S7::class_logical, default = FALSE),
                                
                                as_val = S7::new_property(
                                  S7::class_character,
@@ -96,27 +111,28 @@ class_date_calendar <- S7::new_class("class_date_calendar", parent = class_date,
                                      val <- paste(val, toupper(month.abb[self@month]))
                                    if (length(self@year) == 1) {
                                      val <- paste(val, self@year)
-                                     if(length(self@month) + length(self@day) == 0 & self@year_is_bce)
+                                     if(length(self@month) + length(self@day) == 0 & self@bce)
                                        val <- paste(val, "BCE")
-                                     if(length(self@month) == 1 & self@year_is_dual) {
-                                       next_year <- self@year + 1
-                                       # TODO: doesn't work with 3 digit years
-                                       val <- paste0(val, "/", substr(next_year, 3, 4)) 
-                                     }
                                    }
                                    trimws(val)
                                  }               
                                )
                              ),
                              validator = function(self){
+                               dd_err <- mm_err <- yy_err <- NULL
+                               if(length(self@day) == 1 && floor(self@day) != self@day)
+                                 dd_err <- "Day must be a whole number"
+                               if(length(self@month) == 1 && floor(self@month) != self@month)
+                                 mm_err <- "Month must be a whole number"
+                               if(length(self@year) == 1 && floor(self@year) != self@year)
+                                 yy_err <- "Year must be a whole number"
                                c(
-                                 chk_input_size(self@day, "@day", 0, 1, 1, 2),
-                                 chk_input_size(self@month, "@month", 0, 1, 1, 2),
-                                 chk_input_size(self@year, "@year", 0, 1, 3, 4),
-                                 chk_input_size(self@year_is_bce, "@year_is_bce", 1, 1),
-                                 chk_input_size(self@year_is_dual, "@year_is_dual", 1, 1),
-                                 chk_input_date(self@year, self@month, self@day, 
-                                                self@year_is_bce, self@year_is_dual)
+                                 dd_err, mm_err, yy_err,
+                                 chk_input_size(self@day, "@day", 0, 1, 1, 31),
+                                 chk_input_size(self@month, "@month", 0, 1, 1, 12),
+                                 chk_input_size(self@year, "@year", 1, 1, 1),
+                                 chk_input_size(self@bce, "@bce", 1, 1),
+                                 chk_input_date(self@year, self@month, self@day, self@bce)
                                )
                              }
 )
@@ -124,7 +140,7 @@ class_date_calendar <- S7::new_class("class_date_calendar", parent = class_date,
 #' @export
 class_date_approx <- S7::new_class("class_date_approx", parent = class_date,
                                    properties = list(
-                                     date = class_date_calendar,
+                                     date = S7::new_property(S7::new_union(class_date_calendar, S7::class_character)),
                                      about = S7::new_property(S7::class_logical, default = TRUE),
                                      calc = S7::new_property(S7::class_logical, default = FALSE),
                                      est = S7::new_property(S7::class_logical, default = FALSE),
@@ -156,8 +172,8 @@ class_date_approx <- S7::new_class("class_date_approx", parent = class_date,
 #' @export
 class_date_period <- S7::new_class("class_date_period", parent = class_date,
                                properties = list(
-                                 start_date = S7::new_property(S7::new_union(NULL, class_date_calendar)),
-                                 end_date = S7::new_property(S7::new_union(NULL, class_date_calendar)),
+                                 start_date = S7::new_property(S7::new_union(NULL, class_date_calendar, S7::class_character)),
+                                 end_date = S7::new_property(S7::new_union(NULL, class_date_calendar, S7::class_character)),
                                  
                                  as_val = S7::new_property(
                                    S7::class_character,

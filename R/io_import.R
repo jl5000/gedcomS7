@@ -43,6 +43,7 @@ validate_lines <- function(lines){
   
   #check characters in components
   
+  #non-greg calendars not allowed
   
   if(lines[1] != "0 HEAD")
     stop("The file does not start with a HEAD record")

@@ -124,7 +124,7 @@ datetime_to_val <- function(obj){
      S7::S7_inherits(obj, class_time)){
     date_val <- obj@as_val
   } else {
-    date_val <- obj # ok if NULL
+    date_val <- obj # character/NULL
   }
   date_val
 }
