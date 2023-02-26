@@ -1,3 +1,5 @@
+#' @include utils_at.R utils_lookups.R utils_regex.R
+NULL
 
 chk_input_size <- function(input, 
                            name, 

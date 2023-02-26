@@ -2,7 +2,7 @@
 NULL
 
 #' @include cls_locations.R cls_dates.R
-class_gedcom_source <- S7::new_class("class_source_system",
+class_gedcom_source <- S7::new_class("class_gedcom_source",
                                      properties = list(
                                        product_id = S7::class_character,
                                        product_name = S7::class_character,
@@ -37,7 +37,7 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                              sprintf("3 COPR %s", self@data_copyright)
                                            )
                                          }
-                                       ),
+                                       )),
                                        validator = function(self){
                                          bus_error <- data_error <- time_error <- NULL
                                          if(length(self@business_name) == 0){
@@ -78,9 +78,9 @@ class_gedcom_source <- S7::new_class("class_source_system",
                                            chk_input_size(self@data_copyright, "@data_copyright", 0, 1, 1)
                                          )
                                        }
-                                     ))
+                                     )
 
-#' @include cls_common.R cls_dates.R
+#' @include cls_common.R cls_dates.R cls_record.R
 class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                 properties = list(
                                   gedcom_version = S7::class_character,

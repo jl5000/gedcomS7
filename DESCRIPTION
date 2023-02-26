@@ -21,16 +21,19 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
+    'utils_regex.R'
+    'utils_lookups.R'
+    'utils_at.R'
     'cls_validators.R'
     'cls_dates.R'
     'cls_locations.R'
     'cls_record_support.R'
     'cls_common.R'
     'cls_facts.R'
-    'cls_gedcom.R'
-    'cls_links.R'
     'cls_personal_name.R'
+    'cls_links.R'
     'cls_record.R'
+    'cls_gedcom.R'
     'fn_add.R'
     'fn_desc.R'
     'fn_df.R'
@@ -43,10 +46,7 @@ Collate:
     'fn_rm.R'
     'io_export.R'
     'io_import.R'
-    'utils_at.R'
     'utils_helpers.R'
-    'utils_lookups.R'
-    'utils_regex.R'
     'zzz.R'
 Remotes: 
      RConsortium/OOP-WG

@@ -1,4 +1,4 @@
-#' @include cls_validators.R
+#' @include cls_validators.R 
 NULL
 
 #' @export
@@ -30,7 +30,7 @@ class_note <- S7::new_class("class_note",
                                 #TODO: language option
                                 chk_input_size(self@media_type, "@media_type", 0, 1),
                                 #TODO: media type pattern
-                                chk_input_S7classes(self@translations, "@translations", class_translation_txt)
+                                chk_input_S7classes(self@alt_text, "@alt_text", class_translation_txt)
                                 #  chk_input_S7classes(self@citations, "@citations", class_citation)
                               )
                             }

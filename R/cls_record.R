@@ -1,4 +1,4 @@
-#' @include 
+#' @include cls_links.R
 NULL
 
 class_record <- 
@@ -127,6 +127,7 @@ class_record_fam <-
                 })
 
 #' @export
+#' @include cls_personal_name.R
 class_record_indi <- 
   S7::new_class("class_record_indi", parent = class_record,
                 properties = list(
