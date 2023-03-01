@@ -3,32 +3,6 @@ NULL
 
 #' @export
 #' @include cls_common.R
-class_repository_citation <- S7::new_class("class_repository_citation",
-                                           properties = list(
-                                             xref = S7::class_character,
-                                             source_call_number = S7::class_character,
-                                             
-                                             as_ged = S7::new_property(
-                                               S7::class_character,
-                                               getter = function(self){
-                                                 c(
-                                                   sprintf("0 REPO %s", self@xref),
-                                                   sprintf("1 CALN %s", self@source_call_number)
-                                                 )
-                                               })
-                                           ),
-                                           
-                                           validator = function(self){
-                                             c(
-                                               chk_input_size(self@xref, "@xref", 1, 1, 3, 22),
-                                               chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
-                                               chk_input_size(self@source_call_number, "@source_call_number", 0, 1, 1, 120)
-                                             )
-                                           }
-)
-
-#' @export
-#' @include cls_common.R
 class_association <- S7::new_class("class_association",
                                    properties = list(
                                      xref = S7::class_character,

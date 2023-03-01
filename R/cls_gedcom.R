@@ -22,19 +22,19 @@ class_gedcom_source <- S7::new_class("class_gedcom_source",
                                          S7::class_character,
                                          getter = function(self){
                                            c(
-                                             sprintf("1 SOUR %s", self@product_id),
-                                             sprintf("2 VERS %s", self@product_version),
-                                             sprintf("2 NAME %s", self@product_name),
-                                             sprintf("2 CORP %s", self@business_name),
-                                             obj_to_ged(self@business_address) |> increase_level(by = 3),
-                                             sprintf("3 PHON %s", self@phone_numbers),
-                                             sprintf("3 EMAIL %s", self@emails),
-                                             sprintf("3 FAX %s", self@faxes),
-                                             sprintf("3 WWW %s", self@web_pages),
-                                             sprintf("2 DATA %s", self@data_name),
-                                             sprintf("3 DATE %s", datetime_to_val(self@data_pubdate)),
-                                             sprintf("4 TIME %s", datetime_to_val(self@data_pubtime)),
-                                             sprintf("3 COPR %s", self@data_copyright)
+                                             sprintf("0 SOUR %s", self@product_id),
+                                             sprintf("1 VERS %s", self@product_version),
+                                             sprintf("1 NAME %s", self@product_name),
+                                             sprintf("1 CORP %s", self@business_name),
+                                             obj_to_ged(self@business_address) |> increase_level(by = 2),
+                                             sprintf("2 PHON %s", self@phone_numbers),
+                                             sprintf("2 EMAIL %s", self@emails),
+                                             sprintf("2 FAX %s", self@faxes),
+                                             sprintf("2 WWW %s", self@web_pages),
+                                             sprintf("1 DATA %s", self@data_name),
+                                             sprintf("2 DATE %s", datetime_to_val(self@data_pubdate)),
+                                             sprintf("3 TIME %s", datetime_to_val(self@data_pubtime)),
+                                             sprintf("2 COPR %s", self@data_copyright)
                                            )
                                          }
                                        )),
@@ -85,16 +85,16 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                 properties = list(
                                   gedcom_version = S7::class_character,
                                   ext_tags = S7::class_character,
-                                  source_details = S7::new_property(S7::new_union(NULL, class_gedcom_source)),
-                                  receiving_system = S7::class_character,
+                                  source = S7::new_property(S7::new_union(NULL, class_gedcom_source)),
+                                  destination = S7::class_character,
                                   creation_date = S7::new_property(S7::new_union(NULL, class_date_exact, S7::class_character)),
                                   creation_time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
                                   subm_uid = S7::class_character,
                                   gedcom_copyright = S7::class_character,
                                   default_language = S7::class_character,
                                   default_place_form = S7::class_character,
-                                  notes = S7::new_property(S7::new_union(NULL, class_note, S7::class_character)),
-                                  note_links = S7::class_character,
+                                  notes = S7::class_list,
+                                  note_uids = S7::class_character,
                                   
                                   update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
                                   add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -134,8 +134,8 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                         sprintf("2 VERS %s", self@gedcom_version),
                                         rep("1 SCHMA", length(self@ext_tags) > 0),
                                         sprintf("2 TAG %s", self@ext_tags),
-                                        obj_to_ged(self@source_details),
-                                        sprintf("1 DEST %s", self@receiving_system),
+                                        obj_to_ged(self@source) |> increase_level(by = 1),
+                                        sprintf("1 DEST %s", self@destination),
                                         sprintf("1 DATE %s", date_to_val(self@creation_date)),
                                         sprintf("2 TIME %s", self@creation_time),
                                         sprintf("1 SUBM %s", self@xref_subm),
@@ -143,7 +143,8 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                         sprintf("1 LANG %s", self@default_language),
                                         rep("1 PLAC", length(self@default_place_form) > 0),
                                         sprintf("2 FORM %s", self@default_place_form),
-                                        obj_to_ged(self@content_description)
+                                        lst_to_ged(self@notes) |> increase_level(by = 1),
+                                        sprintf("1 SNOTE %s", self@note_uids)
                                       )
                                       
                                       c(
@@ -166,8 +167,8 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                     chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
                                     chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+\\.\\d+$"),
                                     chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
-                                    chk_input_size(self@source_details, "@source_details", 0, 1),
-                                    chk_input_size(self@receiving_system, "@receiving_system", 0, 1, 1),
+                                    chk_input_size(self@source, "@source", 0, 1),
+                                    chk_input_size(self@destination, "@destination", 0, 1, 1),
                                     chk_input_size(self@creation_date, "@creation_date", 0, 1),
                                     chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
                                     chk_input_size(self@creation_time, "@creation_time", 0, 1),
@@ -175,11 +176,21 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
                                     chk_input_size(self@subm_uid, "@subm_uid", 0, 1),
                                     chk_input_pattern(self@subm_uid, "@subm_uid", reg_uuid(TRUE)),
                                     chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
-                                    chk_input_size(self@default_language, "@default_language", 0, 1),
-                                    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
+                                    chk_input_size(self@default_language, "@default_language", 0, 1, 1),
+                                    #    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
                                     chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
-                                    chk_input_pattern(self@note_links, "@note_links", reg_uuid(TRUE)),
-                                    chk_input_S7classes(self@notes, "@notes", class_note)
+                                    chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+                                    chk_input_S7classes(self@notes, "@notes", class_note),
+                                    
+                                    chk_input_size(self@update_change_dates, "@update_change_dates", 1, 1),
+                                    chk_input_size(self@add_creation_dates, "@add_creation_dates", 1, 1),
+                                    chk_input_S7classes(self@subm, "@subm", class_record_subm),
+                                    chk_input_S7classes(self@indi, "@indi", class_record_indi),
+                                    chk_input_S7classes(self@fam, "@fam", class_record_fam),
+                                    chk_input_S7classes(self@sour, "@sour", class_record_sour),
+                                    chk_input_S7classes(self@repo, "@repo", class_record_repo),
+                                    chk_input_S7classes(self@media, "@media", class_record_media),
+                                    chk_input_S7classes(self@note, "@note", class_record_note)
                                   )
                                 }
 )
@@ -187,7 +198,8 @@ class_gedcomS7 <- S7::new_class("class_gedcomS7",
 
 #' Create a new gedcom object
 #'
-#' @param my_language The primary language in which data will be stored.
+#' @param my_language The primary language in which data will be stored. The language code should
+#' adhere to BCP 47.
 #'
 #' @return A minimal gedcom S7 object.
 #' @export
@@ -199,8 +211,8 @@ new_gedcomS7 <- function(my_language = "en"){
                               emails = "jalendrum@gmail.com")
   
   class_gedcomS7(gedcom_version = "7.0.11",
-                 source_details = sour,
+                 source = sour,
                  creation_date = date_exact_current(),
-                 language = my_language)
+                 default_language = my_language)
 }
 

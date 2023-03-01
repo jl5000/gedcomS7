@@ -1,23 +1,9 @@
 
 val_record_types <- function(){
-  c(Individual = "indi", `Family Group` = "famg", Source = "sour",
+  c(Individual = "indi", `Family Group` = "fam", Source = "sour",
     Repository = "repo", Multimedia = "media", Note = "note")
 }
 
-#' Get valid values for inputs
-#' 
-#' These functions return the valid values that are allowed by the GEDCOM Specification.
-#'
-#' @return A character vector of valid values.
-#' @export
-val_languages <- function() {
-  c("English", "Afrikaans", "Albanian", "Anglo-Saxon", "Catalan", "Catalan_Spn", "Czech", 
-    "Danish", "Dutch", "Esperanto", "Estonian", "Faroese", "Finnish", 
-    "French", "German", "Hawaiian", "Hungarian", "Icelandic", "Indonesian", 
-    "Italian", "Latvian", "Lithuanian", "Navaho", "Norwegian", "Polish", 
-    "Portuguese", "Romanian", "Serbo_Croa", "Slovak", "Slovene", "Spanish", 
-    "Swedish", "Turkish", "Wendic")
-}
 
 #' @rdname val_languages
 #' @export
@@ -25,12 +11,6 @@ val_sexes <- function() {
   c(Unknown = "U", Male = "M", Female = "F", `Non-binary` = "X")
 }
 
-#' @rdname val_languages
-#' @export
-val_multimedia_formats <- function() {
-  c("AAC", "AVI", "BMP", "ePub", "FLAC", "GIF", "JPEG", "MKV",
-    "mobi", "MP3", "PCX", "PDF", "PNG", "TIFF", "WAV")
-}
 
 #' @rdname val_languages
 #' @export

@@ -95,13 +95,16 @@ increase_level <- function(ged, by = 1){
 
 lst_to_ged <- function(lst){
   if(length(lst) == 0) return(character())
-  
+
   lapply(lst, `@`, as_ged) |>
     unlist()
 }
 
-obj_to_ged <- function(obj){
+obj_to_ged <- function(obj, tag = NULL){
   if(is.null(obj)) return(character())
+  if(is.character(obj) && !is.null(tag))
+    return(sprintf("0 %s %s", tag, obj))
+    
   obj@as_ged
 }
 
