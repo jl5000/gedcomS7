@@ -75,7 +75,7 @@ class_repository_citation <- S7::new_class("class_repository_citation",
                                              notes = S7::class_list,
                                              note_uids = S7::class_character,
                                              source_call_number = S7::class_character,
-                                             # media = S7::class_character,
+                                             # media = S7::class_character, TODO: too much nesting
                                              # media_phrase = S7::class_character,
                                              
                                              as_ged = S7::new_property(
@@ -88,7 +88,7 @@ class_repository_citation <- S7::new_class("class_repository_citation",
                                                    sprintf("1 CALN %s", self@source_call_number)
                                                    # sprintf("2 MEDI %s", self@media),
                                                    # sprintf("3 PHRASE %s", self@media_phrase)
-                                                 )A
+                                                 )
                                                })
                                            ),
                                            

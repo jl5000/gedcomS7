@@ -110,3 +110,13 @@ chk_input_dates <- function(start_date, end_date){
     return("Start date comes after end date")
     
 }
+
+chk_whole_number <- function(input, name){
+  if(length(input) == 1 && floor(input) != input)
+    return(sprintf("%s must be a whole number", name))
+}
+
+chk_input_parents <- function(input, name, parent, parent_name){
+  if(length(parent) == 0 && length(input) > 0)
+    return(sprintf("%s requires a %s", name, parent_name))
+}
