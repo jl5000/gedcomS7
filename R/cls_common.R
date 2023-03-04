@@ -204,7 +204,8 @@ class_creation_date <- S7::new_class(
 
 #' @export
 class_change_date <- S7::new_class(
-  "class_change_date", parent = class_creation_date,
+  "class_change_date", 
+  parent = class_creation_date,
   properties = list(
     note_uids = S7::class_character,
     notes = S7::class_list,

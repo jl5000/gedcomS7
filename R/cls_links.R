@@ -3,110 +3,114 @@ NULL
 
 #' @export
 #' @include cls_common.R
-class_association <- S7::new_class("class_association",
-                                   properties = list(
-                                     indi_uid = S7::class_character,
-                                     indi_phrase = S7::class_character,
-                                     relation_is = S7::class_character,
-                                     relation_phrase = S7::class_character,
-                                     note_uids = S7::class_character,
-                                     notes = S7::class_list,
-                                     citations = S7::class_list,
-                                     
-                                     as_ged = S7::new_property(
-                                       S7::class_character,
-                                       getter = function(self){
-                                         if(length(self@indi_uid) == 0)
-                                           indi_uid <- "@VOID@"
-                                         c(
-                                           sprintf("0 ASSO %s", indi_uid),
-                                           sprintf("1 PHRASE %s", self@indi_phrase),
-                                           sprintf("1 ROLE %s", self@relation_is),
-                                           sprintf("2 PHRASE %s", self@relation_phrase),
-                                           sprintf("1 SNOTE %s", self@note_uids),
-                                           lst_to_ged(self@notes) |> increase_level(by = 1),
-                                           lst_to_ged(self@citations) |> increase_level(by = 1)
-                                         )
-                                       })
-                                   ),
-                                   
-                                   validator = function(self){
-                                     c(
-                                       #TODO: Deal with @VOID@
-                                       chk_input_size(self@indi_uid, "@indi_uid", 1, 1),
-                                       chk_input_pattern(self@indi_uid, "@indi_uid", reg_uuid(TRUE)),
-                                       chk_input_size(self@indi_phrase, "@indi_phrase", 0, 1, 1),
-                                       chk_input_size(self@relation_is, "@relation_is", 1, 1),
-                                       chk_input_choice(self@relation_is, "@relation_is", val_roles()),
-                                       chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),
-                                       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-                                       chk_input_S7classes(self@notes, "@notes", class_note),
-                                       chk_input_S7classes(self@citations, "@citations", class_citation)
-                                     )
-                                   }
+class_association <- S7::new_class(
+  "class_association",
+  properties = list(
+    indi_uid = S7::class_character,
+    indi_phrase = S7::class_character,
+    relation_is = S7::class_character,
+    relation_phrase = S7::class_character,
+    note_uids = S7::class_character,
+    notes = S7::class_list,
+    citations = S7::class_list,
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        if(length(self@indi_uid) == 0)
+          indi_uid <- "@VOID@"
+        c(
+          sprintf("0 ASSO %s", indi_uid),
+          sprintf("1 PHRASE %s", self@indi_phrase),
+          sprintf("1 ROLE %s", self@relation_is),
+          sprintf("2 PHRASE %s", self@relation_phrase),
+          sprintf("1 SNOTE %s", self@note_uids),
+          lst_to_ged(self@notes) |> increase_level(by = 1),
+          lst_to_ged(self@citations) |> increase_level(by = 1)
+        )
+      })
+  ),
+  
+  validator = function(self){
+    c(
+      #TODO: Deal with @VOID@
+      chk_input_size(self@indi_uid, "@indi_uid", 1, 1),
+      chk_input_pattern(self@indi_uid, "@indi_uid", reg_uuid(TRUE)),
+      chk_input_size(self@indi_phrase, "@indi_phrase", 0, 1, 1),
+      chk_input_size(self@relation_is, "@relation_is", 1, 1),
+      chk_input_choice(self@relation_is, "@relation_is", val_roles()),
+      chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@citations, "@citations", class_citation)
+    )
+  }
 )
 
 #' @export
 #' @include cls_common.R
-class_spouse_family_link <- S7::new_class("class_spouse_family_link",
-                                             properties = list(
-                                               fam_uid = S7::class_character,
-                                               note_uids = S7::class_character,
-                                               notes = S7::class_list,
-                                               
-                                               as_ged = S7::new_property(
-                                                 S7::class_character,
-                                                 getter = function(self){
-                                                   c(
-                                                     sprintf("0 FAMS %s", self@fam_uid),
-                                                     sprintf("1 SNOTE %s", self@note_uids),
-                                                     lst_to_ged(self@notes) |> increase_level(by = 1)
-                                                   )
-                                                 })
-                                             ),
-                                             validator = function(self){
-                                               c(
-                                                 chk_input_size(self@fam_uid, "@fam_uid", 1, 1),
-                                                 chk_input_pattern(self@fam_uid, "@fam_uid", reg_uuid(TRUE)),
-                                                 chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-                                                 chk_input_S7classes(self@notes, "@notes", class_note)
-                                               )
-                                             }
+class_spouse_family_link <- S7::new_class(
+  "class_spouse_family_link",
+  properties = list(
+    fam_uid = S7::class_character,
+    note_uids = S7::class_character,
+    notes = S7::class_list,
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 FAMS %s", self@fam_uid),
+          sprintf("1 SNOTE %s", self@note_uids),
+          lst_to_ged(self@notes) |> increase_level(by = 1)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_size(self@fam_uid, "@fam_uid", 1, 1),
+      chk_input_pattern(self@fam_uid, "@fam_uid", reg_uuid(TRUE)),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@notes, "@notes", class_note)
+    )
+  }
 )
 
 #' @export
-class_child_family_link <- S7::new_class("class_child_family_link", parent = class_spouse_family_link,
-                                         properties = list(
-                                           pedigree = S7::new_property(S7::class_character,
-                                                                       getter = function(self) "BIRTH"),
-                                           pedigree_phrase = S7::class_character,
-                                           certainty = S7::class_character,
-                                           certainty_phrase = S7::class_character,
-                                           
-                                           as_ged = S7::new_property(
-                                             S7::class_character,
-                                             getter = function(self){
-                                               c(
-                                                 sprintf("0 FAMS %s", self@fam_uid),
-                                                 sprintf("1 PEDI %s", self@pedigree),
-                                                 sprintf("2 PHRASE %s", self@pedigree_phrase),
-                                                 sprintf("1 STAT %s", self@certainty),
-                                                 sprintf("2 PHRASE %s", self@certainty_phrase),
-                                                 sprintf("1 SNOTE %s", self@note_uids),
-                                                 lst_to_ged(self@notes) |> increase_level(by = 1)
-                                               )
-                                             })
-                                         ),
-                                         validator = function(self){
-                                           #TODO: check phrases without parent
-                                           c(
-                                             chk_input_size(self@pedigree, "@pedigree", 0, 1),
-                                             chk_input_choice(self@pedigree, "@pedigree", val_pedigree_linkage_types()),
-                                             chk_input_size(self@pedigree_phrase, "@pedigree_phrase", 0, 1, 1),
-                                             chk_input_size(self@certainty, "@certainty", 0, 1),
-                                             chk_input_choice(self@certainty, "@certainty", val_pedigree_certainty()),
-                                             chk_input_size(self@certainty_phrase, "@certainty_phrase", 0, 1, 1)
-                                           )
-                                         }
+class_child_family_link <- S7::new_class(
+  "class_child_family_link", 
+  parent = class_spouse_family_link,
+  properties = list(
+    pedigree = S7::new_property(S7::class_character,
+                                getter = function(self) "BIRTH"),
+    pedigree_phrase = S7::class_character,
+    certainty = S7::class_character,
+    certainty_phrase = S7::class_character,
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 FAMS %s", self@fam_uid),
+          sprintf("1 PEDI %s", self@pedigree),
+          sprintf("2 PHRASE %s", self@pedigree_phrase),
+          sprintf("1 STAT %s", self@certainty),
+          sprintf("2 PHRASE %s", self@certainty_phrase),
+          sprintf("1 SNOTE %s", self@note_uids),
+          lst_to_ged(self@notes) |> increase_level(by = 1)
+        )
+      })
+  ),
+  validator = function(self){
+    #TODO: check phrases without parent
+    c(
+      chk_input_size(self@pedigree, "@pedigree", 0, 1),
+      chk_input_choice(self@pedigree, "@pedigree", val_pedigree_linkage_types()),
+      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", 0, 1, 1),
+      chk_input_size(self@certainty, "@certainty", 0, 1),
+      chk_input_choice(self@certainty, "@certainty", val_pedigree_certainty()),
+      chk_input_size(self@certainty_phrase, "@certainty_phrase", 0, 1, 1)
+    )
+  }
 )
 
