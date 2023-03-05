@@ -7,44 +7,51 @@ class_non_event <- S7::new_class(
   "class_non_event",
   properties = list(
     event = S7::class_character,
-    date_period = S7::new_property(S7::new_union(NULL, class_date_period, S7::class_character)),
+    date_period = S7::new_property(S7::new_union(NULL, 
+                                                 class_date_period, 
+                                                 S7::class_character)),
     date_phrase = S7::class_character,
-    note_links = S7::class_character,
-    notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
-    citations = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+    note_uids = S7::class_character,
+    notes = S7::class_list,
+    citations = S7::class_list,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          
+          sprintf("0 NO %s", self@event),
+          sprintf("1 DATE %s", self@date_period),
+          sprintf("2 PHRASE %s", self@date_phrase),
+          sprintf("1 SNOTE %s", self@note_uids),
+          lst_to_ged(self@notes) |> increase_level(by = 1),
+          lst_to_ged(self@citations) |> increase_level(by = 1)
         )
       })
   ),
   validator = function(self){
     c(
-      chk_input_size(self@event, "@event", 1, 1)
-      #TODO: event choice
-      
+      chk_input_size(self@event, "@event", 1, 1),
+      chk_input_size(self@date_period, "@date_period", 0, 1),
+      chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
+      chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_choice(self@event, "@event", val_event_types(FALSE)),
+      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@citations, "@citations", class_citation)
     )
   }
 )
 
-class_fact_detail <- S7::new_class(
-  "class_fact_detail",
+
+class_fact <- S7::new_class(
+  "class_fact",
   properties = list(
     # Not part of detail, but want them to appear first
     fact = S7::class_character,
     description = S7::class_character,
-    
     type = S7::class_character,
-    date = S7::new_property(S7::new_union(NULL, 
-                                          class_date_calendar,
-                                          class_date_period,
-                                          class_date_range,
-                                          class_date_approx, 
-                                          S7::class_character)),
-    time = S7::new_property(S7::new_union(NULL, class_time, S7::class_character)),
+    
+    date = S7::new_property(S7::new_union(NULL, class_date_value)),
     place = S7::new_property(S7::new_union(NULL, class_place)),
     address = S7::new_property(S7::new_union(NULL, class_address)),
     phone_numbers = S7::class_character,
@@ -57,10 +64,22 @@ class_fact_detail <- S7::new_class(
     confidential = S7::new_property(S7::class_logical, default = FALSE),
     locked = S7::new_property(S7::class_logical, default = FALSE),
     private = S7::new_property(S7::class_logical, default = FALSE),
-    note_links = S7::class_character,
-    notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+    sorting_date = S7::new_property(S7::new_union(NULL, class_date_value)),
+    associations = S7::class_list,
+    note_uids = S7::class_character,
+    notes = S7::class_list,
     citations = S7::class_list,
-    media_links = S7::class_character,
+    media_links = S7::class_list,
+    unique_ids = S7::class_character,
+    
+    restrictions = S7::new_property(S7::class_character,
+                                    getter = function(self){
+                                      conf <- rep("CONFIDENTIAL", self@confidential)
+                                      lock <- rep("LOCKED", self@locked)
+                                      priv <- rep("PRIVACY", self@private)
+                                      
+                                      paste(c(conf, lock, priv), collapse = ", ")
+                                    }),
     
     fact_date = S7::new_property(
       S7::class_character,
@@ -78,207 +97,398 @@ class_fact_detail <- S7::new_class(
         } else {
           character()
         }
-      })
+      }),
+    
+    fact_detail_as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 %s %s", self@fact, chronify(self@description)),
+          sprintf("1 TYPE %s", self@type),
+          obj_to_ged(self@date) |> increase_level(by = 1),
+          obj_to_ged(self@place) |> increase_level(by = 1),
+          obj_to_ged(self@address) |> increase_level(by = 1),
+          sprintf("1 PHON %s", self@phone_numbers),
+          sprintf("1 EMAIL %s", self@emails),
+          sprintf("1 FAX %s", self@faxes),
+          sprintf("1 WWW %s", self@web_pages),
+          sprintf("1 AGNC %s", self@agency),
+          sprintf("1 RELI %s", self@relig_affil),
+          sprintf("1 CAUS %s", self@cause),
+          sprintf("1 RESN %s", self@restrictions),
+          obj_to_ged(self@sorting_date) |> increase_level(by = 1),
+          lst_to_ged(self@associations) |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_uids),
+          lst_to_ged(self@notes) |> increase_level(by = 1),
+          lst_to_ged(self@citations) |> increase_level(by = 1),
+          lst_to_ged(self@media_links) |> increase_level(by = 1),
+          sprintf("1 UID %s", self@unique_ids)
+        )
+      }
+    )
   ),
   validator = function(self) {
     c(
-      chk_input_size(self@type, "@type", 0, 1, 1, 90),
-      chk_input_size(self@date, "@date", 0, 1, 1, 35),
-      chk_input_pattern(self@date, "@date", reg_date_value()),
+      chk_input_size(self@fact, "@fact", 1, 1),
+      chk_input_size(self@description, "@description", 0, 1),
+      chk_input_size(self@type, "@type", 0, 1, 1),
+      
+      chk_input_size(self@date, "@date", 0, 1),
       chk_input_size(self@place, "@place", 0, 1),
       chk_input_size(self@address, "@address", 0, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", 0, 3, 1, 90),
-      chk_input_size(self@emails, "@emails", 0, 3, 5, 120),
-      chk_input_size(self@faxes, "@faxes", 0, 3, 5, 60),
-      chk_input_size(self@web_pages, "@web_pages", 0, 3, 4, 2047),
-      chk_input_size(self@agency, "@agency", 0, 1, 1, 120),
-      chk_input_size(self@relig_affil, "@relig_affil", 0, 1, 1, 90),
-      chk_input_size(self@cause, "@cause", 0, 1, 1, 90),
+      chk_input_size(self@phone_numbers, "@phone_numbers", min_char = 1),
+      chk_input_size(self@emails, "@emails", min_char = 1),
+      chk_input_size(self@faxes, "@faxes", min_char = 1),
+      chk_input_size(self@web_pages, "@web_pages", min_char = 1),
+      chk_input_size(self@agency, "@agency", 0, 1, 1),
+      chk_input_size(self@relig_affil, "@relig_affil", 0, 1, 1),
+      chk_input_size(self@cause, "@cause", 0, 1, 1),
       chk_input_size(self@confidential, "@confidential", 1, 1),
       chk_input_size(self@locked, "@locked", 1, 1),
       chk_input_size(self@private, "@private", 1, 1),
-      chk_input_size(self@note_links, "@note_links", 0, 10000, 3, 22),
-      chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
-      chk_input_size(self@notes, "@notes", 0, 10000, 1, 32767),
+      chk_input_size(self@sorting_date, "@sorting_date", 0, 1),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_pattern(self@unique_uids, "@unique_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@associations, "@associations", class_association),
+      chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_S7classes(self@citations, "@citations", class_citation),
-      chk_input_size(self@media_links, "@media_links", 0, 10000, 3, 22),
-      chk_input_pattern(self@media_links, "@media_links", reg_xref(TRUE))
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link)
     )
   }
 )
 
-#' @export
+class_fact_indi <- S7::new_class(
+  "class_fact_indi", 
+  parent = class_fact,
+  properties = list(
+    age = S7::class_character,
+    age_phrase = S7::class_character,
+    
+    indi_fact_detail_as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        age <- self@age
+        if(length(self@age_phrase) == 1)
+          age <- chronify(self@age)
+        
+        c(
+          self@fact_detail_as_ged,
+          sprintf("1 AGE %s", age),
+          sprintf("2 PHRASE %s", self@age_phrase)
+        )
+      }
+    )
+  ),
+  validator = function(self){
+    c(
+      chk_input_size(self@age, "@age", 0, 1),
+      chk_input_size(self@age_phrase, "@age_phrase", 0, 1, 1),
+      chk_input_pattern(self@age, "@age", reg_age_at_event())
+    )
+  }
+)
+
 class_fact_fam <- S7::new_class(
   "class_fact_fam", 
-  parent = class_fact_detail,
+  parent = class_fact,
   properties = list(
-    husband_age = S7::class_character,
+    husb_age = S7::class_character,
+    husb_age_phrase = S7::class_character,
     wife_age = S7::class_character,
+    wife_age_phrase = S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(length(self@description) == 0){
-          desc <- ""
-        } else {
-          desc <- paste0(" ", self@description)
-        }
+        husb_age <- self@husb_age
+        if(length(self@husb_age_phrase) == 1)
+          husb_age <- chronify(self@husb_age)
+        
+        wife_age <- self@wife_age
+        if(length(self@wife_age_phrase) == 1)
+          wife_age <- chronify(self@wife_age)
+        
         ged <- c(
-          sprintf("0 %s%s", self@fact, desc),
-          rep("1 HUSB", length(self@husband_age)),
-          sprintf("2 AGE %s", self@husband_age),
-          rep("1 WIFE", length(self@wife_age)),
-          sprintf("2 AGE %s", self@wife_age),
-          sprintf("1 TYPE %s", self@type),
-          sprintf("1 DATE %s", date_to_val(self@date)),
-          obj_to_ged(self@place) |> increase_level(by = 1),
-          obj_to_ged(self@address) |> increase_level(by = 1),
-          sprintf("0 PHON %s", self@phone_numbers),
-          sprintf("0 EMAIL %s", self@emails),
-          sprintf("0 FAX %s", self@faxes),
-          sprintf("0 WWW %s", self@web_pages),
-          sprintf("1 AGNC %s", self@agency),
-          sprintf("1 RELI %s", self@relig_affil),
-          sprintf("1 CAUS %s", self@cause),
-          sprintf("1 NOTE %s", self@note_links),
-          sprintf("1 NOTE %s", self@notes),
-          lst_to_ged(self@citations) |> increase_level(by = 1),
-          sprintf("1 OBJE %s", self@media_links)
+          self@fact_detail_as_ged,
+          rep("1 HUSB", length(husb_age)),
+          sprintf("2 AGE %s", husb_age),
+          sprintf("3 PHRASE %s", self@husb_age_phrase),
+          rep("1 WIFE", length(wife_age)),
+          sprintf("2 AGE %s", wife_age),
+          sprintf("3 PHRASE %s", self@wife_age_phrase)
         )
         
-        if(length(ged) == 1 && self@fact %in% c("MARR")){
-          sprintf("0 %s Y", self@fact)
-        } else {
-          ged
+        if(self@fact %in% val_family_event_types(FALSE)){
+          if(length(ged) == 1) return(sprintf("0 %s Y", self@fact))
         }
-      })
+         
+        ged 
+      }
+    )
   ),
-  validator = function(self) {
-    # Only EVEN needs description
-    desc_error <- NULL
-    if(self@fact == "MARR"){
-      if(length(self@description) == 1 && self@description != "Y")
-        desc_error <- "Invalid descriptor for marriage event"
-    } else if(self@fact != "EVEN"){
-      desc_error <- chk_input_size(self@description, "@description", 0, 0)
-    }
-    
+  validator = function(self){
     c(
-      chk_input_size(self@fact, "@fact", 1, 1),
-      chk_input_choice(self@fact, "@fact", val_family_event_types()),
-      chk_input_size(self@description, "@description", 0, 1, 1, 90),
-      desc_error,
-      chk_input_size(self@husband_age, "@husband_age", 0, 1, 2, 13),
-      chk_input_size(self@wife_age, "@wife_age", 0, 1, 2, 13),
-      chk_input_pattern(self@husband_age, "@husband_age", reg_age_at_event()),
+      chk_input_size(self@husb_age, "@husb_age", 0, 1),
+      chk_input_size(self@husb_age_phrase, "@husb_age_phrase", 0, 1, 1),
+      chk_input_size(self@wife_age, "@wife_age", 0, 1),
+      chk_input_size(self@wife_age_phrase, "@wife_age_phrase", 0, 1, 1),
+      chk_input_pattern(self@husb_age, "@husb_age", reg_age_at_event()),
       chk_input_pattern(self@wife_age, "@wife_age", reg_age_at_event())
     )
   }
 )
 
 #' @export
-class_fact_indi <- S7::new_class(
-  "class_fact_indi", 
-  parent = class_fact_detail,
+class_event_indi <- S7::new_class(
+  "class_event_indi",
+  parent = class_fact_indi,
   properties = list(
-    age = S7::class_character,
     fam_uid = S7::class_character,
-    adopting_parent = S7::class_character,
+    adop_parent = S7::class_character,
+    adop_parent_phrase = S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(length(self@description) == 0){
-          desc <- ""
-        } else {
-          desc <- paste0(" ", self@description)
-        }
         ged <- c(
-          sprintf("0 %s%s", self@fact, desc),
+          self@indi_fact_detail_as_ged,
           sprintf("1 FAMC %s", self@fam_uid),
-          sprintf("2 ADOP %s", self@adopting_parent),
-          sprintf("1 AGE %s", self@age),
-          sprintf("1 TYPE %s", self@type),
-          sprintf("1 DATE %s", date_to_val(self@date)),
-          obj_to_ged(self@place) |> increase_level(by = 1),
-          obj_to_ged(self@address) |> increase_level(by = 1),
-          sprintf("0 PHON %s", self@phone_numbers),
-          sprintf("0 EMAIL %s", self@emails),
-          sprintf("0 FAX %s", self@faxes),
-          sprintf("0 WWW %s", self@web_pages),
-          sprintf("1 AGNC %s", self@agency),
-          sprintf("1 RELI %s", self@relig_affil),
-          sprintf("1 CAUS %s", self@cause),
-          sprintf("1 NOTE %s", self@note_links),
-          sprintf("1 NOTE %s", self@notes),
-          lst_to_ged(self@citations) |> increase_level(by = 1),
-          sprintf("1 OBJE %s", self@media_links)
+          sprintf("2 ADOP %s", self@adop_parent),
+          sprintf("3 PHRASE %s", self@adop_parent_phrase)
         )
         
-        if(length(ged) == 1 && self@fact %in% c("CHR","DEAT")){
-          sprintf("0 %s Y", self@fact)
-        } else {
-          ged
+        if(self@fact %in% val_individual_event_types(FALSE)){
+          if(length(ged) == 1) return(sprintf("0 %s Y", self@fact))
         }
+        
+        ged
       })
   ),
-  validator = function(self) {
-    # Some facts (do not) require descriptions
-    fact_desc_error <- NULL
-    if(self@fact %in% val_attribute_types()){
-      if(self@fact == "RESI"){
-        fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
-      } else {
-        fact_desc_error <- chk_input_size(self@description, "@description", 1, 1)
-      }
-    } else if(self@fact %in% val_individual_event_types()){
-      if(self@fact %in% c("CHR","DEAT","EVEN")){
-        if(self@fact %in% c("CHR","DEAT") && length(self@description) == 1 && self@description != "Y"){
-          fact_desc_error <- "Invalid descriptor for christening/death event"
-        }
-      } else {
-        fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
-      }
-    }
-    
-    # Some facts require types
-    fact_type_error <- NULL
-    if(self@fact %in% c("IDNO","FACT"))
-      fact_type_error <- chk_input_size(self@type, "@type", 1, 1)
-    
-    # fam uid only used for birth, christening, adoption
-    fam_uid_error <- NULL
-    if(!self@fact %in% c("BIRT","CHR","ADOP"))
-      fam_uid_error <- chk_input_size(self@fam_uid, "@fam_uid", 0, 0)
-    
-    # adoptive parent only used for adoption with fam uid
-    adop_par_error <- NULL
-    if(self@fact != "ADOP" || length(self@fam_uid) == 0)
-      adop_par_error <- chk_input_size(self@adopting_parent, "@adopting_parent", 0, 0)
-    
-    desc_max_char <- 90
-    if(self@fact %in% c("NMR","NCHI")) desc_max_char <- 3
-    if(self@fact %in% c("IDNO")) desc_max_char <- 30
-    if(self@fact %in% c("CAST","RELI","OCCU")) desc_max_char <- 90
-    if(self@fact %in% c("NATI","TITL")) desc_max_char <- 120
-    if(self@fact %in% c("EDUC","PROP")) desc_max_char <- 248
-    if(self@fact %in% c("DSCR")) desc_max_char <- 4095
-    
+  validator = function(self){
     c(
-      chk_input_size(self@fact, "@fact", 1, 1),
-      chk_input_choice(self@fact, "@fact", c(val_attribute_types(), val_individual_event_types())),
-      chk_input_size(self@description, "@description", 0, 1, 1, desc_max_char),
-      fact_desc_error,
-      fact_type_error,
-      fam_uid_error,
-      chk_input_size(self@fam_uid, "@fam_uid", 0, 1, 3, 22),
-      chk_input_pattern(self@fam_uid, "@fam_uid", reg_xref(TRUE)),
-      adop_par_error,
-      chk_input_size(self@adopting_parent, "@adopting_parent", 0, 1, 4, 4),
-      chk_input_choice(self@adopting_parent, "@adopting_parent", val_adoptive_parents()),
-      chk_input_size(self@age, "@age", 0, 1, 2, 13),
-      chk_input_pattern(self@age, "@age", reg_age_at_event())
+      chk_input_choice(self@fact, "@fact", val_individual_event_types(TRUE)),
+      chk_input_parents(self@adop_parent_phrase, "@adop_parent_phrase", self@adop_parent, "@adop_parent"),
+      #EVEN requires TYPE
+      #BIRT and CHR may have a FAMC with no substructures; 
+      # ADOP may have a FAMC with an optional ADOP substructure
+      
+      chk_input_size(self@fam_uid, "@fam_uid", 0, 1),
+      chk_input_size(self@adop_parent, "@adop_parent", 0, 1),
+      chk_input_size(self@adop_parent_phrase, "@adop_parent_phrase", 0, 1),
+      chk_input_pattern(self@fam_uid, "@fam_uid", reg_uuid(TRUE)),
+      chk_input_choice(self@adop_parent, "@adop_parent", val_adoptive_parents())
     )
   }
 )
 
+#' @export
+class_attr_indi <- S7::new_class(
+  "class_attr_indi",
+  parent = class_fact_indi,
+  properties = list(
+    as_ged = S7::new_property(S7::class_character, 
+                              getter = function(self) self@indi_fact_detail_as_ged)
+  ),
+  validator = function(self){
+    c(
+      chk_input_choice(self@fact, "@fact", val_individual_attribute_types(TRUE))
+      #FACT/IDNO require TYPE, NCHI/NMR are integers
+    )
+  }
+)
+
+#' @export
+class_event_fam <- S7::new_class(
+  "class_event_fam",
+  parent = class_fact_fam,
+  validator = function(self){
+    c(
+      chk_input_choice(self@fact, "@fact", val_family_event_types(TRUE))
+      #EVEN requires type
+      #EVEN description is minchar1
+    )
+  }
+)
+
+#' @export
+class_attr_fam <- S7::new_class(
+  "class_attr_fam",
+  parent = class_fact_fam,
+  validator = function(self){
+    c(
+      chk_input_choice(self@fact, "@fact", val_family_attribute_types(TRUE))
+      #FACT requires TYPE
+    )
+  }
+)
+
+
+
+
+
+#' 
+#' 
+#' #' @export
+#' class_fact_fam <- S7::new_class(
+#'   "class_fact_fam", 
+#'   parent = class_fact_detail,
+#'   properties = list(
+#'     husband_age = S7::class_character,
+#'     wife_age = S7::class_character,
+#'     
+#'     as_ged = S7::new_property(
+#'       S7::class_character,
+#'       getter = function(self){
+#'         if(length(self@description) == 0){
+#'           desc <- ""
+#'         } else {
+#'           desc <- paste0(" ", self@description)
+#'         }
+#'         ged <- c(
+#'           sprintf("0 %s%s", self@fact, desc),
+#'           rep("1 HUSB", length(self@husband_age)),
+#'           sprintf("2 AGE %s", self@husband_age),
+#'           rep("1 WIFE", length(self@wife_age)),
+#'           sprintf("2 AGE %s", self@wife_age),
+#'           sprintf("1 TYPE %s", self@type),
+#'           sprintf("1 DATE %s", date_to_val(self@date)),
+#'           obj_to_ged(self@place) |> increase_level(by = 1),
+#'           obj_to_ged(self@address) |> increase_level(by = 1),
+#'           sprintf("0 PHON %s", self@phone_numbers),
+#'           sprintf("0 EMAIL %s", self@emails),
+#'           sprintf("0 FAX %s", self@faxes),
+#'           sprintf("0 WWW %s", self@web_pages),
+#'           sprintf("1 AGNC %s", self@agency),
+#'           sprintf("1 RELI %s", self@relig_affil),
+#'           sprintf("1 CAUS %s", self@cause),
+#'           sprintf("1 NOTE %s", self@note_links),
+#'           sprintf("1 NOTE %s", self@notes),
+#'           lst_to_ged(self@citations) |> increase_level(by = 1),
+#'           sprintf("1 OBJE %s", self@media_links)
+#'         )
+#'         
+#'         if(length(ged) == 1 && self@fact %in% c("MARR")){
+#'           sprintf("0 %s Y", self@fact)
+#'         } else {
+#'           ged
+#'         }
+#'       })
+#'   ),
+#'   validator = function(self) {
+#'     # Only EVEN needs description
+#'     desc_error <- NULL
+#'     if(self@fact == "MARR"){
+#'       if(length(self@description) == 1 && self@description != "Y")
+#'         desc_error <- "Invalid descriptor for marriage event"
+#'     } else if(self@fact != "EVEN"){
+#'       desc_error <- chk_input_size(self@description, "@description", 0, 0)
+#'     }
+#'     
+#'     c(
+#'       chk_input_size(self@fact, "@fact", 1, 1),
+#'       chk_input_choice(self@fact, "@fact", val_family_event_types()),
+#'       chk_input_size(self@description, "@description", 0, 1, 1, 90),
+#'       desc_error,
+#'       
+#'     )
+#'   }
+#' )
+#' 
+#' #' @export
+#' class_fact_indi <- S7::new_class(
+#'   "class_fact_indi", 
+#'   parent = class_fact_detail,
+#'   properties = list(
+#'     age = S7::class_character,
+#'     fam_uid = S7::class_character,
+#'     adopting_parent = S7::class_character,
+#'     
+#'     as_ged = S7::new_property(
+#'       S7::class_character,
+#'       getter = function(self){
+#'         if(length(self@description) == 0){
+#'           desc <- ""
+#'         } else {
+#'           desc <- paste0(" ", self@description)
+#'         }
+#'         ged <- c(
+#'           sprintf("0 %s%s", self@fact, desc),
+#'           sprintf("1 FAMC %s", self@fam_uid),
+#'           sprintf("2 ADOP %s", self@adopting_parent),
+#'           sprintf("1 AGE %s", self@age),
+#'           sprintf("1 TYPE %s", self@type),
+#'           sprintf("1 DATE %s", date_to_val(self@date)),
+#'           obj_to_ged(self@place) |> increase_level(by = 1),
+#'           obj_to_ged(self@address) |> increase_level(by = 1),
+#'           sprintf("0 PHON %s", self@phone_numbers),
+#'           sprintf("0 EMAIL %s", self@emails),
+#'           sprintf("0 FAX %s", self@faxes),
+#'           sprintf("0 WWW %s", self@web_pages),
+#'           sprintf("1 AGNC %s", self@agency),
+#'           sprintf("1 RELI %s", self@relig_affil),
+#'           sprintf("1 CAUS %s", self@cause),
+#'           sprintf("1 NOTE %s", self@note_links),
+#'           sprintf("1 NOTE %s", self@notes),
+#'           lst_to_ged(self@citations) |> increase_level(by = 1),
+#'           sprintf("1 OBJE %s", self@media_links)
+#'         )
+#'         
+#'         if(length(ged) == 1 && self@fact %in% c("CHR","DEAT")){
+#'           sprintf("0 %s Y", self@fact)
+#'         } else {
+#'           ged
+#'         }
+#'       })
+#'   ),
+#'   validator = function(self) {
+#'     # Some facts (do not) require descriptions
+#'     fact_desc_error <- NULL
+#'     if(self@fact %in% val_attribute_types()){
+#'       if(self@fact == "RESI"){
+#'         fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
+#'       } else {
+#'         fact_desc_error <- chk_input_size(self@description, "@description", 1, 1)
+#'       }
+#'     } else if(self@fact %in% val_individual_event_types()){
+#'       if(self@fact %in% c("CHR","DEAT","EVEN")){
+#'         if(self@fact %in% c("CHR","DEAT") && length(self@description) == 1 && self@description != "Y"){
+#'           fact_desc_error <- "Invalid descriptor for christening/death event"
+#'         }
+#'       } else {
+#'         fact_desc_error <- chk_input_size(self@description, "@description", 0, 0)
+#'       }
+#'     }
+#'     
+#'     # Some facts require types
+#'     fact_type_error <- NULL
+#'     if(self@fact %in% c("IDNO","FACT"))
+#'       fact_type_error <- chk_input_size(self@type, "@type", 1, 1)
+#'     
+#'     # fam uid only used for birth, christening, adoption
+#'     fam_uid_error <- NULL
+#'     if(!self@fact %in% c("BIRT","CHR","ADOP"))
+#'       fam_uid_error <- chk_input_size(self@fam_uid, "@fam_uid", 0, 0)
+#'     
+#'     # adoptive parent only used for adoption with fam uid
+#'     adop_par_error <- NULL
+#'     if(self@fact != "ADOP" || length(self@fam_uid) == 0)
+#'       adop_par_error <- chk_input_size(self@adopting_parent, "@adopting_parent", 0, 0)
+#'     
+#' 
+#'     c(
+#'       chk_input_size(self@fact, "@fact", 1, 1),
+#'       chk_input_choice(self@fact, "@fact", c(val_attribute_types(), val_individual_event_types())),
+#'       chk_input_size(self@description, "@description", 0, 1, 1, desc_max_char),
+#'       fact_desc_error,
+#'       fact_type_error,
+#'       fam_uid_error,
+#'       chk_input_size(self@fam_uid, "@fam_uid", 0, 1, 3, 22),
+#'       
+#'       adop_par_error,
+#'       
+#'       chk_input_size(self@age, "@age", 0, 1, 2, 13),
+#'       chk_input_pattern(self@age, "@age", reg_age_at_event())
+#'     )
+#'   }
+#' )
+#' 

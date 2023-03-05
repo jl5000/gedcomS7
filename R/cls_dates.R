@@ -26,10 +26,10 @@ class_time <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(input@hour, "@hour"),
-      chk_whole_number(input@minute, "@minute"),
-      chk_whole_number(input@second, "@second"),
-      chk_whole_number(input@fraction, "@fraction"),
+      chk_whole_number(self@hour, "@hour"),
+      chk_whole_number(self@minute, "@minute"),
+      chk_whole_number(self@second, "@second"),
+      chk_whole_number(self@fraction, "@fraction"),
       chk_input_size(self@hour, "@hour", 1, 1, 0, 23),
       chk_input_size(self@minute, "@minute", 1, 1, 0, 59),
       chk_input_size(self@second, "@second", 0, 1, 0, 59),
@@ -66,9 +66,9 @@ class_date_exact <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(input@day, "@day"),
-      chk_whole_number(input@month, "@month"),
-      chk_whole_number(input@year, "@year"),
+      chk_whole_number(self@day, "@day"),
+      chk_whole_number(self@month, "@month"),
+      chk_whole_number(self@year, "@year"),
       chk_input_size(self@day, "@day", 1, 1, 1, 31),
       chk_input_size(self@month, "@month", 1, 1, 1, 12),
       chk_input_size(self@year, "@year", 1, 1, 1),
@@ -114,9 +114,9 @@ class_date_calendar <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(input@day, "@day"),
-      chk_whole_number(input@month, "@month"),
-      chk_whole_number(input@year, "@year"),
+      chk_whole_number(self@day, "@day"),
+      chk_whole_number(self@month, "@month"),
+      chk_whole_number(self@year, "@year"),
       chk_input_size(self@day, "@day", 0, 1, 1, 31),
       chk_input_size(self@month, "@month", 0, 1, 1, 12),
       chk_input_size(self@year, "@year", 1, 1, 1),
@@ -215,3 +215,41 @@ class_date_range <- S7::new_class(
   )
 )
 
+class_date_value <- S7::new_class(
+  "class_date_value",
+  parent = class_date,
+  properties = list(
+    date = S7::new_property(S7::new_union(NULL, 
+                                          class_date_calendar,
+                                          class_date_period,
+                                          class_date_range,
+                                          class_date_approx, 
+                                          S7::class_character)),
+    date_phrase = S7::class_character,
+    time = S7::new_property(S7::new_union(NULL, 
+                                          class_time, 
+                                          S7::class_character)),
+    sorting = S7::new_property(S7::class_logical, default = FALSE),
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        if(sorting) tag <- "SDATE" else tag <- "DATE"
+        c(
+          sprintf("0 %s %s", tag, datetime_to_val(self@date)),
+          sprintf("1 TIME %s", datetime_to_val(self@time)),
+          sprintf("1 PHRASE %s", self@date_phrase)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_size(self@date, "@date", 0, 1),
+      chk_input_size(self@time, "@time", 0, 1),
+      chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
+      chk_input_size(self@sorting, "@sorting", 1, 1),
+      chk_input_pattern(self@date, "@date", reg_date_value()),
+      chk_input_pattern(self@time, "@time", reg_time())
+    )
+  }
+)

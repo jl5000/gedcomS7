@@ -13,8 +13,8 @@ class_place <- S7::new_class(
     names_alt = S7::class_character,
     lat_long = S7::class_character,
     external_ids = S7::class_character,
-    note_links = S7::class_character,
-    notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+    note_uids = S7::class_character,
+    notes = S7::class_list,
     
     lat = S7::new_property(S7::class_character,
                            getter = function(self){
@@ -34,44 +34,18 @@ class_place <- S7::new_class(
     
     as_ged = S7::new_property(S7::class_character,
                               getter = function(self){
-                                
-                                pla <- c(
+                                c(
                                   sprintf("0 PLAC %s", self@name),
                                   sprintf("1 FORM %s", self@form),
-                                  sprintf("1 LANG %s", self@language)
+                                  sprintf("1 LANG %s", self@language),
+                                  named_vec_to_ged(self@names_alt, "TRAN", "LANG") |> increase_level(by = 1),
+                                  rep("1 MAP", length(self@lat_long)),
+                                  sprintf("2 LATI %s", self@lat),
+                                  sprintf("2 LONG %s", self@long),
+                                  named_vec_to_ged(self@external_ids, "EXID", "TYPE") |> increase_level(by = 1),
+                                  sprintf("1 SNOTE %s", self@note_uids),
+                                  lst_to_ged(self@notes) |> increase_level(by = 1)
                                 )
-                                
-                                for (i in seq_along(self@names_alt)) {
-                                  pla <- c(
-                                    pla,
-                                    sprintf("1 TRAN %s", self@names_alt[i]),
-                                    sprintf("2 LANG %s", names(self@names_alt)[i])
-                                  )
-                                }
-                                
-                                if(length(self@lat_long) == 1){
-                                  pla <- c(
-                                    pla,
-                                    "1 MAP",
-                                    sprintf("2 LATI %s", self@lat),
-                                    sprintf("2 LONG %s", self@long)
-                                  )
-                                }
-                                
-                                for (i in seq_along(self@external_ids)) {
-                                  pla <- c(
-                                    pla,
-                                    sprintf("1 EXID %s", self@external_ids[i]),
-                                    sprintf("2 TYPE %s", names(self@external_ids)[i])
-                                  )
-                                }
-                                
-                                c(
-                                  pla,
-                                  lst_to_ged(self@notes) |> increase_level(by = 1),
-                                  sprintf("1 SNOTE %s", self@note_links)
-                                )
-                                
                               })
   ),
   
@@ -89,7 +63,7 @@ class_place <- S7::new_class(
       chk_input_size(self@external_ids, "@external_ids", min_char = 1),
       chk_input_size(names(self@external_ids), "@external_ids names", length(self@external_ids), length(self@external_ids)),
       #TODO: EXID and TYPE pattern
-      chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@notes, "@notes", class_note)
     )
   }
@@ -124,12 +98,12 @@ class_address <- S7::new_class(
   
   validator = function(self) {
     c(
-      chk_input_size(self@local_address_lines, "@local_address_lines", 0, 3, 1, 60),
-      chk_input_size(self@city, "@city", 0, 1, 1, 60),
-      chk_input_size(self@state, "@state", 0, 1, 1, 60),
-      chk_input_size(self@postal_code, "@postal_code", 0, 1, 1, 10),
-      chk_input_size(self@country, "@country", 0, 1, 1, 60)
-      
+      chk_input_size(self@full, "@full", 1, 1, 1),
+      chk_input_size(self@local_address_lines, "@local_address_lines", 0, 1, 1),
+      chk_input_size(self@city, "@city", 0, 1, 1),
+      chk_input_size(self@state, "@state", 0, 1, 1),
+      chk_input_size(self@postal_code, "@postal_code", 0, 1, 1),
+      chk_input_size(self@country, "@country", 0, 1, 1)
     )
   }
 )

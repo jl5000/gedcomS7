@@ -30,9 +30,9 @@ class_record <- S7::new_class(
     ids = S7::new_property(S7::class_character,
                            getter = function(self){
                              c(
-                               named_vec_to_ged(self@user_ids, "REFN", "TYPE") |> increase_level(by = 1),
-                               sprintf("1 UID %s", self@unique_ids),
-                               named_vec_to_ged(self@external_ids, "EXID", "TYPE") |> increase_level(by = 1)
+                               named_vec_to_ged(self@user_ids, "REFN", "TYPE"),
+                               sprintf("0 UID %s", self@unique_ids),
+                               named_vec_to_ged(self@external_ids, "EXID", "TYPE")
                              )
                            })
   ),
@@ -42,11 +42,11 @@ class_record <- S7::new_class(
       chk_input_size(self@locked, "@locked", 1, 1),
       chk_input_size(self@private, "@private", 1, 1),
       chk_input_size(self@user_ids, "@user_ids", min_char = 1),
-      chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE)),
       chk_input_size(self@external_ids, "@external_ids", min_char = 1),
       chk_input_size(names(self@external_ids), "@external_ids types", min_char = 1),
       chk_input_size(self@created, "@created", 0, 1),
-      chk_input_size(self@updated, "@updated", 0, 1)
+      chk_input_size(self@updated, "@updated", 0, 1),
+      chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE))
     )
   }
 )
@@ -101,7 +101,7 @@ class_record_fam <- S7::new_class(
           named_vec_to_ged(self@chil_uids, "CHIL", "PHRASE") |> increase_level(by = 1),
           lst_to_ged(self@associations) |> increase_level(by = 1),
           sprintf("1 SUBM %s", self@subm_uids),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
           lst_to_ged(self@citations) |> increase_level(by = 1),
@@ -113,16 +113,17 @@ class_record_fam <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_input_S7classes(self@facts, "@facts", class_fact_fam),
-      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
+      
       chk_input_size(self@husb_uid, "@husb_uid", 0, 1),
-      chk_input_pattern(self@husb_uid, "@husb_uid", reg_uuid(TRUE)),
       chk_input_size(self@wife_uid, "@wife_uid", 0, 1),
+      chk_input_pattern(self@husb_uid, "@husb_uid", reg_uuid(TRUE)),
       chk_input_pattern(self@wife_uid, "@wife_uid", reg_uuid(TRUE)),
       chk_input_pattern(self@chil_uids, "@chil_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_pattern(self@subm_uids, "@subm_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@facts, "@facts", class_fact_fam),
+      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
+      chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_S7classes(self@citations, "@citations", class_citation),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link)
@@ -241,7 +242,7 @@ class_record_indi <- S7::new_class(
           named_vec_to_ged(self@alia_uids, "ALIA", "PHRASE") |> increase_level(by = 1),
           sprintf("1 ANCI %s", self@anci_uids),
           sprintf("1 DESI %s", self@desi_uids),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
           lst_to_ged(self@citations) |> increase_level(by = 1),
@@ -253,18 +254,18 @@ class_record_indi <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_input_S7classes(self@personal_names, "@personal_names", class_personal_name),
       chk_input_size(self@sex, "@sex", 0, 1),
       chk_input_choice(self@sex, "@sex", val_sexes()),
-      chk_input_S7classes(self@facts, "@facts", class_fact_indi),
-      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
-      chk_input_S7classes(self@family_links, "@family_links", class_spouse_family_link),
       chk_input_pattern(self@subm_uids, "@subm_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_pattern(self@alia_uids, "@alia_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@anci_uids, "@anci_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@desi_uids, "@desi_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@personal_names, "@personal_names", class_personal_name),
+      chk_input_S7classes(self@facts, "@facts", class_fact_indi),
+      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
+      chk_input_S7classes(self@family_links, "@family_links", class_spouse_family_link),
+      chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_S7classes(self@citations, "@citations", class_citation),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link)
@@ -289,7 +290,7 @@ class_record_media <- S7::new_class(
           sprintf("0 %s OBJE", self@prim_uid),
           sprintf("1 RESN %s", self@restrictions),
           lst_to_ged(self@files) |> increase_level(by = 1),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
           lst_to_ged(self@citations) |> increase_level(by = 1),
@@ -300,8 +301,8 @@ class_record_media <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_input_S7classes(self@files, "@files", class_media_file),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@files, "@files", class_media_file),
       chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_S7classes(self@citations, "@citations", class_citation)
     )
@@ -336,7 +337,7 @@ class_record_repo <- S7::new_class(
           sprintf("1 WWW %s", self@web_pages),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )
@@ -377,7 +378,7 @@ class_record_note <- S7::new_class(
           sprintf("1 LANG %s", self@language),
           lst_to_ged(self@text_alt) |> increase_level(by = 1),
           lst_to_ged(self@citations) |> increase_level(by = 1),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )
@@ -419,10 +420,11 @@ class_record_sour <- S7::new_class(
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        sour <- c(
+        c(
           sprintf("0 %s SOUR", self@prim_uid),
           sprintf("1 RESN %s", self@restrictions),
-          "1 DATA",
+          rep("1 DATA", length(self@events_recorded) + length(self@responsible_agency) + 
+                length(self@data_notes) + length(self@data_note_uids) > 0),
           lst_to_ged(self@events_recorded) |> increase_level(by = 2),
           sprintf("2 AGNC %s", self@responsible_agency),
           sprintf("2 SNOTE %s", self@data_note_uids),
@@ -433,34 +435,28 @@ class_record_sour <- S7::new_class(
           sprintf("1 PUBL %s", self@publication_facts),
           obj_to_ged(self@source_text) |> increase_level(by = 1),
           lst_to_ged(self@repo_citations) |> increase_level(by = 1),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
           lst_to_ged(self@media_links) |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )
-        
-        if (length(self@events_recorded) + length(self@responsible_agency) + 
-            length(self@data_notes) + length(self@data_note_uids) == 0)
-          sour <- sour[sour != "1 DATA"]
-        
-        sour
       })
   ),
   validator = function(self){
     c(
-      chk_input_S7classes(self@events_recorded, "@events_recorded", class_events_recorded),
       chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1),
-      chk_input_pattern(self@data_note_uids, "@data_note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@data_notes, "@data_notes", class_note),
       chk_input_size(self@originator, "@originator", 0, 1, 1),
       chk_input_size(self@full_title, "@full_title", 0, 1, 1),
       chk_input_size(self@short_title, "@short_title", 0, 1, 1),
       chk_input_size(self@publication_facts, "@publication_facts", 0, 1, 1),
       chk_input_size(self@source_text, "@source_text", 0, 1),
-      chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
+      chk_input_pattern(self@data_note_uids, "@data_note_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@events_recorded, "@events_recorded", class_events_recorded),
+      chk_input_S7classes(self@data_notes, "@data_notes", class_note),
+      chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
       chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link)
     )
@@ -498,7 +494,7 @@ class_record_subm <- S7::new_class(
           sprintf("1 WWW %s", self@web_pages),
           lst_to_ged(self@media_links) |> increase_level(by = 1),
           sprintf("1 LANG %s", self@language),
-          self@ids,
+          self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@notes) |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
@@ -514,9 +510,9 @@ class_record_subm <- S7::new_class(
       chk_input_size(self@emails, "@emails", min_char = 1),
       chk_input_size(self@faxes, "@faxes", min_char = 1),
       chk_input_size(self@web_pages, "@web_pages", min_char = 1),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link),
       #TODO: language pattern
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link),
       chk_input_S7classes(self@notes, "@notes", class_note)
     )
   }
