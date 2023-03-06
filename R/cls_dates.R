@@ -1,6 +1,7 @@
 #' @include cls_validators.R
 NULL
 
+#' @export
 class_time <- S7::new_class(
   "class_time",
   properties = list(
@@ -215,6 +216,7 @@ class_date_range <- S7::new_class(
   )
 )
 
+#' @export
 class_date_value <- S7::new_class(
   "class_date_value",
   parent = class_date,

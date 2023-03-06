@@ -76,7 +76,7 @@ class_personal_name <- S7::new_class(
     name_pieces = S7::new_property(S7::new_union(NULL, class_name_pieces)),
     name_alts = S7::class_list,
     notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
-    note_links = S7::class_character,
+    note_uids = S7::class_character,
     citations = S7::class_list,
     
     as_ged = S7::new_property(
@@ -89,7 +89,7 @@ class_personal_name <- S7::new_class(
           obj_to_ged(self@name_pieces) |> increase_level(by = 1),
           lst_to_ged(self@name_alts) |> increase_level(by = 1),
           lst_to_ged(self@notes) |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_links),
+          sprintf("1 SNOTE %s", self@note_uids),
           lst_to_ged(self@citations) |> increase_level(by = 1)
         )
       })
@@ -104,7 +104,7 @@ class_personal_name <- S7::new_class(
       chk_input_size(self@name_pieces, "@name_pieces", 0, 1),
       chk_input_S7classes(self@name_alts, "@name_alts", class_personal_name_trans),
       chk_input_S7classes(self@notes, "@notes", class_note),
-      chk_input_pattern(self@note_links, "@note_links", reg_xref(TRUE)),
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@citations, "@citations", class_citation)
     )
   }

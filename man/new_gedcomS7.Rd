@@ -4,12 +4,11 @@
 \alias{new_gedcomS7}
 \title{Create a new gedcom object}
 \usage{
-new_gedcomS7(my_name = unname(Sys.info()["user"]), my_language = "English")
+new_gedcomS7(my_language = "en")
 }
 \arguments{
-\item{my_name}{Your name, as creator/submitter.}
-
-\item{my_language}{The primary language in which data will be stored.}
+\item{my_language}{The primary language in which data will be stored. The language code should
+adhere to BCP 47.}
 }
 \value{
 A minimal gedcom S7 object.

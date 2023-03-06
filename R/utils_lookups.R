@@ -1,76 +1,18 @@
 
+#' Lookup values
+#' @export
 val_record_types <- function(){
   c(Individual = "indi", `Family Group` = "fam", Source = "sour",
     Repository = "repo", Multimedia = "media", Note = "note")
 }
 
-
-#' @rdname val_languages
-#' @export
-val_sexes <- function() {
-  c(Unknown = "U", Male = "M", Female = "F", `Non-binary` = "X")
-}
-
-
-#' @rdname val_languages
-#' @export
-val_pedigree_linkage_types <- function() {
-  vals <- c("BIRTH", "ADOPTED", "FOSTER", "OTHER")
-  stats::setNames(vals, tools::toTitleCase(vals))
-}
-
-#' @rdname val_languages
-#' @export
-val_pedigree_certainty <- function() {
-  vals <- c("CHALLENGED", "DISPROVEN", "PROVEN")
-  stats::setNames(vals, tools::toTitleCase(vals))
-}
-
-#' @rdname val_languages
-#' @export
-val_source_media_types <- function() {
-  vals <- c("AUDIO","BOOK","CARD","ELECTRONIC","FICHE","FILM",
-            "MAGAZINE","MANUSCRIPT","MAP","NEWSPAPER","PHOTO",
-            "TOMBSTONE","VIDEO","OTHER")
-  stats::setNames(vals, tools::toTitleCase(vals))
-}
-
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_adoptive_parents <- function() {
   c(Husband = "HUSB", Wife = "WIFE", Both = "BOTH")
 }
 
-#' @rdname val_languages
-#' @export
-val_restriction <- function(){
-  vals <- c("CONFIDENTIAL", "LOCKED", "PRIVACY")
-  stats::setNames(vals, tools::toTitleCase(vals))
-}
-
-#' @rdname val_languages
-#' @export
-val_roles <- function() {
-  c(
-    Child = "CHIL",
-    `Religious official` = "CLERGY",
-    Father = "FATH",
-    Friend = "FRIEND",
-    Godparent = "GODP",
-    Husband = "HUSB", 
-    Mother = "MOTH",
-    Multiple = "MULTIPLE",
-    Neighbor = "NGHBR",
-    Officiator = "OFFICIATOR",
-    Parent = "PARENT",
-    Spouse = "SPOU",
-    Wife = "WIFE", 
-    Witness = "WITN",
-    Other = "OTHER"
-  )
-}
-
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_individual_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -92,7 +34,7 @@ val_individual_attribute_types <- function(inc_generic = FALSE) {
   c(vals, `Other individual attribute` = "FACT")
 }
 
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_individual_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -122,7 +64,7 @@ val_individual_event_types <- function(inc_generic = FALSE) {
   c(vals, `Other individual event` = "EVEN")
 }
 
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_family_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -142,7 +84,7 @@ val_family_event_types <- function(inc_generic = FALSE) {
 }
 
 
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_family_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -153,7 +95,7 @@ val_family_attribute_types <- function(inc_generic = FALSE) {
   c(vals, `Other family attribute` = "FACT")
 }
 
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_event_types <- function(inc_generic = FALSE) {
   c(
@@ -162,7 +104,7 @@ val_event_types <- function(inc_generic = FALSE) {
   )
 }
 
-#' @rdname val_languages
+#' @rdname val_record_types
 #' @export
 val_fact_types <- function(inc_generic = FALSE) {
   c(
@@ -171,3 +113,92 @@ val_fact_types <- function(inc_generic = FALSE) {
     val_family_attribute_types(inc_generic)
   )
 }
+
+#' @rdname val_record_types
+#' @export
+val_source_media_types <- function() {
+  vals <- c("AUDIO","BOOK","CARD","ELECTRONIC","FICHE","FILM",
+            "MAGAZINE","MANUSCRIPT","MAP","NEWSPAPER","PHOTO",
+            "TOMBSTONE","VIDEO","OTHER")
+  stats::setNames(vals, tools::toTitleCase(vals))
+}
+
+#' @rdname val_record_types
+#' @export
+val_pedigree_linkage_types <- function() {
+  vals <- c("BIRTH", "ADOPTED", "FOSTER", "OTHER")
+  stats::setNames(vals, tools::toTitleCase(vals))
+}
+
+#' @rdname val_record_types
+#' @export
+val_certainty <- function() {
+  c(
+    Unreliable = "0",
+    Questionable = "1",
+    Secondary = "2",
+    Primary = "3"
+  )
+}
+
+#' @rdname val_record_types
+#' @export
+val_restriction <- function(){
+  vals <- c("CONFIDENTIAL", "LOCKED", "PRIVACY")
+  stats::setNames(vals, tools::toTitleCase(vals))
+}
+
+#' @rdname val_record_types
+#' @export
+val_roles <- function() {
+  c(
+    Child = "CHIL",
+    `Religious official` = "CLERGY",
+    Father = "FATH",
+    Friend = "FRIEND",
+    Godparent = "GODP",
+    Husband = "HUSB", 
+    Mother = "MOTH",
+    Multiple = "MULTIPLE",
+    Neighbor = "NGHBR",
+    Officiator = "OFFICIATOR",
+    Parent = "PARENT",
+    Spouse = "SPOU",
+    Wife = "WIFE", 
+    Witness = "WITN",
+    Other = "OTHER"
+  )
+}
+
+#' @rdname val_record_types
+#' @export
+val_sexes <- function() {
+  c(Unknown = "U", Male = "M", Female = "F", `Non-binary` = "X")
+}
+
+#' @rdname val_record_types
+#' @export
+val_pedigree_certainty <- function() {
+  vals <- c("CHALLENGED", "DISPROVEN", "PROVEN")
+  stats::setNames(vals, tools::toTitleCase(vals))
+}
+
+#' @rdname val_record_types
+#' @export
+val_name_types <- function() {
+  c(
+    "AKA","BIRTH","IMMIGRANT","MAIDEN","MARRIED","PROFESSIONAL","OTHER"
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+

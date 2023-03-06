@@ -42,7 +42,7 @@ class_non_event <- S7::new_class(
   }
 )
 
-
+#' @include cls_dates.R cls_locations.R cls_links.R cls_common.R
 class_fact <- S7::new_class(
   "class_fact",
   properties = list(
