@@ -44,7 +44,7 @@ S7::method(print, class_record_indi) <- function(x, ...){
   exdent <- 32 # nchar("10 Other individual attribute:") + 2 = 32
   
   to_console("xref:", x@xref, exdent)
-  to_console("Name(s):", paste(x@all_names, collapse = ", "), exdent)
+  to_console("Name(s):", toString(x@all_names), exdent)
   to_console("Sex:", names(which(val_sexes() == x@sex)), exdent)
   for(i in seq_along(x@user_reference_numbers)){
     num <- x@user_reference_numbers[i]

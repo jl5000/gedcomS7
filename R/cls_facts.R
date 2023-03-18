@@ -78,7 +78,7 @@ class_fact <- S7::new_class(
                                       lock <- rep("LOCKED", self@locked)
                                       priv <- rep("PRIVACY", self@private)
                                       
-                                      paste(c(conf, lock, priv), collapse = ", ")
+                                      toString(c(conf, lock, priv))
                                     }),
     
     fact_date = S7::new_property(

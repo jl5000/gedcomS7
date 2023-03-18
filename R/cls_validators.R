@@ -44,7 +44,7 @@ chk_input_choice <- function(input, name, choices) {
     for (i in input) {
       if (!i %in% choices)
         return(sprintf("%s has an invalid value:\n  The valid values are: %s", 
-                                 name, paste(choices, collapse = ", ")))
+                                 name, toString(choices)))
     }
   } 
 }
