@@ -116,7 +116,7 @@ val_fact_types <- function(inc_generic = FALSE) {
 
 #' @rdname val_record_types
 #' @export
-val_source_media_types <- function() {
+val_medium_types <- function() {
   vals <- c("AUDIO","BOOK","CARD","ELECTRONIC","FICHE","FILM",
             "MAGAZINE","MANUSCRIPT","MAP","NEWSPAPER","PHOTO",
             "TOMBSTONE","VIDEO","OTHER")
@@ -190,15 +190,4 @@ val_name_types <- function() {
     "AKA","BIRTH","IMMIGRANT","MAIDEN","MARRIED","PROFESSIONAL","OTHER"
   )
 }
-
-
-
-
-
-
-
-
-
-
-
 

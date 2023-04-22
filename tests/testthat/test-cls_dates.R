@@ -115,3 +115,11 @@ test_that("class_date_approx", {
   expect_equal(class_date_approx(class_date_calendar(2004, 8),
                                  est = TRUE)@as_val, "EST AUG 2004")
 })
+
+test_that("class_date_value", {
+  expect_error(class_date_value(), regexp = "@date has too few dimensions. The minimum is 1.")
+  
+  
+  
+  
+})

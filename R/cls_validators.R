@@ -89,24 +89,36 @@ chk_input_date <- function(year, month, day, bce = FALSE){
 }
 
 chk_input_dates <- function(start_date, end_date){
+
+  if(length(start_date) + length(end_date) < 2) return()
   
-  if(is.null(start_date) || is.null(end_date)) return()
-  if(start_date@as_val == end_date@as_val)
+  start_val <- datetime_to_val(start_date)
+  end_val <- datetime_to_val(end_date)
+  
+  start_year <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
+  end_year <- grep("^\\d{1,2}\\b", end_val, value = TRUE)
+  
+  
+  day <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
+  month <- which(grep("", start_val, value = TRUE) == toupper(month.abb))
+  year <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
+  start <- paste(sprintf("%02d", day), 
+                 sprintf("%02d", month), 
+                 year) |> 
+    as.Date(format = "%d %m %Y")
+  
+  day <- 1
+  month <- 1
+  year <- 1
+  end <- paste(sprintf("%02d", day), 
+               sprintf("%02d", month), 
+               year) |> 
+    as.Date(format = "%d %m %Y")
+  
+  if(start == end)
     return("Start date is the same as end date")
   
-  if(length(start_date@year) + length(end_date@year) < 2) return()
-  if(start_date@year < end_date@year) return()
-  if(start_date@year > end_date@year)
-    return("Start date comes after end date")
-  
-  if(length(start_date@month) + length(end_date@month) < 2) return()
-  if(start_date@month < end_date@month) return()
-  if(start_date@month > end_date@month)
-    return("Start date comes after end date")
-  
-  if(length(start_date@day) + length(end_date@day) < 2) return()
-  if(start_date@day < end_date@day) return()
-  if(start_date@day > end_date@day)
+  if(start > end)
     return("Start date comes after end date")
     
 }

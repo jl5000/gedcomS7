@@ -20,7 +20,7 @@ class_note <- S7::new_class(
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
           lst_to_ged(self@alt_text) |> increase_level(by = 1)
-          #   lst_to_ged(self@citations) |> increase_level(by = 1),
+          #   lst_to_ged(self@citations) |> increase_level(by = 1)
         )
       })
   ),

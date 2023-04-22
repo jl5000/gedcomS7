@@ -141,11 +141,11 @@ class_date_approx <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if(self@calc) {
-          paste("CAL", self@date@as_val)
+          paste("CAL", datetime_to_val(self@date))
         } else if(self@est) {
-          paste("EST", self@date@as_val)
+          paste("EST", datetime_to_val(self@date))
         } else if (self@about) {
-          paste("ABT", self@date@as_val)
+          paste("ABT", datetime_to_val(self@date))
         } 
       }               
     )
@@ -166,19 +166,23 @@ class_date_period <- S7::new_class(
   "class_date_period", 
   parent = class_date,
   properties = list(
-    start_date = S7::new_property(S7::new_union(NULL, class_date_calendar, S7::class_character)),
-    end_date = S7::new_property(S7::new_union(NULL, class_date_calendar, S7::class_character)),
+    start_date = S7::new_property(S7::new_union(NULL, 
+                                                class_date_calendar, 
+                                                S7::class_character)),
+    end_date = S7::new_property(S7::new_union(NULL, 
+                                              class_date_calendar, 
+                                              S7::class_character)),
     
     as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          paste("FROM", self@start_date@as_val, 
-                "TO", self@end_date@as_val)
+          paste("FROM", datetime_to_val(self@start_date), 
+                "TO", datetime_to_val(self@end_date))
         } else if (length(self@start_date) == 1) {
-          paste("FROM", self@start_date@as_val)
+          paste("FROM", datetime_to_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("TO", self@end_date@as_val)
+          paste("TO", datetime_to_val(self@end_date))
         } 
       }               
     )
@@ -204,12 +208,12 @@ class_date_range <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          paste("BET", self@start_date@as_val, 
-                "AND", self@end_date@as_val)
+          paste("BET", datetime_to_val(self@start_date), 
+                "AND", datetime_to_val(self@end_date))
         } else if (length(self@start_date) == 1) {
-          paste("AFT", self@start_date@as_val)
+          paste("AFT", datetime_to_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("BEF", self@end_date@as_val)
+          paste("BEF", datetime_to_val(self@end_date))
         } 
       }               
     )
@@ -236,7 +240,7 @@ class_date_value <- S7::new_class(
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(sorting) tag <- "SDATE" else tag <- "DATE"
+        if(self@sorting) tag <- "SDATE" else tag <- "DATE"
         c(
           sprintf("0 %s %s", tag, datetime_to_val(self@date)),
           sprintf("1 TIME %s", datetime_to_val(self@time)),
@@ -245,9 +249,9 @@ class_date_value <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@date, "@date", 0, 1),
-      chk_input_size(self@time, "@time", 0, 1),
+    c( #dateperiod has no time
+      chk_input_size(self@date, "@date", 1, 1),
+      chk_input_size(self@time, "@time", 0, ),
       chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
       chk_input_size(self@sorting, "@sorting", 1, 1),
       chk_input_pattern(self@date, "@date", reg_date_value()),
