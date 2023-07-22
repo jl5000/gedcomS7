@@ -8,5 +8,13 @@
       "including an online validator at http://ged-inline.elasticbeanstalk.com/"
     )
     
+  if (getRversion() < "4.3.0")
+    require(S7)
 }
+
+.onLoad <- function(...) {
+  S7::methods_register()
+}
+
+
 
