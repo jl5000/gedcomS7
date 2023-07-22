@@ -158,9 +158,7 @@ class_citation <- S7::new_class(
 class_creation_date <- S7::new_class(
   "class_creation_date",
   properties = list(
-    date = S7::new_property(S7::new_union(NULL, 
-                                          class_date_exact, 
-                                          S7::class_character), 
+    date = S7::new_property(NULL|class_date_exact|S7::class_character, 
                             default = date_exact_current()),
     time = NULL|class_time|S7::class_character,
     
