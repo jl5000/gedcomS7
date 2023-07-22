@@ -89,7 +89,7 @@ class_citation <- S7::new_class(
   properties = list(
     sour_uid = S7::class_character,
     where = S7::class_character,
-    date = NULL|class_date_value,
+    date = NULL | class_date_value,
     source_text = S7::class_list,
     event_type = S7::class_character,
     event_phrase = S7::class_character,
@@ -158,9 +158,9 @@ class_citation <- S7::new_class(
 class_creation_date <- S7::new_class(
   "class_creation_date",
   properties = list(
-    date = S7::new_property(NULL|class_date_exact|S7::class_character, 
+    date = S7::new_property(NULL | class_date_exact | S7::class_character, 
                             default = date_exact_current()),
-    time = NULL|class_time|S7::class_character,
+    time = NULL | class_time | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,

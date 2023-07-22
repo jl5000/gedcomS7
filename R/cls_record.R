@@ -10,8 +10,8 @@ class_record <- S7::new_class(
     user_ids = S7::class_character, # potentially named
     unique_ids = S7::class_character, # not named
     external_ids = S7::class_character, # definitely named
-    created = NULL|class_creation_date,
-    updated = NULL|class_change_date,
+    created = NULL | class_creation_date,
+    updated = NULL  | class_change_date,
     
     prim_uid = S7::new_property(
       S7::class_character,
@@ -315,7 +315,7 @@ class_record_repo <- S7::new_class(
   parent = class_record,
   properties = list(
     name = S7::class_character,
-    address = NULL|class_address,
+    address = NULL | class_address,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,
@@ -411,7 +411,7 @@ class_record_sour <- S7::new_class(
     full_title = S7::class_character,
     short_title = S7::class_character,
     publication_facts = S7::class_character,
-    source_text = NULL|class_translation_txt,
+    source_text = NULL | class_translation_txt,
     repo_citations = S7::class_list,
     note_uids = S7::class_character,
     notes = S7::class_list,
@@ -470,7 +470,7 @@ class_record_subm <- S7::new_class(
   parent = class_record,
   properties = list(
     name = S7::class_character,
-    address = NULL|class_address,
+    address = NULL | class_address,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,
