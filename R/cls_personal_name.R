@@ -44,7 +44,7 @@ class_personal_name_trans <- S7::new_class(
   properties = list(
     name = S7::class_character,
     language = S7::class_character,
-    name_pieces = S7::new_property(S7::new_union(NULL, class_name_pieces)),
+    name_pieces = NULL|class_name_pieces,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -73,9 +73,9 @@ class_personal_name <- S7::new_class(
     name = S7::class_character,
     type = S7::class_character,
     type_phrase = S7::class_character,
-    name_pieces = S7::new_property(S7::new_union(NULL, class_name_pieces)),
+    name_pieces = NULL|class_name_pieces,
     name_alts = S7::class_list,
-    notes = S7::new_property(S7::new_union(S7::class_character, S7::class_list)),
+    notes = S7::class_character|S7::class_list,
     note_uids = S7::class_character,
     citations = S7::class_list,
     

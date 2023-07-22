@@ -2,36 +2,26 @@
 % Please edit documentation in R/utils_lookups.R
 \name{val_record_types}
 \alias{val_record_types}
-\alias{val_sexes}
-\alias{val_pedigree_linkage_types}
-\alias{val_pedigree_certainty}
-\alias{val_source_media_types}
 \alias{val_adoptive_parents}
-\alias{val_restriction}
-\alias{val_roles}
 \alias{val_individual_attribute_types}
 \alias{val_individual_event_types}
 \alias{val_family_event_types}
 \alias{val_family_attribute_types}
 \alias{val_event_types}
 \alias{val_fact_types}
+\alias{val_medium_types}
+\alias{val_pedigree_linkage_types}
+\alias{val_certainty}
+\alias{val_restriction}
+\alias{val_roles}
+\alias{val_sexes}
+\alias{val_pedigree_certainty}
+\alias{val_name_types}
 \title{Lookup values}
 \usage{
 val_record_types()
 
-val_sexes()
-
-val_pedigree_linkage_types()
-
-val_pedigree_certainty()
-
-val_source_media_types()
-
 val_adoptive_parents()
-
-val_restriction()
-
-val_roles()
 
 val_individual_attribute_types(inc_generic = FALSE)
 
@@ -44,6 +34,22 @@ val_family_attribute_types(inc_generic = FALSE)
 val_event_types(inc_generic = FALSE)
 
 val_fact_types(inc_generic = FALSE)
+
+val_medium_types()
+
+val_pedigree_linkage_types()
+
+val_certainty()
+
+val_restriction()
+
+val_roles()
+
+val_sexes()
+
+val_pedigree_certainty()
+
+val_name_types()
 }
 \description{
 Lookup values

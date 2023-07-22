@@ -112,9 +112,9 @@ class_events_recorded <- S7::new_class(
   "class_events_recorded",
   properties = list(
     events = S7::class_character,
-    date_period = S7::new_property(S7::new_union(NULL, class_date_period, S7::class_character)),
+    date_period = NULL|class_date_period|S7::class_character,
     date_phrase = S7::class_character,
-    jurisdiction_place = S7::new_property(S7::new_union(NULL, class_place, S7::class_character)),
+    jurisdiction_place = NULL|class_place|S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
