@@ -5,6 +5,7 @@ NULL
 #' @include cls_record_support.R
 class_note <- S7::new_class(
   "class_note",
+  package = "gedcomS7",
   properties = list(
     text = S7::class_character,
     language = S7::class_character,
@@ -40,6 +41,7 @@ class_note <- S7::new_class(
 #' @export
 class_media_link <- S7::new_class(
   "class_media_link",
+  package = "gedcomS7",
   properties = list(
     media_uid = S7::class_character,
     title = S7::class_character,
@@ -86,6 +88,7 @@ class_media_link <- S7::new_class(
 #' @include cls_dates.R cls_record_support.R
 class_citation <- S7::new_class(
   "class_citation",
+  package = "gedcomS7",
   properties = list(
     sour_uid = S7::class_character,
     where = S7::class_character,
@@ -157,6 +160,7 @@ class_citation <- S7::new_class(
 #' @include cls_dates.R
 class_creation_date <- S7::new_class(
   "class_creation_date",
+  package = "gedcomS7",
   properties = list(
     date = S7::new_property(NULL | class_date_exact | S7::class_character, 
                             default = date_exact_current()),
@@ -185,6 +189,7 @@ class_creation_date <- S7::new_class(
 #' @export
 class_change_date <- S7::new_class(
   "class_change_date", 
+  package = "gedcomS7",
   parent = class_creation_date,
   properties = list(
     note_uids = S7::class_character,

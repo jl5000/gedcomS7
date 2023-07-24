@@ -56,6 +56,7 @@ class_record <- S7::new_class(
 #' @export
 class_record_fam <- S7::new_class(
   "class_record_fam", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     facts = S7::class_list,
@@ -134,6 +135,7 @@ class_record_fam <- S7::new_class(
 #' @include cls_personal_name.R
 class_record_indi <- S7::new_class(
   "class_record_indi", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     personal_names = S7::class_list,
@@ -276,6 +278,7 @@ class_record_indi <- S7::new_class(
 #' @export
 class_record_media <- S7::new_class(
   "class_record_media", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     files = S7::class_list,
@@ -312,6 +315,7 @@ class_record_media <- S7::new_class(
 #' @export
 class_record_repo <- S7::new_class(
   "class_record_repo", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     name = S7::class_character,
@@ -360,6 +364,7 @@ class_record_repo <- S7::new_class(
 #' @export
 class_record_note <- S7::new_class(
   "class_record_note", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     text = S7::class_character,
@@ -401,6 +406,7 @@ class_record_note <- S7::new_class(
 #' @export
 class_record_sour <- S7::new_class(
   "class_record_sour", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     events_recorded = S7::class_list,
@@ -467,6 +473,7 @@ class_record_sour <- S7::new_class(
 #' @export
 class_record_subm <- S7::new_class(
   "class_record_subm", 
+  package = "gedcomS7",
   parent = class_record,
   properties = list(
     name = S7::class_character,

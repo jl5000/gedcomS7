@@ -5,6 +5,7 @@ NULL
 #' @include cls_common.R
 class_association <- S7::new_class(
   "class_association",
+  package = "gedcomS7",
   properties = list(
     indi_uid = S7::class_character,
     indi_phrase = S7::class_character,
@@ -51,6 +52,7 @@ class_association <- S7::new_class(
 #' @include cls_common.R
 class_spouse_family_link <- S7::new_class(
   "class_spouse_family_link",
+  package = "gedcomS7",
   properties = list(
     fam_uid = S7::class_character,
     note_uids = S7::class_character,
@@ -79,6 +81,7 @@ class_spouse_family_link <- S7::new_class(
 #' @export
 class_child_family_link <- S7::new_class(
   "class_child_family_link", 
+  package = "gedcomS7",
   parent = class_spouse_family_link,
   properties = list(
     pedigree = S7::new_property(S7::class_character,

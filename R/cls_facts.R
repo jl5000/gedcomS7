@@ -5,6 +5,7 @@ NULL
 #' @include cls_dates.R cls_common.R
 class_non_event <- S7::new_class(
   "class_non_event",
+  package = "gedcomS7",
   properties = list(
     event = S7::class_character,
     date_period = NULL | class_date_period | S7::class_character,
@@ -239,6 +240,7 @@ class_fact_fam <- S7::new_class(
 #' @export
 class_event_indi <- S7::new_class(
   "class_event_indi",
+  package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
     fam_uid = S7::class_character,
@@ -282,6 +284,7 @@ class_event_indi <- S7::new_class(
 #' @export
 class_attr_indi <- S7::new_class(
   "class_attr_indi",
+  package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
     as_ged = S7::new_property(S7::class_character, 
@@ -298,6 +301,7 @@ class_attr_indi <- S7::new_class(
 #' @export
 class_event_fam <- S7::new_class(
   "class_event_fam",
+  package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
     c(
@@ -311,6 +315,7 @@ class_event_fam <- S7::new_class(
 #' @export
 class_attr_fam <- S7::new_class(
   "class_attr_fam",
+  package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
     c(

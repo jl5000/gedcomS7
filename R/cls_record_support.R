@@ -4,6 +4,7 @@ NULL
 #' @export
 class_media_file <- S7::new_class(
   "class_media_file",
+  package = "gedcomS7",
   properties = list(
     file_ref = S7::class_character,
     format = S7::class_character,
@@ -40,6 +41,7 @@ class_media_file <- S7::new_class(
 #' @export
 class_translation_txt <- S7::new_class(
   "class_translation_txt",
+  package = "gedcomS7",
   properties = list(
     text = S7::class_character,
     language = S7::class_character,
@@ -73,6 +75,7 @@ class_translation_txt <- S7::new_class(
 #' @include cls_common.R
 class_repository_citation <- S7::new_class(
   "class_repository_citation",
+  package = "gedcomS7",
   properties = list(
     repo_uid = S7::class_character,
     notes = S7::class_list,
@@ -110,6 +113,7 @@ class_repository_citation <- S7::new_class(
 #' @include cls_dates.R cls_locations.R
 class_events_recorded <- S7::new_class(
   "class_events_recorded",
+  package = "gedcomS7",
   properties = list(
     events = S7::class_character,
     date_period = NULL | class_date_period | S7::class_character,

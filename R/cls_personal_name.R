@@ -4,6 +4,7 @@ NULL
 #' @export
 class_name_pieces <- S7::new_class(
   "class_name_pieces",
+  package = "gedcomS7",
   properties = list(
     prefix = S7::class_character,
     given = S7::class_character,
@@ -41,6 +42,7 @@ class_name_pieces <- S7::new_class(
 #' @export
 class_personal_name_trans <- S7::new_class(
   "class_personal_name_trans",
+  package = "gedcomS7",
   properties = list(
     name = S7::class_character,
     language = S7::class_character,
@@ -69,6 +71,7 @@ class_personal_name_trans <- S7::new_class(
 #' @include cls_common.R
 class_personal_name <- S7::new_class(
   "class_personal_name",
+  package = "gedcomS7",
   properties = list(
     name = S7::class_character,
     type = S7::class_character,

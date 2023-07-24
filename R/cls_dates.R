@@ -4,6 +4,7 @@ NULL
 #' @export
 class_time <- S7::new_class(
   "class_time",
+  package = "gedcomS7",
   properties = list(
     hour = S7::class_numeric,
     minute = S7::class_numeric,
@@ -44,6 +45,7 @@ class_date <- S7::new_class("class_date")
 #' @export
 class_date_exact <- S7::new_class(
   "class_date_exact", 
+  package = "gedcomS7",
   parent = class_date,
   properties = list(
     year = S7::class_numeric,
@@ -89,6 +91,7 @@ date_exact_current <- function(){
 #' @export
 class_date_calendar <- S7::new_class(
   "class_date_calendar", 
+  package = "gedcomS7",
   parent = class_date,
   properties = list(
     year = S7::class_numeric,
@@ -130,6 +133,7 @@ class_date_calendar <- S7::new_class(
 #' @export
 class_date_approx <- S7::new_class(
   "class_date_approx", 
+  package = "gedcomS7",
   parent = class_date,
   properties = list(
     date = class_date_calendar | S7::class_character,
@@ -164,6 +168,7 @@ class_date_approx <- S7::new_class(
 #' @export
 class_date_period <- S7::new_class(
   "class_date_period", 
+  package = "gedcomS7",
   parent = class_date,
   properties = list(
     start_date = NULL | class_date_calendar | S7::class_character,
@@ -197,6 +202,7 @@ class_date_period <- S7::new_class(
 #' @export
 class_date_range <- S7::new_class(
   "class_date_range", 
+  package = "gedcomS7",
   parent = class_date_period,
   properties = list(
     
@@ -219,6 +225,7 @@ class_date_range <- S7::new_class(
 #' @export
 class_date_value <- S7::new_class(
   "class_date_value",
+  package = "gedcomS7",
   parent = class_date,
   properties = list(
     date = NULL | class_date_calendar | class_date_period |

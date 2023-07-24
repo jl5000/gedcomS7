@@ -6,6 +6,7 @@ NULL
 #' @include cls_common.R
 class_place <- S7::new_class(
   "class_place",
+  package = "gedcomS7",
   properties = list(
     name = S7::class_character,
     form = S7::class_character,
@@ -74,6 +75,7 @@ class_place <- S7::new_class(
 #' @export
 class_address <- S7::new_class(
   "class_address",
+  package = "gedcomS7",
   properties = list(
     full = S7::class_character,
     local_address_lines = S7::class_character,
