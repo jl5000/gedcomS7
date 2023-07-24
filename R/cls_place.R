@@ -1,9 +1,8 @@
 #' @include cls_validators.R
 NULL
 
-
 #' @export
-#' @include cls_common.R
+#' @include cls_note.R
 class_place <- S7::new_class(
   "class_place",
   package = "gedcomS7",
@@ -70,42 +69,3 @@ class_place <- S7::new_class(
   }
 )
 
-
-
-#' @export
-class_address <- S7::new_class(
-  "class_address",
-  package = "gedcomS7",
-  properties = list(
-    full = S7::class_character,
-    local_address_lines = S7::class_character,
-    city = S7::class_character,
-    state = S7::class_character,
-    postal_code = S7::class_character,
-    country = S7::class_character,
-    
-    as_ged = S7::new_property(
-      S7::class_character,
-      getter = function(self){
-        c(
-          sprintf("0 ADDR %s", self@full),
-          sprintf("1 %s %s", paste0("ADR", seq_along(self@local_address_lines)), self@local_address_lines),
-          sprintf("1 CITY %s", self@city),
-          sprintf("1 STAE %s", self@state),
-          sprintf("1 POST %s", self@postal_code),
-          sprintf("1 CTRY %s", self@country)
-        )
-      })
-  ),
-  
-  validator = function(self) {
-    c(
-      chk_input_size(self@full, "@full", 1, 1, 1),
-      chk_input_size(self@local_address_lines, "@local_address_lines", 0, 1, 1),
-      chk_input_size(self@city, "@city", 0, 1, 1),
-      chk_input_size(self@state, "@state", 0, 1, 1),
-      chk_input_size(self@postal_code, "@postal_code", 0, 1, 1),
-      chk_input_size(self@country, "@country", 0, 1, 1)
-    )
-  }
-)

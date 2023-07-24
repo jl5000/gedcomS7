@@ -20,21 +20,4 @@ test_that("class_place", {
 })
 
 
-test_that("class_address", {
-  expect_equal(class_address()@as_ged, character())
-  expect_snapshot_value(class_address("street")@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"))@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"),
-                                      city = "this city")@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"),
-                                      state = "this state")@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"),
-                                      country = "this country")@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"),
-                                      city = "this city",
-                                      state = "this state",
-                                      country = "this country")@as_ged, "json2")
-  expect_snapshot_value(class_address(c("street","village"),
-                                      city = "this city",
-                                      phone_numbers = c("123445","6788990"))@as_ged, "json2")
-})
+

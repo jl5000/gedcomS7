@@ -1,6 +1,7 @@
-#' @include cls_links.R
+#' @include cls_validators.R
 NULL
 
+#' @include cls_change_date.R
 class_record <- S7::new_class(
   "class_record", #abstract = TRUE,
   properties = list(
@@ -54,6 +55,8 @@ class_record <- S7::new_class(
 
 
 #' @export
+#' @include cls_fact.R cls_non_event.R cls_association.R cls_note.R
+#' cls_citation.R cls_media_link.R
 class_record_fam <- S7::new_class(
   "class_record_fam", 
   package = "gedcomS7",
@@ -132,7 +135,8 @@ class_record_fam <- S7::new_class(
   })
 
 #' @export
-#' @include cls_personal_name.R
+#' @include cls_personal_name.R cls_fact.R cls_non_event.R cls_association.R cls_note.R
+#' cls_citation.R cls_media_link.R
 class_record_indi <- S7::new_class(
   "class_record_indi", 
   package = "gedcomS7",
@@ -276,6 +280,7 @@ class_record_indi <- S7::new_class(
 )
 
 #' @export
+#' @include cls_media_file.R cls_note.R cls_citation.R
 class_record_media <- S7::new_class(
   "class_record_media", 
   package = "gedcomS7",
@@ -313,13 +318,14 @@ class_record_media <- S7::new_class(
 )
 
 #' @export
+#' @include cls_address.R cls_note.R
 class_record_repo <- S7::new_class(
   "class_record_repo", 
   package = "gedcomS7",
   parent = class_record,
   properties = list(
     name = S7::class_character,
-    address = NULL | class_address,
+    address = NULL | class_address | S7::class_character,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,
@@ -362,6 +368,7 @@ class_record_repo <- S7::new_class(
 )
 
 #' @export
+#' @include cls_translation.R cls_citation.R
 class_record_note <- S7::new_class(
   "class_record_note", 
   package = "gedcomS7",
@@ -404,6 +411,8 @@ class_record_note <- S7::new_class(
 
 
 #' @export
+#' @include cls_events_recorded.R cls_note.R cls_translation.R cls_repository_citation.R
+#' cls_note.R cls_media_link.R
 class_record_sour <- S7::new_class(
   "class_record_sour", 
   package = "gedcomS7",
@@ -471,13 +480,14 @@ class_record_sour <- S7::new_class(
 
 
 #' @export
+#' @include cls_address.R cls_note.R cls_media_link.R
 class_record_subm <- S7::new_class(
   "class_record_subm", 
   package = "gedcomS7",
   parent = class_record,
   properties = list(
     name = S7::class_character,
-    address = NULL | class_address,
+    address = NULL | class_address | S7::class_character,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,

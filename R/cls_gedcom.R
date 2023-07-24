@@ -1,7 +1,7 @@
 #' @include cls_validators.R
 NULL
 
-#' @include cls_locations.R cls_dates.R
+#' @include cls_address.R cls_date.R cls_time.R
 class_gedcom_source <- S7::new_class(
   "class_gedcom_source",
   properties = list(
@@ -9,7 +9,7 @@ class_gedcom_source <- S7::new_class(
     product_name = S7::class_character,
     product_version = S7::class_character,
     business_name = S7::class_character,
-    business_address = NULL | class_address,
+    business_address = NULL | class_address | S7::class_character,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,
@@ -72,7 +72,7 @@ class_gedcom_source <- S7::new_class(
   }
 )
 
-#' @include cls_common.R cls_dates.R cls_record.R
+#' @include cls_date.R cls_time.R cls_note.R cls_record.R
 class_gedcomS7 <- S7::new_class(
   "class_gedcomS7",
   properties = list(

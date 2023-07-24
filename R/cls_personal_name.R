@@ -68,7 +68,7 @@ class_personal_name_trans <- S7::new_class(
   })
 
 #' @export
-#' @include cls_common.R
+#' @include cls_note.R cls_citation.R
 class_personal_name <- S7::new_class(
   "class_personal_name",
   package = "gedcomS7",
