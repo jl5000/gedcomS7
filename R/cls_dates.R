@@ -75,7 +75,7 @@ class_date_exact <- S7::new_class(
       chk_input_size(self@day, "@day", 1, 1, 1, 31),
       chk_input_size(self@month, "@month", 1, 1, 1, 12),
       chk_input_size(self@year, "@year", 1, 1, 1),
-      chk_input_date(self@year, self@month, self@day)
+      chk_input_date_cpts(self@year, self@month, self@day)
     )
   }
 )
@@ -125,7 +125,7 @@ class_date_calendar <- S7::new_class(
       chk_input_size(self@month, "@month", 0, 1, 1, 12),
       chk_input_size(self@year, "@year", 1, 1, 1),
       chk_input_size(self@bce, "@bce", 1, 1),
-      chk_input_date(self@year, self@month, self@day, self@bce)
+      chk_input_date_cpts(self@year, self@month, self@day, self@bce)
     )
   }
 )
@@ -159,7 +159,8 @@ class_date_approx <- S7::new_class(
       chk_input_size(self@date, "@date", 1, 1),
       chk_input_size(self@about, "@about", 1, 1),
       chk_input_size(self@calc, "@calc", 1, 1),
-      chk_input_size(self@est, "@est", 1, 1)
+      chk_input_size(self@est, "@est", 1, 1),
+      chk_input_pattern(self@date, "@date", reg_date_calendar())
     )
   }
 )
@@ -194,6 +195,8 @@ class_date_period <- S7::new_class(
       chk_input_size(self@end_date, "@end_date", 0, 1),
       chk_input_size(Filter(Negate(is.null), list(self@start_date, self@end_date)), 
                      "@start_date + @end_date", 1, 2),
+      chk_input_pattern(self@start_date, "@start_date", reg_date_calendar()),
+      chk_input_pattern(self@end_date, "@end_date", reg_date_calendar()),
       chk_input_dates(self@start_date, self@end_date)
     )
   }

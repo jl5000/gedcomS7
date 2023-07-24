@@ -10,7 +10,7 @@ Authors@R:
 Description: Import, create and edit family tree GEDCOM files.
 License: GPL (>= 3)
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd"))
+Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd", "roxytest::testthat_roclet"))
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1)
@@ -18,7 +18,8 @@ Imports:
     S7,
     uuid
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    roxytest
 Config/testthat/edition: 3
 Collate: 
     'utils_regex.R'

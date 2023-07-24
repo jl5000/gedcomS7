@@ -28,12 +28,12 @@ class_name_pieces <- S7::new_class(
   ),
   validator = function(self) {
     c(
-      chk_input_size(self@prefix, "@prefix", min_char = 1),
-      chk_input_size(self@given, "@given", min_char = 1),
-      chk_input_size(self@nickname,"@nickname", min_char = 1),
-      chk_input_size(self@surname_prefix, "@surname_prefix", min_char = 1),
-      chk_input_size(self@surname, "@surname", min_char = 1),
-      chk_input_size(self@suffix, "@suffix", min_char = 1)
+      chk_input_size(self@prefix, "@prefix", min_val = 1),
+      chk_input_size(self@given, "@given", min_val = 1),
+      chk_input_size(self@nickname,"@nickname", min_val = 1),
+      chk_input_size(self@surname_prefix, "@surname_prefix", min_val = 1),
+      chk_input_size(self@surname, "@surname", min_val = 1),
+      chk_input_size(self@suffix, "@suffix", min_val = 1)
     )
   }
   

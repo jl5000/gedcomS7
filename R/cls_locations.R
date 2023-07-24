@@ -56,12 +56,12 @@ class_place <- S7::new_class(
       chk_input_size(self@form, "@form", 0, 1, 1),
       chk_input_size(self@language, "@language", 0, 1),
       #TODO: language lookup
-      chk_input_size(self@names_alt, "@names_alt", min_char = 1),
+      chk_input_size(self@names_alt, "@names_alt", min_val = 1),
       chk_input_size(names(self@names_alt), "@names_alt names", length(self@names_alt), length(self@names_alt)),
       #TODO: language lookup
       chk_input_size(self@lat_long, "@lat_long", 0, 1),
       chk_input_pattern(self@lat_long, "@lat_long", "^[NS]\\d{1,2}(\\.\\d{1,6})? [EW]\\d{1,3}(\\.\\d{2,6})?$"),
-      chk_input_size(self@external_ids, "@external_ids", min_char = 1),
+      chk_input_size(self@external_ids, "@external_ids", min_val = 1),
       chk_input_size(names(self@external_ids), "@external_ids names", length(self@external_ids), length(self@external_ids)),
       #TODO: EXID and TYPE pattern
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),

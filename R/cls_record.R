@@ -41,9 +41,9 @@ class_record <- S7::new_class(
       chk_input_size(self@confidential, "@confidential", 1, 1),
       chk_input_size(self@locked, "@locked", 1, 1),
       chk_input_size(self@private, "@private", 1, 1),
-      chk_input_size(self@user_ids, "@user_ids", min_char = 1),
-      chk_input_size(self@external_ids, "@external_ids", min_char = 1),
-      chk_input_size(names(self@external_ids), "@external_ids types", min_char = 1),
+      chk_input_size(self@user_ids, "@user_ids", min_val = 1),
+      chk_input_size(self@external_ids, "@external_ids", min_val = 1),
+      chk_input_size(names(self@external_ids), "@external_ids types", min_val = 1),
       chk_input_size(self@created, "@created", 0, 1),
       chk_input_size(self@updated, "@updated", 0, 1),
       chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE))
@@ -351,10 +351,10 @@ class_record_repo <- S7::new_class(
     c(
       chk_input_size(self@name, "@name", 1, 1, 1),
       chk_input_size(self@address, "@address", 0, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_char = 1),
-      chk_input_size(self@emails, "@emails", min_char = 1),
-      chk_input_size(self@faxes, "@faxes", min_char = 1),
-      chk_input_size(self@web_pages, "@web_pages", min_char = 1),
+      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
+      chk_input_size(self@emails, "@emails", min_val = 1),
+      chk_input_size(self@faxes, "@faxes", min_val = 1),
+      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@notes, "@notes", class_note)
     )
@@ -513,10 +513,10 @@ class_record_subm <- S7::new_class(
     c(
       chk_input_size(self@name, "@name", 1, 1, 1),
       chk_input_size(self@address, "@address", 0, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_char = 1),
-      chk_input_size(self@emails, "@emails", min_char = 1),
-      chk_input_size(self@faxes, "@faxes", min_char = 1),
-      chk_input_size(self@web_pages, "@web_pages", min_char = 1),
+      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
+      chk_input_size(self@emails, "@emails", min_val = 1),
+      chk_input_size(self@faxes, "@faxes", min_val = 1),
+      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       #TODO: language pattern
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link),

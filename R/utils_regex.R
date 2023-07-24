@@ -37,7 +37,7 @@ regex_combn <- function(reg1, reg2) {
 }
 
 reg_day <- function() {
-  "\\d{1,2}" |> group_it()
+  paste(1:31, collapse = "|") |> group_it()
 }
 
 reg_month <- function() {
@@ -48,12 +48,24 @@ reg_year <- function() {
   "\\d{1,4}" |> group_it()
 }
 
-
+#' @tests
+#' expect_equal(grepl(reg_time(TRUE), "0:00"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "0:00:00"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59:59"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "0:00:00.000"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59:59.9999"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "00:00"), TRUE)
+#' expect_equal(grepl(reg_time(TRUE), "24:59"), FALSE)
+#' expect_equal(grepl(reg_time(TRUE), "23:60"), FALSE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59:60"), FALSE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59:59."), FALSE)
+#' expect_equal(grepl(reg_time(TRUE), "23:59:59:a"), FALSE)
 reg_time <- function(only = TRUE){
-  hh <- paste(0:23, collapse = "|")
-  mm <- paste(formatC(0:59, width = 2, format = "d", flag = "0"), collapse = "|")
+  hh <- "(\\d)|((0|1)\\d)|(2(0|1|2|3))"
+  mm <- "(0|1|2|3|4|5)\\d"
   ss <- mm
-  fs <- paste(1:9, collapse = "|")
+  fs <- "\\d+"
   reg <- sprintf("(%s):(%s)(:(%s)(\\.(%s))?)?", hh, mm, ss, fs)
   if(only) reg <- anchor_it(reg)
   reg
@@ -113,6 +125,18 @@ reg_role_in_event <- function(){
 #' the regular expression accepts patterns where text can come before or after
 #' the date_exact().
 #' @return A regex string
+#' @tests
+#' expect_equal(grepl(reg_date_exact(), "14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_exact(), "14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "JAN 2005"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "14 JAN 2005/06"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_exact(), "8 NOV 1956/57"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "2005"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "15 NOV 125"), TRUE)
+#' expect_equal(grepl(reg_date_exact(), "JAN 1901/58"), FALSE)
+#' expect_equal(grepl(reg_date_exact(), "5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date_exact(), " 5 JUL 2005"), FALSE)
 reg_date_exact <- function(only = TRUE) {
   reg <- paste(reg_day(), reg_month(), reg_year())
   if(only) reg <- anchor_it(reg)
@@ -133,6 +157,16 @@ reg_date_exact <- function(only = TRUE) {
 #' the date().
 #' @return Either a single regex string or a vector of them
 #' @export
+#' @tests
+#' expect_equal(grepl(reg_date(), "14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date(), "14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date(), "JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date(), "5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date(), "8 NOV 1956/57"), FALSE)
+#' expect_equal(grepl(reg_date(), "2005"), TRUE)
+#' expect_equal(grepl(reg_date(), "15 NOV 125"), TRUE)
+#' expect_equal(grepl(reg_date(), "5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date(), " 5 JUL 2005"), FALSE)
 reg_date <- function(flatten = TRUE, only = TRUE) {
   reg_date_calendar(flatten, only)
 }
@@ -160,6 +194,18 @@ reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
 #' @return Either a single regex string or a vector of them
+#' @tests
+#' expect_equal(grepl(reg_date_period(), "FROM 14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_period(), "TO 14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date_period(), "FROM JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_period(), "FROM 14 JAN 2005/06 TO 2007"), FALSE)
+#' expect_equal(grepl(reg_date_period(), "TO 5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_period(), "TO  8 NOV 1956"), FALSE)
+#' expect_equal(grepl(reg_date_period(), "FROM 2005"), TRUE)
+#' expect_equal(grepl(reg_date_period(), "FROM 15 NOV 125"), TRUE)
+#' expect_equal(grepl(reg_date_period(), " TO JAN 1901"), FALSE)
+#' expect_equal(grepl(reg_date_period(), "FROM 5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date_period(), " TO 5 JUL 2005"), FALSE)
 reg_date_period <- function(flatten = TRUE) {
   combos <- c(paste("FROM", reg_date(FALSE,FALSE)),
               paste("TO", reg_date(FALSE,FALSE)),
@@ -179,6 +225,18 @@ reg_date_period <- function(flatten = TRUE) {
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
 #' @return Either a single regex string or a vector of them
+#' @tests
+#' expect_equal(grepl(reg_date_range(), "BEF 14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_range(), "AFT 14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date_range(), "BEF JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_range(), "BET 14 JAN 2005/06 AND 2007"), FALSE)
+#' expect_equal(grepl(reg_date_range(), "AFT 5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_range(), "AFT  8 NOV 1956"), FALSE)
+#' expect_equal(grepl(reg_date_range(), "BEF 2005"), TRUE)
+#' expect_equal(grepl(reg_date_range(), "BEF 15 NOV 125"), TRUE)
+#' expect_equal(grepl(reg_date_range(), " AFT JAN 1901"), FALSE)
+#' expect_equal(grepl(reg_date_range(), "BEF 5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date_range(), " AFT 5 JUL 2005"), FALSE)
 reg_date_range <- function(flatten = TRUE) {
   combos <- c(paste("BEF", reg_date(FALSE,FALSE)),
               paste("AFT", reg_date(FALSE,FALSE)),
@@ -198,6 +256,18 @@ reg_date_range <- function(flatten = TRUE) {
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
 #' @return Either a single regex string or a vector of them
+#' @tests
+#' expect_equal(grepl(reg_date_approximated(), "ABT 14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_approximated(), "CAL 14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date_approximated(), "EST JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_approximated(), "ABT 14 JAN 2005 AND 2007"), FALSE)
+#' expect_equal(grepl(reg_date_approximated(), "EST 5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_approximated(), "CAL  8 NOV 1956"), FALSE)
+#' expect_equal(grepl(reg_date_approximated(), "ABT 2005"), TRUE)
+#' expect_equal(grepl(reg_date_approximated(), "CAL 15 NOV 125"), TRUE)
+#' expect_equal(grepl(reg_date_approximated(), " EST JAN 1901"), FALSE)
+#' expect_equal(grepl(reg_date_approximated(), "CAL 5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date_approximated(), " CAL 5 JUL 2005"), FALSE)
 reg_date_approximated <- function(flatten = TRUE) {
   combos <- c(paste("ABT", reg_date(FALSE,FALSE)),
               paste("CAL", reg_date(FALSE,FALSE)),
@@ -212,6 +282,31 @@ reg_date_approximated <- function(flatten = TRUE) {
 #' Construct the regex pattern for DATE_VALUE values
 #'
 #' @return Either a single regex string or a vector of them
+#' @tests
+#' expect_equal(grepl(reg_date_value(), "14 JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "MAR 1901"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "2010"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "FROM 14 FEB 2005"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "TO JAN 2005"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "FROM 14 JAN 2005/06 TO 2007"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "BEF 5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "AFT 8 NOV 1956/57"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "BET 2005 AND MAR 2008"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "CAL 15 NOV 1925"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "EST JAN 1901/58"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "ABT 5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "14 JAN 205"), TRUE)
+#' expect_equal(grepl(reg_date_value(), "MAR 1901 "), FALSE)
+#' expect_equal(grepl(reg_date_value(), " 2010"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "FROM 14 FEBR 2005"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "TO  JAN 2005"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "FROM 14 JAN 2005 AND 2007"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "BEF 5 JUL 2005 "), FALSE)
+#' expect_equal(grepl(reg_date_value(), "AFT 8 NOV 1956/1957"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "BET 2005 TO MAR 2008"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "CAL 15 NOV 1925/"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "14TH JAN 1901"), FALSE)
+#' expect_equal(grepl(reg_date_value(), "ABT 5  JUL 2005"), FALSE)
 reg_date_value <- function() {
   
   c(reg_date(FALSE,FALSE),

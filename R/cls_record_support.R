@@ -104,7 +104,7 @@ class_repository_citation <- S7::new_class(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@notes, "@notes", class_note),
       chk_input_pattern(self@repo_uid, "@repo_uid", reg_uuid(TRUE)),
-      chk_input_size(self@source_call_number, "@source_call_number", min_char = 1)
+      chk_input_size(self@source_call_number, "@source_call_number", min_val = 1)
     )
   }
 )
