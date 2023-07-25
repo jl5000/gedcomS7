@@ -13,7 +13,8 @@ class_address(
 )
 }
 \arguments{
-\item{full}{A full address as it would appear on a mailing label. For example:
+\item{full}{A full address as it would appear on a mailing label, with lines separated
+by \n. For example:
 "The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"}
 
 \item{city}{Optional. The city component of the address.}

@@ -3,7 +3,8 @@ NULL
 
 #' Create an address object
 #' 
-#' @param full A full address as it would appear on a mailing label. For example:
+#' @param full A full address as it would appear on a mailing label, with lines separated
+#' by \n. For example:
 #' "The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"
 #' @param city Optional. The city component of the address.
 #' @param state Optional. The state component of the address.
