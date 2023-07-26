@@ -1,8 +1,25 @@
 #' @include cls_validators.R
 NULL
 
-#' @export
+#' Create a note structure object
+#' 
+#' @details The shared note (SNOTE) alternative of this structure is defined
+#' separately in relevant structures.
+#' 
+#' In addition, this class does not include source citations as it
+#' results in infinite nesting.
+#' https://github.com/RConsortium/OOP-WG/issues/250
+#' 
+#' @param text A character string. New lines are created with \n.
+#' @param language Optional. Language tags as defined in BCP 47.
+#' @param media_type Optional. The media type as defined in RFC 2045.
+#' @param alt_text Optional. A list of `class_translation_txt` objects.
+#' One for each alternate translation of the text.
+#' 
+#' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @include cls_translation.R
+#' @export
+#' @tests
 class_note <- S7::new_class(
   "class_note",
   package = "gedcomS7",
