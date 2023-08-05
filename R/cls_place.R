@@ -14,7 +14,7 @@ class_place <- S7::new_class(
     lat_long = S7::class_character,
     external_ids = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     
     lat = S7::new_property(S7::class_character,
                            getter = function(self){
@@ -64,7 +64,7 @@ class_place <- S7::new_class(
       chk_input_size(names(self@external_ids), "@external_ids names", length(self@external_ids), length(self@external_ids)),
       #TODO: EXID and TYPE pattern
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note)
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )

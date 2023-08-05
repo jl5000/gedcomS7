@@ -70,9 +70,9 @@ class_record_fam <- S7::new_class(
     associations = S7::class_list,
     subm_uids = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
-    media_links = S7::class_list,
+    media_links = S7::class_list | S7::class_character,
     
     relationship_date = S7::new_property(
       S7::class_character,
@@ -128,9 +128,9 @@ class_record_fam <- S7::new_class(
       chk_input_S7classes(self@facts, "@facts", class_fact_fam),
       chk_input_S7classes(self@non_events, "@non_events", class_non_event),
       chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link)
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   })
 
@@ -153,9 +153,9 @@ class_record_indi <- S7::new_class(
     anci_uids = S7::class_character,
     desi_uids = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
-    media_links = S7::class_list,
+    media_links = S7::class_list | S7::class_character,
     
     primary_name = S7::new_property(
       S7::class_character,
@@ -272,9 +272,9 @@ class_record_indi <- S7::new_class(
       chk_input_S7classes(self@non_events, "@non_events", class_non_event),
       chk_input_S7classes(self@family_links, "@family_links", class_spouse_family_link),
       chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link)
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   }
 )
@@ -288,7 +288,7 @@ class_record_media <- S7::new_class(
   properties = list(
     files = S7::class_list,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
     
     as_ged = S7::new_property(
@@ -311,7 +311,7 @@ class_record_media <- S7::new_class(
     c(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@files, "@files", class_media_file),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation)
     )
   }
@@ -331,7 +331,7 @@ class_record_repo <- S7::new_class(
     faxes = S7::class_character,
     web_pages = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -362,7 +362,7 @@ class_record_repo <- S7::new_class(
       chk_input_size(self@faxes, "@faxes", min_val = 1),
       chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note)
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )
@@ -421,7 +421,7 @@ class_record_sour <- S7::new_class(
     events_recorded = S7::class_list,
     responsible_agency = S7::class_character,
     data_note_uids = S7::class_character,
-    data_notes = S7::class_list,
+    data_notes = S7::class_list | S7::class_character,
     originator = S7::class_character,
     full_title = S7::class_character,
     short_title = S7::class_character,
@@ -429,8 +429,8 @@ class_record_sour <- S7::new_class(
     source_text = NULL | class_translation_txt,
     repo_citations = S7::class_list,
     note_uids = S7::class_character,
-    notes = S7::class_list,
-    media_links = S7::class_list,
+    notes = S7::class_list | S7::class_character,
+    media_links = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -470,10 +470,10 @@ class_record_sour <- S7::new_class(
       chk_input_pattern(self@data_note_uids, "@data_note_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@events_recorded, "@events_recorded", class_events_recorded),
-      chk_input_S7classes(self@data_notes, "@data_notes", class_note),
+      chk_input_S7classes(self@data_notes, "@data_notes", class_note, ".+"),
       chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
-      chk_input_S7classes(self@notes, "@notes", class_note),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link)
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   })
 
@@ -492,10 +492,10 @@ class_record_subm <- S7::new_class(
     emails = S7::class_character,
     faxes = S7::class_character,
     web_pages = S7::class_character,
-    media_links = S7::class_list,
+    media_links = S7::class_list | S7::class_character,
     language = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -529,8 +529,8 @@ class_record_subm <- S7::new_class(
       chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       #TODO: language pattern
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link),
-      chk_input_S7classes(self@notes, "@notes", class_note)
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE)),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )

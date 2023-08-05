@@ -39,7 +39,7 @@ class_change_date <- S7::new_class(
   parent = class_creation_date,
   properties = list(
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -57,7 +57,7 @@ class_change_date <- S7::new_class(
   validator = function(self) {
     c(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note)
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )

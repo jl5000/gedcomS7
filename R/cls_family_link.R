@@ -10,7 +10,7 @@ class_spouse_family_link <- S7::new_class(
   properties = list(
     fam_uid = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -27,7 +27,7 @@ class_spouse_family_link <- S7::new_class(
       chk_input_size(self@fam_uid, "@fam_uid", 1, 1),
       chk_input_pattern(self@fam_uid, "@fam_uid", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note)
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )

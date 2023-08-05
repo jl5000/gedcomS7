@@ -86,7 +86,7 @@ class_gedcomS7 <- S7::new_class(
     gedcom_copyright = S7::class_character,
     default_language = S7::class_character,
     default_place_form = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     note_uids = S7::class_character,
     
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -176,7 +176,7 @@ class_gedcomS7 <- S7::new_class(
       chk_input_pattern(self@subm_uid, "@subm_uid", reg_uuid(TRUE)),
       chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
       chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@subm, "@subm", class_record_subm),
       chk_input_S7classes(self@indi, "@indi", class_record_indi),
       chk_input_S7classes(self@fam, "@fam", class_record_fam),

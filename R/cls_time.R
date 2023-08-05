@@ -35,7 +35,7 @@ class_time <- S7::new_class(
       chk_input_size(self@hour, "@hour", 1, 1, 0, 23),
       chk_input_size(self@minute, "@minute", 1, 1, 0, 59),
       chk_input_size(self@second, "@second", 0, 1, 0, 59),
-      chk_input_size(self@fraction, "@fraction", 0, 1, 1, 9),
+      chk_input_size(self@fraction, "@fraction", 0, 1, 1),
       chk_input_size(self@utc, "@utc", 1, 1)
     )
   })

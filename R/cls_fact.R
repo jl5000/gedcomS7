@@ -28,9 +28,9 @@ class_fact <- S7::new_class(
     sorting_date = NULL | class_date_value,
     associations = S7::class_list,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
-    media_links = S7::class_list,
+    media_links = S7::class_list | S7::class_character,
     unique_ids = S7::class_character,
     
     restrictions = S7::new_property(S7::class_character,
@@ -111,9 +111,9 @@ class_fact <- S7::new_class(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@unique_uids, "@unique_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link)
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   }
 )

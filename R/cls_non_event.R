@@ -11,7 +11,7 @@ class_non_event <- S7::new_class(
     date_period = NULL | class_date_period | S7::class_character,
     date_phrase = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
     
     as_ged = S7::new_property(
@@ -35,7 +35,7 @@ class_non_event <- S7::new_class(
       chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_choice(self@event, "@event", val_event_types(FALSE)),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation)
     )
   }

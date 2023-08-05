@@ -12,7 +12,7 @@ class_association <- S7::new_class(
     relation_is = S7::class_character,
     relation_phrase = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list,
+    notes = S7::class_list | S7::class_character,
     citations = S7::class_list,
     
     as_ged = S7::new_property(
@@ -42,7 +42,7 @@ class_association <- S7::new_class(
       chk_input_choice(self@relation_is, "@relation_is", val_roles()),
       chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_S7classes(self@citations, "@citations", class_citation)
     )
   }
