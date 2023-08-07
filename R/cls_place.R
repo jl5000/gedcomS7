@@ -14,7 +14,7 @@ class_place <- S7::new_class(
     lat_long = S7::class_character,
     external_ids = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     
     lat = S7::new_property(S7::class_character,
                            getter = function(self){
@@ -44,7 +44,7 @@ class_place <- S7::new_class(
                                   sprintf("2 LONG %s", self@long),
                                   named_vec_to_ged(self@external_ids, "EXID", "TYPE") |> increase_level(by = 1),
                                   sprintf("1 SNOTE %s", self@note_uids),
-                                  lst_to_ged(self@notes) |> increase_level(by = 1)
+                                  obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
                                 )
                               })
   ),

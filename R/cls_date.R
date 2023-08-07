@@ -97,7 +97,7 @@ class_date_approx <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = class_date_calendar | S7::class_character,
+    date = S7::class_character | class_date_calendar,
     about = S7::new_property(S7::class_logical, default = TRUE),
     calc = S7::new_property(S7::class_logical, default = FALSE),
     est = S7::new_property(S7::class_logical, default = FALSE),
@@ -133,8 +133,8 @@ class_date_period <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    start_date = NULL | class_date_calendar | S7::class_character,
-    end_date = NULL | class_date_calendar | S7::class_character,
+    start_date = S7::class_character | class_date_calendar,
+    end_date = S7::class_character | class_date_calendar,
     
     as_val = S7::new_property(
       S7::class_character,
@@ -193,10 +193,10 @@ class_date_value <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = NULL | class_date_calendar | class_date_period |
-           class_date_range | class_date_approx | S7::class_character,
+    date = S7::class_character | class_date_calendar | class_date_period |
+           class_date_range | class_date_approx,
     date_phrase = S7::class_character,
-    time = NULL | class_time | S7::class_character,
+    time = S7::class_character | class_time,
     sorting = S7::new_property(S7::class_logical, default = FALSE),
     
     as_ged = S7::new_property(

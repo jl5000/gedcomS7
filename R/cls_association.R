@@ -12,8 +12,8 @@ class_association <- S7::new_class(
     relation_is = S7::class_character,
     relation_phrase = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
-    citations = S7::class_list,
+    notes = S7::class_list | class_note | S7::class_character,
+    citations = S7::class_list | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -26,8 +26,8 @@ class_association <- S7::new_class(
           sprintf("1 ROLE %s", self@relation_is),
           sprintf("2 PHRASE %s", self@relation_phrase),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1),
-          lst_to_ged(self@citations) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
   ),

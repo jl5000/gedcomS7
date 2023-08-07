@@ -9,14 +9,14 @@ class_gedcom_source <- S7::new_class(
     product_name = S7::class_character,
     product_version = S7::class_character,
     business_name = S7::class_character,
-    business_address = NULL | class_address | S7::class_character,
+    business_address = S7::class_character | class_address,
     phone_numbers = S7::class_character,
     emails = S7::class_character,
     faxes = S7::class_character,
     web_pages = S7::class_character,
     data_name = S7::class_character,
-    data_pubdate = NULL | class_date_exact | S7::class_character,
-    data_pubtime = NULL | class_time | S7::class_character,
+    data_pubdate = S7::class_character | class_date_exact,
+    data_pubtime = S7::class_character | class_time,
     data_copyright = S7::class_character,
     
     as_ged = S7::new_property(
@@ -80,13 +80,13 @@ class_gedcomS7 <- S7::new_class(
     ext_tags = S7::class_character,
     source = NULL | class_gedcom_source,
     destination = S7::class_character,
-    creation_date = NULL | class_date_exact | S7::class_character,
-    creation_time = NULL | class_time | S7::class_character,
+    creation_date = S7::class_character | class_date_exact,
+    creation_time = S7::class_character | class_time,
     subm_uid = S7::class_character,
     gedcom_copyright = S7::class_character,
     default_language = S7::class_character,
     default_place_form = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     note_uids = S7::class_character,
     
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -136,7 +136,7 @@ class_gedcomS7 <- S7::new_class(
           sprintf("1 LANG %s", self@default_language),
           rep("1 PLAC", length(self@default_place_form) > 0),
           sprintf("2 FORM %s", self@default_place_form),
-          lst_to_ged(self@notes) |> increase_level(by = 1),
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids)
         )
         

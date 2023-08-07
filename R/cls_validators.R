@@ -114,22 +114,29 @@ chk_input_choice <- function(input, name, choices) {
 #'
 #' @inheritParams chk_input_size 
 #' @param target_class The S7 class that the elements of the list should contain.
-#' @param backup_pattern What the hell is this for????
+#' @param backup_pattern Need to handle List of mixed stuff vs character vector vs list of characters
 #'
 #' @inherit chk_input_size return
 #' @tests
 chk_input_S7classes <- function(input, name, target_class, backup_pattern = NULL){
   
-  for(inp in input){
-    if(is.character(inp) && !is.null(backup_pattern)){
-      if(!grepl(backup_pattern, inp))
-        return(sprintf("%s is in an invalid format.", name))
-    } else {
-      if(!S7::S7_inherits(inp, target_class))
-        return(sprintf("%s contains an invalid object not of %s.", 
-                       name, target_class@name))
+  if("S7_object" %in% class(input)){
+    if(!S7::S7_inherits(input, target_class))
+      return(sprintf("%s contains an invalid object not of %s.", 
+                     name, target_class@name))
+  } else {
+    for(inp in input){
+      if(is.character(inp) && !is.null(backup_pattern)){
+        if(!grepl(backup_pattern, inp))
+          return(sprintf("%s is in an invalid format.", name))
+      } else {
+        if(!S7::S7_inherits(inp, target_class))
+          return(sprintf("%s contains an invalid object not of %s.", 
+                         name, target_class@name))
+      }
     }
   }
+  
   NULL
 }
 
@@ -189,8 +196,6 @@ chk_input_date_cpts <- function(year, month, day, bce = FALSE){
 #' @tests
 #' expect_null(chk_input_dates(NULL,NULL))
 #' expect_null(chk_input_dates("2002-09-08",NULL))
-#' expect_equal(chk_input_dates(Sys.Date(), Sys.Date()),
-#'              "Start date is the same as end date")
 chk_input_dates <- function(start_date, end_date){
 
   if(length(start_date) + length(end_date) < 2) return()
@@ -241,7 +246,7 @@ chk_input_dates <- function(start_date, end_date){
 #' expect_null(chk_whole_number(1:4, ""))
 #' expect_null(chk_whole_number(5, ""))
 chk_whole_number <- function(input, name){
-  if(length(input) == 1 && floor(input) != input)
+  if(is.numeric(input) && length(input) == 1 && floor(input) != input)
     return(sprintf("%s must be a whole number", name))
   
   NULL

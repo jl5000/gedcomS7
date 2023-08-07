@@ -8,7 +8,7 @@ class_repository_citation <- S7::new_class(
   package = "gedcomS7",
   properties = list(
     repo_uid = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     note_uids = S7::class_character,
     source_call_number = S7::class_character,
     # media = S7::class_character, TODO: too much nesting
@@ -20,7 +20,7 @@ class_repository_citation <- S7::new_class(
         c(
           sprintf("0 REPO %s", self@repo_uid),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1),
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 CALN %s", self@source_call_number)
           # sprintf("2 MEDI %s", self@media),
           # sprintf("3 PHRASE %s", self@media_phrase)

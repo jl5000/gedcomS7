@@ -11,6 +11,10 @@ NULL
 #' @return An S7 object representing a GEDCOM text translation substructure.
 #' @export
 #' @tests
+#' expect_error(class_translation_txt(), regexp = "@text has too few elements")
+#' expect_error(class_translation_txt(letters[1:2]), regexp = "@text has too many elements")
+#' expect_error(class_translation_txt("test"), regexp = "A text language or media_type must be defined")
+#' expect_snapshot_value(class_translation_txt("test", language = "en")@as_ged, "json2")
 class_translation_txt <- S7::new_class(
   "class_translation_txt",
   package = "gedcomS7",

@@ -8,11 +8,11 @@ class_non_event <- S7::new_class(
   package = "gedcomS7",
   properties = list(
     event = S7::class_character,
-    date_period = NULL | class_date_period | S7::class_character,
+    date_period = S7::class_character | class_date_period,
     date_phrase = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
-    citations = S7::class_list,
+    notes = S7::class_list | class_note | S7::class_character,
+    citations = S7::class_list | class_citation | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -22,8 +22,8 @@ class_non_event <- S7::new_class(
           sprintf("1 DATE %s", self@date_period),
           sprintf("2 PHRASE %s", self@date_phrase),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1),
-          lst_to_ged(self@citations) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
   ),

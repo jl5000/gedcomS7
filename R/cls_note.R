@@ -13,13 +13,31 @@ NULL
 #' @param text A character string. New lines are created with \n.
 #' @param language Optional. Language tags as defined in BCP 47.
 #' @param media_type Optional. The media type as defined in RFC 2045.
-#' @param alt_text Optional. A list of `class_translation_txt` objects.
+#' @param alt_text Optional. A `class_translation_txt` object or a list of them.
 #' One for each alternate translation of the text.
 #' 
 #' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @include cls_translation.R
 #' @export
 #' @tests
+#' expect_error(class_note(), regexp = "@text has too few elements")
+#' expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
+#' expect_snapshot_value(class_note("test")@as_ged, "json2")
+#' expect_snapshot_value(class_note("test", language = "en")@as_ged, "json2")
+#' expect_snapshot_value(class_note("test", 
+#'                                  language = "en",
+#'                                  alt_text = class_translation_txt("test",
+#'                                                                   language = "en"))@as_ged, "json2")
+#' expect_snapshot_value(class_note("test", 
+#'                                  language = "en",
+#'                                  alt_text = list(class_translation_txt("test",
+#'                                                                   language = "en"),
+#'                                                  class_translation_txt("test2",
+#'                                                                   language = "en")))@as_ged, "json2")
+#' expect_error(class_note("test", 
+#'                         language = "en",
+#'                         alt_text = class_address("street"))@as_ged,
+#'              regexp = "@alt_text must be <list> or <gedcomS7::class_translation_txt>")
 class_note <- S7::new_class(
   "class_note",
   package = "gedcomS7",
@@ -27,8 +45,8 @@ class_note <- S7::new_class(
     text = S7::class_character,
     language = S7::class_character,
     media_type = S7::class_character,
-    alt_text = S7::class_list,
-    #citations = S7::class_list,
+    alt_text = S7::class_list | class_translation_txt,
+    #citations = S7::class_list | class_citation | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -37,8 +55,8 @@ class_note <- S7::new_class(
           sprintf("0 NOTE %s", self@text),
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
-          lst_to_ged(self@alt_text) |> increase_level(by = 1)
-          #   lst_to_ged(self@citations) |> increase_level(by = 1)
+          obj_to_ged(self@alt_text) |> increase_level(by = 1)
+          #   obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
   ),

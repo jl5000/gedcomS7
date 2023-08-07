@@ -13,7 +13,7 @@ chk_input_S7classes(input, name, target_class, backup_pattern = NULL)
 
 \item{target_class}{The S7 class that the elements of the list should contain.}
 
-\item{backup_pattern}{What the hell is this for????}
+\item{backup_pattern}{Need to handle List of mixed stuff vs character vector vs list of characters}
 }
 \value{
 Either a character string giving an error message, or NULL.

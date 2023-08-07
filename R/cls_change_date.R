@@ -7,9 +7,9 @@ class_creation_date <- S7::new_class(
   "class_creation_date",
   package = "gedcomS7",
   properties = list(
-    date = S7::new_property(NULL | class_date_exact | S7::class_character, 
+    date = S7::new_property(S7::class_character | class_date_exact, 
                             default = date_exact_current()),
-    time = NULL | class_time | S7::class_character,
+    time = S7::class_character | class_time,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -39,7 +39,7 @@ class_change_date <- S7::new_class(
   parent = class_creation_date,
   properties = list(
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -49,7 +49,7 @@ class_change_date <- S7::new_class(
           sprintf("1 DATE %s", date_to_val(self@date)),
           sprintf("2 TIME %s", self@time),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
         
       })

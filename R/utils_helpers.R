@@ -84,6 +84,12 @@ chronify <- function(x){
   as.character(x)[1]
 }
 
+#' Increase the level of a vector of GEDCOM lines
+#'
+#' @param ged A character vector of GEDCOM lines.
+#' @param by The number of levels to increment.
+#'
+#' @return The vector of GEDCOM lines with incremented levels.
 increase_level <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   
@@ -93,20 +99,41 @@ increase_level <- function(ged, by = 1){
 }
 
 
-lst_to_ged <- function(lst){
-  if(length(lst) == 0) return(character())
-
-  lapply(lst, `@`, as_ged) |>
-    unlist()
-}
-
+#' Convert an input into a vector of GEDCOM lines
+#'
+#' @param obj Either an atomic vector, S7 class object, or list.
+#' Any S7 class objects must have an `as_ged()` method.
+#' @param tag If the obj contains any atomic elements, then this
+#' will specify what tag they are recorded against.
+#'
+#' @return
 obj_to_ged <- function(obj, tag = NULL){
-  if(is.null(obj)) return(character())
-  if(is.character(obj) && !is.null(tag))
-    return(sprintf("0 %s %s", tag, obj))
+
+  if(length(obj) == 0) {
     
-  obj@as_ged
+    return(character())
+    
+  } else {
+    if(is.atomic(obj)){
+      if(is.null(tag)) stop("Object contains atomic elements - a tag is required")
+      return(sprintf("0 %s %s", tag, obj))
+      
+    } else if("S7_object" %in% class(obj)){
+      
+      return(obj@as_ged)
+      
+    } else if(is.list(obj)){
+      
+      out = character()
+      for(input in obj){
+        out <- c(out, obj_to_ged(input, tag))
+      }
+      return(out)
+    }
+    
+  }
 }
+
 
 named_vec_to_ged <- function(vec, tag1, tag2){
   ged <- character()

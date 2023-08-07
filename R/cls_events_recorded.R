@@ -8,9 +8,9 @@ class_events_recorded <- S7::new_class(
   package = "gedcomS7",
   properties = list(
     events = S7::class_character,
-    date_period = NULL | class_date_period | S7::class_character,
+    date_period = S7::class_character | class_date_period,
     date_phrase = S7::class_character,
-    jurisdiction_place = NULL | class_place | S7::class_character,
+    jurisdiction_place = S7::class_character | class_place,
     
     as_ged = S7::new_property(
       S7::class_character,

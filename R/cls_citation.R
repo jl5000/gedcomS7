@@ -9,16 +9,16 @@ class_citation <- S7::new_class(
   properties = list(
     sour_uid = S7::class_character,
     where = S7::class_character,
-    date = NULL | class_date_value,
-    source_text = S7::class_list,
+    date = S7::class_character | class_date_value,
+    source_text = S7::class_list | class_translation_txt | S7::class_character,
     event_type = S7::class_character,
     event_phrase = S7::class_character,
     role = S7::class_character,
     role_phrase = S7::class_character,
     certainty = S7::class_character,
-    media_links = S7::class_list | S7::class_character,
+    media_links = S7::class_list | class_media_link | S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -29,15 +29,15 @@ class_citation <- S7::new_class(
           rep("1 DATA", length(self@date) + 
                 length(self@source_text) > 0),
           obj_to_ged(self@date) |> increase_level(by = 2),
-          lst_to_ged(self@source_text) |> increase_level(by = 2),
+          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 2),
           sprintf("1 EVEN %s", self@event_type),
           sprintf("2 PHRASE %s", self@event_phrase),
           sprintf("2 ROLE %s", self@role),
           sprintf("3 PHRASE %s", self@role_phrase),
           sprintf("1 QUAY %s", self@certainty),
-          lst_to_ged(self@media_links) |> increase_level(by = 1),
+          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         ) 
       })
   ),

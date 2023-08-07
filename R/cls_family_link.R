@@ -10,7 +10,7 @@ class_spouse_family_link <- S7::new_class(
   properties = list(
     fam_uid = S7::class_character,
     note_uids = S7::class_character,
-    notes = S7::class_list | S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -18,7 +18,7 @@ class_spouse_family_link <- S7::new_class(
         c(
           sprintf("0 FAMS %s", self@fam_uid),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
       })
   ),
@@ -54,7 +54,7 @@ class_child_family_link <- S7::new_class(
           sprintf("1 STAT %s", self@certainty),
           sprintf("2 PHRASE %s", self@certainty_phrase),
           sprintf("1 SNOTE %s", self@note_uids),
-          lst_to_ged(self@notes) |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
       })
   ),
