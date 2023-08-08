@@ -38,6 +38,12 @@ NULL
 #'                         language = "en",
 #'                         alt_text = class_address("street"))@as_ged,
 #'              regexp = "@alt_text must be <list> or <gedcomS7::class_translation_txt>")
+#' expect_error(class_note("test", 
+#'                         language = "en",
+#'                         alt_text = list(class_translation_txt("test",
+#'                                                               language = "en"),
+#'                                         class_address("street"))),
+#'              regexp = "@alt_text contains an invalid object not of class_translation_txt")
 class_note <- S7::new_class(
   "class_note",
   package = "gedcomS7",

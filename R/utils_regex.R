@@ -66,7 +66,7 @@ reg_time <- function(only = TRUE){
   mm <- "(0|1|2|3|4|5)\\d"
   ss <- mm
   fs <- "\\d+"
-  reg <- sprintf("(%s):(%s)(:(%s)(\\.(%s))?)?", hh, mm, ss, fs)
+  reg <- sprintf("(%s):(%s)(:(%s)(\\.(%s))?)?Z?", hh, mm, ss, fs)
   if(only) reg <- anchor_it(reg)
   reg
 }

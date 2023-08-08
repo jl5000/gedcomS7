@@ -1,7 +1,27 @@
 #' @include cls_validators.R
 NULL
 
+#' Create a multimedia link object
+#' 
+#' @details
+#' The properties @left and @top indicate the top left corner of the region to display.
+#' The properties @width and @height indicate the dimensions of the region to display.
+#' 
+#' If the multimedia record contains multiple files, then the crop parameters only 
+#' applies to the first file.
+#'  
+#' @param media_uid The UID of a multimedia record.
+#' @param title The title of the multimedia record. This will supercede any title given
+#' in the record.
+#' @param crop Whether to crop the multimedia to a specific area.
+#' @param top The number of pixels to omit from the top side of the image.
+#' @param left The number of pixels to omit from the left side of the image.
+#' @param height The height in pixels of the cropped region.
+#' @param width The width in pixels of the cropped region.
+#' 
+#' @return An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
+#' @tests
 class_media_link <- S7::new_class(
   "class_media_link",
   package = "gedcomS7",

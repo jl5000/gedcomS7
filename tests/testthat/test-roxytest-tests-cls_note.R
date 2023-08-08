@@ -2,7 +2,7 @@
 
 # File R/cls_note.R: @tests
 
-test_that("Function class_note() @ L41", {
+test_that("Function class_note() @ L47", {
   expect_error(class_note(), regexp = "@text has too few elements")
   expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
   expect_snapshot_value(class_note("test")@as_ged, "json2")
@@ -21,5 +21,11 @@ test_that("Function class_note() @ L41", {
                           language = "en",
                           alt_text = class_address("street"))@as_ged,
                regexp = "@alt_text must be <list> or <gedcomS7::class_translation_txt>")
+  expect_error(class_note("test", 
+                          language = "en",
+                          alt_text = list(class_translation_txt("test",
+                                                                language = "en"),
+                                          class_address("street"))),
+               regexp = "@alt_text contains an invalid object not of class_translation_txt")
 })
 
