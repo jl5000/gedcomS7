@@ -24,12 +24,13 @@ NULL
 #' @tests
 #' expect_error(class_media_link(), regexp = "@media_uid has too few elements")
 #' expect_error(class_media_link("@O4@"), regexp = "@media_uid is in an invalid format")
-#' expect_snapshot_value(class_media_link(uuid::UUIDgenerate())@as_ged, "json2")
-#' expect_snapshot_value(class_media_link(uuid::UUIDgenerate(), title = "new title")@as_ged, "json2")
-#' expect_snapshot_value(class_media_link(uuid::UUIDgenerate(), 
+#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad")@as_ged, "json2")
+#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
+#'                                        title = "new title")@as_ged, "json2")
+#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
 #'                                        title = "new title",
 #'                                        crop = TRUE)@as_ged, "json2")
-#' expect_snapshot_value(class_media_link(uuid::UUIDgenerate(), 
+#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
 #'                                        title = "new title",
 #'                                        crop = TRUE,
 #'                                        top = 5, left = 200)@as_ged, "json2")
