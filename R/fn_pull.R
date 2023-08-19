@@ -398,17 +398,11 @@ extract_facts_famg <- function(rec_lines){
 extract_address <- function(lines, location = NULL){
   
   class_address(
-    local_address_lines = c(find_ged_values(lines, c(location, "ADDR","ADR1")),
-                            find_ged_values(lines, c(location, "ADDR","ADR2")),
-                            find_ged_values(lines, c(location, "ADDR","ADR3"))),
+    full = find_ged_values(lines, c(location, "ADDR")),
     city = find_ged_values(lines, c(location, "ADDR","CITY")),
     state = find_ged_values(lines, c(location, "ADDR","STAE")),
     postal_code = find_ged_values(lines, c(location, "ADDR","POST")),
-    country = find_ged_values(lines, c(location, "ADDR","CTRY")),
-    emails = find_ged_values(lines, c(location, "EMAIL")),
-    faxes = find_ged_values(lines, c(location, "FAX")),
-    phone_numbers = find_ged_values(lines, c(location, "PHON")),
-    web_pages = find_ged_values(lines, c(location, "WWW|URL"))
+    country = find_ged_values(lines, c(location, "ADDR","CTRY"))
   )
 }
 
@@ -460,3 +454,18 @@ extract_family_links <- function(rec_lines){
   })
 }
 
+extract_notes <- function(rec_lines){
+  note_lst <- find_ged_values(rec_lines, "NOTE", return_list = TRUE)
+  if(length(note_lst) == 0) return(list())
+  
+  lapply(note_lst, \(x){
+    class_note(
+      text = find_ged_values(x, "NOTE"),
+      language = find_ged_values(x, c("NOTE","LANG")),
+      media_type = find_ged_values(x, c("NOTE","MIME")),
+      alt_text = extract_translations(x)
+    )
+  })
+  
+  
+}

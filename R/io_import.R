@@ -193,7 +193,7 @@ create_gedcom <- function(hd_lines){
       phone_numbers = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","PHON")),
       emails = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","EMAIL")),
       faxes = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","FAX")),
-      web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW")),
+      web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW|URL")),
       data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
       data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
       data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","TIME")),
@@ -204,16 +204,16 @@ create_gedcom <- function(hd_lines){
   class_gedcomS7(
     gedcom_version = find_ged_values(hd_lines, c("HEAD","GEDC","VERS")),
     ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
-    source_details = sour,
-    receiving_system = find_ged_values(hd_lines, c("HEAD","DEST")),
+    source = sour,
+    destination = find_ged_values(hd_lines, c("HEAD","DEST")),
     creation_date = find_ged_values(hd_lines, c("HEAD","DATE")) |> toupper(),
     creation_time = find_ged_values(hd_lines, c("HEAD","DATE","TIME")),
     subm_uid = find_ged_values(hd_lines, c("HEAD","SUBM")),
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
-    language = find_ged_values(hd_lines, c("HEAD","LANG")),
+    default_language = find_ged_values(hd_lines, c("HEAD","LANG")),
     default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
     notes = extract_notes(hd_lines, "HEAD"),
-    note_links = find_ged_values(hd_lines, c("HEAD","SNOTE"))
+    note_uids = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
   
 }
