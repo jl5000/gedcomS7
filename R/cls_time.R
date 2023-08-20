@@ -1,7 +1,30 @@
 #' @include cls_validators.R
 NULL
 
+#' Create a time object
+#' 
+#' @param hour The hour of the day given as an integer between 0 and 23.
+#' @param minute The minute of the hour given as an integer between 0 and 59.
+#' @param second Optional. The second of the minute given as an integer between 0 and 59.
+#' @param fraction Optional (if @second is provided). The fraction of the second given as 
+#' an integer.
+#' @param utc Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
+#' is in local time (FALSE).
+#' 
+#' @return An S7 object representing a GEDCOM time.
 #' @export
+#' @tests
+#' expect_error(class_time(), regexp = "@hour has too few elements.*@minute has too few elements")
+#' expect_error(class_time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
+#' expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
+#' expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction has too many elements")
+#' expect_error(class_time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
+#' expect_equal(class_time(hour = 10, minute = 59)@as_val, "10:59Z")
+#' expect_equal(class_time(5, 6)@as_val, "05:06Z")
+#' expect_equal(class_time(5, 59, 19)@as_val, "05:59:19Z")
+#' expect_equal(class_time(0, 0, 0, 6)@as_val, "00:00:00.6Z")
+#' expect_equal(class_time(8, 14, 43, 6543)@as_val, "08:14:43.6543Z")
+#' expect_equal(class_time(14, 28, utc = FALSE)@as_val, "14:28")
 class_time <- S7::new_class(
   "class_time",
   package = "gedcomS7",

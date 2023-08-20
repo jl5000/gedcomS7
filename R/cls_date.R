@@ -3,7 +3,23 @@ NULL
 
 class_date <- S7::new_class("class_date")
 
+
+#' Create a GEDCOM Exact Date object
+#' 
+#' @param year The year given as an integer.
+#' @param month The month of the year given as an integer between 1 and 12.
+#' @param day The day of the month given as an integer between 1 and 31.
+#' 
+#' @return An S7 object representing a GEDCOM Exact Date.
 #' @export
+#' @tests
+#' expect_error(class_date_exact(), regexp = "@day has too few.*@month has too few.*@year has too few")
+#' expect_error(class_date_exact(2001), regexp = "@day has too few.*@month has too few")
+#' expect_error(class_date_exact(2001, 5), regexp = "@day has too few")
+#' expect_error(class_date_exact(2001, 5, 32), regexp = "Invalid date")
+#' expect_equal(class_date_exact(2001, 5, 2)@as_val, "2 MAY 2001")
+#' expect_equal(class_date_exact(28, 7, 12)@as_val, "12 JUL 28")
+#' expect_equal(class_date_exact(28, 7, 12)@as_date, as.Date("28-07-12"))
 class_date_exact <- S7::new_class(
   "class_date_exact", 
   package = "gedcomS7",
@@ -41,7 +57,12 @@ class_date_exact <- S7::new_class(
   }
 )
 
+#' Create a GEDCOM Exact Date object for today
+#' 
+#' @return An S7 object representing a GEDCOM Exact Date for today.
 #' @export
+#' @tests
+#' expect_equal(date_exact_current()@as_date, Sys.Date())
 date_exact_current <- function(){
   class_date_exact(year = as.integer(format(Sys.Date(), "%Y")),
                    month = as.integer(format(Sys.Date(), "%m")),
@@ -49,9 +70,31 @@ date_exact_current <- function(){
 }
 
 
+#' Create a GEDCOM Gregorian Date object
+#' 
+#' @param year The year given as an integer (greater than 0).
+#' @param month The month of the year given as an integer between 1 and 12.
+#' @param day The day of the month given as an integer between 1 and 31.
+#' @param bce Whether the date is Before the Common Era. This is FALSE by default,
+#' but if TRUE, only the year should be given.
+#' 
+#' @return An S7 object representing a GEDCOM Gregorian Date.
 #' @export
-class_date_calendar <- S7::new_class(
-  "class_date_calendar", 
+#' @tests
+#' expect_error(class_date_greg(), regexp = "@year has too few elements")
+#' expect_error(class_date_greg(2001, day = 15), regexp = "Day is defined without a month")
+#' expect_error(class_date_greg(day = 5), regexp = "@year has too few elements")
+#' expect_error(class_date_greg(month = 10), regexp = "@year has too few elements")
+#' expect_error(class_date_greg(2010, 13, 3), regexp = "@month has a value which is too high")
+#' expect_error(class_date_greg(2010, 1, 32), regexp = "@day has a value which is too high")
+#' expect_error(class_date_greg(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
+#' expect_equal(class_date_greg(2001, 5, 12)@as_val, "12 MAY 2001")
+#' expect_equal(class_date_greg(2004, 2, 29)@as_val, "29 FEB 2004")
+#' expect_equal(class_date_greg(2004, 8)@as_val, "AUG 2004")
+#' expect_equal(class_date_greg(2012)@as_val, "2012")
+#' expect_equal(class_date_greg(193, bce = TRUE)@as_val, "193 BCE")
+class_date_greg <- S7::new_class(
+  "class_date_greg", 
   package = "gedcomS7",
   parent = class_date,
   properties = list(
@@ -91,13 +134,30 @@ class_date_calendar <- S7::new_class(
   }
 )
 
+#' Create a GEDCOM Approximate Date object
+#' 
+#' @param date A Gregorian date given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' @param about Whether the date is near to the date given.
+#' @param calc Whether the date is calculated from other values.
+#' @param est Whether the date is near to the date given, and is calculated from other values.
+#' 
+#' @return An S7 object representing a GEDCOM Approximate Date.
 #' @export
+#' @tests
+#' expect_error(class_date_approx("hello"), regexp = "@date is in an invalid format")
+#' expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@as_val, 
+#'                               "CAL 12 MAY 2001")
+#' expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@as_val, 
+#'                               "ABT 29 FEB 2004")
+#' expect_equal(class_date_approx(class_date_greg(2004, 8), est = TRUE)@as_val, 
+#'                                "EST AUG 2004")
 class_date_approx <- S7::new_class(
   "class_date_approx", 
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = S7::class_character | class_date_calendar,
+    date = S7::class_character | class_date_greg,
     about = S7::new_property(S7::class_logical, default = TRUE),
     calc = S7::new_property(S7::class_logical, default = FALSE),
     est = S7::new_property(S7::class_logical, default = FALSE),
@@ -106,11 +166,11 @@ class_date_approx <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if(self@calc) {
-          paste("CAL", datetime_to_val(self@date))
+          paste("CAL", obj_to_val(self@date))
         } else if(self@est) {
-          paste("EST", datetime_to_val(self@date))
+          paste("EST", obj_to_val(self@date))
         } else if (self@about) {
-          paste("ABT", datetime_to_val(self@date))
+          paste("ABT", obj_to_val(self@date))
         } 
       }               
     )
@@ -121,32 +181,81 @@ class_date_approx <- S7::new_class(
       chk_input_size(self@about, "@about", 1, 1),
       chk_input_size(self@calc, "@calc", 1, 1),
       chk_input_size(self@est, "@est", 1, 1),
-      chk_input_pattern(self@date, "@date", reg_date_calendar())
+      chk_input_pattern(self@date, "@date", reg_date_gregorian())
     )
   }
 )
 
 
+#' Create a GEDCOM Date Period object
+#' 
+#' @param start_date The start of the period given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' @param end_date The end of the period given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' 
+#' @return An S7 object representing a GEDCOM Date Period.
 #' @export
+#' @tests
+#' expect_equal(class_date_period()@as_val, "")
+#' expect_error(class_date_period(""), regexp = "@start_date is in an invalid format")
+#' expect_error(class_date_period(end_date = ""), regexp = "@end_date is in an invalid format")
+#' expect_equal(class_date_period("2 JUL 1989")@as_val, "FROM 2 JUL 1989")
+#' expect_equal(class_date_period(end_date = "2 JUL 1989")@as_val, "TO 2 JUL 1989")
+#' expect_equal(
+#'   class_date_period(
+#'     start_date = class_date_greg(1995, 6, 1)
+#'   )@as_val, "FROM 1 JUN 1995")
+#' expect_equal(
+#'   class_date_period(
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   )@as_val, "TO 1 JUN 1995")
+#' expect_equal(
+#'   class_date_period(
+#'     start_date = class_date_greg(1990, 6, 1),
+#'     end_date = class_date_greg(1995, 3)
+#'   )@as_val, "FROM 1 JUN 1990 TO MAR 1995")
+#' expect_error(
+#'   class_date_period(
+#'     start_date = class_date_greg(1995, 6, 1),
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   ), regexp = "Start date is the same as end date")
+#' expect_error(
+#'   class_date_period(
+#'     start_date = class_date_greg(2005, 6, 1),
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   ), regexp = "Start date comes after end date")
+#' expect_error(
+#'   class_date_period(
+#'     start_date = class_date_greg(2005, 8, 1),
+#'     end_date = class_date_greg(2005, 6, 1)
+#'   ), regexp = "Start date comes after end date")
+#' expect_error(
+#'   class_date_period(
+#'     start_date = class_date_greg(2005, 8, 10),
+#'     end_date = class_date_greg(2005, 8, 1)
+#'   ), regexp = "Start date comes after end date")
 class_date_period <- S7::new_class(
   "class_date_period", 
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    start_date = S7::class_character | class_date_calendar,
-    end_date = S7::class_character | class_date_calendar,
+    start_date = S7::class_character | class_date_greg,
+    end_date = S7::class_character | class_date_greg,
     
     as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          paste("FROM", datetime_to_val(self@start_date), 
-                "TO", datetime_to_val(self@end_date))
+          paste("FROM", obj_to_val(self@start_date), 
+                "TO", obj_to_val(self@end_date))
         } else if (length(self@start_date) == 1) {
-          paste("FROM", datetime_to_val(self@start_date))
+          paste("FROM", obj_to_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("TO", datetime_to_val(self@end_date))
-        } 
+          paste("TO", obj_to_val(self@end_date))
+        } else {
+          ""
+        }
       }               
     )
   ),
@@ -154,16 +263,61 @@ class_date_period <- S7::new_class(
     c(
       chk_input_size(self@start_date, "@start_date", 0, 1),
       chk_input_size(self@end_date, "@end_date", 0, 1),
-      chk_input_size(Filter(Negate(is.null), list(self@start_date, self@end_date)), 
-                     "@start_date + @end_date", 1, 2),
-      chk_input_pattern(self@start_date, "@start_date", reg_date_calendar()),
-      chk_input_pattern(self@end_date, "@end_date", reg_date_calendar()),
+      chk_input_pattern(self@start_date, "@start_date", reg_date_gregorian()),
+      chk_input_pattern(self@end_date, "@end_date", reg_date_gregorian()),
       chk_input_dates(self@start_date, self@end_date)
     )
   }
 )
 
+#' Create a GEDCOM Date Range object
+#' 
+#' @param start_date The start of the range given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' @param end_date The end of the range given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' 
+#' @return An S7 object representing a GEDCOM Date Range.
 #' @export
+#' @tests
+#' expect_error(class_date_range(), regexp = "@start_date \\+ @end_date has too few elements")
+#' expect_error(class_date_range(""), regexp = "@start_date is in an invalid format")
+#' expect_error(class_date_range(end_date = ""), regexp = "@end_date is in an invalid format")
+#' expect_equal(class_date_range("2 JUL 1989")@as_val, "AFT 2 JUL 1989")
+#' expect_equal(class_date_range(end_date = "2 JUL 1989")@as_val, "BEF 2 JUL 1989")
+#' expect_equal(
+#'   class_date_range(
+#'     start_date = class_date_greg(1995, 6, 1)
+#'   )@as_val, "AFT 1 JUN 1995")
+#' expect_equal(
+#'   class_date_range(
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   )@as_val, "BEF 1 JUN 1995")
+#' expect_equal(
+#'   class_date_range(
+#'     start_date = class_date_greg(1990, 6, 1),
+#'     end_date = class_date_greg(1995, 3)
+#'   )@as_val, "BET 1 JUN 1990 AND MAR 1995")
+#' expect_error(
+#'   class_date_range(
+#'    start_date = class_date_greg(1995, 6, 1),
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   ), regexp = "Start date is the same as end date")
+#' expect_error(
+#'   class_date_range(
+#'     start_date = class_date_greg(2005, 6, 1),
+#'     end_date = class_date_greg(1995, 6, 1)
+#'   ), regexp = "Start date comes after end date")
+#' expect_error(
+#'   class_date_range(
+#'     start_date = class_date_greg(2005, 8, 1),
+#'     end_date = class_date_greg(2005, 6, 1)
+#'   ), regexp = "Start date comes after end date")
+#' expect_error(
+#'   class_date_range(
+#'     start_date = class_date_greg(2005, 8, 10),
+#'     end_date = class_date_greg(2005, 8, 1)
+#'   ), regexp = "Start date comes after end date")
 class_date_range <- S7::new_class(
   "class_date_range", 
   package = "gedcomS7",
@@ -174,16 +328,20 @@ class_date_range <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          paste("BET", datetime_to_val(self@start_date), 
-                "AND", datetime_to_val(self@end_date))
+          paste("BET", obj_to_val(self@start_date), 
+                "AND", obj_to_val(self@end_date))
         } else if (length(self@start_date) == 1) {
-          paste("AFT", datetime_to_val(self@start_date))
+          paste("AFT", obj_to_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("BEF", datetime_to_val(self@end_date))
+          paste("BEF", obj_to_val(self@end_date))
         } 
       }               
     )
-  )
+  ),
+  validator = function(self){
+    chk_input_size(Filter(\(x) length(x) != 0, list(self@start_date, self@end_date)), 
+                   "@start_date + @end_date", 1, 2)
+  }
 )
 
 #' @export
@@ -193,7 +351,7 @@ class_date_value <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = S7::class_character | class_date_calendar | class_date_period |
+    date = S7::class_character | class_date_greg | class_date_period |
            class_date_range | class_date_approx,
     date_phrase = S7::class_character,
     time = S7::class_character | class_time,
@@ -204,8 +362,8 @@ class_date_value <- S7::new_class(
       getter = function(self){
         if(self@sorting) tag <- "SDATE" else tag <- "DATE"
         c(
-          sprintf("0 %s %s", tag, datetime_to_val(self@date)),
-          sprintf("1 TIME %s", datetime_to_val(self@time)),
+          sprintf("0 %s %s", tag, obj_to_val(self@date)),
+          sprintf("1 TIME %s", obj_to_val(self@time)),
           sprintf("1 PHRASE %s", self@date_phrase)
         )
       })

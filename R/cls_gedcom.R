@@ -33,8 +33,8 @@ class_gedcom_source <- S7::new_class(
           sprintf("2 FAX %s", self@faxes),
           sprintf("2 WWW %s", self@web_pages),
           sprintf("1 DATA %s", self@data_name),
-          sprintf("2 DATE %s", datetime_to_val(self@data_pubdate)),
-          sprintf("3 TIME %s", datetime_to_val(self@data_pubtime)),
+          sprintf("2 DATE %s", obj_to_val(self@data_pubdate)),
+          sprintf("3 TIME %s", obj_to_val(self@data_pubtime)),
           sprintf("2 COPR %s", self@data_copyright)
         )
       }

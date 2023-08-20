@@ -168,12 +168,9 @@ reg_date_exact <- function(only = TRUE) {
 #' expect_equal(grepl(reg_date(), "5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date(), " 5 JUL 2005"), FALSE)
 reg_date <- function(flatten = TRUE, only = TRUE) {
-  reg_date_calendar(flatten, only)
-}
-
-reg_date_calendar <- function(flatten = TRUE, only = TRUE) {
   reg_date_gregorian(flatten, only)
 }
+
 
 reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
   combos <- c(reg_year(),
@@ -210,7 +207,8 @@ reg_date_period <- function(flatten = TRUE) {
   combos <- c(paste("FROM", reg_date(FALSE,FALSE)),
               paste("TO", reg_date(FALSE,FALSE)),
               regex_combn(paste("FROM", reg_date(FALSE,FALSE)), 
-                          paste(" TO", reg_date(FALSE,FALSE))))
+                          paste(" TO", reg_date(FALSE,FALSE))),
+              "") #date period can be the empty string
   if (flatten) {
     combos |> anchor_it() |> paste(collapse = "|")
   } else {

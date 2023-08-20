@@ -67,7 +67,7 @@ test_that("Function chk_input_dates() @ L199", {
 })
 
 
-test_that("Function chk_whole_number() @ L248", {
+test_that("Function chk_whole_number() @ L231", {
   expect_equal(chk_whole_number(1.1, "a"),
                "a must be a whole number")
   expect_equal(chk_whole_number(4.2, "b"),
@@ -77,7 +77,7 @@ test_that("Function chk_whole_number() @ L248", {
 })
 
 
-test_that("Function chk_input_parents() @ L269", {
+test_that("Function chk_input_parents() @ L252", {
   expect_null(chk_input_parents(character(), "@child", character(), "@parent"))
   expect_null(chk_input_parents(character(), "@child", "parent", "@parent"))
   expect_equal(chk_input_parents("child", "@child", character(), "@parent"),

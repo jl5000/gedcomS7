@@ -189,8 +189,8 @@ chk_input_date_cpts <- function(year, month, day, bce = FALSE){
 
 #' Validate a date range/period
 #' 
-#' @param start_date The start date given either as a class_date_calendar or a GEDCOM date string.
-#' @param end_date The end date given either as a class_date_calendar or a GEDCOM date string.
+#' @param start_date The start date given either as a `class_date_greg` or a GEDCOM date string.
+#' @param end_date The end date given either as a `class_date_greg` or a GEDCOM date string.
 #'
 #' @inherit chk_input_size return
 #' @tests
@@ -200,28 +200,11 @@ chk_input_dates <- function(start_date, end_date){
 
   if(length(start_date) + length(end_date) < 2) return()
   
-  start_val <- datetime_to_val(start_date)
-  end_val <- datetime_to_val(end_date)
+  start_val <- obj_to_val(start_date)
+  end_val <- obj_to_val(end_date)
   
-  start_year <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
-  end_year <- grep("^\\d{1,2}\\b", end_val, value = TRUE)
-  
-  
-  day <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
-  month <- which(grep("", start_val, value = TRUE) == toupper(month.abb))
-  year <- grep("^\\d{1,2}\\b", start_val, value = TRUE)
-  start <- paste(sprintf("%02d", day), 
-                 sprintf("%02d", month), 
-                 year) |> 
-    as.Date(format = "%d %m %Y")
-  
-  day <- 1
-  month <- 1
-  year <- 1
-  end <- paste(sprintf("%02d", day), 
-               sprintf("%02d", month), 
-               year) |> 
-    as.Date(format = "%d %m %Y")
+  start <- parse_gedcom_date(start_val, minimise = TRUE)
+  end <- parse_gedcom_date(end_val, minimise = FALSE)
   
   if(start == end)
     return("Start date is the same as end date")
