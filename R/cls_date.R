@@ -344,8 +344,23 @@ class_date_range <- S7::new_class(
   }
 )
 
+#' Create a GEDCOM Date Value object
+#' 
+#' @param date The date given either as a formatted GEDCOM string, or a
+#' `class_date_greg` / `class_date_period` / `class_date_range` / `class_date_approx` object.
+#' @param date_phrase Optional. Textual information that cannot be expressed in the date.
+#' @param time Optional. The time given either as a formatted GEDCOM string, or a
+#' `class_time` object.
+#' 
+#' @return An S7 object representing a GEDCOM Date Value.
 #' @export
 #' @include cls_time.R
+#' @tests
+#' expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
+#' expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
+#'              regexp = "A date period should not have a time defined")
+#' expect_snapshot_value(class_date_value("AFT 1990", date_phrase = "Maybe 1992")@as_ged, "json2")
+#' expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@as_ged, "json2")
 class_date_value <- S7::new_class(
   "class_date_value",
   package = "gedcomS7",
@@ -355,27 +370,70 @@ class_date_value <- S7::new_class(
            class_date_range | class_date_approx,
     date_phrase = S7::class_character,
     time = S7::class_character | class_time,
-    sorting = S7::new_property(S7::class_logical, default = FALSE),
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(self@sorting) tag <- "SDATE" else tag <- "DATE"
         c(
-          sprintf("0 %s %s", tag, obj_to_val(self@date)),
+          sprintf("0 DATE %s", obj_to_val(self@date)),
           sprintf("1 TIME %s", obj_to_val(self@time)),
           sprintf("1 PHRASE %s", self@date_phrase)
         )
       })
   ),
   validator = function(self){
-    c( #dateperiod has no time
+    #date_period has no time
+    time_err <- NULL
+    if(grepl("(FROM)|(TO)", obj_to_val(self@date))){
+      if(length(self@time) > 0)
+        time_err <- "A date period should not have a time defined."
+    }
+    c( 
+      time_err,
       chk_input_size(self@date, "@date", 1, 1),
-      chk_input_size(self@time, "@time", 0, ),
+      chk_input_size(self@time, "@time", 0, 1),
       chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
-      chk_input_size(self@sorting, "@sorting", 1, 1),
       chk_input_pattern(self@date, "@date", reg_date_value()),
       chk_input_pattern(self@time, "@time", reg_time())
+    )
+  }
+)
+
+#' Create a GEDCOM Sorting Date object
+#' 
+#' @param date The date given either as a formatted GEDCOM string, or a
+#' `class_date_greg` object.
+#' @inheritParams class_date_value
+#' 
+#' @return An S7 object representing a GEDCOM Sorting Date.
+#' @export
+#' @include cls_time.R
+#' @tests
+#' expect_error(class_date_sort(""), regexp = "@date is in an invalid format")
+#' expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
+#' expect_error(class_date_sort(class_date_period(end_date = "1980")), 
+#'              regexp = "@date must be <character> or <gedcomS7::class_date_greg>")
+#' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@as_ged, "json2")
+class_date_sort <- S7::new_class(
+  "class_date_sort",
+  package = "gedcomS7",
+  parent = class_date_value,
+  properties = list(
+    date = S7::class_character | class_date_greg,
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 SDATE %s", obj_to_val(self@date)),
+          sprintf("1 TIME %s", obj_to_val(self@time)),
+          sprintf("1 PHRASE %s", self@date_phrase)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_pattern(self@date, "@date", reg_date_gregorian())
     )
   }
 )

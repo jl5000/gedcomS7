@@ -192,6 +192,7 @@ reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
 #' @return Either a single regex string or a vector of them
 #' @tests
+#' expect_equal(grepl(reg_date_period(), ""), TRUE)
 #' expect_equal(grepl(reg_date_period(), "FROM 14 JAN 2005"), TRUE)
 #' expect_equal(grepl(reg_date_period(), "TO 14 JAM 2005"), FALSE)
 #' expect_equal(grepl(reg_date_period(), "FROM JAN 2005"), TRUE)
