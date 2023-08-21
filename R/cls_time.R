@@ -3,14 +3,7 @@ NULL
 
 #' Create a time object
 #' 
-#' @param hour The hour of the day given as an integer between 0 and 23.
-#' @param minute The minute of the hour given as an integer between 0 and 59.
-#' @param second Optional. The second of the minute given as an integer between 0 and 59.
-#' @param fraction Optional (if @second is provided). The fraction of the second given as 
-#' an integer.
-#' @param utc Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
-#' is in local time (FALSE).
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM time.
 #' @export
 #' @tests

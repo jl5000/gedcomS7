@@ -7,10 +7,10 @@
 class_date_range(start_date = class_missing, end_date = class_missing)
 }
 \arguments{
-\item{start_date}{The start of the range given either as a formatted GEDCOM string, or a
+\item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
 \code{class_date_greg} object.}
 
-\item{end_date}{The end of the range given either as a formatted GEDCOM string, or a
+\item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
 \code{class_date_greg} object.}
 }
 \value{

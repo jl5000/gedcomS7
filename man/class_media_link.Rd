@@ -17,7 +17,7 @@ class_media_link(
 \arguments{
 \item{media_uid}{The UID of a multimedia record.}
 
-\item{title}{The title of the multimedia record. This will supercede any title given
+\item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 
 \item{crop}{Whether to crop the multimedia to a specific area.}

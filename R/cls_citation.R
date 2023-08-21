@@ -1,6 +1,12 @@
 #' @include cls_validators.R
 NULL
 
+#' Create a source citation object
+#' 
+#' @details 
+#' 
+#' @inheritParams prop_definitions
+#' @return An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
 #' @include cls_date.R cls_translation.R cls_media_link.R cls_note.R
 class_citation <- S7::new_class(
@@ -28,7 +34,7 @@ class_citation <- S7::new_class(
           sprintf("1 PAGE %s", self@where),
           rep("1 DATA", length(self@date) + 
                 length(self@source_text) > 0),
-          obj_to_ged(self@date) |> increase_level(by = 2),
+          obj_to_ged(self@date, "DATE") |> increase_level(by = 2),
           obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 2),
           sprintf("1 EVEN %s", self@event_type),
           sprintf("2 PHRASE %s", self@event_phrase),

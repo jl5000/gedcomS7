@@ -2,7 +2,7 @@
 
 # File R/cls_translation.R: @tests
 
-test_that("Function class_translation_txt() @ L18", {
+test_that("Function class_translation_txt() @ L15", {
   expect_error(class_translation_txt(), regexp = "@text has too few elements")
   expect_error(class_translation_txt(letters[1:2]), regexp = "@text has too many elements")
   expect_error(class_translation_txt("test"), regexp = "A text language or media_type must be defined")

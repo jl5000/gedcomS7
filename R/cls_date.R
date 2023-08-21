@@ -6,10 +6,7 @@ class_date <- S7::new_class("class_date")
 
 #' Create a GEDCOM Exact Date object
 #' 
-#' @param year The year given as an integer.
-#' @param month The month of the year given as an integer between 1 and 12.
-#' @param day The day of the month given as an integer between 1 and 31.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Exact Date.
 #' @export
 #' @tests
@@ -72,12 +69,7 @@ date_exact_current <- function(){
 
 #' Create a GEDCOM Gregorian Date object
 #' 
-#' @param year The year given as an integer (greater than 0).
-#' @param month The month of the year given as an integer between 1 and 12.
-#' @param day The day of the month given as an integer between 1 and 31.
-#' @param bce Whether the date is Before the Common Era. This is FALSE by default,
-#' but if TRUE, only the year should be given.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Gregorian Date.
 #' @export
 #' @tests
@@ -136,16 +128,11 @@ class_date_greg <- S7::new_class(
 
 #' Create a GEDCOM Approximate Date object
 #' 
-#' @param date A Gregorian date given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
-#' @param about Whether the date is near to the date given.
-#' @param calc Whether the date is calculated from other values.
-#' @param est Whether the date is near to the date given, and is calculated from other values.
-#' 
+#' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM Approximate Date.
 #' @export
 #' @tests
-#' expect_error(class_date_approx("hello"), regexp = "@date is in an invalid format")
+#' expect_error(class_date_approx("hello"), regexp = "@date_greg is in an invalid format")
 #' expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@as_val, 
 #'                               "CAL 12 MAY 2001")
 #' expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@as_val, 
@@ -157,7 +144,7 @@ class_date_approx <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = S7::class_character | class_date_greg,
+    date_greg = S7::class_character | class_date_greg,
     about = S7::new_property(S7::class_logical, default = TRUE),
     calc = S7::new_property(S7::class_logical, default = FALSE),
     est = S7::new_property(S7::class_logical, default = FALSE),
@@ -166,22 +153,22 @@ class_date_approx <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if(self@calc) {
-          paste("CAL", obj_to_val(self@date))
+          paste("CAL", obj_to_val(self@date_greg))
         } else if(self@est) {
-          paste("EST", obj_to_val(self@date))
+          paste("EST", obj_to_val(self@date_greg))
         } else if (self@about) {
-          paste("ABT", obj_to_val(self@date))
+          paste("ABT", obj_to_val(self@date_greg))
         } 
       }               
     )
   ),
   validator = function(self){
     c(
-      chk_input_size(self@date, "@date", 1, 1),
+      chk_input_size(self@date_greg, "@date_greg", 1, 1),
       chk_input_size(self@about, "@about", 1, 1),
       chk_input_size(self@calc, "@calc", 1, 1),
       chk_input_size(self@est, "@est", 1, 1),
-      chk_input_pattern(self@date, "@date", reg_date_gregorian())
+      chk_input_pattern(self@date_greg, "@date_greg", reg_date_gregorian())
     )
   }
 )
@@ -189,11 +176,7 @@ class_date_approx <- S7::new_class(
 
 #' Create a GEDCOM Date Period object
 #' 
-#' @param start_date The start of the period given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
-#' @param end_date The end of the period given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Date Period.
 #' @export
 #' @tests
@@ -272,11 +255,7 @@ class_date_period <- S7::new_class(
 
 #' Create a GEDCOM Date Range object
 #' 
-#' @param start_date The start of the range given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
-#' @param end_date The end of the range given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Date Range.
 #' @export
 #' @tests
@@ -346,12 +325,7 @@ class_date_range <- S7::new_class(
 
 #' Create a GEDCOM Date Value object
 #' 
-#' @param date The date given either as a formatted GEDCOM string, or a
-#' `class_date_greg` / `class_date_period` / `class_date_range` / `class_date_approx` object.
-#' @param date_phrase Optional. Textual information that cannot be expressed in the date.
-#' @param time Optional. The time given either as a formatted GEDCOM string, or a
-#' `class_time` object.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Date Value.
 #' @export
 #' @include cls_time.R
@@ -403,7 +377,7 @@ class_date_value <- S7::new_class(
 #' 
 #' @param date The date given either as a formatted GEDCOM string, or a
 #' `class_date_greg` object.
-#' @inheritParams class_date_value
+#' @inheritParams prop_definitions
 #' 
 #' @return An S7 object representing a GEDCOM Sorting Date.
 #' @export

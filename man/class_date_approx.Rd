@@ -5,14 +5,14 @@
 \title{Create a GEDCOM Approximate Date object}
 \usage{
 class_date_approx(
-  date = class_missing,
+  date_greg = class_missing,
   about = class_missing,
   calc = class_missing,
   est = class_missing
 )
 }
 \arguments{
-\item{date}{A Gregorian date given either as a formatted GEDCOM string, or a
+\item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
 \code{class_date_greg} object.}
 
 \item{about}{Whether the date is near to the date given.}

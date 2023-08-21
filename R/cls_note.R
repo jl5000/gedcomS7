@@ -10,12 +10,7 @@ NULL
 #' results in infinite nesting.
 #' https://github.com/RConsortium/OOP-WG/issues/250
 #' 
-#' @param text A character string. New lines are created with \n.
-#' @param language Optional. Language tags as defined in BCP 47.
-#' @param media_type Optional. The media type as defined in RFC 2045.
-#' @param alt_text Optional. A `class_translation_txt` object or a list of them.
-#' One for each alternate translation of the text.
-#' 
+#' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @include cls_translation.R
 #' @export

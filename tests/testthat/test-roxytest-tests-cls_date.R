@@ -2,7 +2,7 @@
 
 # File R/cls_date.R: @tests
 
-test_that("Function class_date_exact() @ L23", {
+test_that("Function class_date_exact() @ L20", {
   expect_error(class_date_exact(), regexp = "@day has too few.*@month has too few.*@year has too few")
   expect_error(class_date_exact(2001), regexp = "@day has too few.*@month has too few")
   expect_error(class_date_exact(2001, 5), regexp = "@day has too few")
@@ -13,12 +13,12 @@ test_that("Function class_date_exact() @ L23", {
 })
 
 
-test_that("Function date_exact_current() @ L66", {
+test_that("Function date_exact_current() @ L63", {
   expect_equal(date_exact_current()@as_date, Sys.Date())
 })
 
 
-test_that("Function class_date_greg() @ L96", {
+test_that("Function class_date_greg() @ L88", {
   expect_error(class_date_greg(), regexp = "@year has too few elements")
   expect_error(class_date_greg(2001, day = 15), regexp = "Day is defined without a month")
   expect_error(class_date_greg(day = 5), regexp = "@year has too few elements")
@@ -34,8 +34,8 @@ test_that("Function class_date_greg() @ L96", {
 })
 
 
-test_that("Function class_date_approx() @ L155", {
-  expect_error(class_date_approx("hello"), regexp = "@date is in an invalid format")
+test_that("Function class_date_approx() @ L142", {
+  expect_error(class_date_approx("hello"), regexp = "@date_greg is in an invalid format")
   expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@as_val, 
                                 "CAL 12 MAY 2001")
   expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@as_val, 
@@ -45,7 +45,7 @@ test_that("Function class_date_approx() @ L155", {
 })
 
 
-test_that("Function class_date_period() @ L238", {
+test_that("Function class_date_period() @ L221", {
   expect_equal(class_date_period()@as_val, "")
   expect_error(class_date_period(""), regexp = "@start_date is in an invalid format")
   expect_error(class_date_period(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -87,7 +87,7 @@ test_that("Function class_date_period() @ L238", {
 })
 
 
-test_that("Function class_date_range() @ L321", {
+test_that("Function class_date_range() @ L300", {
   expect_error(class_date_range(), regexp = "@start_date \\+ @end_date has too few elements")
   expect_error(class_date_range(""), regexp = "@start_date is in an invalid format")
   expect_error(class_date_range(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -129,7 +129,7 @@ test_that("Function class_date_range() @ L321", {
 })
 
 
-test_that("Function class_date_value() @ L364", {
+test_that("Function class_date_value() @ L338", {
   expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
   expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
                regexp = "A date period should not have a time defined")
@@ -138,7 +138,7 @@ test_that("Function class_date_value() @ L364", {
 })
 
 
-test_that("Function class_date_sort() @ L417", {
+test_that("Function class_date_sort() @ L391", {
   expect_error(class_date_sort(""), regexp = "@date is in an invalid format")
   expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
   expect_error(class_date_sort(class_date_period(end_date = "1980")), 

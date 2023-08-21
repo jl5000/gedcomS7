@@ -2,7 +2,7 @@
 
 # File R/cls_media_link.R: @tests
 
-test_that("Function class_media_link() @ L37", {
+test_that("Function class_media_link() @ L29", {
   expect_error(class_media_link(), regexp = "@media_uid has too few elements")
   expect_error(class_media_link("@O4@"), regexp = "@media_uid is in an invalid format")
   expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad")@as_ged, "json2")

@@ -4,10 +4,7 @@ NULL
 # Used in SNOTE record, SOUR record, NOTE structure, and SOURCE_CITATION
 #' Create a text translation object
 #' 
-#' @param text A character string. New lines are created with \n.
-#' @param language Optional. Language tags as defined in BCP 47.
-#' @param media_type Optional. The media type as defined in RFC 2045.
-#' 
+#' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM text translation substructure.
 #' @export
 #' @tests

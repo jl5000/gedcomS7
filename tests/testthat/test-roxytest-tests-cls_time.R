@@ -2,7 +2,7 @@
 
 # File R/cls_time.R: @tests
 
-test_that("Function class_time() @ L28", {
+test_that("Function class_time() @ L21", {
   expect_error(class_time(), regexp = "@hour has too few elements.*@minute has too few elements")
   expect_error(class_time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
   expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")

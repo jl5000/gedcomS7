@@ -11,7 +11,7 @@ class_date_exact(
 )
 }
 \arguments{
-\item{year}{The year given as an integer.}
+\item{year}{The year given as an integer (greater than 0).}
 
 \item{month}{The month of the year given as an integer between 1 and 12.}
 

@@ -2,7 +2,7 @@
 
 # File R/cls_note.R: @tests
 
-test_that("Function class_note() @ L47", {
+test_that("Function class_note() @ L42", {
   expect_error(class_note(), regexp = "@text has too few elements")
   expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
   expect_snapshot_value(class_note("test")@as_ged, "json2")
