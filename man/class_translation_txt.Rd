@@ -13,9 +13,9 @@ class_translation_txt(
 \arguments{
 \item{text}{A character string. New lines are created with \n.}
 
-\item{language}{Optional. Language tags as defined in BCP 47.}
+\item{language}{Language tags as defined in BCP 47.}
 
-\item{media_type}{Optional. The media type as defined in RFC 2045.}
+\item{media_type}{The media type as defined in RFC 2045.}
 }
 \value{
 An S7 object representing a GEDCOM text translation substructure.

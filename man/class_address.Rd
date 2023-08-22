@@ -17,13 +17,13 @@ class_address(
 by \n. For example:
 "The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"}
 
-\item{city}{Optional. The city component of the address.}
+\item{city}{The city component of the address.}
 
-\item{state}{Optional. The state component of the address.}
+\item{state}{The state component of the address.}
 
-\item{postal_code}{Optional. The postal code component of the address.}
+\item{postal_code}{The postal code component of the address.}
 
-\item{country}{Optional. The country component of the address.}
+\item{country}{The country component of the address.}
 }
 \value{
 An S7 object representing a GEDCOM ADDRESS_STRUCTURE.

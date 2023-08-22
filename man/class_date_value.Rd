@@ -12,11 +12,11 @@ class_date_value(
 }
 \arguments{
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{class_date_greg} / \code{class_date_period} / \code{class_date_range} / \code{class_date_approx} object.}
+\code{class_date_value} object.}
 
-\item{date_phrase}{Optional. Textual information that cannot be expressed in the date.}
+\item{date_phrase}{Textual information that cannot be expressed in the date.}
 
-\item{time}{Optional. The time given either as a formatted GEDCOM string, or a
+\item{time}{The time given either as a formatted GEDCOM string, or a
 \code{class_time} object.}
 }
 \value{

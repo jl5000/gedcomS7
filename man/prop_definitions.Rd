@@ -8,21 +8,21 @@
 by \n. For example:
 "The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"}
 
-\item{city}{Optional. The city component of the address.}
+\item{city}{The city component of the address.}
 
-\item{state}{Optional. The state component of the address.}
+\item{state}{The state component of the address.}
 
-\item{postal_code}{Optional. The postal code component of the address.}
+\item{postal_code}{The postal code component of the address.}
 
-\item{country}{Optional. The country component of the address.}
+\item{country}{The country component of the address.}
 
 \item{text}{A character string. New lines are created with \n.}
 
-\item{language}{Optional. Language tags as defined in BCP 47.}
+\item{language}{Language tags as defined in BCP 47.}
 
-\item{media_type}{Optional. The media type as defined in RFC 2045.}
+\item{media_type}{The media type as defined in RFC 2045.}
 
-\item{alt_text}{Optional. A \code{class_translation_txt} object or a list of them.
+\item{alt_text}{A \code{class_translation_txt} object or a list of them.
 One for each alternate translation of the text.}
 
 \item{media_uid}{The UID of a multimedia record.}
@@ -44,9 +44,9 @@ in the record.}
 
 \item{minute}{The minute of the hour given as an integer between 0 and 59.}
 
-\item{second}{Optional. The second of the minute given as an integer between 0 and 59.}
+\item{second}{The second of the minute given as an integer between 0 and 59.}
 
-\item{fraction}{Optional (if @second is provided). The fraction of the second given as
+\item{fraction}{The fraction of the second given as
 an integer.}
 
 \item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
@@ -77,12 +77,61 @@ but if TRUE, only the year should be given.}
 \code{class_date_greg} object.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{class_date_greg} / \code{class_date_period} / \code{class_date_range} / \code{class_date_approx} object.}
+\code{class_date_value} object.}
 
-\item{date_phrase}{Optional. Textual information that cannot be expressed in the date.}
+\item{date_phrase}{Textual information that cannot be expressed in the date.}
 
-\item{time}{Optional. The time given either as a formatted GEDCOM string, or a
+\item{time}{The time given either as a formatted GEDCOM string, or a
 \code{class_time} object.}
+
+\item{sour_uid}{The UID of a source record.}
+
+\item{where}{A specific location within the information referenced. For a published work, this could
+include the volume of a multi-volume work and the page number or numbers. For a
+periodical, it could include volume, issue, and page numbers. For a newspaper, it could
+include a date, page number, and column number. For an unpublished source or micro‐
+filmed works, this could be a film or sheet number, page number, or frame number. A
+census record might have an enumerating district, page number, line number, dwelling
+number, and family number.
+It is recommended that the data in this field be formatted comma-separated with label:
+value pairs}
+
+\item{source_text}{A verbatim copy of any description contained within the source. This can
+either be a \code{class_translation_txt} object, a list of them, or a character vector of text.
+If any \code{class_translation_txt} objects are provided, then you will be forced to define an
+associated language or media type.}
+
+\item{event_types}{A character string indicating the types
+of events that were recorded in a particular source. Each event type is separated by a
+comma and space. For example, a parish register of births, deaths, and marriages
+would be BIRT, DEAT, MARR.}
+
+\item{event_phrase}{Textual information that cannot be expressed in the event types.}
+
+\item{role}{What role this person played in this event.}
+
+\item{role_phrase}{Textual information that cannot be expressed in the role.}
+
+\item{certainty}{An enumerated value indicating the credibility of a
+piece of information, based on its supporting evidence. Some systems use this feature to
+rank multiple conflicting opinions for display of most likely information first. It is not
+intended to eliminate the receivers’ need to evaluate the evidence for themselves.
+"0" = unreliable/estimated data
+"1" = Questionable reliability of evidence
+"2" = Secondary evidence, data officially recorded sometime after event
+"3" = Direct and primary evidence used, or by dominance of the evidence}
+
+\item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
+or a character vector of UIDs of multimedia records. If a character vector is provided then only the UIDs themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
+
+\item{note_uids}{A character vector of relevant note record UIDs.}
+
+\item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
+or a character vector of notes. If a character vector is provided then only the notes themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
 }
 \description{
 Define all properties used in S7 classes.
