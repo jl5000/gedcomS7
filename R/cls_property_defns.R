@@ -19,7 +19,7 @@
 #' @param media_type The media type as defined in RFC 2045.
 #' @param alt_text A `class_translation_txt` object or a list of them.
 #' One for each alternate translation of the text.
-#' @param media_uid The UID of a multimedia record.
+#' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param title The title of the multimedia record. This will supersede any title given
 #' in the record.
 #' @param crop Whether to crop the multimedia to a specific area.
@@ -53,7 +53,7 @@
 #' @param date_phrase Textual information that cannot be expressed in the date.
 #' @param time The time given either as a formatted GEDCOM string, or a
 #' `class_time` object.
-#' @param sour_uid The UID of a source record.
+#' @param sour_xref The cross-reference identifier of a source record.
 #' @param where A specific location within the information referenced. For a published work, this could
 #' include the volume of a multi-volume work and the page number or numbers. For a
 #' periodical, it could include volume, issue, and page numbers. For a newspaper, it could
@@ -83,10 +83,10 @@
 #' "2" = Secondary evidence, data officially recorded sometime after event
 #' "3" = Direct and primary evidence used, or by dominance of the evidence
 #' @param media_links Associated multimedia. This can either be a `class_media_link` object, a list of them,
-#' or a character vector of UIDs of multimedia records. If a character vector is provided then only the UIDs themselves
+#' or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param note_uids A character vector of relevant note record UIDs.
+#' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
 #' @param notes Associated notes. This can either be a `class_note` object, a list of them,
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 

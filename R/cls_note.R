@@ -69,7 +69,7 @@ class_note <- S7::new_class(
       chk_input_size(self@media_type, "@media_type", 0, 1),
       #TODO: media type pattern
       chk_input_S7classes(self@alt_text, "@alt_text", class_translation_txt)
-      #  chk_input_S7classes(self@citations, "@citations", class_citation)
+      #  chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
     )
   }
 )

@@ -5,7 +5,7 @@
 \title{Create a multimedia link object}
 \usage{
 class_media_link(
-  media_uid = class_missing,
+  media_xref = class_missing,
   title = class_missing,
   crop = class_missing,
   top = class_missing,
@@ -15,8 +15,6 @@ class_media_link(
 )
 }
 \arguments{
-\item{media_uid}{The UID of a multimedia record.}
-
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 

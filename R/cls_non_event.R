@@ -36,7 +36,7 @@ class_non_event <- S7::new_class(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_choice(self@event, "@event", val_event_types(FALSE)),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation)
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE))
     )
   }
 )

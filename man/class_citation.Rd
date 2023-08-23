@@ -5,7 +5,7 @@
 \title{Create a source citation object}
 \usage{
 class_citation(
-  sour_uid = class_missing,
+  sour_xref = class_missing,
   where = class_missing,
   date = class_missing,
   source_text = class_missing,
@@ -15,13 +15,11 @@ class_citation(
   role_phrase = class_missing,
   certainty = class_missing,
   media_links = class_missing,
-  note_uids = class_missing,
+  note_xrefs = class_missing,
   notes = class_missing
 )
 }
 \arguments{
-\item{sour_uid}{The UID of a source record.}
-
 \item{where}{A specific location within the information referenced. For a published work, this could
 include the volume of a multi-volume work and the page number or numbers. For a
 periodical, it could include volume, issue, and page numbers. For a newspaper, it could
@@ -64,8 +62,6 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 or a character vector of UIDs of multimedia records. If a character vector is provided then only the UIDs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
-
-\item{note_uids}{A character vector of relevant note record UIDs.}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

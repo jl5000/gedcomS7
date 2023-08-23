@@ -14,15 +14,15 @@ NULL
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
 #' @tests
-#' expect_error(class_media_link(), regexp = "@media_uid has too few elements")
-#' expect_error(class_media_link("@O4@"), regexp = "@media_uid is in an invalid format")
-#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad")@as_ged, "json2")
-#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
+#' expect_snapshot_value(class_media_link()@as_ged, "json2")
+#' expect_error(class_media_link("@O4"), regexp = "@media_xref is in an invalid format")
+#' expect_snapshot_value(class_media_link("@1@")@as_ged, "json2")
+#' expect_snapshot_value(class_media_link("@1@", 
 #'                                        title = "new title")@as_ged, "json2")
-#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
+#' expect_snapshot_value(class_media_link("@1@", 
 #'                                        title = "new title",
 #'                                        crop = TRUE)@as_ged, "json2")
-#' expect_snapshot_value(class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad", 
+#' expect_snapshot_value(class_media_link("@1@", 
 #'                                        title = "new title",
 #'                                        crop = TRUE,
 #'                                        top = 5, left = 200)@as_ged, "json2")
@@ -30,7 +30,7 @@ class_media_link <- S7::new_class(
   "class_media_link",
   package = "gedcomS7",
   properties = list(
-    media_uid = S7::class_character,
+    media_xref = S7::new_property(S7::class_character, default = "@VOID@"),
     title = S7::class_character,
     crop = S7::new_property(S7::class_logical, default = FALSE),
     top = S7::new_property(S7::class_numeric, default = 0),
@@ -42,7 +42,7 @@ class_media_link <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 OBJE %s", self@media_uid),
+          sprintf("0 OBJE %s", self@media_xref),
           rep("1 CROP", self@crop),
           rep(sprintf("2 TOP %s", self@top), self@crop),
           rep(sprintf("2 LEFT %s", self@left), self@crop),
@@ -54,7 +54,7 @@ class_media_link <- S7::new_class(
   ),
   validator = function(self) {
     c(
-      chk_input_size(self@media_uid, "@media_uid", 1, 1),
+      chk_input_size(self@media_xref, "@media_xref", 1, 1),
       chk_input_size(self@title, "@title", 0, 1, 1),
       chk_input_size(self@crop, "@crop", 1, 1),
       chk_input_size(self@top, "@top", 0, 1, 0),
@@ -65,7 +65,7 @@ class_media_link <- S7::new_class(
       chk_whole_number(self@left, "@left"),
       chk_whole_number(self@height, "@height"),
       chk_whole_number(self@width, "@width"),
-      chk_input_pattern(self@media_uid, "@media_uid", reg_uuid(TRUE))
+      chk_input_pattern(self@media_xref, "@media_xref", reg_xref(TRUE))
     )
   }
 )

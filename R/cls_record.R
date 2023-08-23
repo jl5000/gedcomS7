@@ -129,7 +129,7 @@ class_record_fam <- S7::new_class(
       chk_input_S7classes(self@non_events, "@non_events", class_non_event),
       chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation),
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE)),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   })
@@ -276,7 +276,7 @@ class_record_indi <- S7::new_class(
       chk_input_S7classes(self@family_links_as_spouse, "@family_links_as_spouse", class_spouse_family_link),
       chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation),
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE)),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   }
@@ -315,7 +315,7 @@ class_record_media <- S7::new_class(
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@files, "@files", class_media_file),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation)
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE))
     )
   }
 )
@@ -407,7 +407,7 @@ class_record_note <- S7::new_class(
       chk_input_size(self@media_type, "@media_type", 0, 1, 1),
       #TODO: media type pattern (text/plain or text/html)
       chk_input_S7classes(self@text_alt, "@text_alt", class_translation_txt),
-      chk_input_S7classes(self@citations, "@citations", class_citation)
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE))
     )
   }
 )

@@ -140,6 +140,8 @@ class_gedcomS7 <- S7::new_class(
           sprintf("1 SNOTE %s", self@note_uids)
         )
         
+        tr <- "0 TRLR"
+        
         c(
           hd,
           unlist(self@subm),
@@ -149,7 +151,7 @@ class_gedcomS7 <- S7::new_class(
           unlist(self@repo),
           unlist(self@media),
           unlist(self@note),
-          "0 TRLR"
+          tr
         ) |> unname()
       }
     )

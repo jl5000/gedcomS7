@@ -112,7 +112,7 @@ class_fact <- S7::new_class(
       chk_input_pattern(self@unique_uids, "@unique_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation),
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE)),
       chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
     )
   }

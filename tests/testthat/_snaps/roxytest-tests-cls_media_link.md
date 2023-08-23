@@ -3,7 +3,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 OBJE 9ec2befb-250f-48c6-b5ce-ae342c3775ad"]
+      "value": ["0 OBJE @VOID@"]
     }
 
 ---
@@ -11,7 +11,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 OBJE 9ec2befb-250f-48c6-b5ce-ae342c3775ad", "1 TITL new title"]
+      "value": ["0 OBJE @1@"]
     }
 
 ---
@@ -19,7 +19,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 OBJE 9ec2befb-250f-48c6-b5ce-ae342c3775ad", "1 CROP", "2 TOP 0", "2 LEFT 0", "1 TITL new title"]
+      "value": ["0 OBJE @1@", "1 TITL new title"]
     }
 
 ---
@@ -27,6 +27,14 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 OBJE 9ec2befb-250f-48c6-b5ce-ae342c3775ad", "1 CROP", "2 TOP 5", "2 LEFT 200", "1 TITL new title"]
+      "value": ["0 OBJE @1@", "1 CROP", "2 TOP 0", "2 LEFT 0", "1 TITL new title"]
+    }
+
+---
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 OBJE @1@", "1 CROP", "2 TOP 5", "2 LEFT 200", "1 TITL new title"]
     }
 

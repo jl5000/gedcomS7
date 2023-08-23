@@ -3,23 +3,23 @@
 # File R/cls_citation.R: @tests
 
 test_that("Function class_citation() @ L42", {
-  expect_error(class_citation(), regexp = "@sour_uid has too few elements")
-  expect_error(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_snapshot_value(class_citation()@as_ged, "json2")
+  expect_error(class_citation("@1@",
                               event_phrase = "phrase"),
                regexp = "@event_phrase requires a @event_types")
-  expect_error(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_error(class_citation("@1@",
                               role = "HUSB"),
                regexp = "@role requires a @event_types")
-  expect_error(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_error(class_citation("@1@",
                               event_types = "BIRT", role_phrase = "phrase"),
                regexp = "@role_phrase requires a @role")
-  expect_error(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_error(class_citation("@1@",
                               certainty = "4"),
                regexp = "@certainty has an invalid value")
-  expect_error(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_error(class_citation("@1@",
                               notes = ""),
                regexp = "@notes is in an invalid format")
-  expect_snapshot_value(class_citation("94a8ddf6-410d-11ee-8593-185680d6e741",
+  expect_snapshot_value(class_citation("@1@",
                                        where = "page 2",
                                        date = "2 JUN 2006",
                                        source_text = c("verbatim","text"),
@@ -28,9 +28,9 @@ test_that("Function class_citation() @ L42", {
                                        role = "HUSB",
                                        role_phrase = "phrase",
                                        certainty = "3",
-                                       media_links = class_media_link("9ec2befb-250f-48c6-b5ce-ae342c3775ad"),
-                                       note_uids = c("ff76d1d9-46ed-4bae-a900-39728b4f59bd",
-                                                     "b5093460-f77a-4b64-b69d-ede4d2a07f7e"),
+                                       media_links = class_media_link("@34E@"),
+                                       note_xrefs = c("@WER@",
+                                                     "@4334@"),
                                        notes = c("these are","some notes"))@as_ged, "json2")
 })
 

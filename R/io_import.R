@@ -24,8 +24,6 @@ read_gedcom <- function(filepath = file.choose()) {
   
   records_lst <- split(ged_lines, cumsum(substr(ged_lines, 1, 1) == "0"))
   
-  records_lst <- create_uuids(records_lst)
-  
   parse_records(records_lst)
 
 }
@@ -103,52 +101,6 @@ combine_cont_lines <- function(lines) {
   lines[-1] # delete empty line introduced
 }
 
-create_uuids <- function(records_lst){
-  
-  #get all xrefs
-  xrefs <- extract_ged_xref(unlist(records_lst))
-  xrefs <- unique(xrefs[xrefs != ""])
-  
-  #for each xref either extract or generate uuid
-  for(xref in xrefs){
-
-    rec_no <- which(sapply(records_lst, function(x) {
-      grepl(sprintf("^0 %s ", xref), x[1])}
-    ))
-    
-    uid <- find_ged_values(records_lst[[rec_no]], "UID")
-    
-    if(length(uid) == 0){
-      uid <- uuid::UUIDgenerate(n = 1)
-      
-      records_lst[[rec_no]] <- c(
-        records_lst[[rec_no]],
-        sprintf("1 UID %s", uid)
-      )
-    } else {
-      uid <- uid[1]
-    }
-    
-    #replace xref pointers with uid in all records
-    for(i in seq_along(records_lst)){
-      rec_xrefs <- extract_ged_xref(records_lst[[i]])
-      rec_vals <- extract_ged_value(records_lst[[i]])
-      
-      xref_rows <- which(rec_xrefs == xref)
-      val_rows <- which(rec_vals == xref)
-      
-      if(length(xref_rows) > 0)
-        records_lst[[i]][xref_rows] <- sub(xref, "@_@", records_lst[[i]][xref_rows])
-      
-      if(length(val_rows) > 0)
-        records_lst[[i]][val_rows] <- sub(xref, uid, records_lst[[i]][val_rows])
-      
-    }
-    
-  }
-  
-  records_lst
-}
 
 parse_records <- function(records_lst){
   
@@ -160,7 +112,7 @@ parse_records <- function(records_lst){
   records_lst <- records_lst[-1]
   
   subset_recs <- function(rec_lst, rec_type){
-    Filter(\(x) grepl(sprintf("^0 @_@ %s", rec_type), x[1]), rec_lst)
+    Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
   }
 
   S7::props(x) <- list(
