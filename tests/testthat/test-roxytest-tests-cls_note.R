@@ -9,23 +9,23 @@ test_that("Function class_note() @ L42", {
   expect_snapshot_value(class_note("test", language = "en")@as_ged, "json2")
   expect_snapshot_value(class_note("test", 
                                    language = "en",
-                                   alt_text = class_translation_txt("test",
+                                   translations = class_translation_txt("test",
                                                                     language = "en"))@as_ged, "json2")
   expect_snapshot_value(class_note("test", 
                                    language = "en",
-                                   alt_text = list(class_translation_txt("test",
+                                   translations = list(class_translation_txt("test",
                                                                     language = "en"),
                                                    class_translation_txt("test2",
                                                                     language = "en")))@as_ged, "json2")
   expect_error(class_note("test", 
                           language = "en",
-                          alt_text = class_address("street"))@as_ged,
-               regexp = "@alt_text must be <list> or <gedcomS7::class_translation_txt>")
+                          translations = class_address("street"))@as_ged,
+               regexp = "@translations must be <list> or <gedcomS7::class_translation_txt>")
   expect_error(class_note("test", 
                           language = "en",
-                          alt_text = list(class_translation_txt("test",
+                          translations = list(class_translation_txt("test",
                                                                 language = "en"),
                                           class_address("street"))),
-               regexp = "@alt_text contains an invalid object not of class_translation_txt")
+               regexp = "@translations contains an invalid object not of class_translation_txt")
 })
 

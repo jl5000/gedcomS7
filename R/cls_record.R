@@ -10,7 +10,7 @@ class_record <- S7::new_class(
     private = S7::new_property(S7::class_logical, default = FALSE),
     user_ids = S7::class_character, # potentially named
     unique_ids = S7::class_character, # not named
-    external_ids = S7::class_character, # definitely named
+    ext_ids = S7::class_character, # definitely named
     created = S7::class_character | class_creation_date,
     updated = S7::class_character | class_change_date,
     
@@ -33,7 +33,7 @@ class_record <- S7::new_class(
                              c(
                                named_vec_to_ged(self@user_ids, "REFN", "TYPE"),
                                sprintf("0 UID %s", self@unique_ids),
-                               named_vec_to_ged(self@external_ids, "EXID", "TYPE")
+                               named_vec_to_ged(self@ext_ids, "EXID", "TYPE")
                              )
                            })
   ),
@@ -43,8 +43,8 @@ class_record <- S7::new_class(
       chk_input_size(self@locked, "@locked", 1, 1),
       chk_input_size(self@private, "@private", 1, 1),
       chk_input_size(self@user_ids, "@user_ids", min_val = 1),
-      chk_input_size(self@external_ids, "@external_ids", min_val = 1),
-      chk_input_size(names(self@external_ids), "@external_ids types", min_val = 1),
+      chk_input_size(self@ext_ids, "@ext_ids", min_val = 1),
+      chk_input_size(names(self@ext_ids), "@ext_ids names", length(self@ext_ids), length(self@ext_ids)),
       chk_input_size(self@created, "@created", 0, 1),
       chk_input_size(self@updated, "@updated", 0, 1),
       chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE))

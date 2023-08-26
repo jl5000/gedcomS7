@@ -8,7 +8,18 @@ NULL
 #' @export
 #' @include cls_note.R cls_citation.R
 #' @tests
-#' 
+#' expect_error(class_association(relation_is = "FATH"), 
+#'              regexp = "If an @indi_xref is not defined, then an @indi_phrase must be defined")
+#' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
+#'              regexp = "@relation_is has an invalid value")
+#' expect_snapshot_value(class_association(indi_phrase = "someone",
+#'                                         relation_is = "FATH")@as_ged, "json2")
+#' expect_snapshot_value(class_association(indi_xref = "@SME@", indi_phrase = "someone",
+#'                                         relation_is = "FATH", relation_phrase = "step-father",
+#'                                         note_xrefs = c("@352@","@564@"),
+#'                                         notes = "This is a note",
+#'                                         citations = class_citation("@S45@",
+#'                                                                    where = "Page 2"))@as_ged, "json2") 
 class_association <- S7::new_class(
   "class_association",
   package = "gedcomS7",
@@ -25,7 +36,7 @@ class_association <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 ASSO %s", indi_xref),
+          sprintf("0 ASSO %s", self@indi_xref),
           sprintf("1 PHRASE %s", self@indi_phrase),
           sprintf("1 ROLE %s", self@relation_is),
           sprintf("2 PHRASE %s", self@relation_phrase),
@@ -37,10 +48,14 @@ class_association <- S7::new_class(
   ),
   
   validator = function(self){
+    phrase_err <- NULL
+    if(self@indi_xref == "@VOID@" & length(self@indi_phrase) == 0)
+      phrase_err <- "If an @indi_xref is not defined, then an @indi_phrase must be defined"
     c(
       chk_input_size(self@indi_xref, "@indi_xref", 1, 1),
       chk_input_pattern(self@indi_xref, "@indi_xref", reg_xref(TRUE)),
       chk_input_size(self@indi_phrase, "@indi_phrase", 0, 1, 1),
+      phrase_err,
       chk_input_size(self@relation_is, "@relation_is", 1, 1),
       chk_input_choice(self@relation_is, "@relation_is", val_roles()),
       chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),

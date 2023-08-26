@@ -92,11 +92,11 @@ reg_uuid <- function(only = TRUE){
 }
 
 reg_latitude <- function() {
-  "^[NS]\\d{1,2}(\\.\\d{1,6})?$"
+  "[NS]\\d{1,2}(\\.\\d{1,6})?"
 }
 
 reg_longitude <- function() {
-  "^[EW]\\d{1,3}(\\.\\d{2,6})?$"
+  "[EW]\\d{1,3}(\\.\\d{2,6})?"
 }
 
 reg_age_at_event <- function() {

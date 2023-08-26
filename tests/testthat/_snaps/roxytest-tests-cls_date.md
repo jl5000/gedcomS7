@@ -11,7 +11,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 DATE ", "1 TIME 02:24", "1 PHRASE Phrase only"]
+      "value": ["0 DATE", "1 TIME 02:24", "1 PHRASE Phrase only"]
     }
 
 # Function class_date_sort() @ L391

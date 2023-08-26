@@ -77,7 +77,7 @@ class_personal_name <- S7::new_class(
     type = S7::class_character,
     type_phrase = S7::class_character,
     name_pieces = NULL | class_name_pieces,
-    name_alts = S7::class_list | class_personal_name_trans,
+    name_translations = S7::class_list | class_personal_name_trans,
     notes = S7::class_list | class_note | S7::class_character,
     note_uids = S7::class_character,
     citations = S7::class_list | class_citation | S7::class_character,
@@ -90,7 +90,7 @@ class_personal_name <- S7::new_class(
           sprintf("1 TYPE %s", self@type),
           sprintf("2 PHRASE %s", rep(self@type_phrase, length(self@type))),
           obj_to_ged(self@name_pieces) |> increase_level(by = 1),
-          obj_to_ged(self@name_alts) |> increase_level(by = 1),
+          obj_to_ged(self@name_translations) |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_uids),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
@@ -105,7 +105,7 @@ class_personal_name <- S7::new_class(
       #TODO: type selection
       chk_input_size(self@type_phrase, "@type_phrase", 0, 1, 1),
       chk_input_size(self@name_pieces, "@name_pieces", 0, 1),
-      chk_input_S7classes(self@name_alts, "@name_alts", class_personal_name_trans),
+      chk_input_S7classes(self@name_translations, "@name_translations", class_personal_name_trans),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
       chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE))

@@ -9,8 +9,8 @@ class_citation(
   where = class_missing,
   date = class_missing,
   source_text = class_missing,
-  event_types = class_missing,
-  event_phrase = class_missing,
+  fact_type = class_missing,
+  fact_phrase = class_missing,
   role = class_missing,
   role_phrase = class_missing,
   certainty = class_missing,
@@ -20,6 +20,10 @@ class_citation(
 )
 }
 \arguments{
+\item{sour_xref}{The cross-reference identifier of a source record. If the source
+does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+you will need to describe the source in @where.}
+
 \item{where}{A specific location within the information referenced. For a published work, this could
 include the volume of a multi-volume work and the page number or numbers. For a
 periodical, it could include volume, issue, and page numbers. For a newspaper, it could
@@ -38,12 +42,12 @@ either be a \code{class_translation_txt} object, a list of them, or a character 
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{event_types}{A character string indicating the types
+\item{fact_type}{A character string indicating the types
 of events that were recorded in a particular source. Each event type is separated by a
 comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
 
-\item{event_phrase}{Textual information that cannot be expressed in the event types.}
+\item{fact_phrase}{Textual information that cannot be expressed in the event types.}
 
 \item{role}{What role this person played in this event.}
 
@@ -59,9 +63,11 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 "3" = Direct and primary evidence used, or by dominance of the evidence}
 
 \item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
-or a character vector of UIDs of multimedia records. If a character vector is provided then only the UIDs themselves
+or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

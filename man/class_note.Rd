@@ -8,7 +8,7 @@ class_note(
   text = class_missing,
   language = class_missing,
   media_type = class_missing,
-  alt_text = class_missing
+  translations = class_missing
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ class_note(
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
-\item{alt_text}{A \code{class_translation_txt} object or a list of them.
+\item{translations}{A \code{class_translation_txt} object or a list of them.
 One for each alternate translation of the text.}
 }
 \value{

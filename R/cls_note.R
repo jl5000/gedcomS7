@@ -21,24 +21,24 @@ NULL
 #' expect_snapshot_value(class_note("test", language = "en")@as_ged, "json2")
 #' expect_snapshot_value(class_note("test", 
 #'                                  language = "en",
-#'                                  alt_text = class_translation_txt("test",
+#'                                  translations = class_translation_txt("test",
 #'                                                                   language = "en"))@as_ged, "json2")
 #' expect_snapshot_value(class_note("test", 
 #'                                  language = "en",
-#'                                  alt_text = list(class_translation_txt("test",
+#'                                  translations = list(class_translation_txt("test",
 #'                                                                   language = "en"),
 #'                                                  class_translation_txt("test2",
 #'                                                                   language = "en")))@as_ged, "json2")
 #' expect_error(class_note("test", 
 #'                         language = "en",
-#'                         alt_text = class_address("street"))@as_ged,
-#'              regexp = "@alt_text must be <list> or <gedcomS7::class_translation_txt>")
+#'                         translations = class_address("street"))@as_ged,
+#'              regexp = "@translations must be <list> or <gedcomS7::class_translation_txt>")
 #' expect_error(class_note("test", 
 #'                         language = "en",
-#'                         alt_text = list(class_translation_txt("test",
+#'                         translations = list(class_translation_txt("test",
 #'                                                               language = "en"),
 #'                                         class_address("street"))),
-#'              regexp = "@alt_text contains an invalid object not of class_translation_txt")
+#'              regexp = "@translations contains an invalid object not of class_translation_txt")
 class_note <- S7::new_class(
   "class_note",
   package = "gedcomS7",
@@ -46,7 +46,7 @@ class_note <- S7::new_class(
     text = S7::class_character,
     language = S7::class_character,
     media_type = S7::class_character,
-    alt_text = S7::class_list | class_translation_txt,
+    translations = S7::class_list | class_translation_txt,
     #citations = S7::class_list | class_citation | S7::class_character,
     
     as_ged = S7::new_property(
@@ -56,7 +56,7 @@ class_note <- S7::new_class(
           sprintf("0 NOTE %s", self@text),
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
-          obj_to_ged(self@alt_text) |> increase_level(by = 1)
+          obj_to_ged(self@translations) |> increase_level(by = 1)
           #   obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
@@ -68,7 +68,7 @@ class_note <- S7::new_class(
       #TODO: language option
       chk_input_size(self@media_type, "@media_type", 0, 1),
       #TODO: media type pattern
-      chk_input_S7classes(self@alt_text, "@alt_text", class_translation_txt)
+      chk_input_S7classes(self@translations, "@translations", class_translation_txt)
       #  chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
     )
   }

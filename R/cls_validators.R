@@ -1,4 +1,4 @@
-#' @include utils_at.R utils_lookups.R utils_regex.R
+#' @include utils_at.R utils_lookups.R utils_regex.R doc_class_props.R
 NULL
 
 #' Validate the size of an input

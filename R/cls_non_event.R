@@ -19,7 +19,7 @@ class_non_event <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 NO %s", self@event),
-          sprintf("1 DATE %s", self@date_period),
+          sprintf("1 DATE %s", self@date_period) |> trimws(),
           sprintf("2 PHRASE %s", self@date_phrase),
           sprintf("1 SNOTE %s", self@note_uids),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),

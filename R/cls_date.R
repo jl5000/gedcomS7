@@ -349,7 +349,7 @@ class_date_value <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 DATE %s", obj_to_val(self@date)),
+          sprintf("0 DATE %s", obj_to_val(self@date)) |> trimws(),
           sprintf("1 TIME %s", obj_to_val(self@time)),
           sprintf("1 PHRASE %s", self@date_phrase)
         )

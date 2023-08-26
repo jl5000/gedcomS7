@@ -463,7 +463,7 @@ extract_notes <- function(rec_lines){
       text = find_ged_values(x, "NOTE"),
       language = find_ged_values(x, c("NOTE","LANG")),
       media_type = find_ged_values(x, c("NOTE","MIME")),
-      alt_text = extract_translations(x)
+      translations = extract_translations(x)
     )
   })
   

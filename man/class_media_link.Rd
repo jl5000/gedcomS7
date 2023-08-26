@@ -15,6 +15,8 @@ class_media_link(
 )
 }
 \arguments{
+\item{media_xref}{The cross-reference identifier of a multimedia record.}
+
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 

@@ -5,13 +5,13 @@
 test_that("Function class_citation() @ L42", {
   expect_snapshot_value(class_citation()@as_ged, "json2")
   expect_error(class_citation("@1@",
-                              event_phrase = "phrase"),
-               regexp = "@event_phrase requires a @event_types")
+                              fact_phrase = "phrase"),
+               regexp = "@fact_phrase requires a @fact_type")
   expect_error(class_citation("@1@",
                               role = "HUSB"),
-               regexp = "@role requires a @event_types")
+               regexp = "@role requires a @fact_type")
   expect_error(class_citation("@1@",
-                              event_types = "BIRT", role_phrase = "phrase"),
+                              fact_type = "BIRT", role_phrase = "phrase"),
                regexp = "@role_phrase requires a @role")
   expect_error(class_citation("@1@",
                               certainty = "4"),
@@ -23,8 +23,8 @@ test_that("Function class_citation() @ L42", {
                                        where = "page 2",
                                        date = "2 JUN 2006",
                                        source_text = c("verbatim","text"),
-                                       event_types = "BIRT, MARR, DEAT",
-                                       event_phrase = "and others",
+                                       fact_type = "BIRT",
+                                       fact_phrase = "Parish births",
                                        role = "HUSB",
                                        role_phrase = "phrase",
                                        certainty = "3",
