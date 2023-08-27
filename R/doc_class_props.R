@@ -40,8 +40,8 @@
 #' If any `class_translation_txt` objects are provided, then you will be forced to define an
 #' associated language or media type.
 #' @param fact_type 
-#' @param fact_phrase Textual information that cannot be expressed in the event type.
-#' @param role What role this person played in this event.
+#' @param fact_phrase Textual information that cannot be expressed in the fact type.
+#' @param role What role this person played in this fact.
 #' @param role_phrase Textual information that cannot be expressed in the role.
 #' @param certainty An enumerated value indicating the credibility of a
 #' piece of information, based on its supporting evidence. Some systems use this feature to
@@ -63,7 +63,31 @@
 #' of events that were recorded in a particular source. Each event type is separated by a
 #' comma and space. For example, a parish register of births, deaths, and marriages
 #' would be BIRT, DEAT, MARR. 
-#' @param jurisdiction_place
+#' @param territory
+#' @param pedigree
+#' @param pedigree_phrase
+#' @param confidence
+#' @param confidence_phrase
+#' @param call_numbers
+#' @param location
+#' @param medium
+#' @param medium_phrase
+#' @param media_alt A named vector of the media in alternative media forms, c(form = location)
+#' @param prefix
+#' @param given
+#' @param nickname
+#' @param surname_prefix
+#' @param surname
+#' @param suffix
+#' @param pers_name
+#' @param name_pieces
+#' @param pers_name
+#' @param name_type
+#' @param type_phrase
+#' @param name_translations
+#' @param 
+#' @param 
+#' 
 #' 
 #' 
 #' 

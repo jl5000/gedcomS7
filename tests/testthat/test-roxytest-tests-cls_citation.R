@@ -2,7 +2,7 @@
 
 # File R/cls_citation.R: @tests
 
-test_that("Function class_citation() @ L42", {
+test_that("Function class_citation() @ L43", {
   expect_snapshot_value(class_citation()@as_ged, "json2")
   expect_error(class_citation("@1@",
                               fact_phrase = "phrase"),
@@ -19,6 +19,9 @@ test_that("Function class_citation() @ L42", {
   expect_error(class_citation("@1@",
                               notes = ""),
                regexp = "@notes is in an invalid format")
+  expect_error(class_citation("@1@",
+                              fact_type = "birth"),
+               regexp = "@fact_type has an invalid value")             
   expect_snapshot_value(class_citation("@1@",
                                        where = "page 2",
                                        date = "2 JUN 2006",

@@ -3,8 +3,6 @@ NULL
 
 #' Create a source citation object
 #' 
-#' @details 
-#' 
 #' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
@@ -26,6 +24,9 @@ NULL
 #' expect_error(class_citation("@1@",
 #'                             notes = ""),
 #'              regexp = "@notes is in an invalid format")
+#' expect_error(class_citation("@1@",
+#'                             fact_type = "birth"),
+#'              regexp = "@fact_type has an invalid value")             
 #' expect_snapshot_value(class_citation("@1@",
 #'                                      where = "page 2",
 #'                                      date = "2 JUN 2006",
@@ -96,7 +97,7 @@ class_citation <- S7::new_class(
                         self@role, "@role"),
       chk_input_pattern(self@sour_xref, "@sour_xref", reg_xref(TRUE)),
       chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-    #  chk_input_choice(self@fact_type, "@fact_type", val_fact_types()), it's a comma separated value
+      chk_input_choice(self@fact_type, "@fact_type", val_fact_types()),
       chk_input_choice(self@role, "@role", val_roles()),
       chk_input_choice(self@certainty, "@certainty", val_certainty()),
       chk_input_S7classes(self@source_text, "@source_text", class_translation_txt, ".+"),

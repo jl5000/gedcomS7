@@ -42,14 +42,11 @@ either be a \code{class_translation_txt} object, a list of them, or a character 
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{fact_type}{A character string indicating the types
-of events that were recorded in a particular source. Each event type is separated by a
-comma and space. For example, a parish register of births, deaths, and marriages
-would be BIRT, DEAT, MARR.}
+\item{fact_type}{}
 
-\item{fact_phrase}{Textual information that cannot be expressed in the event types.}
+\item{fact_phrase}{Textual information that cannot be expressed in the fact type.}
 
-\item{role}{What role this person played in this event.}
+\item{role}{What role this person played in this fact.}
 
 \item{role_phrase}{Textual information that cannot be expressed in the role.}
 

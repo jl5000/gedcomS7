@@ -93,7 +93,7 @@ pull_record <- function(x, xref){
       full_title = find_ged_values(rec_lines, "TITL"),
       user_reference_numbers = refns, 
       notes = nts[!grepl(reg_xref(TRUE), nts)],
-      events_recorded = extract_events_recorded(rec_lines),
+      facts_recorded = extract_events_recorded(rec_lines),
       responsible_agency = find_ged_values(rec_lines, c("DATA","AGNC")),
       data_note_links = data_nts[grepl(reg_xref(TRUE), data_nts)],
       data_notes = data_nts[!grepl(reg_xref(TRUE), data_nts)],
@@ -125,7 +125,7 @@ pull_record <- function(x, xref){
     
     class_record_media(
       xref = rec_xref,
-      file_ref = find_ged_values(rec_lines, "FILE"),
+      location = find_ged_values(rec_lines, "FILE"),
       format = find_ged_values(rec_lines, c("FILE","FORM")),
       user_reference_numbers = refns,
       notes = nts[!grepl(reg_xref(TRUE), nts)],
@@ -170,10 +170,10 @@ extract_events_recorded <- function(rec_lines){
   if(length(even_lst) == 0) return(character())
   
   lapply(even_lst, \(x){
-    class_events_recorded(
+    class_facts_recorded(
       events = find_ged_values(x, "EVEN"),
       date_period = find_ged_values(x, c("EVEN","DATE")),
-      jurisdiction_place = find_ged_values(x, c("EVEN","PLAC"))
+      territory = find_ged_values(x, c("EVEN","PLAC"))
     )
   })
   
@@ -294,7 +294,7 @@ extract_repo_citations <- function(rec_lines){
   lapply(repo_lst, \(x){
     class_repository_citation(
       xref = find_ged_values(x, "REPO"),
-      source_call_number = find_ged_values(x, c("REPO","CALN"))
+      call_numbers = find_ged_values(x, c("REPO","CALN"))
     )
   })
 }

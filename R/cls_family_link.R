@@ -1,72 +1,100 @@
 #' @include cls_validators.R
 NULL
 
-
+#' Create a family link (as spouse) object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM family link as a spouse.
 #' @export
 #' @include cls_note.R
+#' @tests
+#' expect_error(class_spouse_family_link(), regexp = "@fam_xref has too few elements")
+#' expect_snapshot_value(class_spouse_family_link("@F123@")@as_ged, "json2")
+#' expect_snapshot_value(class_spouse_family_link("@F2@", 
+#'                                                notes = list(class_note("test")))@as_ged, "json2")
 class_spouse_family_link <- S7::new_class(
   "class_spouse_family_link",
   package = "gedcomS7",
   properties = list(
-    fam_uid = S7::class_character,
-    note_uids = S7::class_character,
+    fam_xref = S7::class_character,
+    note_xrefs = S7::class_character,
     notes = S7::class_list | class_note | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FAMS %s", self@fam_uid),
-          sprintf("1 SNOTE %s", self@note_uids),
+          sprintf("0 FAMS %s", self@fam_xref),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
       })
   ),
   validator = function(self){
     c(
-      chk_input_size(self@fam_uid, "@fam_uid", 1, 1),
-      chk_input_pattern(self@fam_uid, "@fam_uid", reg_uuid(TRUE)),
-      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_size(self@fam_xref, "@fam_xref", 1, 1),
+      chk_input_pattern(self@fam_xref, "@fam_xref", reg_xref(TRUE)),
+      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+")
     )
   }
 )
 
+#' Create a family link (as child) object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM family link as a child.
 #' @export
+#' @include cls_note.R
+#' @tests
+#' expect_error(class_child_family_link("@F123@", pedigree = "father"), 
+#'                                      regexp = "@pedigree has an invalid value")
+#' expect_error(class_child_family_link("@F123@", pedigree = "OTHER"), 
+#'                                      regexp = "@pedigree_phrase has too few elements")
+#' expect_error(class_child_family_link("@F123@", confidence = "LOW"), 
+#'                                      regexp = "@confidence has an invalid value")  
+#' expect_error(class_child_family_link("@F123@", confidence_phrase = "Don't know"), 
+#'                                      regexp = "@confidence_phrase requires a @confidence")                                  
+#' expect_snapshot_value(class_child_family_link("@F2@", 
+#'                                                pedigree = "ADOPTED",
+#'                                                pedigree_phrase = "By people",
+#'                                                confidence = "CHALLENGED",
+#'                                                confidence_phrase = "By someone",
+#'                                                note_xrefs = c("@242@","@GJFJ@"))@as_ged, "json2")
 class_child_family_link <- S7::new_class(
   "class_child_family_link", 
   package = "gedcomS7",
   parent = class_spouse_family_link,
   properties = list(
-    pedigree = S7::new_property(S7::class_character,
-                                getter = function(self) "BIRTH"),
+    pedigree = S7::new_property(S7::class_character, default = "BIRTH"),
     pedigree_phrase = S7::class_character,
-    certainty = S7::class_character,
-    certainty_phrase = S7::class_character,
+    confidence = S7::class_character,
+    confidence_phrase = S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FAMS %s", self@fam_uid),
+          sprintf("0 FAMS %s", self@fam_xref),
           sprintf("1 PEDI %s", self@pedigree),
           sprintf("2 PHRASE %s", self@pedigree_phrase),
-          sprintf("1 STAT %s", self@certainty),
-          sprintf("2 PHRASE %s", self@certainty_phrase),
-          sprintf("1 SNOTE %s", self@note_uids),
+          sprintf("1 STAT %s", self@confidence),
+          sprintf("2 PHRASE %s", self@confidence_phrase),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
       })
   ),
   validator = function(self){
-    #TODO: check phrases without parent
     c(
       chk_input_size(self@pedigree, "@pedigree", 0, 1),
-      chk_input_choice(self@pedigree, "@pedigree", val_pedigree_linkage_types()),
-      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", 0, 1, 1),
-      chk_input_size(self@certainty, "@certainty", 0, 1),
-      chk_input_choice(self@certainty, "@certainty", val_pedigree_certainty()),
-      chk_input_size(self@certainty_phrase, "@certainty_phrase", 0, 1, 1)
+      chk_input_choice(self@pedigree, "@pedigree", val_pedigree_types()),
+      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", as.integer(self@pedigree == "OTHER"), 1, 1),
+      chk_input_parents(self@pedigree_phrase, "@pedigree_phrase", self@pedigree, "@pedigree"),
+      chk_input_size(self@confidence, "@confidence", 0, 1),
+      chk_input_choice(self@confidence, "@confidence", val_confidence_types()),
+      chk_input_size(self@confidence_phrase, "@confidence_phrase", 0, 1, 1),
+      chk_input_parents(self@confidence_phrase, "@confidence_phrase", self@confidence, "@confidence")
     )
   }
 )

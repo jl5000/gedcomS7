@@ -414,14 +414,14 @@ class_record_note <- S7::new_class(
 
 
 #' @export
-#' @include cls_events_recorded.R cls_note.R cls_translation.R cls_repository_citation.R
+#' @include cls_facts_recorded.R cls_note.R cls_translation.R cls_repository_citation.R
 #' cls_note.R cls_media_link.R
 class_record_sour <- S7::new_class(
   "class_record_sour", 
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    events_recorded = S7::class_list | class_events_recorded | S7::class_character,
+    facts_recorded = S7::class_list | class_facts_recorded | S7::class_character,
     responsible_agency = S7::class_character,
     data_note_uids = S7::class_character,
     data_notes = S7::class_list | class_note | S7::class_character,
@@ -441,9 +441,9 @@ class_record_sour <- S7::new_class(
         c(
           sprintf("0 %s SOUR", self@prim_uid),
           sprintf("1 RESN %s", self@restrictions),
-          rep("1 DATA", length(self@events_recorded) + length(self@responsible_agency) + 
+          rep("1 DATA", length(self@facts_recorded) + length(self@responsible_agency) + 
                 length(self@data_notes) + length(self@data_note_uids) > 0),
-          obj_to_ged(self@events_recorded, "EVEN") |> increase_level(by = 2),
+          obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
           sprintf("2 AGNC %s", self@responsible_agency),
           sprintf("2 SNOTE %s", self@data_note_uids),
           obj_to_ged(self@data_notes, "NOTE") |> increase_level(by = 2),
@@ -472,7 +472,7 @@ class_record_sour <- S7::new_class(
       chk_input_size(self@source_text, "@source_text", 0, 1),
       chk_input_pattern(self@data_note_uids, "@data_note_uids", reg_uuid(TRUE)),
       chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@events_recorded, "@events_recorded", class_events_recorded),
+      chk_input_S7classes(self@facts_recorded, "@facts_recorded", class_facts_recorded),
       chk_input_S7classes(self@data_notes, "@data_notes", class_note, ".+"),
       chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),

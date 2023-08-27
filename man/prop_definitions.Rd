@@ -38,50 +38,6 @@ in the record.}
 
 \item{width}{The width in pixels of the cropped region.}
 
-\item{hour}{The hour of the day given as an integer between 0 and 23.}
-
-\item{minute}{The minute of the hour given as an integer between 0 and 59.}
-
-\item{second}{The second of the minute given as an integer between 0 and 59.}
-
-\item{fraction}{The fraction of the second given as
-an integer.}
-
-\item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
-is in local time (FALSE).}
-
-\item{year}{The year given as an integer (greater than 0).}
-
-\item{month}{The month of the year given as an integer between 1 and 12.}
-
-\item{day}{The day of the month given as an integer between 1 and 31.}
-
-\item{bce}{Whether the date is Before the Common Era. This is FALSE by default,
-but if TRUE, only the year should be given.}
-
-\item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
-
-\item{about}{Whether the date is near to the date given.}
-
-\item{calc}{Whether the date is calculated from other values.}
-
-\item{est}{Whether the date is near to the date given, and is calculated from other values.}
-
-\item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
-
-\item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
-
-\item{date}{The date given either as a formatted GEDCOM string, or a
-\code{class_date_value} object.}
-
-\item{date_phrase}{Textual information that cannot be expressed in the date.}
-
-\item{time}{The time given either as a formatted GEDCOM string, or a
-\code{class_time} object.}
-
 \item{where}{A specific location within the information referenced. For a published work, this could
 include the volume of a multi-volume work and the page number or numbers. For a
 periodical, it could include volume, issue, and page numbers. For a newspaper, it could
@@ -97,14 +53,11 @@ either be a \code{class_translation_txt} object, a list of them, or a character 
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{fact_type}{A character string indicating the types
-of events that were recorded in a particular source. Each event type is separated by a
-comma and space. For example, a parish register of births, deaths, and marriages
-would be BIRT, DEAT, MARR.}
+\item{fact_type}{}
 
-\item{fact_phrase}{Textual information that cannot be expressed in the event types.}
+\item{fact_phrase}{Textual information that cannot be expressed in the fact type.}
 
-\item{role}{What role this person played in this event.}
+\item{role}{What role this person played in this fact.}
 
 \item{role_phrase}{Textual information that cannot be expressed in the role.}
 
@@ -119,10 +72,12 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 
 \item{indi_phrase}{Textual information that cannot be expressed in the @indi_xref.}
 
-\item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
-\code{class_date_exact} object. If not given, it will default to today's date.}
+\item{fact_types}{A character string indicating the types
+of events that were recorded in a particular source. Each event type is separated by a
+comma and space. For example, a parish register of births, deaths, and marriages
+would be BIRT, DEAT, MARR.}
 
-\item{ext_ids}{}
+\item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
@@ -156,6 +111,56 @@ associated information is not required.}
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{hour}{The hour of the day given as an integer between 0 and 23.}
+
+\item{minute}{The minute of the hour given as an integer between 0 and 59.}
+
+\item{second}{The second of the minute given as an integer between 0 and 59.}
+
+\item{fraction}{The fraction of the second given as
+an integer.}
+
+\item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
+is in local time (FALSE).}
+
+\item{year}{The year given as an integer (greater than 0).}
+
+\item{month}{The month of the year given as an integer between 1 and 12.}
+
+\item{day}{The day of the month given as an integer between 1 and 31.}
+
+\item{bce}{Whether the date is Before the Common Era. This is FALSE by default,
+but if TRUE, only the year should be given.}
+
+\item{about}{Whether the date is near to the date given.}
+
+\item{calc}{Whether the date is calculated from other values.}
+
+\item{est}{Whether the date is near to the date given, and is calculated from other values.}
+
+\item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
+\code{class_date_greg} object.}
+
+\item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
+\code{class_date_exact} object. If not given, it will default to today's date.}
+
+\item{date_period}{An date period given either as a formatted GEDCOM string, or a
+\code{class_date_period} object.}
+
+\item{date}{The date given either as a formatted GEDCOM string, or a
+\code{class_date_value} object.}
+
+\item{date_phrase}{Textual information that cannot be expressed in the date.}
+
+\item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
+\code{class_date_greg} object.}
+
+\item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
+\code{class_date_greg} object.}
+
+\item{time}{The time given either as a formatted GEDCOM string, or a
+\code{class_time} object.}
 }
 \description{
 Define all properties used in S7 classes.

@@ -125,7 +125,7 @@ val_medium_types <- function() {
 
 #' @rdname val_record_types
 #' @export
-val_pedigree_linkage_types <- function() {
+val_pedigree_types <- function() {
   vals <- c("BIRTH", "ADOPTED", "FOSTER", "OTHER")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
@@ -178,7 +178,7 @@ val_sexes <- function() {
 
 #' @rdname val_record_types
 #' @export
-val_pedigree_certainty <- function() {
+val_confidence_types <- function() {
   vals <- c("CHALLENGED", "DISPROVEN", "PROVEN")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
