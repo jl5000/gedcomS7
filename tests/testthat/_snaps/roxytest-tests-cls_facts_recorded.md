@@ -3,7 +3,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 EVEN BIRT, DEAT"]
+      "value": ["0 EVEN BIRT"]
     }
 
 ---

@@ -145,7 +145,7 @@ but if TRUE, only the year should be given.}
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
 \code{class_date_exact} object. If not given, it will default to today's date.}
 
-\item{date_period}{An date period given either as a formatted GEDCOM string, or a
+\item{date_period}{A date period given either as a formatted GEDCOM string, or a
 \code{class_date_period} object.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a

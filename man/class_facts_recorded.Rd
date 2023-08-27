@@ -17,7 +17,7 @@ of events that were recorded in a particular source. Each event type is separate
 comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
 
-\item{date_period}{An date period given either as a formatted GEDCOM string, or a
+\item{date_period}{A date period given either as a formatted GEDCOM string, or a
 \code{class_date_period} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}

@@ -8,7 +8,7 @@ test_that("Function class_facts_recorded() @ L23", {
   expect_error(class_facts_recorded("BIRT,DEAT"), regexp = "@fact_types is in an invalid format")
   expect_error(class_facts_recorded("BIRT, DEAT", date_period = "2006"), 
                                     regexp = "@date_period is in an invalid format")
-  expect_snapshot_value(class_facts_recorded("BIRT, DEAT")@as_ged, "json2")
+  expect_snapshot_value(class_facts_recorded("BIRT")@as_ged, "json2")
   expect_snapshot_value(class_facts_recorded("BIRT, DEAT",
                                              date_period = "FROM 2007 TO 2010")@as_ged, "json2")
   expect_snapshot_value(class_facts_recorded("BIRT, DEAT",

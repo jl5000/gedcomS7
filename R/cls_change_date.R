@@ -34,8 +34,8 @@ class_creation_date <- S7::new_class(
   validator = function(self) {
     c(
       chk_input_size(self@date_exact, "@date_exact", 1, 1),
-      chk_input_size(self@time, "@time", 0, 1),
       chk_input_pattern(self@date_exact, "@date_exact", reg_date_exact()),
+      chk_input_size(self@time, "@time", 0, 1),
       chk_input_pattern(self@time, "@time", reg_time())
     )
   }

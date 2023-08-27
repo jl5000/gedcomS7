@@ -43,12 +43,12 @@ class_date_exact <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(self@day, "@day"),
-      chk_whole_number(self@month, "@month"),
-      chk_whole_number(self@year, "@year"),
       chk_input_size(self@day, "@day", 1, 1, 1, 31),
+      chk_whole_number(self@day, "@day"),
       chk_input_size(self@month, "@month", 1, 1, 1, 12),
+      chk_whole_number(self@month, "@month"),
       chk_input_size(self@year, "@year", 1, 1, 1),
+      chk_whole_number(self@year, "@year"),
       chk_input_date_cpts(self@year, self@month, self@day)
     )
   }
@@ -114,12 +114,12 @@ class_date_greg <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(self@day, "@day"),
-      chk_whole_number(self@month, "@month"),
-      chk_whole_number(self@year, "@year"),
       chk_input_size(self@day, "@day", 0, 1, 1, 31),
+      chk_whole_number(self@day, "@day"),
       chk_input_size(self@month, "@month", 0, 1, 1, 12),
+      chk_whole_number(self@month, "@month"),
       chk_input_size(self@year, "@year", 1, 1, 1),
+      chk_whole_number(self@year, "@year"),
       chk_input_size(self@bce, "@bce", 1, 1),
       chk_input_date_cpts(self@year, self@month, self@day, self@bce)
     )
@@ -165,10 +165,10 @@ class_date_approx <- S7::new_class(
   validator = function(self){
     c(
       chk_input_size(self@date_greg, "@date_greg", 1, 1),
+      chk_input_pattern(self@date_greg, "@date_greg", reg_date_gregorian()),
       chk_input_size(self@about, "@about", 1, 1),
       chk_input_size(self@calc, "@calc", 1, 1),
-      chk_input_size(self@est, "@est", 1, 1),
-      chk_input_pattern(self@date_greg, "@date_greg", reg_date_gregorian())
+      chk_input_size(self@est, "@est", 1, 1)
     )
   }
 )
@@ -245,8 +245,8 @@ class_date_period <- S7::new_class(
   validator = function(self){
     c(
       chk_input_size(self@start_date, "@start_date", 0, 1),
-      chk_input_size(self@end_date, "@end_date", 0, 1),
       chk_input_pattern(self@start_date, "@start_date", reg_date_gregorian()),
+      chk_input_size(self@end_date, "@end_date", 0, 1),
       chk_input_pattern(self@end_date, "@end_date", reg_date_gregorian()),
       chk_input_dates(self@start_date, self@end_date)
     )
@@ -363,12 +363,12 @@ class_date_value <- S7::new_class(
         time_err <- "A date period should not have a time defined."
     }
     c( 
-      time_err,
       chk_input_size(self@date, "@date", 1, 1),
-      chk_input_size(self@time, "@time", 0, 1),
-      chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
       chk_input_pattern(self@date, "@date", reg_date_value()),
-      chk_input_pattern(self@time, "@time", reg_time())
+      chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
+      chk_input_size(self@time, "@time", 0, 1),
+      chk_input_pattern(self@time, "@time", reg_time()),
+      time_err
     )
   }
 )

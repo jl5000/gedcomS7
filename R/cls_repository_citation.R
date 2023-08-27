@@ -40,9 +40,9 @@ class_repository_citation <- S7::new_class(
   validator = function(self){
     c(
       chk_input_size(self@repo_xref, "@repo_xref", 1, 1),
+      chk_input_pattern(self@repo_xref, "@repo_xref", reg_xref(TRUE)),
       chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_pattern(self@repo_xref, "@repo_xref", reg_xref(TRUE)),
       chk_input_size(self@call_numbers, "@call_numbers", min_val = 1)
     )
   }

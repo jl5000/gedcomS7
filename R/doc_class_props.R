@@ -85,7 +85,7 @@
 #' @param name_type
 #' @param type_phrase
 #' @param name_translations
-#' @param 
+#' @param event_type
 #' @param 
 #' 
 #' 
@@ -139,7 +139,7 @@
 #' `class_date_greg` object.
 #' @param date_exact An exact date given either as a formatted GEDCOM string, or a
 #' `class_date_exact` object. If not given, it will default to today's date.
-#' @param date_period An date period given either as a formatted GEDCOM string, or a
+#' @param date_period A date period given either as a formatted GEDCOM string, or a
 #' `class_date_period` object.
 #' @param date The date given either as a formatted GEDCOM string, or a
 #' `class_date_value` object.

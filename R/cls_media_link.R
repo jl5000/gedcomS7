@@ -55,17 +55,17 @@ class_media_link <- S7::new_class(
   validator = function(self) {
     c(
       chk_input_size(self@media_xref, "@media_xref", 1, 1),
+      chk_input_pattern(self@media_xref, "@media_xref", reg_xref(TRUE)),
       chk_input_size(self@title, "@title", 0, 1, 1),
       chk_input_size(self@crop, "@crop", 1, 1),
       chk_input_size(self@top, "@top", 0, 1, 0),
-      chk_input_size(self@left, "@left", 0, 1, 0),
-      chk_input_size(self@height, "@height", 0, 1, 1),
-      chk_input_size(self@width, "@width", 0, 1, 1),
       chk_whole_number(self@top, "@top"),
+      chk_input_size(self@left, "@left", 0, 1, 0),
       chk_whole_number(self@left, "@left"),
+      chk_input_size(self@height, "@height", 0, 1, 1),
       chk_whole_number(self@height, "@height"),
-      chk_whole_number(self@width, "@width"),
-      chk_input_pattern(self@media_xref, "@media_xref", reg_xref(TRUE))
+      chk_input_size(self@width, "@width", 0, 1, 1),
+      chk_whole_number(self@width, "@width")
     )
   }
 )

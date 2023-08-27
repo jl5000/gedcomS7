@@ -44,14 +44,14 @@ class_time <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_whole_number(self@hour, "@hour"),
-      chk_whole_number(self@minute, "@minute"),
-      chk_whole_number(self@second, "@second"),
-      chk_whole_number(self@fraction, "@fraction"),
       chk_input_size(self@hour, "@hour", 1, 1, 0, 23),
+      chk_whole_number(self@hour, "@hour"),
       chk_input_size(self@minute, "@minute", 1, 1, 0, 59),
+      chk_whole_number(self@minute, "@minute"),
       chk_input_size(self@second, "@second", 0, 1, 0, 59),
+      chk_whole_number(self@second, "@second"),
       chk_input_size(self@fraction, "@fraction", 0, length(self@second), 1),
+      chk_whole_number(self@fraction, "@fraction"),
       chk_input_size(self@utc, "@utc", 1, 1)
     )
   })
