@@ -38,6 +38,8 @@ Collate:
     'cls_change_date.R'
     'cls_place.R'
     'cls_fact.R'
+    'cls_fact_fam.R'
+    'cls_fact_indi.R'
     'cls_facts_recorded.R'
     'cls_family_link.R'
     'cls_repository_citation.R'

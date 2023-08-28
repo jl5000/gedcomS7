@@ -333,6 +333,7 @@ class_date_range <- S7::new_class(
 #' expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
 #' expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
 #'              regexp = "A date period should not have a time defined")
+#' expect_equal(class_date_value(class_date_greg(2005, 1, 5))@as_val, "5 JAN 2005")
 #' expect_snapshot_value(class_date_value("AFT 1990", date_phrase = "Maybe 1992")@as_ged, "json2")
 #' expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@as_ged, "json2")
 class_date_value <- S7::new_class(
@@ -344,6 +345,9 @@ class_date_value <- S7::new_class(
            class_date_range | class_date_approx,
     date_phrase = S7::class_character,
     time = S7::class_character | class_time,
+    
+    as_val = S7::new_property(S7::class_character, 
+                              getter = function(self) obj_to_val(self@date)),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -387,6 +391,7 @@ class_date_value <- S7::new_class(
 #' expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
 #' expect_error(class_date_sort(class_date_period(end_date = "1980")), 
 #'              regexp = "@date must be <character> or <gedcomS7::class_date_greg>")
+#' expect_equal(class_date_sort(class_date_greg(2005, 1, 5))@as_val, "5 JAN 2005")
 #' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@as_ged, "json2")
 class_date_sort <- S7::new_class(
   "class_date_sort",

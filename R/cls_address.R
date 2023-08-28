@@ -35,6 +35,9 @@ class_address <- S7::new_class(
     postal_code = S7::class_character,
     country = S7::class_character,
     
+    as_val = S7::new_property(S7::class_character, 
+                              getter = function(self) self@full),
+    
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){

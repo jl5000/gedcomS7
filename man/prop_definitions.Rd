@@ -79,6 +79,12 @@ would be BIRT, DEAT, MARR.}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
+\item{place}{see territory}
+
+\item{phone_numbers}{}
+
+\item{adop_parent_phrase}{}
+
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
 you will need to define an @indi_phrase.}
@@ -111,6 +117,8 @@ associated information is not required.}
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{unique_ids}{}
 
 \item{hour}{The hour of the day given as an integer between 0 and 23.}
 
@@ -150,6 +158,9 @@ but if TRUE, only the year should be given.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
 \code{class_date_value} object.}
+
+\item{date_sort}{The date given either as a formatted GEDCOM string, or a
+\code{class_date_sort} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 

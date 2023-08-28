@@ -86,8 +86,31 @@
 #' @param type_phrase
 #' @param name_translations
 #' @param event_type
-#' @param 
+#' @param fact_val
+#' @param fact_desc
+#' @param place see territory
+#' @param address
+#' @param phone_numbers 
+#' @param emails
+#' @param faxes
+#' @param web_pages
+#' @param agency
+#' @param relig_affil
+#' @param cause
+#' @param confidential
+#' @param locked
+#' @param private
+#' @param associations
+#' @param age
+#' @param age_phrase
+#' @param husb_age
+#' @param husb_age_phrase
+#' @param wife_age
+#' @param wife_age_phrase
+#' @param adop_parent
+#' @param adop_parent_phrase
 #' 
+#'  
 #' 
 #' 
 #' 
@@ -117,6 +140,7 @@
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
+#' @param unique_ids
 #' 
 #' 
 #' @param hour The hour of the day given as an integer between 0 and 23.
@@ -143,6 +167,8 @@
 #' `class_date_period` object.
 #' @param date The date given either as a formatted GEDCOM string, or a
 #' `class_date_value` object.
+#' @param date_sort The date given either as a formatted GEDCOM string, or a
+#' `class_date_sort` object.
 #' @param date_phrase Textual information that cannot be expressed in the date.
 #' @param start_date The start of the period/range given either as a formatted GEDCOM string, or a
 #' `class_date_greg` object.
