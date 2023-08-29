@@ -110,10 +110,11 @@
 #' @param adop_parent
 #' @param adop_parent_phrase
 #' 
+#' 
 #'  
 #' 
 #' 
-#' 
+#' @param xref 
 #' @param indi_xref The cross-reference identifier of an individual record. If the individual
 #' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
 #' you will need to define an @indi_phrase.
@@ -126,6 +127,14 @@
 #' you will need to describe the repository in @notes.
 #' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
+#' @param subm_xrefs
+#' @param husb_xref named vector
+#' @param wife_xref named vector
+#' @param chil_xrefs named vector
+#' 
+#' @param unique_ids
+#' @param user_ids
+#' @param ext_ids
 #' 
 #' 
 #' @param media_links Associated multimedia. This can either be a `class_media_link` object, a list of them,
@@ -140,7 +149,6 @@
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param unique_ids
 #' 
 #' 
 #' @param hour The hour of the day given as an integer between 0 and 23.
@@ -176,4 +184,6 @@
 #' `class_date_greg` object.
 #' @param time The time given either as a formatted GEDCOM string, or a
 #' `class_time` object.
+#' @param created
+#' @param updated
 NULL

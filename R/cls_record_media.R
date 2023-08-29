@@ -1,5 +1,4 @@
-#' @include cls_validators.R
-NULL
+
 
 #' Create a media file object
 #' 
@@ -59,6 +58,44 @@ class_media_file <- S7::new_class(
       chk_input_size(self@title, "@title", 0, 1, 1),
       chk_input_size(self@media_alt, "@media_alt", min_val = 1)
       #chk_input_choice(names(self@media_alt), "@media_alt types", val_multimedia_formats())
+    )
+  }
+)
+
+#' @export
+#' @include cls_record.R cls_note.R cls_citation.R
+class_record_media <- S7::new_class(
+  "class_record_media", 
+  package = "gedcomS7",
+  parent = class_record,
+  properties = list(
+    files = S7::class_list | class_media_file,
+    note_uids = S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
+    citations = S7::class_list | class_citation | S7::class_character,
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 %s OBJE", self@prim_uid),
+          sprintf("1 RESN %s", self@restrictions),
+          obj_to_ged(self@files) |> increase_level(by = 1),
+          self@ids |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_uids),
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
+          obj_to_ged(self@updated) |> increase_level(by = 1),
+          obj_to_ged(self@created) |> increase_level(by = 1)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_S7classes(self@files, "@files", class_media_file),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE))
     )
   }
 )
