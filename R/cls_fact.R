@@ -12,7 +12,6 @@ NULL
 #' expect_error(class_fact("FACT"), regexp = "@fact_desc has too few elements")
 #' expect_error(class_fact("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
 #' expect_snapshot_value(class_fact("BIRT", fact_val = "Y")@.fact_detail_as_ged, "json2")
-#' expect_warning(class_fact("BIRT")@.fact_detail_as_ged, regexp = "You are asserting")
 #' expect_snapshot_value(class_fact("FACT", "Diabetes",
 #'                                  fact_desc = "Medical condition",
 #'                                  date = "26 JUN 2001",
@@ -93,13 +92,13 @@ class_fact <- S7::new_class(
     .fact_detail_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(self@fact_type %in% val_event_types(FALSE) &&
-           length(self@fact_val) == 0 && 
-           length(self@date) == 0 &&
-           length(self@place) == 0){
-          warning(sprintf("You are asserting that this %s event did not necessarily occur. Either define a date, place, or set @fact_val = 'Y' to assert its occurence.",
-                          self@fact_type))
-        }
+        # if(self@fact_type %in% val_event_types(FALSE) &&
+        #    length(self@fact_val) == 0 && 
+        #    length(self@date) == 0 &&
+        #    length(self@place) == 0){
+        #   warning(sprintf("You are asserting that this %s event did not necessarily occur. Either define a date, place, or set @fact_val = 'Y' to assert its occurence.",
+        #                   self@fact_type))
+        # }
         
         c(
           sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),

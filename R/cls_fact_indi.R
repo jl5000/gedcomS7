@@ -50,7 +50,27 @@ class_fact_indi <- S7::new_class(
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
 #' @export
 #' @tests
-#' 
+#' expect_error(class_event_indi("birth", fact_val = "Y"), 
+#'              regexp = "@fact_type has an invalid value")
+#' expect_error(class_event_indi("BIRT", fact_val = "Yes"), 
+#'              regexp = "@fact_val has an invalid value")
+#' expect_error(class_event_indi("DEAT", fact_val = "Y", fam_xref = "@12@"), 
+#'              regexp = "@fam_xref has too many elements")
+#' expect_error(class_event_indi("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
+#'              regexp = "@adop_parent has too many elements")
+#' expect_error(class_event_indi("EVEN", fact_desc = "Fact desc"), 
+#'              regexp = "@fact_val has too few elements")
+#' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
+#'              regexp = "@adop_parent has an invalid value")
+#' expect_error(class_event_indi("ADOP", fact_val = "Y", adop_parent = "BOTH"), 
+#'              regexp = "@adop_parent requires a @fam_xref")
+#' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent_phrase = "both of them"), 
+#'              regexp = "@adop_parent_phrase requires a @adop_parent")
+#' expect_snapshot_value(class_event_indi("ADOP", fact_val = "Y",
+#'                                        fact_desc = "More info on adoption",
+#'                                        fam_xref = "@123@",
+#'                                        adop_parent = "WIFE",
+#'                                        adop_parent_phrase = "Gloria")@as_ged, "json2")
 class_event_indi <- S7::new_class(
   "class_event_indi",
   package = "gedcomS7",
@@ -108,9 +128,18 @@ class_event_indi <- S7::new_class(
 )
 
 
+#' Create an individual attribute object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM INDIVIDUAL_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
-#' 
+#' expect_error(class_attr_indi("descr", fact_val = "Tall"), 
+#'              regexp = "@fact_type has an invalid value")
+#' expect_error(class_attr_indi("DSCR"), 
+#'              regexp = "@fact_val has too few elements")
+#' expect_error(class_attr_indi("NCHI", fact_val = "2.4"), 
+#'              regexp = "@fact_val is in an invalid format")
 class_attr_indi <- S7::new_class(
   "class_attr_indi",
   package = "gedcomS7",
@@ -126,7 +155,13 @@ class_attr_indi <- S7::new_class(
       
     c(
       chk_input_choice(self@fact_type, "@fact_type", val_individual_attribute_types(TRUE)),
+      chk_input_size(self@fact_val, "@fact_val", 1, 1, 1),
       integer_err
     )
   }
 )
+
+# DOESN'T WORK
+# class_indi_birth <- S7::new_class("class_indi_birth", package = "gedcomS7", parent = class_event_indi,
+#   properties = list(fact_type = S7::new_property(S7::class_character, getter = function(self) "BIRT"))
+# )

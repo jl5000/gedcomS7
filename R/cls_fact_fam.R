@@ -8,10 +8,10 @@ NULL
 #' @include cls_fact.R
 #' @tests
 #' expect_error(class_fact_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
-#' expect_snapshot_value(class_fact_fam("DIV", fact_val = "Y")@.fam_fact_detail_as_ged, "json2")
-#' expect_snapshot_value(class_fact_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@.fam_fact_detail_as_ged, "json2")
+#' expect_snapshot_value(class_fact_fam("DIV", fact_val = "Y")@as_ged, "json2")
+#' expect_snapshot_value(class_fact_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@as_ged, "json2")
 #' expect_snapshot_value(class_fact_fam("DIV", fact_val = "Y", husb_age = "73y 4m",
-#'                                       wife_age = "60y")@.fam_fact_detail_as_ged, "json2")
+#'                                       wife_age = "60y")@as_ged, "json2")
 class_fact_fam <- S7::new_class(
   "class_fact_fam", 
   parent = class_fact,
@@ -57,9 +57,18 @@ class_fact_fam <- S7::new_class(
 )
 
 
+#' Create a family event object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM FAMILY_EVENT_STRUCTURE.
 #' @export
 #' @tests
-#' 
+#' expect_error(class_event_fam("marr", fact_val = "Y"), 
+#'              regexp = "@fact_type has an invalid value")
+#' expect_error(class_event_fam("MARR", fact_val = "Yes"), 
+#'              regexp = "@fact_val has an invalid value")
+#' expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
+#'              regexp = "@fact_val has too few elements")           
 class_event_fam <- S7::new_class(
   "class_event_fam",
   package = "gedcomS7",
@@ -78,16 +87,24 @@ class_event_fam <- S7::new_class(
   }
 )
 
+#' Create a family attribute object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM FAMILY_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
-#' 
+#' expect_error(class_attr_fam("residence", fact_val = "Earth"), 
+#'              regexp = "@fact_type has an invalid value")
+#' expect_error(class_attr_fam("RESI"), 
+#'              regexp = "@fact_val has too few elements")      
 class_attr_fam <- S7::new_class(
   "class_attr_fam",
   package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
     c(
-      chk_input_choice(self@fact_type, "@fact_type", val_family_attribute_types(TRUE))
+      chk_input_choice(self@fact_type, "@fact_type", val_family_attribute_types(TRUE)),
+      chk_input_size(self@fact_val, "@fact_val", 1, 1, 1)
     )
   }
 )

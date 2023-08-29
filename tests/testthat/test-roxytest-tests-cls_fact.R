@@ -2,11 +2,10 @@
 
 # File R/cls_fact.R: @tests
 
-test_that("Function class_fact() @ L34", {
+test_that("Function class_fact() @ L33", {
   expect_error(class_fact("FACT"), regexp = "@fact_desc has too few elements")
   expect_error(class_fact("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
   expect_snapshot_value(class_fact("BIRT", fact_val = "Y")@.fact_detail_as_ged, "json2")
-  expect_warning(class_fact("BIRT")@.fact_detail_as_ged, regexp = "You are asserting")
   expect_snapshot_value(class_fact("FACT", "Diabetes",
                                    fact_desc = "Medical condition",
                                    date = "26 JUN 2001",
