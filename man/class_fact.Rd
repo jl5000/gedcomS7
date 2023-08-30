@@ -59,8 +59,6 @@ associated information is not required.}
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
-
-\item{unique_ids}{}
 }
 \value{
 An S7 object representing a GEDCOM EVENT_DETAIL (plus a bit more).

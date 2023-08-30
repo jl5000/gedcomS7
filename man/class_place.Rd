@@ -18,6 +18,8 @@ class_place(
 \arguments{
 \item{language}{Language tags as defined in BCP 47.}
 
+\item{ext_ids}{}
+
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,

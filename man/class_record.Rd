@@ -17,7 +17,9 @@ class_record(
 )
 }
 \arguments{
-\item{unique_ids}{}
+\item{xref}{}
+
+\item{ext_ids}{}
 }
 \value{
 An S7 object containing common elements of a GEDCOM record.

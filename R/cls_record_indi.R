@@ -1,4 +1,8 @@
 
+#' Create an individual record object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
 #' @include cls_record.R cls_personal_name.R cls_fact.R cls_non_event.R cls_association.R cls_note.R
 #' cls_citation.R cls_media_link.R
@@ -13,12 +17,12 @@ class_record_indi <- S7::new_class(
     non_events = S7::class_list,
     family_links_as_child = S7::class_list | class_child_family_link | S7::class_character,
     family_links_as_spouse = S7::class_list | class_spouse_family_link | S7::class_character,
-    subm_uids = S7::class_character,
+    subm_xrefs = S7::class_character,
     associations = S7::class_list,
-    alia_uids = S7::class_character,
-    anci_uids = S7::class_character,
-    desi_uids = S7::class_character,
-    note_uids = S7::class_character,
+    alia_xrefs = S7::class_character,
+    anci_xrefs = S7::class_character,
+    desi_xrefs = S7::class_character,
+    note_xrefs = S7::class_character,
     notes = S7::class_list | class_note | S7::class_character,
     citations = S7::class_list | class_citation | S7::class_character,
     media_links = S7::class_list | class_media_link | S7::class_character,
@@ -102,7 +106,7 @@ class_record_indi <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s INDI", self@prim_uid),
+          sprintf("0 %s INDI", self@xref),
           sprintf("1 RESN %s", self@restrictions),
           obj_to_ged(self@personal_names, "NAME") |> increase_level(by = 1),
           sprintf("1 SEX %s", self@sex),
@@ -110,13 +114,13 @@ class_record_indi <- S7::new_class(
           obj_to_ged(self@non_events) |> increase_level(by = 1),
           obj_to_ged(self@family_links_as_child, "FAMC") |> increase_level(by = 1),
           obj_to_ged(self@family_links_as_spouse, "FAMS") |> increase_level(by = 1),
-          sprintf("1 SUBM %s", self@subm_uids),
+          sprintf("1 SUBM %s", self@subm_xrefs),
           obj_to_ged(self@associations) |> increase_level(by = 1),
-          named_vec_to_ged(self@alia_uids, "ALIA", "PHRASE") |> increase_level(by = 1),
-          sprintf("1 ANCI %s", self@anci_uids),
-          sprintf("1 DESI %s", self@desi_uids),
+          named_vec_to_ged(self@alia_xrefs, "ALIA", "PHRASE") |> increase_level(by = 1),
+          sprintf("1 ANCI %s", self@anci_xrefs),
+          sprintf("1 DESI %s", self@desi_xrefs),
           self@ids |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_uids),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
@@ -129,11 +133,11 @@ class_record_indi <- S7::new_class(
     c(
       chk_input_size(self@sex, "@sex", 0, 1),
       chk_input_choice(self@sex, "@sex", val_sexes()),
-      chk_input_pattern(self@subm_uids, "@subm_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@alia_uids, "@alia_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@anci_uids, "@anci_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@desi_uids, "@desi_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
+      chk_input_pattern(self@subm_xrefs, "@subm_xrefs", reg_xref(TRUE)),
+      chk_input_pattern(self@alia_xrefs, "@alia_xrefs", reg_xref(TRUE)),
+      chk_input_pattern(self@anci_xrefs, "@anci_xrefs", reg_xref(TRUE)),
+      chk_input_pattern(self@desi_xrefs, "@desi_xrefs", reg_xref(TRUE)),
+      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
       chk_input_S7classes(self@personal_names, "@personal_names", class_personal_name),
       chk_input_S7classes(self@facts, "@facts", class_fact_indi),
       chk_input_S7classes(self@non_events, "@non_events", class_non_event),
@@ -141,8 +145,8 @@ class_record_indi <- S7::new_class(
       chk_input_S7classes(self@family_links_as_spouse, "@family_links_as_spouse", class_spouse_family_link),
       chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_uuid(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE))
     )
   }
 )

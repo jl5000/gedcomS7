@@ -85,6 +85,8 @@ would be BIRT, DEAT, MARR.}
 
 \item{adop_parent_phrase}{}
 
+\item{xref}{}
+
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
 you will need to define an @indi_phrase.}
@@ -103,6 +105,14 @@ you will need to describe the repository in @notes.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
+\item{husb_xref}{named vector}
+
+\item{wife_xref}{named vector}
+
+\item{chil_xrefs}{named vector}
+
+\item{ext_ids}{}
+
 \item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
@@ -117,8 +127,6 @@ associated information is not required.}
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
-
-\item{unique_ids}{}
 
 \item{hour}{The hour of the day given as an integer between 0 and 23.}
 
