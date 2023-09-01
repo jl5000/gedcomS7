@@ -56,7 +56,7 @@ can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 }
 \value{
-An S7 object containing common elements of a GEDCOM FAMILY_RECORD.
+An S7 object representing a GEDCOM FAMILY_RECORD.
 }
 \description{
 Create a family record object

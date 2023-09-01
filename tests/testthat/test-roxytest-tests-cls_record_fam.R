@@ -2,7 +2,7 @@
 
 # File R/cls_record_fam.R: @tests
 
-test_that("Function class_record_fam() @ L20", {
+test_that("Function class_record_fam() @ L19", {
   fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
                              date = "22 AUG 1907", place = "Church"))
   nevent <- list(class_non_event("DIV"))
@@ -11,7 +11,6 @@ test_that("Function class_record_fam() @ L20", {
                                          husb_xref = "@I8@", wife_xref = "@I9@",
                                          chil_xrefs = c("@I98@", Eldest = "@I67@"),
                                          locked = TRUE,
-                                         updated = class_change_date(),
                                          citations = c("@S34@","@S65@"))@as_ged, "json2")
 })
 

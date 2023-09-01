@@ -122,6 +122,9 @@ class_personal_name <- S7::new_class(
     note_xrefs = S7::class_character,
     citations = S7::class_list | class_citation | S7::class_character,
     
+    as_val = S7::new_property(S7::class_character, 
+                              getter = function(self) self@pers_name),
+    
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){

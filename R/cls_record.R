@@ -11,8 +11,6 @@ NULL
 #' expect_error(class_record("REF"), regexp = "@xref is in an invalid format")
 #' expect_error(class_record("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
 #' expect_error(class_record("@1@", ext_ids = LETTERS), regexp = "@ext_ids names has too few elements")
-#' expect_error(class_record("@1@", created = "JUN 2006"), regexp = "@created is in an invalid format")
-#' expect_error(class_record("@1@", updated = "JUN 2006"), regexp = "@updated is in an invalid format")
 #' expect_snapshot_value(class_record("@1@",
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = setNames(letters, LETTERS)[1:5],
@@ -27,8 +25,8 @@ class_record <- S7::new_class(
     user_ids = S7::class_character, # potentially named
     unique_ids = S7::class_character, # not named
     ext_ids = S7::class_character, # definitely named
-    created = S7::class_character | class_creation_date,
-    updated = S7::class_character | class_change_date,
+    created = NULL | class_creation_date,
+    updated = NULL | class_change_date,
     
     restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){

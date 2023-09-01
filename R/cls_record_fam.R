@@ -15,7 +15,6 @@
 #'                                        husb_xref = "@I8@", wife_xref = "@I9@",
 #'                                        chil_xrefs = c("@I98@", Eldest = "@I67@"),
 #'                                        locked = TRUE,
-#'                                        updated = class_change_date(),
 #'                                        citations = c("@S34@","@S65@"))@as_ged, "json2")
 class_record_fam <- S7::new_class(
   "class_record_fam", 

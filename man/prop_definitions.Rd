@@ -83,7 +83,7 @@ would be BIRT, DEAT, MARR.}
 
 \item{phone_numbers}{}
 
-\item{adop_parent_phrase}{}
+\item{fam_links_spou}{}
 
 \item{xref}{}
 
@@ -110,6 +110,8 @@ you will need to describe the repository in @notes.}
 \item{wife_xref}{named vector}
 
 \item{chil_xrefs}{named vector}
+
+\item{desi_xrefs}{}
 
 \item{ext_ids}{}
 

@@ -109,6 +109,10 @@
 #' @param wife_age_phrase
 #' @param adop_parent
 #' @param adop_parent_phrase
+#' @param pers_names
+#' @param sex
+#' @param fam_links_chil
+#' @param fam_links_spou
 #' 
 #' 
 #'  
@@ -131,6 +135,9 @@
 #' @param husb_xref named vector
 #' @param wife_xref named vector
 #' @param chil_xrefs named vector
+#' @param alia_xrefs
+#' @param anci_xrefs
+#' @param desi_xrefs
 #' 
 #' @param unique_ids
 #' @param user_ids
