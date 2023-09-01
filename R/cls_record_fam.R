@@ -4,8 +4,7 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
-#' @include cls_record.R cls_fact.R cls_non_event.R cls_association.R cls_note.R
-#' cls_citation.R cls_media_link.R
+#' @include cls_record.R cls_fact_fam.R cls_non_event.R cls_association.R
 #' @tests
 #' fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
 #'                            date = "22 AUG 1907", place = "Church"))
@@ -28,10 +27,6 @@ class_record_fam <- S7::new_class(
     chil_xrefs = S7::class_character,
     associations = S7::class_list | class_association,
     subm_xrefs = S7::class_character,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
-    media_links = S7::class_list | class_media_link | S7::class_character,
     
     marriage_date = S7::new_property(
       S7::class_character,
@@ -84,10 +79,6 @@ class_record_fam <- S7::new_class(
       chk_input_pattern(self@wife_xref, "@wife_xref", reg_xref(TRUE)),
       chk_input_pattern(self@chil_xrefs, "@chil_xrefs", reg_xref(TRUE)),
       chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_pattern(self@subm_xrefs, "@subm_xrefs", reg_xref(TRUE)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE))
+      chk_input_pattern(self@subm_xrefs, "@subm_xrefs", reg_xref(TRUE))
     )
   })

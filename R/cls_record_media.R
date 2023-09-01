@@ -65,9 +65,10 @@ class_media_file <- S7::new_class(
 #' Create a multimedia record object
 #' 
 #' @inheritParams prop_definitions 
+#' @param media_links Not used.
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_RECORD.
 #' @export
-#' @include cls_record.R cls_note.R cls_citation.R
+#' @include cls_record.R
 #' @tests
 #' fls <- list(class_media_file(location = "media/original.mp3",
 #'                                        title = "My audio",
@@ -89,9 +90,6 @@ class_record_media <- S7::new_class(
   parent = class_record,
   properties = list(
     files = S7::class_list | class_media_file,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -113,9 +111,7 @@ class_record_media <- S7::new_class(
     c(
       chk_input_size(self@files, "@files", 1),
       chk_input_S7classes(self@files, "@files", class_media_file),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
+      chk_input_size(self@media_links, "@media_links", 0, 0)
     )
   }
 )

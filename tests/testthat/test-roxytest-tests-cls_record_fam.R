@@ -2,7 +2,7 @@
 
 # File R/cls_record_fam.R: @tests
 
-test_that("Function class_record_fam() @ L19", {
+test_that("Function class_record_fam() @ L18", {
   fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
                              date = "22 AUG 1907", place = "Church"))
   nevent <- list(class_non_event("DIV"))

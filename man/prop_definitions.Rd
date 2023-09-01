@@ -113,7 +113,11 @@ you will need to describe the repository in @notes.}
 
 \item{desi_xrefs}{}
 
-\item{ext_ids}{}
+\item{unique_ids}{ds}
+
+\item{user_ids}{fwe}
+
+\item{ext_ids}{dsfse}
 
 \item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves

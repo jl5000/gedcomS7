@@ -5,7 +5,7 @@ NULL
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object containing common elements of a GEDCOM record.
-#' @include cls_change_date.R
+#' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
 #' @tests
 #' expect_error(class_record(), regexp = "@xref has too few elements")
 #' expect_error(class_record("REF"), regexp = "@xref is in an invalid format")
@@ -25,6 +25,10 @@ class_record <- S7::new_class(
     user_ids = S7::class_character, # potentially named
     unique_ids = S7::class_character, # not named
     ext_ids = S7::class_character, # definitely named
+    note_xrefs = S7::class_character,
+    notes = S7::class_list | class_note | S7::class_character,
+    citations = S7::class_list | class_citation | S7::class_character,
+    media_links = S7::class_list | class_media_link | S7::class_character,
     created = NULL | class_creation_date,
     updated = NULL | class_change_date,
     
@@ -60,6 +64,10 @@ class_record <- S7::new_class(
       chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE)),
       chk_input_size(self@ext_ids, "@ext_ids", min_val = 1),
       chk_input_size(names(self@ext_ids), "@ext_ids names", length(self@ext_ids), length(self@ext_ids)),
+      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
+      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE)),
       chk_input_size(self@created, "@created", 0, 1),
       chk_input_pattern(self@created, "@created", reg_date_exact(TRUE)),
       chk_input_size(self@updated, "@updated", 0, 1),

@@ -65,6 +65,8 @@ or a character vector of XREFs of multimedia records. If a character vector is p
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
+\item{unique_ids}{ds}
+
 \item{fam_xref}{The cross-reference identifier of a family record.}
 }
 \value{

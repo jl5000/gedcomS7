@@ -18,7 +18,7 @@ class_place(
 \arguments{
 \item{language}{Language tags as defined in BCP 47.}
 
-\item{ext_ids}{}
+\item{ext_ids}{dsfse}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 

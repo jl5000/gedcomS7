@@ -12,6 +12,10 @@ class_record_fam(
   user_ids = class_missing,
   unique_ids = class_missing,
   ext_ids = class_missing,
+  note_xrefs = class_missing,
+  notes = class_missing,
+  citations = class_missing,
+  media_links = class_missing,
   created = class_missing,
   updated = class_missing,
   facts = class_missing,
@@ -20,23 +24,17 @@ class_record_fam(
   wife_xref = class_missing,
   chil_xrefs = class_missing,
   associations = class_missing,
-  subm_xrefs = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing,
-  media_links = class_missing
+  subm_xrefs = class_missing
 )
 }
 \arguments{
 \item{xref}{}
 
-\item{ext_ids}{}
+\item{user_ids}{fwe}
 
-\item{husb_xref}{named vector}
+\item{unique_ids}{ds}
 
-\item{wife_xref}{named vector}
-
-\item{chil_xrefs}{named vector}
+\item{ext_ids}{dsfse}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
@@ -54,6 +52,12 @@ associated information is not required.}
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{husb_xref}{named vector}
+
+\item{wife_xref}{named vector}
+
+\item{chil_xrefs}{named vector}
 }
 \value{
 An S7 object representing a GEDCOM FAMILY_RECORD.

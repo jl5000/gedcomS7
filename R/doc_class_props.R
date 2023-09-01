@@ -140,9 +140,9 @@
 #' @param anci_xrefs
 #' @param desi_xrefs
 #' 
-#' @param unique_ids
-#' @param user_ids
-#' @param ext_ids
+#' @param unique_ids ds
+#' @param user_ids fwe
+#' @param ext_ids dsfse
 #' 
 #' 
 #' @param media_links Associated multimedia. This can either be a `class_media_link` object, a list of them,

@@ -2,7 +2,7 @@
 
 # File R/cls_record_indi.R: @tests
 
-test_that("Function class_record_indi() @ L27", {
+test_that("Function class_record_indi() @ L26", {
   nms <- list(class_personal_name("Joe /Bloggs/"),
               class_personal_name("Joseph /Bloggs/"))
   fcts <- list(class_event_indi("BIRT", date = "2005", place = "USA"),

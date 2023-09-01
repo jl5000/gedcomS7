@@ -12,6 +12,10 @@ class_record(
   user_ids = class_missing,
   unique_ids = class_missing,
   ext_ids = class_missing,
+  note_xrefs = class_missing,
+  notes = class_missing,
+  citations = class_missing,
+  media_links = class_missing,
   created = class_missing,
   updated = class_missing
 )
@@ -19,7 +23,28 @@ class_record(
 \arguments{
 \item{xref}{}
 
-\item{ext_ids}{}
+\item{user_ids}{fwe}
+
+\item{unique_ids}{ds}
+
+\item{ext_ids}{dsfse}
+
+\item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
+
+\item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
+or a character vector of notes. If a character vector is provided then only the notes themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
+
+\item{citations}{Associated sources. This can either be a \code{class_citation} object, a list of them,
+or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
+
+\item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
+or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
 }
 \value{
 An S7 object containing common elements of a GEDCOM record.

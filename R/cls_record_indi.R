@@ -4,8 +4,7 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
-#' @include cls_record.R cls_personal_name.R cls_fact.R cls_non_event.R cls_association.R cls_note.R
-#' cls_citation.R cls_media_link.R
+#' @include cls_record.R cls_personal_name.R cls_fact_indi.R cls_non_event.R cls_association.R
 #' @tests
 #' nms <- list(class_personal_name("Joe /Bloggs/"),
 #'             class_personal_name("Joseph /Bloggs/"))
@@ -40,10 +39,6 @@ class_record_indi <- S7::new_class(
     alia_xrefs = S7::class_character,
     anci_xrefs = S7::class_character,
     desi_xrefs = S7::class_character,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
-    media_links = S7::class_list | class_media_link | S7::class_character,
     
     primary_name = S7::new_property(
       S7::class_character,
@@ -159,11 +154,7 @@ class_record_indi <- S7::new_class(
       chk_input_S7classes(self@associations, "@associations", class_association),
       chk_input_pattern(self@alia_xrefs, "@alia_xrefs", reg_xref(TRUE)),
       chk_input_pattern(self@anci_xrefs, "@anci_xrefs", reg_xref(TRUE)),
-      chk_input_pattern(self@desi_xrefs, "@desi_xrefs", reg_xref(TRUE)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE))
+      chk_input_pattern(self@desi_xrefs, "@desi_xrefs", reg_xref(TRUE))
     )
   }
 )
