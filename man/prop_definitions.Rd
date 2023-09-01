@@ -83,7 +83,7 @@ would be BIRT, DEAT, MARR.}
 
 \item{phone_numbers}{}
 
-\item{fam_links_spou}{}
+\item{files}{}
 
 \item{xref}{}
 

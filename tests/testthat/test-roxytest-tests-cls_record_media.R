@@ -21,3 +21,21 @@ test_that("Function class_media_file() @ L25", {
                          "json2")
 })
 
+
+test_that("Function class_record_media() @ L86", {
+  fls <- list(class_media_file(location = "media/original.mp3",
+                                         title = "My audio",
+                                         media_type = "audio/mp3",
+                                         medium = "ELECTRONIC",
+                                         medium_phrase = "My CD of things",
+                                         media_alt = c("audio/ogg" = "media/derived.oga",
+                                                       "text/vtt" = "media/transcript.vtt")),
+              class_media_file(location = "media/speech.mp3",
+                               media_type = "audio/mp3")
+             )
+             
+  expect_snapshot_value(class_record_media("@M548@", files = fls,
+                                           locked = TRUE,
+                                           notes = "Very loud")@as_ged, "json2")
+})
+
