@@ -1,6 +1,11 @@
 #' @include cls_validators.R
 NULL
 
+#' Create a GEDCOM source object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM HEAD.SOUR.
+#' @export
 #' @include cls_address.R cls_date.R cls_time.R
 class_gedcom_source <- S7::new_class(
   "class_gedcom_source",
@@ -27,7 +32,7 @@ class_gedcom_source <- S7::new_class(
           sprintf("1 VERS %s", self@product_version),
           sprintf("1 NAME %s", self@product_name),
           sprintf("1 CORP %s", self@business_name),
-          obj_to_ged(self@business_address) |> increase_level(by = 2),
+          obj_to_ged(self@business_address, "ADDR") |> increase_level(by = 2),
           sprintf("2 PHON %s", self@phone_numbers),
           sprintf("2 EMAIL %s", self@emails),
           sprintf("2 FAX %s", self@faxes),
@@ -43,36 +48,42 @@ class_gedcom_source <- S7::new_class(
     c(
       chk_input_size(self@product_id, "@product_id", 1, 1, 1),
       chk_input_size(self@product_name, "@product_name", 0, 1, 1),
-      chk_input_size(self@product_version, "@product_version", 0, 1, 1),
-      chk_input_size(self@business_name, "@business_name", 0, 1, 1),
-      chk_input_size(self@business_address, "@business_address", 0, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
-      chk_input_size(self@emails, "@emails", min_val = 1),
-      chk_input_size(self@faxes, "@faxes", min_val = 1),
-      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
-      chk_input_size(self@data_name, "@data_name", 0, 1, 1),
-      chk_input_size(self@data_pubdate, "@data_pubdate", 0, 1),
-      chk_input_size(self@data_pubtime, "@data_pubtime", 0, 1),
-      chk_input_size(self@data_copyright, "@data_copyright", 0, 1, 1),
-      chk_input_parents(self@product_version, "@product_version", self@product_id, "@product_id"),
       chk_input_parents(self@product_name, "@product_name", self@product_id, "@product_id"),
+      chk_input_size(self@product_version, "@product_version", 0, 1, 1),
+      chk_input_parents(self@product_version, "@product_version", self@product_id, "@product_id"),
+      chk_input_size(self@business_name, "@business_name", 0, 1, 1),
       chk_input_parents(self@business_name, "@business_name", self@product_id, "@product_id"),
-      chk_input_parents(self@data_name, "@data_name", self@product_id, "@product_id"),
+      chk_input_size(self@business_address, "@business_address", 0, 1, 1),
       chk_input_parents(self@business_address, "@business_address", self@business_name, "@business_name"),
+      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
       chk_input_parents(self@phone_numbers, "@phone_numbers", self@business_name, "@business_name"),
+      chk_input_size(self@emails, "@emails", min_val = 1),
       chk_input_parents(self@emails, "@emails", self@business_name, "@business_name"),
+      chk_input_size(self@faxes, "@faxes", min_val = 1),
       chk_input_parents(self@faxes, "@faxes", self@business_name, "@business_name"),
+      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       chk_input_parents(self@web_pages, "@web_pages", self@business_name, "@business_name"),
-      chk_input_parents(self@data_pubdate, "@data_pubdate", self@data_name, "@data_name"),
-      chk_input_parents(self@data_copyright, "@data_copyright", self@data_name, "@data_name"),
-      chk_input_parents(self@data_pubtime, "@data_pubtime", self@data_pubdate, "@data_pubdate"),
+      chk_input_size(self@data_name, "@data_name", 0, 1, 1),
+      chk_input_parents(self@data_name, "@data_name", self@product_id, "@product_id"),
+      chk_input_size(self@data_pubdate, "@data_pubdate", 0, 1),
       chk_input_pattern(self@data_pubdate, "@data_pubdate", reg_date_exact()),
-      chk_input_pattern(self@data_pubtime, "@data_pubtime", reg_time())
+      chk_input_parents(self@data_pubdate, "@data_pubdate", self@data_name, "@data_name"),
+      chk_input_size(self@data_pubtime, "@data_pubtime", 0, 1),
+      chk_input_pattern(self@data_pubtime, "@data_pubtime", reg_time()),
+      chk_input_parents(self@data_pubtime, "@data_pubtime", self@data_pubdate, "@data_pubdate"),
+      chk_input_size(self@data_copyright, "@data_copyright", 0, 1, 1),
+      chk_input_parents(self@data_copyright, "@data_copyright", self@data_name, "@data_name")
     )
   }
 )
 
-#' @include cls_date.R cls_time.R cls_note.R cls_record.R
+#' Create a GEDCOM object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM file.
+#' @export
+#' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
+#' cls_record_repo.R cls_record_sour.R cls_record_subm.R
 class_gedcomS7 <- S7::new_class(
   "class_gedcomS7",
   properties = list(
@@ -82,12 +93,12 @@ class_gedcomS7 <- S7::new_class(
     destination = S7::class_character,
     creation_date = S7::class_character | class_date_exact,
     creation_time = S7::class_character | class_time,
-    subm_uid = S7::class_character,
+    subm_xref = S7::class_character,
     gedcom_copyright = S7::class_character,
     default_language = S7::class_character,
     default_place_form = S7::class_character,
     notes = S7::class_list | class_note | S7::class_character,
-    note_uids = S7::class_character,
+    note_xrefs = S7::class_character,
     
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
     add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -101,21 +112,21 @@ class_gedcomS7 <- S7::new_class(
     media = S7::class_list,
     note = S7::class_list,
     
-    uids = S7::new_property( #EVERY UID
-      S7::class_list,
-      getter = function(self){
-        rec_types <- c("indi","fam","sour","repo","media","note","subm")
-        rec_uids <- lapply(rec_types, \(rec_type){
-          S7::prop(self, rec_type) |> 
-            unlist() |> 
-            grep(pattern = "^1 UID ", value = TRUE) |> 
-            sub(pattern = "^1 UID ", replacement = "") |> 
-            unique()
-        })
-        setNames(rec_uids, rec_types)
-        rec_uids
-      }
-    ),
+    # uids = S7::new_property( #EVERY UID
+    #   S7::class_list,
+    #   getter = function(self){
+    #     rec_types <- c("indi","fam","sour","repo","media","note","subm")
+    #     rec_uids <- lapply(rec_types, \(rec_type){
+    #       S7::prop(self, rec_type) |> 
+    #         unlist() |> 
+    #         grep(pattern = "^1 UID ", value = TRUE) |> 
+    #         sub(pattern = "^1 UID ", replacement = "") |> 
+    #         unique()
+    #     })
+    #     setNames(rec_uids, rec_types)
+    #     rec_uids
+    #   }
+    # ),
     
     as_ged = S7::new_property(
       S7::class_character, 
@@ -129,15 +140,15 @@ class_gedcomS7 <- S7::new_class(
           sprintf("2 TAG %s", self@ext_tags),
           obj_to_ged(self@source) |> increase_level(by = 1),
           sprintf("1 DEST %s", self@destination),
-          sprintf("1 DATE %s", date_to_val(self@creation_date)),
-          sprintf("2 TIME %s", self@creation_time),
-          sprintf("1 SUBM %s", self@xref_subm),
+          sprintf("1 DATE %s", obj_to_val(self@creation_date)),
+          sprintf("2 TIME %s", obj_to_val(self@creation_time)),
+          sprintf("1 SUBM %s", self@subm_xref),
           sprintf("1 COPR %s", self@gedcom_copyright),
           sprintf("1 LANG %s", self@default_language),
           rep("1 PLAC", length(self@default_place_form) > 0),
           sprintf("2 FORM %s", self@default_place_form),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_uids)
+          sprintf("1 SNOTE %s", self@note_xrefs)
         )
         
         tr <- "0 TRLR"
@@ -160,25 +171,27 @@ class_gedcomS7 <- S7::new_class(
   validator = function(self){
     c(
       chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
+      chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+\\.\\d+$"),
       chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
       chk_input_size(self@source, "@source", 0, 1),
       chk_input_size(self@destination, "@destination", 0, 1, 1),
       chk_input_size(self@creation_date, "@creation_date", 0, 1),
+      chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
       chk_input_size(self@creation_time, "@creation_time", 0, 1),
-      chk_input_size(self@subm_uid, "@subm_uid", 0, 1),
+      chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
+      chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date"),
+      chk_input_size(self@subm_xref, "@subm_xref", 0, 1),
+      chk_input_pattern(self@subm_xref, "@subm_xref", reg_xref(TRUE)),
       chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
       chk_input_size(self@default_language, "@default_language", 0, 1, 1),
       #    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
       chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
+      
       chk_input_size(self@update_change_dates, "@update_change_dates", 1, 1),
       chk_input_size(self@add_creation_dates, "@add_creation_dates", 1, 1),
-      chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date"),
-      chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+\\.\\d+$"),
-      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@subm_uid, "@subm_uid", reg_uuid(TRUE)),
-      chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
-      chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      
       chk_input_S7classes(self@subm, "@subm", class_record_subm),
       chk_input_S7classes(self@indi, "@indi", class_record_indi),
       chk_input_S7classes(self@fam, "@fam", class_record_fam),
@@ -198,7 +211,7 @@ class_gedcomS7 <- S7::new_class(
 #'
 #' @return A minimal gedcom S7 object.
 #' @export
-new_gedcomS7 <- function(my_language = "en"){
+new_gedcom <- function(my_language = "en"){
   
   sour <- class_gedcom_source(product_id = "https://github.com/jl5000/gedcomS7",
                               product_name = "The 'gedcomS7' package for the R language",

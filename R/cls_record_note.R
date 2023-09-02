@@ -27,7 +27,7 @@ class_record_note <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s SNOTE %s", self@xref, self@text),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@restrictions), # coming soon
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
           obj_to_ged(self@translations) |> increase_level(by = 1),

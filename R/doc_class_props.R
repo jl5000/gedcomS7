@@ -16,6 +16,7 @@
 #' @param country The country component of the address.
 #' @param text A character string. New lines are created with \n.
 #' @param language Language tags as defined in BCP 47.
+#' @param languages
 #' @param media_type The media type as defined in RFC 2045.
 #' @param translations A `class_translation_txt` object or a list of them.
 #' One for each alternate translation of the text.
@@ -114,7 +115,32 @@
 #' @param fam_links_chil
 #' @param fam_links_spou
 #' @param files
-#' 
+#' @param repo_name
+#' @param facts_recorded
+#' @param originator
+#' @param full_title
+#' @param short_title
+#' @param publication_facts
+#' @param repo_citations
+#' @param subm_name
+#' @param product_id
+#' @param product_name
+#' @param product_version
+#' @param business_name
+#' @param business_address
+#' @param data_name
+#' @param data_pubdate
+#' @param data_pubtime
+#' @param data_copyright
+#' @param gedcom_version
+#' @param ext_tags
+#' @param source
+#' @param destination
+#' @param creation_date
+#' @param creation_time
+#' @param gedcom_copyright
+#' @param default_language
+#' @param default_place_form
 #' 
 #'  
 #' 
@@ -132,6 +158,8 @@
 #' you will need to describe the repository in @notes.
 #' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
+#' @param data_note_xrefs
+#' @param subm_xref
 #' @param subm_xrefs
 #' @param husb_xref named vector
 #' @param wife_xref named vector
@@ -153,6 +181,7 @@
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
+#' @param data_notes
 #' @param citations Associated sources. This can either be a `class_citation` object, a list of them,
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
@@ -194,4 +223,8 @@
 #' `class_time` object.
 #' @param created
 #' @param updated
+#' 
+#' @param update_change_dates
+#' @param add_creation_dates
+#' 
 NULL

@@ -99,48 +99,50 @@ class_facts_recorded <- S7::new_class(
     )
   })
 
-
+#' Create a source record object
+#' 
+#' @inheritParams prop_definitions 
+#' @param citations Not used.
+#' @return An S7 object representing a GEDCOM SOURCE_RECORD.
 #' @export
-#' @include cls_record.R cls_note.R cls_translation.R cls_note.R cls_media_link.R
+#' @include cls_record.R cls_translation.R
 class_record_sour <- S7::new_class(
   "class_record_sour", 
   package = "gedcomS7",
   parent = class_record,
   properties = list(
     facts_recorded = S7::class_list | class_facts_recorded | S7::class_character,
-    responsible_agency = S7::class_character,
-    data_note_uids = S7::class_character,
+    agency = S7::class_character,
+    data_note_xrefs = S7::class_character,
     data_notes = S7::class_list | class_note | S7::class_character,
     originator = S7::class_character,
     full_title = S7::class_character,
     short_title = S7::class_character,
     publication_facts = S7::class_character,
-    source_text = NULL | class_translation_txt,
+    # NOTE I've made the cardinality of this {0,M} to match source citation
+    source_text = S7::class_list | class_translation_txt | S7::class_character,
     repo_citations = S7::class_list | class_repository_citation | S7::class_character,
-    note_uids = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    media_links = S7::class_list | class_media_link | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SOUR", self@prim_uid),
+          sprintf("0 %s SOUR", self@xref),
           sprintf("1 RESN %s", self@restrictions),
-          rep("1 DATA", length(self@facts_recorded) + length(self@responsible_agency) + 
-                length(self@data_notes) + length(self@data_note_uids) > 0),
+          rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
+                length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
-          sprintf("2 AGNC %s", self@responsible_agency),
-          sprintf("2 SNOTE %s", self@data_note_uids),
+          sprintf("2 AGNC %s", self@agency),
+          sprintf("2 SNOTE %s", self@data_note_xrefs),
           obj_to_ged(self@data_notes, "NOTE") |> increase_level(by = 2),
           sprintf("1 AUTH %s", self@originator),
           sprintf("1 TITL %s", self@full_title),
           sprintf("1 ABBR %s", self@short_title),
           sprintf("1 PUBL %s", self@publication_facts),
-          obj_to_ged(self@source_text) |> increase_level(by = 1),
+          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
           self@ids |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_uids),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
@@ -150,19 +152,20 @@ class_record_sour <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_input_size(self@responsible_agency, "@responsible_agency", 0, 1, 1),
+      chk_input_S7classes(self@facts_recorded, "@facts_recorded", class_facts_recorded,
+                          sprintf("^(%s)(, (%s))*$", 
+                                  paste(val_fact_types(), collapse = "|"),
+                                  paste(val_fact_types(), collapse = "|"))),
+      chk_input_size(self@agency, "@agency", 0, 1, 1),
+      chk_input_pattern(self@data_note_xrefs, "@data_note_xrefs", reg_xref(TRUE)),
+      chk_input_S7classes(self@data_notes, "@data_notes", class_note, ".+"),
       chk_input_size(self@originator, "@originator", 0, 1, 1),
       chk_input_size(self@full_title, "@full_title", 0, 1, 1),
       chk_input_size(self@short_title, "@short_title", 0, 1, 1),
       chk_input_size(self@publication_facts, "@publication_facts", 0, 1, 1),
-      chk_input_size(self@source_text, "@source_text", 0, 1),
-      chk_input_pattern(self@data_note_uids, "@data_note_uids", reg_uuid(TRUE)),
-      chk_input_pattern(self@note_uids, "@note_uids", reg_uuid(TRUE)),
-      chk_input_S7classes(self@facts_recorded, "@facts_recorded", class_facts_recorded),
-      chk_input_S7classes(self@data_notes, "@data_notes", class_note, ".+"),
-      chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_uuid(TRUE))
+      chk_input_S7classes(self@source_text, "@source_text", class_translation_txt, ".+"),
+      chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation, reg_xref(TRUE)),
+      chk_input_size(self@citations, "@citations", 0, 0)
     )
   })
 

@@ -83,7 +83,7 @@ would be BIRT, DEAT, MARR.}
 
 \item{phone_numbers}{}
 
-\item{files}{}
+\item{data_copyright}{}
 
 \item{xref}{}
 
