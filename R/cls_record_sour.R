@@ -45,6 +45,17 @@ class_repository_citation <- S7::new_class(
   }
 )
 
+extract_repo_citations <- function(rec_lines){
+  repo_lst <- find_ged_values(rec_lines, "REPO", return_list = TRUE) 
+  if(length(repo_lst) == 0) return(list())
+  
+  lapply(repo_lst, \(x){
+    class_repository_citation(
+      xref = find_ged_values(x, "REPO"),
+      call_numbers = find_ged_values(x, c("REPO","CALN"))
+    )
+  })
+}
 
 #' Create an object recording facts covered in a source record
 #' 
@@ -98,6 +109,21 @@ class_facts_recorded <- S7::new_class(
       chk_input_pattern(self@territory, "@territory", ".+")
     )
   })
+
+extract_events_recorded <- function(rec_lines){
+  even_lst <- find_ged_values(rec_lines, c("DATA","EVEN"), return_list = TRUE)
+  if(length(even_lst) == 0) return(character())
+  
+  lapply(even_lst, \(x){
+    class_facts_recorded(
+      events = find_ged_values(x, "EVEN"),
+      date_period = find_ged_values(x, c("EVEN","DATE")),
+      territory = find_ged_values(x, c("EVEN","PLAC"))
+    )
+  })
+  
+}
+
 
 #' Create a source record object
 #' 

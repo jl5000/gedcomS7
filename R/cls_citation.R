@@ -106,3 +106,37 @@ class_citation <- S7::new_class(
   
 )
 
+extract_citations <- function(lines, location = NULL){
+  
+  sour_lst <- find_ged_values(lines, c(location, "SOUR"), return_list = TRUE)
+  if(length(sour_lst) == 0) return(list())
+  
+  lapply(sour_lst, \(x){
+    nts <- extract_notes(x, c("SOUR","NOTE"))
+    nt_xrefs <- find_ged_values(x, c("SOUR","SNOTE"))
+    rec_date <- extract_date_value(x)
+    
+    if(length(rec_date) == 1 && !grepl(reg_custom_value(), rec_date)){
+      rec_date <- toupper(rec_date)
+      rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
+    }
+    role <- find_ged_values(x, c("SOUR","EVEN","ROLE"))
+    if(length(role) == 1 && !grepl(reg_custom_value(), role)){
+      role <- toupper(role)
+    }
+    
+    class_citation(
+      sour_xref = find_ged_values(x, "SOUR"),
+      where = find_ged_values(x, c("SOUR","PAGE")),
+      event_type = find_ged_values(x, c("SOUR","EVEN")),
+      event_role = role,
+      recording_date = rec_date,
+      source_text = find_ged_values(x, c("SOUR","DATA","TEXT")),
+      media_links = find_ged_values(x, c("SOUR","OBJE")),
+      note_links = nts[grepl(reg_xref(TRUE), nts)],
+      notes = nts[!grepl(reg_xref(TRUE), nts)],
+      certainty = find_ged_values(x, c("SOUR","QUAY"))
+    )
+  })
+  
+}

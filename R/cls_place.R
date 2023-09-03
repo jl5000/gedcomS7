@@ -87,3 +87,24 @@ class_place <- S7::new_class(
   }
 )
 
+extract_place <- function(lines, location = NULL){
+  
+  place_name <- find_ged_values(lines, c(location, "PLAC"))
+  if(length(place_name) == 0) return(NULL)
+  
+  nts <- find_ged_values(lines, c(location, "PLAC", "NOTE"))
+  latlong <- paste(
+    find_ged_values(lines, c(location, "PLAC", "MAP", "LATI")),
+    find_ged_values(lines, c(location, "PLAC", "MAP", "LONG"))
+  )
+  
+  class_place(
+    name = place_name,
+    phon_names = extract_vals_and_types(lines, c(location, "PLAC", "FONE")),
+    rom_names = extract_vals_and_types(lines, c(location, "PLAC", "ROMN")),
+    lat_long = toupper(latlong),
+    note_links = nts[grepl(reg_xref(TRUE), nts)],
+    notes = nts[!grepl(reg_xref(TRUE), nts)]
+  )
+  
+}

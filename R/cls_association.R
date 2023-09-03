@@ -65,3 +65,21 @@ class_association <- S7::new_class(
     )
   }
 )
+
+
+extract_associations <- function(rec_lines){
+  asso_lst <- find_ged_values(rec_lines, "ASSO", return_list = TRUE)
+  if(length(asso_lst) == 0) return(list())
+  
+  lapply(asso_lst, \(x){
+    nts <- find_ged_values(x, c("ASSO","NOTE"))
+    
+    class_association(
+      xref = find_ged_values(x, "ASSO"),
+      relation_is = find_ged_values(x, c("ASSO","RELA")),
+      citations = extract_citations(x, "ASSO"),
+      note_links = nts[grepl(reg_xref(TRUE), nts)],
+      notes = nts[!grepl(reg_xref(TRUE), nts)]
+    )
+  })
+}

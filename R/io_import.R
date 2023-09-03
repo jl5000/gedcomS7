@@ -29,7 +29,6 @@ read_gedcom <- function(filepath = file.choose()) {
 }
 
 
-
 validate_lines <- function(lines){
   
   invalid_lines <- grep(reg_ged_line(), lines, invert = TRUE)
@@ -112,9 +111,11 @@ parse_records <- function(records_lst){
   records_lst <- records_lst[-1]
   
   subset_recs <- function(rec_lst, rec_type){
-    Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
+    recs <- Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
+    names(recs) <- sapply(recs, \(rec) extract_ged_xref(rec[1]))
+    recs
   }
-
+  
   S7::props(x) <- list(
     indi = subset_recs(records_lst, "INDI"),
     fam = subset_recs(records_lst, "FAM"),
@@ -124,7 +125,7 @@ parse_records <- function(records_lst){
     note = subset_recs(records_lst, "SNOTE"),
     subm = subset_recs(records_lst, "SUBM")
   )
-
+  
   x
 }
 
@@ -160,12 +161,12 @@ create_gedcom <- function(hd_lines){
     destination = find_ged_values(hd_lines, c("HEAD","DEST")),
     creation_date = find_ged_values(hd_lines, c("HEAD","DATE")) |> toupper(),
     creation_time = find_ged_values(hd_lines, c("HEAD","DATE","TIME")),
-    subm_uid = find_ged_values(hd_lines, c("HEAD","SUBM")),
+    subm_xref = find_ged_values(hd_lines, c("HEAD","SUBM")),
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
     default_language = find_ged_values(hd_lines, c("HEAD","LANG")),
     default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
-    notes = extract_notes(hd_lines, "HEAD"),
-    note_uids = find_ged_values(hd_lines, c("HEAD","SNOTE"))
+    notes = extract_notes(hd_lines),
+    note_xrefs = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
   
 }

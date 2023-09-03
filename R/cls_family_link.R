@@ -99,3 +99,48 @@ class_child_family_link <- S7::new_class(
   }
 )
 
+extract_family_links <- function(rec_lines){
+  link_lst <- find_ged_values(rec_lines, "FAMS|FAMC", return_list = TRUE) 
+  if(length(link_lst) == 0) return(list())
+  
+  lapply(link_lst, \(x){
+    nts <- find_ged_values(x, c("FAMS|FAMC", "NOTE"))
+    note_links <- nts[grepl(reg_xref(TRUE), nts)]
+    notes <- nts[!grepl(reg_xref(TRUE), nts)]
+    xref <- find_ged_values(x, "FAMC|FAMS")
+    
+    if(grepl("FAMC", x[1], fixed = TRUE)){
+      pedi <- find_ged_values(x, c("FAMC", "PEDI"))
+      
+      if(length(pedi) == 0 || pedi == "birth"){
+        class_child_family_link_biol(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else if(pedi == "adopted") {
+        class_child_family_link_adop(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else if(pedi == "foster") {
+        class_child_family_link_fost(
+          xref = xref,
+          note_links = note_links,
+          notes = notes
+        )
+      } else {
+        stop("Unrecognised pedigree linkage type: ", pedi)
+      }
+      
+    } else {
+      class_spouse_family_link(
+        xref = xref,
+        note_links = nts[grepl(reg_xref(TRUE), nts)],
+        notes = nts[!grepl(reg_xref(TRUE), nts)]
+      )
+    }
+    
+  })
+}

@@ -80,3 +80,15 @@ class_change_date <- S7::new_class(
   }
 )
 
+extract_change_date <- function(rec_lines){
+  change_date <- find_ged_values(rec_lines, c("CHAN","DATE"))
+  if(length(change_date) == 0) return(NULL)
+  
+  nts <- find_ged_values(rec_lines, c("CHAN","NOTE"))
+  class_change_date(
+    date = toupper(change_date),
+    time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
+    notes = nts[!grepl(reg_xref(TRUE), nts)],
+    note_links = nts[grepl(reg_xref(TRUE), nts)]
+  )
+}

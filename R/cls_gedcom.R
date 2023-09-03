@@ -77,15 +77,13 @@ class_gedcom_source <- S7::new_class(
   }
 )
 
-#' Create a GEDCOM object
+#' Create a GEDCOM header object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM file.
+#' @return An S7 object representing a GEDCOM HEADER.
 #' @export
-#' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
-#' cls_record_repo.R cls_record_sour.R cls_record_subm.R
-class_gedcomS7 <- S7::new_class(
-  "class_gedcomS7",
+class_gedcom_header <- S7::new_class(
+  "class_gedcom_header",
   properties = list(
     gedcom_version = S7::class_character,
     ext_tags = S7::class_character,
@@ -100,6 +98,64 @@ class_gedcomS7 <- S7::new_class(
     notes = S7::class_list | class_note | S7::class_character,
     note_xrefs = S7::class_character,
     
+    hd_as_ged = S7::new_property(
+      S7::class_character, 
+      getter = function(self){
+        c(
+          "0 HEAD",
+          "1 GEDC",
+          sprintf("2 VERS %s", self@gedcom_version),
+          rep("1 SCHMA", length(self@ext_tags) > 0),
+          sprintf("2 TAG %s", self@ext_tags),
+          obj_to_ged(self@source) |> increase_level(by = 1),
+          sprintf("1 DEST %s", self@destination),
+          sprintf("1 DATE %s", obj_to_val(self@creation_date)),
+          sprintf("2 TIME %s", obj_to_val(self@creation_time)),
+          sprintf("1 SUBM %s", self@subm_xref),
+          sprintf("1 COPR %s", self@gedcom_copyright),
+          sprintf("1 LANG %s", self@default_language),
+          rep("1 PLAC", length(self@default_place_form) > 0),
+          sprintf("2 FORM %s", self@default_place_form),
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
+      chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+(\\.\\d+)?$"),
+      chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
+      chk_input_size(self@source, "@source", 0, 1),
+      chk_input_size(self@destination, "@destination", 0, 1, 1),
+      chk_input_size(self@creation_date, "@creation_date", 0, 1),
+      chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
+      chk_input_size(self@creation_time, "@creation_time", 0, 1),
+      chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
+      chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date"),
+      chk_input_size(self@subm_xref, "@subm_xref", 0, 1),
+      chk_input_pattern(self@subm_xref, "@subm_xref", reg_xref(TRUE)),
+      chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
+      chk_input_size(self@default_language, "@default_language", 0, 1, 1),
+      #    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
+      chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
+      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
+      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE))
+    )
+  }
+)
+
+#' Create a GEDCOM object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM file.
+#' @export
+#' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
+#' cls_record_repo.R cls_record_sour.R cls_record_subm.R
+class_gedcomS7 <- S7::new_class(
+  "class_gedcomS7",
+  parent = class_gedcom_header,
+  properties = list(
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
     add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
     
@@ -114,7 +170,7 @@ class_gedcomS7 <- S7::new_class(
     
     # This serves as both a record of prefixes and order of records
     xref_prefixes = S7::new_property(S7::class_character,
-                                     default = c(subm = "U", indi = "I", famg = "F", sour = "S", 
+                                     default = c(subm = "U", indi = "I", fam = "F", sour = "S", 
                                                  repo = "R", media = "M", note = "N")),
     
     # List of xrefs for each record type
@@ -146,25 +202,7 @@ class_gedcomS7 <- S7::new_class(
       S7::class_character, 
       getter = function(self){
         
-        hd <- c(
-          "0 HEAD",
-          "1 GEDC",
-          sprintf("2 VERS %s", self@gedcom_version),
-          rep("1 SCHMA", length(self@ext_tags) > 0),
-          sprintf("2 TAG %s", self@ext_tags),
-          obj_to_ged(self@source) |> increase_level(by = 1),
-          sprintf("1 DEST %s", self@destination),
-          sprintf("1 DATE %s", obj_to_val(self@creation_date)),
-          sprintf("2 TIME %s", obj_to_val(self@creation_time)),
-          sprintf("1 SUBM %s", self@subm_xref),
-          sprintf("1 COPR %s", self@gedcom_copyright),
-          sprintf("1 LANG %s", self@default_language),
-          rep("1 PLAC", length(self@default_place_form) > 0),
-          sprintf("2 FORM %s", self@default_place_form),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
-        )
-        
+        hd <- self@hd_as_ged
         tr <- "0 TRLR"
         
         c(
@@ -184,37 +222,18 @@ class_gedcomS7 <- S7::new_class(
   ),
   validator = function(self){
     c(
-      chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
-      chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+\\.\\d+$"),
-      chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
-      chk_input_size(self@source, "@source", 0, 1),
-      chk_input_size(self@destination, "@destination", 0, 1, 1),
-      chk_input_size(self@creation_date, "@creation_date", 0, 1),
-      chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
-      chk_input_size(self@creation_time, "@creation_time", 0, 1),
-      chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
-      chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date"),
-      chk_input_size(self@subm_xref, "@subm_xref", 0, 1),
-      chk_input_pattern(self@subm_xref, "@subm_xref", reg_xref(TRUE)),
-      chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
-      chk_input_size(self@default_language, "@default_language", 0, 1, 1),
-      #    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
-      chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      
       chk_input_size(self@update_change_dates, "@update_change_dates", 1, 1),
       chk_input_size(self@add_creation_dates, "@add_creation_dates", 1, 1),
       
-      chk_input_S7classes(self@subm, "@subm", class_record_subm),
-      chk_input_S7classes(self@indi, "@indi", class_record_indi),
-      chk_input_S7classes(self@fam, "@fam", class_record_fam),
-      chk_input_S7classes(self@sour, "@sour", class_record_sour),
-      chk_input_S7classes(self@repo, "@repo", class_record_repo),
-      chk_input_S7classes(self@media, "@media", class_record_media),
-      chk_input_S7classes(self@note, "@note", class_record_note),
-      chk_input_size(self@xref_prefixes, "@xref_prefixes", 6, 6, 0, 6),
-      chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","famg","sour","subm",
+      # chk_input_S7classes(self@subm, "@subm", class_record_subm),
+      # chk_input_S7classes(self@indi, "@indi", class_record_indi),
+      # chk_input_S7classes(self@fam, "@fam", class_record_fam),
+      # chk_input_S7classes(self@sour, "@sour", class_record_sour),
+      # chk_input_S7classes(self@repo, "@repo", class_record_repo),
+      # chk_input_S7classes(self@media, "@media", class_record_media),
+      # chk_input_S7classes(self@note, "@note", class_record_note),
+      chk_input_size(self@xref_prefixes, "@xref_prefixes", 7, 7, 0, 6),
+      chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","fam","sour","subm",
                                                                             "repo","media","note"))
     )
   }

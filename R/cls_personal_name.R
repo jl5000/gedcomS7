@@ -51,6 +51,34 @@ class_name_pieces <- S7::new_class(
   
 )
 
+extract_name_info <- function(lines, location){
+  
+  nts <- find_ged_values(lines, c(location, "NOTE"))
+  
+  surn <- find_ged_values(lines, c(location, "SURN"))
+  full <- find_ged_values(lines, location)
+  if(length(surn) == 0){
+    surn <- sub("^.*/(.+)/.*$", "\\1", full)
+  }
+  
+  class_name_info(
+    full = full,
+    type = find_ged_values(lines, c(location, "TYPE")),
+    prefix = find_ged_values(lines, c(location, "NPFX")),
+    given = find_ged_values(lines, c(location, "GIVN")),
+    nickname = find_ged_values(lines, c(location, "NICK")),
+    surname_prefix = find_ged_values(lines, c(location, "SPFX")),
+    surname = surn,
+    suffix = find_ged_values(lines, c(location, "NSFX")),
+    note_links = nts[grepl(reg_xref(TRUE), nts)],
+    notes = nts[!grepl(reg_xref(TRUE), nts)],
+    citations = extract_citations(lines, location)
+  )
+  
+}
+
+
+
 #' Create a name translation object
 #' 
 #' @inheritParams prop_definitions 
@@ -157,3 +185,20 @@ class_personal_name <- S7::new_class(
   }
 )
 
+extract_personal_names <- function(rec_lines){
+  
+  name_lst <- find_ged_values(rec_lines, "NAME", return_list = TRUE)
+  if(length(name_lst) == 0) return(list())
+  
+  lapply(name_lst, \(x){
+    nm <- extract_name_info(x, "NAME")
+    phon_lst <- find_ged_values(x, c("NAME","FONE"), return_list = TRUE)
+    rom_lst <- find_ged_values(x, c("NAME","ROMN"), return_list = TRUE)
+    
+    class_personal_name(
+      name = nm,
+      phon_names = lapply(phon_lst, extract_name_info, "FONE"),
+      rom_names = lapply(rom_lst, extract_name_info, "ROMN")
+    )
+  })
+}

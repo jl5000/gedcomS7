@@ -61,3 +61,18 @@ class_address <- S7::new_class(
     )
   }
 )
+
+
+extract_address <- function(lines, location = NULL){
+  
+  addr <- find_ged_values(lines, c(location, "ADDR"))
+  if(length(addr) == 0) return(character())
+  
+  class_address(
+    full = addr,
+    city = find_ged_values(lines, c(location, "ADDR","CITY")),
+    state = find_ged_values(lines, c(location, "ADDR","STAE")),
+    postal_code = find_ged_values(lines, c(location, "ADDR","POST")),
+    country = find_ged_values(lines, c(location, "ADDR","CTRY"))
+  )
+}
