@@ -12,7 +12,7 @@ test_that("Function class_name_pieces() @ L17", {
 })
 
 
-test_that("Function class_personal_name_tran() @ L65", {
+test_that("Function class_personal_name_tran() @ L93", {
   expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
                                                  language = "en")@as_ged, "json2")
   expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
@@ -21,7 +21,7 @@ test_that("Function class_personal_name_tran() @ L65", {
 })
 
 
-test_that("Function class_personal_name() @ L112", {
+test_that("Function class_personal_name() @ L140", {
   expect_error(class_personal_name("Joe /Bloggs/", name_type = "birth"),
                regexp = "@name_type has an invalid value")
   expect_error(class_personal_name("Joe /Bloggs/", type_phrase = "After 2012"),

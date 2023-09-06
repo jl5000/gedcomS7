@@ -22,8 +22,6 @@ class_gedcom_source(
 }
 \arguments{
 \item{phone_numbers}{}
-
-\item{data_copyright}{}
 }
 \value{
 An S7 object representing a GEDCOM HEAD.SOUR.

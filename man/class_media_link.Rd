@@ -7,7 +7,6 @@
 class_media_link(
   media_xref = class_missing,
   title = class_missing,
-  crop = class_missing,
   top = class_missing,
   left = class_missing,
   height = class_missing,
@@ -19,8 +18,6 @@ class_media_link(
 
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
-
-\item{crop}{Whether to crop the multimedia to a specific area.}
 
 \item{top}{The number of pixels to omit from the top side of the image.}
 

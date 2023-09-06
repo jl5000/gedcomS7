@@ -46,6 +46,8 @@ associated information is not required.}
 
 \item{media_links}{Not used.}
 
+\item{updated}{}
+
 \item{phone_numbers}{}
 }
 \value{

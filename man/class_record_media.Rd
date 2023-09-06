@@ -43,6 +43,8 @@ can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
 \item{media_links}{Not used.}
+
+\item{updated}{}
 }
 \value{
 An S7 object representing a GEDCOM MULTIMEDIA_RECORD.

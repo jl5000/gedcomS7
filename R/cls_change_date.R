@@ -80,15 +80,25 @@ class_change_date <- S7::new_class(
   }
 )
 
+extract_creation_date <- function(rec_lines){
+  crea_date <- find_ged_values(rec_lines, c("CREA","DATE"))
+  if(length(crea_date) == 0) return(NULL)
+  
+  class_creation_date(
+    date_exact = toupper(crea_date),
+    time = find_ged_values(rec_lines, c("CREA","DATE","TIME"))
+  )
+}
+
 extract_change_date <- function(rec_lines){
   change_date <- find_ged_values(rec_lines, c("CHAN","DATE"))
   if(length(change_date) == 0) return(NULL)
   
-  nts <- find_ged_values(rec_lines, c("CHAN","NOTE"))
   class_change_date(
-    date = toupper(change_date),
+    date_exact = toupper(change_date),
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
-    notes = nts[!grepl(reg_xref(TRUE), nts)],
-    note_links = nts[grepl(reg_xref(TRUE), nts)]
+    notes = extract_notes(rec_lines),
+    note_xrefs = find_ged_values(rec_lines, c("CHAN","SNOTE"))
   )
 }
+

@@ -44,6 +44,8 @@ associated information is not required.}
 
 \item{media_links}{Not used.}
 
+\item{updated}{}
+
 \item{text}{A character string. New lines are created with \n.}
 
 \item{media_type}{The media type as defined in RFC 2045.}

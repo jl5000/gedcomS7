@@ -87,7 +87,7 @@ class_record <- S7::new_class(
 #' @export
 pull_record <- function(x, xref){
   
-  rec_lines <- c(x@indi, x@famg, x@sour, x@repo,
+  rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
                   x@media, x@note, x@subm)[[xref]]
   
   rec_type <- extract_ged_tag(rec_lines[1])
@@ -203,9 +203,11 @@ pull_record <- function(x, xref){
   }
   
   resn <- find_ged_values(rec_lines, "RESN")
-  rec@locked <- grepl("LOCKED", resn)
-  rec@confidential <- grepl("CONFIDENTIAL", resn)
-  rec@private <- grepl("PRIVATE", resn)
+  if(length(resn) > 0){
+    rec@locked <- grepl("LOCKED", resn)
+    rec@confidential <- grepl("CONFIDENTIAL", resn)
+    rec@private <- grepl("PRIVATE", resn)
+  }
   rec@user_ids <- extract_vals_and_types(rec_lines, "REFN")
   rec@ext_ids <- extract_vals_and_types(rec_lines, "EXID")
   rec@unique_ids <- find_ged_values(rec_lines, "UID")

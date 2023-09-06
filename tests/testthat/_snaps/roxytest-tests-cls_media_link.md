@@ -1,4 +1,4 @@
-# Function class_media_link() @ L29
+# Function class_media_link() @ L25
 
     {
       "type": "character",
@@ -20,14 +20,6 @@
       "type": "character",
       "attributes": {},
       "value": ["0 OBJE @1@", "1 TITL new title"]
-    }
-
----
-
-    {
-      "type": "character",
-      "attributes": {},
-      "value": ["0 OBJE @1@", "1 CROP", "2 TOP 0", "2 LEFT 0", "1 TITL new title"]
     }
 
 ---

@@ -25,8 +25,8 @@ delete_ged_section <- function(lines, line_no){
 }
 
 find_ged_values <- function(lines, 
-                               tag,
-                               return_list = FALSE){
+                            tag,
+                            return_list = FALSE){
   
   base_level <- extract_ged_level(lines[1]) - 1
   
@@ -177,7 +177,7 @@ get_record_type <- function(record){
   if(S7::S7_inherits(record, class_record_indi)){
     "indi"
   } else if(S7::S7_inherits(record, class_record_fam)){
-    "famg"
+    "fam"
   } else if(S7::S7_inherits(record, class_record_sour)){
     "sour"
   } else if(S7::S7_inherits(record, class_record_repo)){
@@ -186,6 +186,8 @@ get_record_type <- function(record){
     "media"
   } else if(S7::S7_inherits(record, class_record_note)){
     "note"
+  } else if(S7::S7_inherits(record, class_record_subm)){
+    "subm"
   } else {
     stop("Unrecognised record")
   }

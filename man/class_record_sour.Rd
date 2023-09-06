@@ -53,6 +53,8 @@ or a character vector of XREFs of multimedia records. If a character vector is p
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
+\item{updated}{}
+
 \item{source_text}{A verbatim copy of any description contained within the source. This can
 either be a \code{class_translation_txt} object, a list of them, or a character vector of text.
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an

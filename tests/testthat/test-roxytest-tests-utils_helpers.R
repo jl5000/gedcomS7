@@ -2,7 +2,7 @@
 
 # File R/utils_helpers.R: @tests
 
-test_that("Function parse_gedcom_date() @ L198", {
+test_that("Function parse_gedcom_date() @ L210", {
   expect_equal(parse_gedcom_date("2005"), as.Date("2005-01-01"))
   expect_equal(parse_gedcom_date("2005", FALSE), as.Date("2005-12-31"))
   expect_equal(parse_gedcom_date("JUL 1989"), as.Date("1989-07-01"))
@@ -12,7 +12,7 @@ test_that("Function parse_gedcom_date() @ L198", {
 })
 
 
-test_that("Function parse_gedcom_age() @ L245", {
+test_that("Function parse_gedcom_age() @ L257", {
   expect_equal(parse_gedcom_age("16y"), 16)
   expect_equal(parse_gedcom_age("16y 6m"), 16.5)
   expect_equal(parse_gedcom_age("73d"), 73/365)

@@ -83,7 +83,7 @@ would be BIRT, DEAT, MARR.}
 
 \item{phone_numbers}{}
 
-\item{data_copyright}{}
+\item{default_place_form}{}
 
 \item{xref}{}
 
@@ -186,6 +186,10 @@ but if TRUE, only the year should be given.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
 \code{class_time} object.}
+
+\item{updated}{}
+
+\item{add_creation_dates}{}
 }
 \description{
 Define all properties used in S7 classes.

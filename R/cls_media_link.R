@@ -28,8 +28,8 @@ class_media_link <- S7::new_class(
   properties = list(
     media_xref = S7::new_property(S7::class_character, default = "@VOID@"),
     title = S7::class_character,
-    top = S7::new_property(S7::class_numeric, default = 0),
-    left = S7::new_property(S7::class_numeric, default = 0),
+    top = S7::class_numeric,
+    left = S7::class_numeric,
     height = S7::class_numeric,
     width = S7::class_numeric,
     
@@ -70,7 +70,7 @@ extract_media_links <- function(rec_lines){
   if(length(media_lst) == 0) return(list())
   
   lapply(media_lst, \(x){
-    class_note(
+    class_media_link(
       media_xref = find_ged_values(x, "OBJE"),
       top = find_ged_values(x, c("OBJE","CROP","TOP")),
       left = find_ged_values(x, c("OBJE","CROP","LEFT")),

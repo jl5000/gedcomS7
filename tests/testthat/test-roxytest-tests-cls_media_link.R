@@ -2,7 +2,7 @@
 
 # File R/cls_media_link.R: @tests
 
-test_that("Function class_media_link() @ L29", {
+test_that("Function class_media_link() @ L25", {
   expect_snapshot_value(class_media_link()@as_ged, "json2")
   expect_error(class_media_link("@O4"), regexp = "@media_xref is in an invalid format")
   expect_snapshot_value(class_media_link("@1@")@as_ged, "json2")
@@ -10,10 +10,6 @@ test_that("Function class_media_link() @ L29", {
                                          title = "new title")@as_ged, "json2")
   expect_snapshot_value(class_media_link("@1@", 
                                          title = "new title",
-                                         crop = TRUE)@as_ged, "json2")
-  expect_snapshot_value(class_media_link("@1@", 
-                                         title = "new title",
-                                         crop = TRUE,
                                          top = 5, left = 200)@as_ged, "json2")
 })
 
