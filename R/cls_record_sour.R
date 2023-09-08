@@ -195,3 +195,23 @@ class_record_sour <- S7::new_class(
     )
   })
 
+extract_record_sour <- function(rec_lines){
+  
+  data_nts <- find_ged_values(rec_lines, c("DATA","NOTE"))
+  
+  rec <- class_record_sour(
+    xref = extract_ged_xref(rec_lines[1]),
+    full_title = find_ged_values(rec_lines, "TITL"),
+    facts_recorded = extract_events_recorded(rec_lines),
+    responsible_agency = find_ged_values(rec_lines, c("DATA","AGNC")),
+    data_note_links = data_nts[grepl(reg_xref(TRUE), data_nts)],
+    data_notes = data_nts[!grepl(reg_xref(TRUE), data_nts)],
+    originator = find_ged_values(rec_lines, "AUTH"),
+    short_title = find_ged_values(rec_lines, "ABBR"),
+    publication_facts = find_ged_values(rec_lines, "PUBL"),
+    source_text = find_ged_values(rec_lines, "TEXT"),
+    repo_citations = extract_repo_citations(rec_lines)
+  )
+  
+  extract_common_record_elements(rec, rec_lines)
+}

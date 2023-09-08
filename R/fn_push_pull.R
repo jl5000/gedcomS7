@@ -1,4 +1,34 @@
 
+#' Pull a record from a GEDCOM object for editing
+#' 
+#' @details The record is not removed from the gedcom object, rather a copy is taken.
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of the record to pull.
+#'
+#' @return An S7 object representing the record.
+#' @export
+pull_record <- function(x, xref){
+  
+  rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
+                 x@media, x@note, x@subm)[[xref]]
+  
+  rec_type <- extract_ged_tag(rec_lines[1])
+  if(!rec_type %in% c("INDI","FAM","SOUR","REPO","SNOTE","OBJE","SUBM"))
+    stop("Record type not recognised: ", rec_type)
+  
+  switch(rec_type,
+         INDI = extract_record_indi(rec_lines),
+         FAM = extract_record_fam(rec_lines),
+         SOUR = extract_record_sour(rec_lines),
+         REPO = extract_record_repo(rec_lines),
+         OBJE = extract_record_media(rec_lines),
+         SNOTE = extract_record_note(rec_lines),
+         SUBM = extract_record_subm(rec_lines)
+  )
+  
+}
+
 #' Push an edited record back into a GEDCOM object
 #' 
 #' @details 
@@ -41,6 +71,8 @@ refresh_fam_links <- function(gedcom, record){
   
   # Family group record has changed
   # Ensure FAMS/FAMC in indi records are correct
+  
+  #TODO: Ignore VOID
   
   # Who are the members of this family?
   spou_xref <- c(record@husb_xref, record@wife_xref)
@@ -94,6 +126,7 @@ refresh_fam_links <- function(gedcom, record){
     fam_row <- grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), rec)
     
     if(length(fam_row) == 1){
+      # Might want to alert the user if extra stuff is being deleted
       gedcom@indi[[indi]] <- delete_ged_section(rec, fam_row)
     }
 
@@ -172,6 +205,7 @@ refresh_indi_links <- function(gedcom, record){
     memb_row <- grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), rec)
     
     if(length(memb_row) == 1){
+      # Might want to alert the user if extra stuff is being deleted
       gedcom@famg[[famg]] <- delete_ged_section(rec, memb_row)
     }
     

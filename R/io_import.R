@@ -138,7 +138,7 @@ create_gedcom <- function(hd_lines){
   if(length(product_id) == 1){
     
     sour <- class_gedcom_source(
-      product_id = find_ged_values(hd_lines, c("HEAD","SOUR")),
+      product_id = product_id,
       product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
       product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
       business_name = find_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
@@ -149,7 +149,7 @@ create_gedcom <- function(hd_lines){
       web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW|URL")),
       data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
       data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
-      data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","TIME")),
+      data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE","TIME")),
       data_copyright = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR"))
     )
   }
@@ -165,7 +165,7 @@ create_gedcom <- function(hd_lines){
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
     default_language = find_ged_values(hd_lines, c("HEAD","LANG")),
     default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
-    notes = extract_notes(hd_lines),
+    notes = extract_notes(hd_lines, "HEAD"),
     note_xrefs = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
   

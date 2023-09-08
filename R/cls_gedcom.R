@@ -125,7 +125,7 @@ class_gedcom_header <- S7::new_class(
     c(
       chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
       chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+(\\.\\d+)?$"),
-      chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
+      #chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
       chk_input_size(self@source, "@source", 0, 1),
       chk_input_size(self@destination, "@destination", 0, 1, 1),
       chk_input_size(self@creation_date, "@creation_date", 0, 1),

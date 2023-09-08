@@ -76,131 +76,14 @@ class_record <- S7::new_class(
   }
 )
 
-#' Pull a record from a GEDCOM object for editing
-#' 
-#' @details The record is not removed from the gedcom object, rather a copy is taken.
+
+#' Parse common elements into a record object
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of the record to pull.
+#' @param rec An S7 record object.
+#' @param rec_lines A character vector of lines of a GEDCOM record.
 #'
-#' @return An S7 object representing the record.
-#' @export
-pull_record <- function(x, xref){
-  
-  rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
-                  x@media, x@note, x@subm)[[xref]]
-  
-  rec_type <- extract_ged_tag(rec_lines[1])
-  if(!rec_type %in% c("INDI","FAM","SOUR","REPO","SNOTE","OBJE","SUBM"))
-    stop("Record type not recognised: ", rec_type)
-  
-  rec_xref <- extract_ged_xref(rec_lines[1])
-  
-  if(rec_type == "INDI"){
-    
-    rec <- class_record_indi(
-      xref = rec_xref,
-      sex = toupper(find_ged_values(rec_lines, "SEX")),
-      personal_names = extract_personal_names(rec_lines),
-      facts = extract_facts_indi(rec_lines),
-      family_links = extract_family_links(rec_lines),
-      associations = extract_associations(rec_lines)
-    )
-    
-  } else if(rec_type == "FAM"){
-    
-    chil_xref <- find_ged_values(rec_lines, "CHIL")
-    biol_xref <- adop_xref <- fost_xref <- character()
-    for(chil in chil_xref){
-      chil_lines <- x@indi[[chil]]
-      links <- extract_family_links(chil_lines)
-      
-      for(lnk in links){
-        if(lnk@xref == rec_xref){
-          if(is_adop_child_link(lnk)){
-            adop_xref <- c(adop_xref, chil)
-          } else if(is_fost_child_link(lnk)){
-            fost_xref <- c(fost_xref, chil)
-          } else if(is_birth_child_link(lnk)){
-            biol_xref <- c(biol_xref, chil)
-          }
-        }
-        
-      }
-    }
-    
-    rec <- class_record_fam(
-      xref = rec_xref,
-      husb_xref = find_ged_values(rec_lines, "HUSB"),
-      wife_xref = find_ged_values(rec_lines, "WIFE"),
-      chil_biol_xref = biol_xref,
-      chil_adop_xref = adop_xref,
-      chil_fost_xref = fost_xref,
-      facts = extract_facts_famg(rec_lines),
-      num_children = as.integer(find_ged_values(rec_lines, "NCHI"))
-    )
-    
-  } else if(rec_type == "SOUR"){
-    
-    data_nts <- find_ged_values(rec_lines, c("DATA","NOTE"))
-    
-    rec <- class_record_sour(
-      xref = rec_xref,
-      full_title = find_ged_values(rec_lines, "TITL"),
-      facts_recorded = extract_events_recorded(rec_lines),
-      responsible_agency = find_ged_values(rec_lines, c("DATA","AGNC")),
-      data_note_links = data_nts[grepl(reg_xref(TRUE), data_nts)],
-      data_notes = data_nts[!grepl(reg_xref(TRUE), data_nts)],
-      originator = find_ged_values(rec_lines, "AUTH"),
-      short_title = find_ged_values(rec_lines, "ABBR"),
-      publication_facts = find_ged_values(rec_lines, "PUBL"),
-      source_text = find_ged_values(rec_lines, "TEXT"),
-      repo_citations = extract_repo_citations(rec_lines)
-    )
-    
-  } else if(rec_type == "REPO"){
-    
-    rec <- class_record_repo(
-      xref = rec_xref,
-      repo_name = find_ged_values(rec_lines, "NAME"),
-      address = extract_address(rec_lines),
-      phone_numbers = find_ged_values(rec_lines, "PHON"),
-      emails = find_ged_values(rec_lines, "EMAIL"),
-      faxes = find_ged_values(rec_lines, "FAX"),
-      web_pages = find_ged_values(rec_lines, "WWW")
-    )
-    
-  } else if(rec_type == "OBJE"){
-    
-    rec <- class_record_media(
-      xref = rec_xref,
-      files = extract_media_files(rec_lines)
-    )
-    
-  } else if(rec_type == "SNOTE"){
-    
-    rec <- class_record_note(
-      xref = rec_xref,
-      text = extract_ged_value(rec_lines[1]),
-      media_type = find_ged_values(rec_lines, c("SNOTE","MIME")),
-      language = find_ged_values(rec_lines, c("SNOTE","LANG")),
-      translations = extract_translations(rec_lines)
-    )
-    
-  } else if(rec_type == "SUBM"){
-    
-    rec <- class_record_subm(
-      xref = rec_xref,
-      subm_name = find_ged_values(rec_lines, "NAME"),
-      address = extract_address(rec_lines),
-      phone_numbers = find_ged_values(rec_lines, "PHON"),
-      emails = find_ged_values(rec_lines, "EMAIL"),
-      faxes = find_ged_values(rec_lines, "FAX"),
-      web_pages = find_ged_values(rec_lines, "WWW"),
-      languages = find_ged_values(rec_lines, "LANG")
-    )
-    
-  }
+#' @return The S7 record object with common elements added as properties.
+extract_common_record_elements <- function(rec, rec_lines){
   
   resn <- find_ged_values(rec_lines, "RESN")
   if(length(resn) > 0){
@@ -208,6 +91,7 @@ pull_record <- function(x, xref){
     rec@confidential <- grepl("CONFIDENTIAL", resn)
     rec@private <- grepl("PRIVATE", resn)
   }
+  
   rec@user_ids <- extract_vals_and_types(rec_lines, "REFN")
   rec@ext_ids <- extract_vals_and_types(rec_lines, "EXID")
   rec@unique_ids <- find_ged_values(rec_lines, "UID")
@@ -219,4 +103,5 @@ pull_record <- function(x, xref){
   rec@created <- extract_creation_date(rec_lines)
   
   rec
+  
 }

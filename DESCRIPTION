@@ -59,7 +59,7 @@ Collate:
     'fn_get.R'
     'fn_is.R'
     'fn_print.R'
-    'fn_push.R'
+    'fn_push_pull.R'
     'fn_rm.R'
     'io_export.R'
     'io_import.R'

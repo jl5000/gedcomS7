@@ -115,3 +115,13 @@ class_record_media <- S7::new_class(
     )
   }
 )
+
+extract_record_media <- function(rec_lines){
+  
+  rec <- class_record_media(
+    xref = extract_ged_xref(rec_lines[1]),
+    files = extract_media_files(rec_lines)
+  )
+  
+  extract_common_record_elements(rec, rec_lines)
+}

@@ -45,15 +45,15 @@ class_translation_txt <- S7::new_class(
   })
 
 
-extract_translations <- function(rec_lines){
-  tran_lst <- find_ged_values(rec_lines, "TRAN", return_list = TRUE)
+extract_translations <- function(lines, location = NULL){
+  tran_lst <- find_ged_values(lines, c(location, "TRAN"), return_list = TRUE)
   if(length(tran_lst) == 0) return(list())
   
   lapply(tran_lst, \(x){
     class_translation_txt(
       text = find_ged_values(x, "TRAN"),
       language = find_ged_values(x, c("TRAN","LANG")),
-      media_type = find_ged_values(x, c("TRAN","MIME")),
+      media_type = find_ged_values(x, c("TRAN","MIME"))
     )
   })
 }
