@@ -418,16 +418,16 @@ class_date_sort <- S7::new_class(
 )
 
 
-extract_date_value <- function(lines, location = NULL){
-  
-  date_val <- find_ged_values(lines, c(location, "DATE"))
+extract_date_value <- function(lines, location = NULL, sorting = FALSE){
+  if(sorting) tag <- "SDATE" else tag <- "DATE"
+  date_val <- find_ged_values(lines, c(location, tag))
   
   if(length(date_val) == 0) return(character()) 
     
   class_date_value(
     date = date_val,
-    date_phrase = find_ged_values(lines, c(location, "DATE","PHRASE")),
-    time = find_ged_values(lines, c(location, "DATE","TIME"))
+    date_phrase = find_ged_values(lines, c(location, tag,"PHRASE")),
+    time = find_ged_values(lines, c(location, tag,"TIME"))
   )
   
 }

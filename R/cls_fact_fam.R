@@ -95,8 +95,8 @@ class_event_fam <- S7::new_class(
 #' @tests
 #' expect_error(class_attr_fam("residence", fact_val = "Earth"), 
 #'              regexp = "@fact_type has an invalid value")
-#' expect_error(class_attr_fam("RESI"), 
-#'              regexp = "@fact_val has too few elements")      
+#' expect_error(class_attr_fam("RESI", fact_val = ""), 
+#'              regexp = "@fact_val has too few characters")      
 class_attr_fam <- S7::new_class(
   "class_attr_fam",
   package = "gedcomS7",
@@ -104,7 +104,7 @@ class_attr_fam <- S7::new_class(
   validator = function(self){
     c(
       chk_input_choice(self@fact_type, "@fact_type", val_family_attribute_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", 1, 1, 1)
+      chk_input_size(self@fact_val, "@fact_val", self@fact_type != "RESI", 1, 1)
     )
   }
 )

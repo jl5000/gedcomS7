@@ -56,3 +56,19 @@ class_non_event <- S7::new_class(
     )
   }
 )
+
+extract_non_events <- function(rec_lines, location = NULL){
+  none_lst <- find_ged_values(rec_lines, c(location, "NO"), return_list = TRUE)
+  if(length(none_lst) == 0) return(list())
+  
+  lapply(none_lst, \(x){
+    class_association(
+      event_type = find_ged_values(x, "NO"),
+      date_period = find_ged_values(x, c("NO","DATE")),
+      date_phrase = find_ged_values(x, c("NO","DATE","PHRASE")),
+      note_xrefs = find_ged_values(x, c("NO","SNOTE")),
+      notes = extract_notes(x, "NO"),
+      citations = extract_citations(x, "NO")
+    )
+  })
+}

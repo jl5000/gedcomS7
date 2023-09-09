@@ -155,7 +155,7 @@ class_attr_indi <- S7::new_class(
       
     c(
       chk_input_choice(self@fact_type, "@fact_type", val_individual_attribute_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", 1, 1, 1),
+      chk_input_size(self@fact_val, "@fact_val", self@fact_type != "RESI", 1, 1),
       integer_err
     )
   }

@@ -116,6 +116,23 @@ class_record_media <- S7::new_class(
   }
 )
 
+extract_media_files <- function(rec_lines){
+  file_lst <- find_ged_values(rec_lines, "FILE", return_list = TRUE)
+  if(length(file_lst) == 0) return(list())
+  
+  lapply(file_lst, \(x){
+    class_media_file(
+      location = find_ged_values(x, "FILE"),
+      title = find_ged_values(x, c("FILE","TITL")),
+      media_type = find_ged_values(x, c("FILE","FORM")),
+      medium = find_ged_values(x, c("FILE","FORM","MEDI")),
+      medium_phrase = find_ged_values(x, c("FILE","FORM","MEDI","PHRASE")),
+      media_alt = extract_vals_and_types(x, c("FILE","TRAN"))
+    )
+  })
+  
+}
+
 extract_record_media <- function(rec_lines){
   
   rec <- class_record_media(

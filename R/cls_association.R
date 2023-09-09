@@ -8,8 +8,7 @@ NULL
 #' @export
 #' @include cls_note.R cls_citation.R
 #' @tests
-#' expect_error(class_association(relation_is = "FATH"), 
-#'              regexp = "If an @indi_xref is not defined, then an @indi_phrase must be defined")
+#' expect_snapshot_value(class_association(relation_is = "FATH")@as_ged, "json2")
 #' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
 #'              regexp = "@relation_is has an invalid value")
 #' expect_snapshot_value(class_association(indi_phrase = "someone",
@@ -48,14 +47,10 @@ class_association <- S7::new_class(
   ),
   
   validator = function(self){
-    phrase_err <- NULL
-    if(self@indi_xref == "@VOID@" & length(self@indi_phrase) == 0)
-      phrase_err <- "If an @indi_xref is not defined, then an @indi_phrase must be defined"
     c(
       chk_input_size(self@indi_xref, "@indi_xref", 1, 1),
       chk_input_pattern(self@indi_xref, "@indi_xref", reg_xref(TRUE)),
       chk_input_size(self@indi_phrase, "@indi_phrase", 0, 1, 1),
-      phrase_err,
       chk_input_size(self@relation_is, "@relation_is", 1, 1),
       chk_input_choice(self@relation_is, "@relation_is", val_roles()),
       chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),
@@ -72,14 +67,14 @@ extract_associations <- function(rec_lines, location = NULL){
   if(length(asso_lst) == 0) return(list())
   
   lapply(asso_lst, \(x){
-    nts <- find_ged_values(x, c("ASSO","NOTE"))
-    
     class_association(
-      xref = find_ged_values(x, "ASSO"),
-      relation_is = find_ged_values(x, c("ASSO","RELA")),
-      citations = extract_citations(x, "ASSO"),
-      note_links = nts[grepl(reg_xref(TRUE), nts)],
-      notes = nts[!grepl(reg_xref(TRUE), nts)]
+      indi_xref = find_ged_values(x, "ASSO"),
+      indi_phrase = find_ged_values(x, c("ASSO","PHRASE")),
+      relation_is = find_ged_values(x, c("ASSO","ROLE")),
+      relation_phrase = find_ged_values(x, c("ASSO","ROLE","PHRASE")),
+      note_xrefs = find_ged_values(x, c("ASSO","SNOTE")),
+      notes = extract_notes(x, "ASSO"),
+      citations = extract_citations(x, "ASSO")
     )
   })
 }

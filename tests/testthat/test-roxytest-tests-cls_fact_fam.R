@@ -24,7 +24,7 @@ test_that("Function class_event_fam() @ L72", {
 test_that("Function class_attr_fam() @ L100", {
   expect_error(class_attr_fam("residence", fact_val = "Earth"), 
                regexp = "@fact_type has an invalid value")
-  expect_error(class_attr_fam("RESI"), 
-               regexp = "@fact_val has too few elements")
+  expect_error(class_attr_fam("RESI", fact_val = ""), 
+               regexp = "@fact_val has too few characters")
 })
 

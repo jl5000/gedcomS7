@@ -179,7 +179,6 @@ class_gedcomS7 <- S7::new_class(
                                rec_types <- names(self@xref_prefixes)
                                rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
                                setNames(rec_xrefs, rec_types)
-                               rec_xrefs
                              }),
     
     next_xref = S7::new_property(S7::class_character,

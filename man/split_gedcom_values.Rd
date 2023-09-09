@@ -4,17 +4,14 @@
 \alias{split_gedcom_values}
 \title{Convert the GEDCOM form to GEDCOM grammar}
 \usage{
-split_gedcom_values(lines, char_limit)
+split_gedcom_values(lines)
 }
 \arguments{
 \item{lines}{A character vector of gedcom lines.}
-
-\item{char_limit}{Maximum string length of values.}
 }
 \value{
-A new character vector of gedcom lines, possibly expanded to include CONC/CONT lines.
+A new character vector of gedcom lines, possibly expanded to include CONT lines.
 }
 \description{
-This function introduces CONC/CONT lines for line values that exceed the given number of characters and
-for lines containing line breaks.
+This function introduces CONT lines for line values that contain line breaks.
 }
