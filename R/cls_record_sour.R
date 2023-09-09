@@ -165,7 +165,8 @@ class_record_sour <- S7::new_class(
           sprintf("1 TITL %s", self@full_title),
           sprintf("1 ABBR %s", self@short_title),
           sprintf("1 PUBL %s", self@publication_facts),
-          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1),
+          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1) |> 
+            gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
           self@ids |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),

@@ -70,9 +70,9 @@ extract_address <- function(lines, location = NULL){
   
   class_address(
     full = addr,
-    city = find_ged_values(lines, c(location, "ADDR","CITY")),
-    state = find_ged_values(lines, c(location, "ADDR","STAE")),
-    postal_code = find_ged_values(lines, c(location, "ADDR","POST")),
-    country = find_ged_values(lines, c(location, "ADDR","CTRY"))
+    city = find_ged_values(lines, c("ADDR","CITY")),
+    state = find_ged_values(lines, c("ADDR","STAE")),
+    postal_code = find_ged_values(lines, c("ADDR","POST")),
+    country = find_ged_values(lines, c("ADDR","CTRY"))
   )
 }

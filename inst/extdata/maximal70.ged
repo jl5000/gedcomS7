@@ -837,6 +837,7 @@
 2 MIME text/plain
 2 LANG en-GB
 2 TRAN British English
+3 LANG en
 2 SOUR @S1@
 3 PAGE 1
 2 SOUR @S2@

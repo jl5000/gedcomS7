@@ -112,30 +112,32 @@ extract_citations <- function(lines, location = NULL){
   if(length(sour_lst) == 0) return(list())
   
   lapply(sour_lst, \(x){
-    nts <- extract_notes(x, c("SOUR","NOTE"))
-    nt_xrefs <- find_ged_values(x, c("SOUR","SNOTE"))
-    rec_date <- extract_date_value(x)
-    
-    if(length(rec_date) == 1 && !grepl(reg_custom_value(), rec_date)){
-      rec_date <- toupper(rec_date)
-      rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
-    }
-    role <- find_ged_values(x, c("SOUR","EVEN","ROLE"))
-    if(length(role) == 1 && !grepl(reg_custom_value(), role)){
-      role <- toupper(role)
-    }
+    # nts <- extract_notes(x, c("SOUR","NOTE"))
+    # nt_xrefs <- find_ged_values(x, c("SOUR","SNOTE"))
+    # rec_date <- extract_date_value(x)
+    # 
+    # if(length(rec_date) == 1 && !grepl(reg_custom_value(), rec_date)){
+    #   rec_date <- toupper(rec_date)
+    #   rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
+    # }
+    # role <- find_ged_values(x, c("SOUR","EVEN","ROLE"))
+    # if(length(role) == 1 && !grepl(reg_custom_value(), role)){
+    #   role <- toupper(role)
+    # }
     
     class_citation(
       sour_xref = find_ged_values(x, "SOUR"),
       where = find_ged_values(x, c("SOUR","PAGE")),
-      event_type = find_ged_values(x, c("SOUR","EVEN")),
-      event_role = role,
-      recording_date = rec_date,
-      source_text = find_ged_values(x, c("SOUR","DATA","TEXT")),
-      media_links = find_ged_values(x, c("SOUR","OBJE")),
-      note_links = nts[grepl(reg_xref(TRUE), nts)],
-      notes = nts[!grepl(reg_xref(TRUE), nts)],
-      certainty = find_ged_values(x, c("SOUR","QUAY"))
+      date = extract_date_value(x, c("SOUR","DATA")),
+      source_text = extract_translations(x, c("SOUR","DATA")), # search for TEXT instead
+      fact_type = find_ged_values(x, c("SOUR","EVEN")),
+      fact_phrase = find_ged_values(x, c("SOUR","EVEN","PHRASE")),
+      role = find_ged_values(x, c("SOUR","EVEN","ROLE")),
+      role_phrase = find_ged_values(x, c("SOUR","EVEN","ROLE","PHRASE")),
+      certainty = find_ged_values(x, c("SOUR","QUAY")),
+      media_links = extract_media_links(x, "SOUR"),
+      note_xrefs = find_ged_values(x, c("SOUR","SNOTE")),
+      notes = extract_notes(x, "SOUR")
     )
   })
   

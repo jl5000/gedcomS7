@@ -107,12 +107,12 @@ parse_records <- function(records_lst){
   records_lst <- records_lst[-length(records_lst)]
   
   # parse header
-  x <- create_gedcom(records_lst[[1]])
+  x <- extract_gedcom_header(records_lst[[1]])
   records_lst <- records_lst[-1]
   
   subset_recs <- function(rec_lst, rec_type){
     recs <- Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
-    names(recs) <- sapply(recs, \(rec) extract_ged_xref(rec[1]))
+    names(recs) <- vapply(recs, \(rec) extract_ged_xref(rec[1]), FUN.VALUE = character(1))
     recs
   }
   
@@ -129,45 +129,4 @@ parse_records <- function(records_lst){
   x
 }
 
-
-create_gedcom <- function(hd_lines){
-  
-  sour <- NULL
-  product_id <- find_ged_values(hd_lines, c("HEAD","SOUR"))
-  
-  if(length(product_id) == 1){
-    
-    sour <- class_gedcom_source(
-      product_id = product_id,
-      product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
-      product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
-      business_name = find_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
-      business_address = extract_address(hd_lines, c("HEAD","SOUR","CORP")),
-      phone_numbers = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","PHON")),
-      emails = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","EMAIL")),
-      faxes = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","FAX")),
-      web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW|URL")),
-      data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
-      data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
-      data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE","TIME")),
-      data_copyright = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR"))
-    )
-  }
-  
-  class_gedcomS7(
-    gedcom_version = find_ged_values(hd_lines, c("HEAD","GEDC","VERS")),
-    ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
-    source = sour,
-    destination = find_ged_values(hd_lines, c("HEAD","DEST")),
-    creation_date = find_ged_values(hd_lines, c("HEAD","DATE")) |> toupper(),
-    creation_time = find_ged_values(hd_lines, c("HEAD","DATE","TIME")),
-    subm_xref = find_ged_values(hd_lines, c("HEAD","SUBM")),
-    gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
-    default_language = find_ged_values(hd_lines, c("HEAD","LANG")),
-    default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
-    notes = extract_notes(hd_lines, "HEAD"),
-    note_xrefs = find_ged_values(hd_lines, c("HEAD","SNOTE"))
-  )
-  
-}
 

@@ -80,7 +80,7 @@ class_record <- S7::new_class(
 #' Parse common elements into a record object
 #'
 #' @param rec An S7 record object.
-#' @param rec_lines A character vector of lines of a GEDCOM record.
+#' @param lines A character vector of lines of a GEDCOM record.
 #'
 #' @return The S7 record object with common elements added as properties.
 extract_common_record_elements <- function(rec, rec_lines){
@@ -99,7 +99,7 @@ extract_common_record_elements <- function(rec, rec_lines){
   rec@notes <- extract_notes(rec_lines)
   rec@media_links <- extract_media_links(rec_lines)
   rec@citations <- extract_citations(rec_lines)
-  rec@updated <- extract_change_date(rec_lines) 
+  rec@updated <- extract_change_date(rec_lines)
   rec@created <- extract_creation_date(rec_lines)
   
   rec

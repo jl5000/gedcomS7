@@ -53,9 +53,9 @@ class_record_indi <- S7::new_class(
     all_names = S7::new_property(
       S7::class_character,
       getter = function(self){
-        sapply(self@pers_names, \(nm){
+        vapply(self@pers_names, \(nm){
           obj_to_val(nm)
-        }, USE.NAMES = FALSE)
+        }, FUN.VALUE = character(1), USE.NAMES = FALSE)
       }),
     
     desc_short = S7::new_property(

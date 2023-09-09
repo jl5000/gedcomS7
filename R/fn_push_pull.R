@@ -17,15 +17,20 @@ pull_record <- function(x, xref){
   if(!rec_type %in% c("INDI","FAM","SOUR","REPO","SNOTE","OBJE","SUBM"))
     stop("Record type not recognised: ", rec_type)
   
-  switch(rec_type,
-         INDI = extract_record_indi(rec_lines),
-         FAM = extract_record_fam(rec_lines),
-         SOUR = extract_record_sour(rec_lines),
-         REPO = extract_record_repo(rec_lines),
-         OBJE = extract_record_media(rec_lines),
-         SNOTE = extract_record_note(rec_lines),
-         SUBM = extract_record_subm(rec_lines)
+  rec <- switch(rec_type,
+                INDI = extract_record_indi(rec_lines),
+                FAM = extract_record_fam(rec_lines),
+                SOUR = extract_record_sour(rec_lines),
+                REPO = extract_record_repo(rec_lines),
+                OBJE = extract_record_media(rec_lines),
+                SNOTE = extract_record_note(rec_lines),
+                SUBM = extract_record_subm(rec_lines)
   )
+  
+  if(rec@locked)
+    warning("The record is locked. You may edit the record object, but you cannot push it back to the GEDCOM until @locked = FALSE")
+  
+  rec
   
 }
 
@@ -43,6 +48,9 @@ pull_record <- function(x, xref){
 #' @return An updated GEDCOM object.
 #' @export
 push_record <- function(gedcom, record){
+  
+  if(record@locked)
+    stop("The record is locked and cannot be pushed back into the GEDCOM object. Set @locked = FALSE to remove this restriction.")
   
   if(gedcom@update_change_dates){
     record@updated <- class_change_date() #TODO: only update date

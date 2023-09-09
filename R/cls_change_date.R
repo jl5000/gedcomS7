@@ -97,7 +97,7 @@ extract_change_date <- function(rec_lines){
   class_change_date(
     date_exact = toupper(change_date),
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
-    notes = extract_notes(rec_lines),
+    notes = extract_notes(rec_lines, "CHAN"),
     note_xrefs = find_ged_values(rec_lines, c("CHAN","SNOTE"))
   )
 }

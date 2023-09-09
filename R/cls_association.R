@@ -67,8 +67,8 @@ class_association <- S7::new_class(
 )
 
 
-extract_associations <- function(rec_lines){
-  asso_lst <- find_ged_values(rec_lines, "ASSO", return_list = TRUE)
+extract_associations <- function(rec_lines, location = NULL){
+  asso_lst <- find_ged_values(rec_lines, c(location, "ASSO"), return_list = TRUE)
   if(length(asso_lst) == 0) return(list())
   
   lapply(asso_lst, \(x){

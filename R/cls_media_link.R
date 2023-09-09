@@ -65,18 +65,18 @@ class_media_link <- S7::new_class(
   }
 )
 
-extract_media_links <- function(rec_lines){
-  media_lst <- find_ged_values(rec_lines, "OBJE", return_list = TRUE)
+extract_media_links <- function(lines, location = NULL){
+  media_lst <- find_ged_values(lines, c(location, "OBJE"), return_list = TRUE)
   if(length(media_lst) == 0) return(list())
   
   lapply(media_lst, \(x){
     class_media_link(
       media_xref = find_ged_values(x, "OBJE"),
-      top = find_ged_values(x, c("OBJE","CROP","TOP")),
-      left = find_ged_values(x, c("OBJE","CROP","LEFT")),
-      height = find_ged_values(x, c("OBJE","CROP","HEIGHT")),
-      width = find_ged_values(x, c("OBJE","CROP","WIDTH")),
-      title = find_ged_values(x, c("OBJE","TITL")),
+      top = find_ged_values(x, c("OBJE","CROP","TOP")) |> as.numeric(),
+      left = find_ged_values(x, c("OBJE","CROP","LEFT")) |> as.numeric(),
+      height = find_ged_values(x, c("OBJE","CROP","HEIGHT")) |> as.numeric(),
+      width = find_ged_values(x, c("OBJE","CROP","WIDTH")) |> as.numeric(),
+      title = find_ged_values(x, c("OBJE","TITL"))
     )
   })
   

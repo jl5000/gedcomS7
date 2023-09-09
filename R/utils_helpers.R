@@ -153,11 +153,11 @@ extract_vals_and_types <- function(lines, val_tag){
   val_lst <- find_ged_values(lines, val_tag, return_list = TRUE)
   if(length(val_lst) == 0) return(character())
   
-  vals <- sapply(val_lst, \(x) extract_ged_value(x[1]))
-  types <- sapply(val_lst, \(x) {
+  vals <- vapply(val_lst, \(x) extract_ged_value(x[1]), FUN.VALUE = character(1))
+  types <- vapply(val_lst, \(x) {
     if(length(x) == 1) return("")
     extract_ged_value(x[2])
-  })
+  }, FUN.VALUE = character(1))
   names(vals) <- types
   vals
 }
