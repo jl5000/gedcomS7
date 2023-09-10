@@ -164,12 +164,17 @@ extract_record_indi <- function(rec_lines){
   
   rec <- class_record_indi(
     xref = extract_ged_xref(rec_lines[1]),
-    sex = toupper(find_ged_values(rec_lines, "SEX")),
+    sex = find_ged_values(rec_lines, "SEX"),
     pers_names = extract_personal_names(rec_lines),
     facts = extract_facts_indi(rec_lines),
-    fam_links_chil = extract_family_links(rec_lines),
-    fam_links_spou = extract_family_links(rec_lines),
-    associations = extract_associations(rec_lines)
+    non_events = extract_non_events(rec_lines),
+    fam_links_chil = extract_family_links(rec_lines, as_spouse = FALSE),
+    fam_links_spou = extract_family_links(rec_lines, as_spouse = TRUE),
+    subm_xrefs = find_ged_values(rec_lines, "SUBM"),
+    associations = extract_associations(rec_lines),
+    alia_xrefs = extract_vals_and_types(rec_lines, "ALIA"),
+    anci_xrefs = find_ged_values(rec_lines, "ANCI"),
+    desi_xrefs = find_ged_values(rec_lines, "DESI")
   )
   
   extract_common_record_elements(rec, rec_lines)

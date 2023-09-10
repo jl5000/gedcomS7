@@ -164,39 +164,38 @@ class_attr_indi <- S7::new_class(
 
 extract_facts_indi <- function(rec_lines){
   fact_lst <- find_ged_values(rec_lines, return_list = TRUE,
-                              tag = paste(c(val_attribute_types(),
-                                            val_individual_event_types()),
+                              tag = paste(c(val_individual_attribute_types(TRUE),
+                                            val_individual_event_types(TRUE)),
                                           collapse = "|"))
   if(length(fact_lst) == 0) return(list())
   
   lapply(fact_lst, \(x){
     tag <- extract_ged_tag(x[1])
     
-    nts <- find_ged_values(x, c(tag, "NOTE"))
-    fact_date <- find_ged_values(x, c(tag, "DATE"))
-    if(length(fact_date) == 1 && !grepl(reg_custom_value(), fact_date)){
-      fact_date <- toupper(fact_date)
-      fact_date <- sub("@#DGREGORIAN@ ", "", fact_date)
+    if(tag %in% val_individual_attribute_types(TRUE)){
+      fact <- class_attr_indi(
+        fact_type = tag,
+        fact_val = find_ged_values(x, tag),
+        fact_desc = find_ged_values(x, c(tag, "TYPE"))
+      )
+    } else {
+      fact <- class_event_indi(
+        fact_type = tag,
+        fact_val = find_ged_values(x, tag),
+        fact_desc = find_ged_values(x, c(tag, "TYPE")),
+
+        fam_xref = find_ged_values(x, c(tag, "FAMC")),
+        adop_parent = find_ged_values(x, c(tag, "FAMC","ADOP")),
+        adop_parent_phrase = find_ged_values(x, c(tag, "FAMC","ADOP","PHRASE"))
+      )
     }
     
-    class_fact_indi(
-      fact = tag,
-      description = find_ged_values(x, tag),
+    S7::props(fact) <- list(
       age = find_ged_values(x, c(tag, "AGE")),
-      famg_xref = find_ged_values(x, c(tag, "FAMC")),
-      adopting_parent = toupper(find_ged_values(x, c(tag, "FAMC","ADOP"))),
-      type = find_ged_values(x, c(tag, "TYPE")),
-      date = fact_date,
-      place = extract_place(x, tag),
-      address = extract_address(x, tag),
-      agency = find_ged_values(x, c(tag, "AGNC")),
-      relig_affil = find_ged_values(x, c(tag, "RELI")),
-      cause = find_ged_values(x, c(tag, "CAUS")),
-      note_links = nts[grepl(reg_xref(TRUE), nts)],
-      notes = nts[!grepl(reg_xref(TRUE), nts)],
-      citations = extract_citations(x, tag),
-      media_links = find_ged_values(x, c(tag, "OBJE"))
+      age_phrase = find_ged_values(x, c(tag, "AGE", "PHRASE"))
     )
+    
+    extract_common_fact_elements(fact, x)
   })
 }
 

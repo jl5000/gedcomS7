@@ -1,4 +1,12 @@
-# Function class_association() @ L23
+# Function class_association() @ L22
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 ASSO @VOID@", "1 ROLE FATH"]
+    }
+
+---
 
     {
       "type": "character",

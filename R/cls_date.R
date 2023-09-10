@@ -423,11 +423,17 @@ extract_date_value <- function(lines, location = NULL, sorting = FALSE){
   date_val <- find_ged_values(lines, c(location, tag))
   
   if(length(date_val) == 0) return(character()) 
-    
-  class_date_value(
-    date = date_val,
+  
+  if(sorting){
+    dt <- class_date_sort(date = date_val)
+  } else {
+    dt <- class_date_value(date = date_val)
+  }
+  
+  S7::props(dt) <- list(
     date_phrase = find_ged_values(lines, c(location, tag,"PHRASE")),
     time = find_ged_values(lines, c(location, tag,"TIME"))
   )
   
+  dt
 }

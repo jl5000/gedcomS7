@@ -85,22 +85,26 @@ class_record <- S7::new_class(
 #' @return The S7 record object with common elements added as properties.
 extract_common_record_elements <- function(rec, rec_lines){
   
+  S7::props(rec) <- list(
+    user_ids = extract_vals_and_types(rec_lines, "REFN"),
+    ext_ids = extract_vals_and_types(rec_lines, "EXID"),
+    unique_ids = find_ged_values(rec_lines, "UID"),
+    note_xrefs = find_ged_values(rec_lines, "SNOTE"),
+    notes = extract_notes(rec_lines),
+    media_links = extract_media_links(rec_lines),
+    citations = extract_citations(rec_lines),
+    updated = extract_change_date(rec_lines),
+    created = extract_creation_date(rec_lines)
+  )
+  
   resn <- find_ged_values(rec_lines, "RESN")
   if(length(resn) > 0){
-    rec@locked <- grepl("LOCKED", resn)
-    rec@confidential <- grepl("CONFIDENTIAL", resn)
-    rec@private <- grepl("PRIVATE", resn)
+    S7::props(rec) <- list(
+      locked = grepl("LOCKED", resn),
+      confidential = grepl("CONFIDENTIAL", resn),
+      private = grepl("PRIVATE", resn)
+    )
   }
-  
-  rec@user_ids <- extract_vals_and_types(rec_lines, "REFN")
-  rec@ext_ids <- extract_vals_and_types(rec_lines, "EXID")
-  rec@unique_ids <- find_ged_values(rec_lines, "UID")
-  rec@note_xrefs <- find_ged_values(rec_lines, "SNOTE")
-  rec@notes <- extract_notes(rec_lines)
-  rec@media_links <- extract_media_links(rec_lines)
-  rec@citations <- extract_citations(rec_lines)
-  rec@updated <- extract_change_date(rec_lines)
-  rec@created <- extract_creation_date(rec_lines)
   
   rec
   

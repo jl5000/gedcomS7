@@ -2,9 +2,8 @@
 
 # File R/cls_association.R: @tests
 
-test_that("Function class_association() @ L23", {
-  expect_error(class_association(relation_is = "FATH"), 
-               regexp = "If an @indi_xref is not defined, then an @indi_phrase must be defined")
+test_that("Function class_association() @ L22", {
+  expect_snapshot_value(class_association(relation_is = "FATH")@as_ged, "json2")
   expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
                regexp = "@relation_is has an invalid value")
   expect_snapshot_value(class_association(indi_phrase = "someone",

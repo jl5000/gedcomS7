@@ -109,38 +109,37 @@ class_attr_fam <- S7::new_class(
   }
 )
 
-extract_facts_famg <- function(rec_lines){
+extract_facts_fam <- function(rec_lines){
   fact_lst <- find_ged_values(rec_lines, return_list = TRUE,
-                              tag = paste(val_family_event_types(),
+                              tag = paste(c(val_family_attribute_types(TRUE),
+                                            val_family_event_types(TRUE)),
                                           collapse = "|"))
   if(length(fact_lst) == 0) return(list())
   
   lapply(fact_lst, \(x){
     tag <- extract_ged_tag(x[1])
     
-    nts <- find_ged_values(x, c(tag, "NOTE"))
-    fact_date <- find_ged_values(x, c(tag, "DATE"))
-    if(length(fact_date) == 1 && !grepl(reg_custom_value(), fact_date)){
-      fact_date <- toupper(fact_date)
-      fact_date <- sub("@#DGREGORIAN@ ", "", fact_date)
+    if(tag %in% val_family_attribute_types(TRUE)){
+      fact <- class_attr_fam(
+        fact_type = tag,
+        fact_val = find_ged_values(x, tag),
+        fact_desc = find_ged_values(x, c(tag, "TYPE"))
+      )
+    } else {
+      fact <- class_event_fam(
+        fact_type = tag,
+        fact_val = find_ged_values(x, tag),
+        fact_desc = find_ged_values(x, c(tag, "TYPE"))
+      )
     }
     
-    class_fact_fam(
-      fact = tag,
-      description = find_ged_values(x, tag),
-      husband_age = find_ged_values(x, c(tag, "HUSB","AGE")),
-      wife_age = find_ged_values(x, c(tag, "WIFE","AGE")),
-      type = find_ged_values(x, c(tag, "TYPE")),
-      date = fact_date,
-      place = extract_place(x, tag),
-      address = extract_address(x, tag),
-      agency = find_ged_values(x, c(tag, "AGNC")),
-      relig_affil = find_ged_values(x, c(tag, "RELI")),
-      cause = find_ged_values(x, c(tag, "CAUS")),
-      note_links = nts[grepl(reg_xref(TRUE), nts)],
-      notes = nts[!grepl(reg_xref(TRUE), nts)],
-      citations = extract_citations(x, tag),
-      media_links = find_ged_values(x, c(tag, "OBJE"))
+    S7::props(fact) <- list(
+      husb_age = find_ged_values(x, c(tag, "HUSB", "AGE")),
+      husb_age_phrase = find_ged_values(x, c(tag, "HUSB", "AGE", "PHRASE")),
+      wife_age = find_ged_values(x, c(tag, "WIFE", "AGE")),
+      wife_age_phrase = find_ged_values(x, c(tag, "WIFE", "AGE", "PHRASE"))
     )
+    
+    extract_common_fact_elements(fact, x)
   })
 }

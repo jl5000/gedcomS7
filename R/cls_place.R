@@ -105,7 +105,7 @@ extract_place <- function(lines, location = NULL){
     lat_long = latlong,
     ext_ids = extract_vals_and_types(lines, "EXID"),
     note_xrefs = find_ged_values(lines, c(location, "PLAC","SNOTE")),
-    notes = extract_notes(lines, c(location, "PLAC")),
+    notes = extract_notes(lines, c(location, "PLAC"))
   )
   
 }

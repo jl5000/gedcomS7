@@ -86,35 +86,15 @@ class_record_fam <- S7::new_class(
 
 extract_record_fam <- function(rec_lines){
   
-  chil_xref <- find_ged_values(rec_lines, "CHIL")
-  biol_xref <- adop_xref <- fost_xref <- character()
-  for(chil in chil_xref){
-    chil_lines <- x@indi[[chil]]
-    links <- extract_family_links(chil_lines)
-    
-    for(lnk in links){
-      if(lnk@xref == rec_xref){
-        if(is_adop_child_link(lnk)){
-          adop_xref <- c(adop_xref, chil)
-        } else if(is_fost_child_link(lnk)){
-          fost_xref <- c(fost_xref, chil)
-        } else if(is_birth_child_link(lnk)){
-          biol_xref <- c(biol_xref, chil)
-        }
-      }
-      
-    }
-  }
-  
   rec <- class_record_fam(
     xref = extract_ged_xref(rec_lines[1]),
-    husb_xref = find_ged_values(rec_lines, "HUSB"),
-    wife_xref = find_ged_values(rec_lines, "WIFE"),
-    chil_biol_xref = biol_xref,
-    chil_adop_xref = adop_xref,
-    chil_fost_xref = fost_xref,
-    facts = extract_facts_famg(rec_lines),
-    num_children = as.integer(find_ged_values(rec_lines, "NCHI"))
+    facts = extract_facts_fam(rec_lines),
+    non_events = extract_non_events(rec_lines),
+    husb_xref = extract_vals_and_types(rec_lines, "HUSB"),
+    wife_xref = extract_vals_and_types(rec_lines, "WIFE"),
+    chil_xrefs = extract_vals_and_types(rec_lines, "CHIL"),
+    associations = extract_associations(rec_lines),
+    subm_xrefs = find_ged_values(rec_lines, "SUBM")
   )
   
   extract_common_record_elements(rec, rec_lines)

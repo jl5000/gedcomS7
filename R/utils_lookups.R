@@ -126,7 +126,7 @@ val_medium_types <- function() {
 #' @rdname val_record_types
 #' @export
 val_pedigree_types <- function() {
-  vals <- c("BIRTH", "ADOPTED", "FOSTER", "OTHER")
+  vals <- c("BIRTH", "ADOPTED", "FOSTER", "SEALING", "OTHER")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 

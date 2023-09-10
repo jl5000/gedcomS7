@@ -75,7 +75,7 @@ class_child_family_link <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FAMS %s", self@fam_xref),
+          sprintf("0 FAMC %s", self@fam_xref),
           sprintf("1 PEDI %s", self@pedigree),
           sprintf("2 PHRASE %s", self@pedigree_phrase),
           sprintf("1 STAT %s", self@confidence),
@@ -99,48 +99,29 @@ class_child_family_link <- S7::new_class(
   }
 )
 
-extract_family_links <- function(rec_lines){
-  link_lst <- find_ged_values(rec_lines, "FAMS|FAMC", return_list = TRUE) 
+extract_family_links <- function(rec_lines, as_spouse = TRUE){
+  if(as_spouse) tag <- "FAMS" else tag <- "FAMC"
+  link_lst <- find_ged_values(rec_lines, tag, return_list = TRUE) 
   if(length(link_lst) == 0) return(list())
   
   lapply(link_lst, \(x){
-    nts <- find_ged_values(x, c("FAMS|FAMC", "NOTE"))
-    note_links <- nts[grepl(reg_xref(TRUE), nts)]
-    notes <- nts[!grepl(reg_xref(TRUE), nts)]
-    xref <- find_ged_values(x, "FAMC|FAMS")
-    
-    if(grepl("FAMC", x[1], fixed = TRUE)){
-      pedi <- find_ged_values(x, c("FAMC", "PEDI"))
-      
-      if(length(pedi) == 0 || pedi == "birth"){
-        class_child_family_link_biol(
-          xref = xref,
-          note_links = note_links,
-          notes = notes
-        )
-      } else if(pedi == "adopted") {
-        class_child_family_link_adop(
-          xref = xref,
-          note_links = note_links,
-          notes = notes
-        )
-      } else if(pedi == "foster") {
-        class_child_family_link_fost(
-          xref = xref,
-          note_links = note_links,
-          notes = notes
-        )
-      } else {
-        stop("Unrecognised pedigree linkage type: ", pedi)
-      }
-      
+
+    if(tag == "FAMC"){
+      lnk <- class_child_family_link(
+        fam_xref = find_ged_values(x, tag),
+        pedigree = find_ged_values(x, c(tag,"PEDI")),
+        pedigree_phrase = find_ged_values(x, c(tag,"PEDI","PHRASE")),
+        confidence = find_ged_values(x, c(tag,"STAT")),
+        confidence_phrase = find_ged_values(x, c(tag,"STAT","PHRASE"))
+      )
     } else {
-      class_spouse_family_link(
-        xref = xref,
-        note_links = nts[grepl(reg_xref(TRUE), nts)],
-        notes = nts[!grepl(reg_xref(TRUE), nts)]
+      lnk <- class_spouse_family_link(
+        fam_xref = find_ged_values(x, tag)
       )
     }
     
+    lnk@note_xrefs <- find_ged_values(x, c(tag,"SNOTE"))
+    lnk@notes <- extract_notes(x, tag)
+    lnk
   })
 }

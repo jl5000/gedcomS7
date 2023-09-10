@@ -62,7 +62,7 @@ extract_non_events <- function(rec_lines, location = NULL){
   if(length(none_lst) == 0) return(list())
   
   lapply(none_lst, \(x){
-    class_association(
+    class_non_event(
       event_type = find_ged_values(x, "NO"),
       date_period = find_ged_values(x, c("NO","DATE")),
       date_phrase = find_ged_values(x, c("NO","DATE","PHRASE")),
