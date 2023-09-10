@@ -47,7 +47,7 @@ class_note <- S7::new_class(
     language = S7::class_character,
     media_type = S7::class_character,
     translations = S7::class_list | class_translation_txt,
-    #citations = S7::class_list | class_citation | S7::class_character,
+   # citations = S7::class_list | S7::new_S3_class("class_citation") | S7::class_character,
     
     as_ged = S7::new_property(
       S7::class_character,
