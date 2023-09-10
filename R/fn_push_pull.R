@@ -10,6 +10,9 @@
 #' @export
 pull_record <- function(x, xref){
   
+  if(!xref %in% unlist(x@xrefs))
+    stop("The xref is not in the GEDCOM object")
+  
   rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
                  x@media, x@note, x@subm)[[xref]]
   
@@ -53,12 +56,23 @@ push_record <- function(gedcom, record){
     stop("The record is locked and cannot be pushed back into the GEDCOM object. Set @locked = FALSE to remove this restriction.")
   
   if(gedcom@update_change_dates){
-    record@updated <- class_change_date() #TODO: only update date
+    if(length(record@updated) == 1){
+      record@updated@date_exact <- date_exact_current()
+      record@updated@time <- character()
+    } else {
+      record@updated <- class_change_date()
+    }
+  }
+  
+  if(gedcom@add_creation_dates){
+    if(length(record@created) == 0 && record@xref == "@ORPHAN@"){
+      record@created <- class_creation_date()
+    }
   }
   
   rec_type <- get_record_type(record)
   
-  if(record@xref == "@gedcomS7orphan@"){
+  if(record@xref == "@ORPHAN@"){
     record@xref <- unname(gedcom@next_xref[rec_type])
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }

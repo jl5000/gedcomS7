@@ -2,8 +2,7 @@
 
 # File R/cls_record.R: @tests
 
-test_that("Function class_record() @ L18", {
-  expect_error(class_record(), regexp = "@xref has too few elements")
+test_that("Function class_record() @ L17", {
   expect_error(class_record("REF"), regexp = "@xref is in an invalid format")
   expect_error(class_record("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
   expect_error(class_record("@1@", ext_ids = LETTERS), regexp = "@ext_ids names has too few elements")

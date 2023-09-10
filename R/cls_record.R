@@ -7,7 +7,6 @@ NULL
 #' @return An S7 object containing common elements of a GEDCOM record.
 #' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
 #' @tests
-#' expect_error(class_record(), regexp = "@xref has too few elements")
 #' expect_error(class_record("REF"), regexp = "@xref is in an invalid format")
 #' expect_error(class_record("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
 #' expect_error(class_record("@1@", ext_ids = LETTERS), regexp = "@ext_ids names has too few elements")
@@ -18,7 +17,7 @@ NULL
 class_record <- S7::new_class(
   "class_record", #abstract = TRUE,
   properties = list(
-    xref = S7::class_character,
+    xref = S7::new_property(S7::class_character, default = "@ORPHAN@"),
     confidential = S7::new_property(S7::class_logical, default = FALSE),
     locked = S7::new_property(S7::class_logical, default = FALSE),
     private = S7::new_property(S7::class_logical, default = FALSE),
