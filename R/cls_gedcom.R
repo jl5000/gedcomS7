@@ -84,6 +84,7 @@ class_gedcom_source <- S7::new_class(
 #' @export
 class_gedcom_header <- S7::new_class(
   "class_gedcom_header",
+  abstract = TRUE,
   properties = list(
     gedcom_version = S7::class_character,
     ext_tags = S7::class_character,
@@ -155,6 +156,7 @@ class_gedcom_header <- S7::new_class(
 class_gedcomS7 <- S7::new_class(
   "class_gedcomS7",
   parent = class_gedcom_header,
+  package = "gedcomS7",
   properties = list(
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
     add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
@@ -253,7 +255,7 @@ new_gedcom <- function(my_language = "en"){
                               business_name = "Jamie Lendrum",
                               emails = "jalendrum@gmail.com")
   
-  class_gedcomS7(gedcom_version = "7.0.11",
+  class_gedcomS7(gedcom_version = "7.0",
                  source = sour,
                  creation_date = date_exact_current(),
                  default_language = my_language)

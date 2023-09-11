@@ -6,15 +6,10 @@ NULL
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_DETAIL (plus a bit more).
 #' @include cls_fact.R
-#' @tests
-#' expect_error(class_fact_indi("DEAT", age = "73"), regexp = "@age is in an invalid format")
-#' expect_snapshot_value(class_fact_indi("DEAT", fact_val = "Y")@.indi_fact_detail_as_ged, "json2")
-#' expect_snapshot_value(class_fact_indi("DEAT", fact_val = "Y", age_phrase = "old")@.indi_fact_detail_as_ged, "json2")
-#' expect_snapshot_value(class_fact_indi("DEAT", fact_val = "Y", age = "73y 4m",
-#'                                       age_phrase = "old")@.indi_fact_detail_as_ged, "json2")
 class_fact_indi <- S7::new_class(
   "class_fact_indi", 
   parent = class_fact,
+  abstract = TRUE,
   properties = list(
     age = S7::class_character,
     age_phrase = S7::class_character,
@@ -66,6 +61,13 @@ class_fact_indi <- S7::new_class(
 #'              regexp = "@adop_parent requires a @fam_xref")
 #' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent_phrase = "both of them"), 
 #'              regexp = "@adop_parent_phrase requires a @adop_parent")
+#' expect_error(class_event_indi("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
+#' expect_snapshot_value(class_event_indi("BIRT", fact_val = "Y")@as_ged, "json2")
+#' expect_error(class_event_indi("DEAT", age = "73"), regexp = "@age is in an invalid format")
+#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y")@as_ged, "json2")
+#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age_phrase = "old")@as_ged, "json2")
+#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age = "73y 4m",
+#'                                       age_phrase = "old")@as_ged, "json2")
 #' expect_snapshot_value(class_event_indi("ADOP", fact_val = "Y",
 #'                                        fact_desc = "More info on adoption",
 #'                                        fam_xref = "@123@",
@@ -140,6 +142,24 @@ class_event_indi <- S7::new_class(
 #'              regexp = "@fact_val has too few elements")
 #' expect_error(class_attr_indi("NCHI", fact_val = "2.4"), 
 #'              regexp = "@fact_val is in an invalid format")
+#' expect_snapshot_value(class_attr_indi("FACT", "Diabetes",
+#'                                  fact_desc = "Medical condition",
+#'                                  date = "26 JUN 2001",
+#'                                  place = class_place("here",
+#'                                                      notes = "place note"),
+#'                                  address = "street, town, city, country",
+#'                                  phone_numbers = "123455",
+#'                                  emails = "things@domain.com",
+#'                                  web_pages = "www.domain.com",
+#'                                  cause = "Chocolate",
+#'                                  locked = TRUE,
+#'                                  date_sort = "2008",
+#'                                  associations = class_association("@I45@", relation_is = "GODP"),
+#'                                  notes = "another note",
+#'                                  note_xrefs = "@N45@",
+#'                                  citations = "@S67@",
+#'                                  unique_ids = "7ddf39aa-42a8-4995-94eb-4392bcc00d28")@as_ged, 
+#'                        "json2")
 class_attr_indi <- S7::new_class(
   "class_attr_indi",
   package = "gedcomS7",
