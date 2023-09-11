@@ -8,7 +8,8 @@ class_note(
   text = class_missing,
   language = class_missing,
   media_type = class_missing,
-  translations = class_missing
+  translations = class_missing,
+  citations = class_missing
 )
 }
 \arguments{
@@ -20,6 +21,11 @@ class_note(
 
 \item{translations}{A \code{class_translation_txt} object or a list of them.
 One for each alternate translation of the text.}
+
+\item{citations}{Associated sources. This can either be a \code{class_citation} object, a list of them,
+or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
+can be recorded (and not associated information). This option is easier if
+associated information is not required.}
 }
 \value{
 An S7 object representing a GEDCOM NOTE_STRUCTURE.
