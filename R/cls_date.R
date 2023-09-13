@@ -1,7 +1,7 @@
 #' @include cls_validators.R
 NULL
 
-class_date <- S7::new_class("class_date")
+class_date <- S7::new_class("class_date", abstract = TRUE)
 
 
 #' Create a GEDCOM Exact Date object
