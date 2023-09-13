@@ -6,10 +6,6 @@ NULL
 #' @details The shared note (SNOTE) alternative of this structure is defined
 #' separately in relevant structures.
 #' 
-#' In addition, this class does not include source citations as it
-#' results in infinite nesting.
-#' https://github.com/RConsortium/OOP-WG/issues/250
-#' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @include cls_translation.R cls_citation.R
@@ -91,7 +87,8 @@ extract_notes <- function(lines, location = NULL){
       text = find_ged_values(x, "NOTE"),
       language = find_ged_values(x, c("NOTE","LANG")),
       media_type = find_ged_values(x, c("NOTE","MIME")),
-      translations = extract_translations(x, "NOTE")
+      translations = extract_translations(x, "NOTE"),
+      citations = extract_citations(x, "NOTE")
     )
   })
   

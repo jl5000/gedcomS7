@@ -36,8 +36,4 @@ Create a note structure object
 \details{
 The shared note (SNOTE) alternative of this structure is defined
 separately in relevant structures.
-
-In addition, this class does not include source citations as it
-results in infinite nesting.
-https://github.com/RConsortium/OOP-WG/issues/250
 }
