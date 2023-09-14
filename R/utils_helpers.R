@@ -2,7 +2,7 @@
 NULL
 
 extract_ged_level <- function(lines){
-  as.integer(sub(reg_ged_line(), "\\1", lines))
+  sub(reg_ged_line(), "\\1", lines) |> as.integer()
 }
 extract_ged_xref <- function(lines){
   sub(reg_ged_line(), "\\2", lines)
@@ -14,11 +14,39 @@ extract_ged_value <- function(lines){
   sub(reg_ged_line(), "\\4", lines)
 }
 
-delete_ged_section <- function(lines, line_no){
-  lvl <- as.integer(substr(lines[line_no], 1, 1))
+
+#' Delete a structure from GEDCOM lines
+#'
+#' @param lines A character vector of GEDCOM lines.
+#' @param line_no A line number where the structure is located.
+#' @param containing_line Whether the line number is the first line of the structure or 
+#' whether the line number references a line within the structure (but not more than one
+#' level lower).
+#'
+#' @return The character vector of GEDCOM lines without the structure referenced by
+#' the line_no. If the structure is an entire record, then any xref pointers to it
+#' will also be replaced with a VOID pointer.
+delete_ged_section <- function(lines, line_no, containing_line = TRUE){
+  
+  lvl <- extract_ged_level(lines[line_no])
+  if(!containing_line){ # move line_no to containing line
+    while(line_no > 0 && extract_ged_level(lines[line_no]) >= lvl){
+      line_no <- line_no - 1
+    }
+    lvl <- extract_ged_level(lines[line_no])
+  }
+  
+  # Replace xref pointers with VOID
+  section_xref <- extract_ged_xref(lines[line_no])
+  if(section_xref != ""){
+    ptr_lines <- grepl(reg_xref(TRUE), extract_ged_value(lines))
+    lines[ptr_lines] <- sub(section_xref, "@VOID@", lines[ptr_lines])
+  }
+  
+  # Delete section
   lines <- lines[-line_no]
   while(line_no <= length(lines) && 
-        as.integer(substr(lines[line_no], 1, 1)) > lvl){
+        extract_ged_level(lines[line_no]) > lvl){
     lines <- lines[-line_no]
   }
   lines
@@ -95,7 +123,7 @@ increase_level <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   
   cur_level <- extract_ged_level(ged)
-  remainder <- substr(ged, 3, nchar(ged))
+  remainder <- sub("^\\d+ ", "", ged)
   paste(cur_level + by, remainder)
 }
 

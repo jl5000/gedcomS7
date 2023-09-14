@@ -39,22 +39,59 @@ write_gedcom <- function(gedcom,
   invisible(filepath)
 }
 
+
+
 prepare_gedcom_lines <- function(lines, inc_confid, inc_private){
   
-  #TODO: Need to remove records/facts and replace record pointers with @VOID@
-  if(!inc_confid)
-    lines <- lines
+  if(!inc_confid) remove_sensitive_sections(lines, "CONFIDENTIAL")
+  if(!inc_private) remove_sensitive_sections(lines, "PRIVATE")
   
-  if(!inc_private)
-    lines <- lines
-  
+  check_for_xref_mentions(lines)
+    
   # For lines with these patterns, we don't want to replace @ with @@
-  exclude <- which(extract_ged_xref(lines) != "" | grepl(reg_xref(TRUE), extract_ged_value(lines)))
+  exclude <- which(extract_ged_xref(lines) != "" | 
+                     grepl(reg_xref(TRUE), extract_ged_value(lines)))
+  
   lines[-exclude] <- gsub("@", "@@", lines[-exclude])
   
   lines <- split_gedcom_values(lines)
   
   lines
+}
+
+
+remove_sensitive_sections <- function(lines, restriction){
+  
+  restriction_rows <- function(lines, restriction){
+    intersect(
+      grep("RESN", extract_ged_tag(lines)), 
+      grep(restriction, extract_ged_value(lines))
+    )
+  }
+  
+  while(length(restriction_rows(lines, restriction)) > 0){
+    
+    line_no <- restriction_rows(lines, restriction)[1]
+    
+    lines <- delete_ged_section(lines, line_no, containing_line = FALSE)
+    
+  }
+  lines
+}
+
+check_for_xref_mentions <- function(lines){
+  
+  # Check for xrefs mentioned beyond pointers
+  vals <- extract_ged_value(lines)
+  line_no <- intersect(
+    grep(reg_xref(FALSE), vals),
+    grep(reg_xref(TRUE), vals, invert = TRUE)
+  )
+  
+  if(length(line_no) > 0){
+    warning("The following line numbers mention cross-reference identifiers - it is not recommended you refer to these directly as they can change between systems: ", 
+            toString(line_no))
+  }
 }
 
 #' Convert the GEDCOM form to GEDCOM grammar
