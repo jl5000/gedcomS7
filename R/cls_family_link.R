@@ -66,7 +66,7 @@ class_child_family_link <- S7::new_class(
   package = "gedcomS7",
   parent = class_spouse_family_link,
   properties = list(
-    pedigree = S7::new_property(S7::class_character, default = "BIRTH"),
+    pedigree = S7::class_character,
     pedigree_phrase = S7::class_character,
     confidence = S7::class_character,
     confidence_phrase = S7::class_character,
@@ -89,7 +89,7 @@ class_child_family_link <- S7::new_class(
     c(
       chk_input_size(self@pedigree, "@pedigree", 0, 1),
       chk_input_choice(self@pedigree, "@pedigree", val_pedigree_types()),
-      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", as.integer(self@pedigree == "OTHER"), 1, 1),
+      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", as.integer(chronify(self@pedigree) == "OTHER"), 1, 1),
       chk_input_parents(self@pedigree_phrase, "@pedigree_phrase", self@pedigree, "@pedigree"),
       chk_input_size(self@confidence, "@confidence", 0, 1),
       chk_input_choice(self@confidence, "@confidence", val_confidence_types()),

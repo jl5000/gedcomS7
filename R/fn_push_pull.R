@@ -81,7 +81,7 @@ push_record <- function(gedcom, record){
   
   if(rec_type == "indi"){
     gedcom <- refresh_indi_links(gedcom, record)
-  } else if(rec_type == "famg"){
+  } else if(rec_type == "fam"){
     gedcom <- refresh_fam_links(gedcom, record)
   }
   
@@ -94,14 +94,14 @@ refresh_fam_links <- function(gedcom, record){
   # Family group record has changed
   # Ensure FAMS/FAMC in indi records are correct
   
-  #TODO: Ignore VOID
-  
   # Who are the members of this family?
-  spou_xref <- c(record@husb_xref, record@wife_xref)
-  chil_xref <- c(record@chil_biol_xref, record@chil_adop_xref, record@chil_fost_xref)
+  spou_xref <- unname(c(record@husb_xref, record@wife_xref))
+  spou_xref <- spou_xref[spou_xref != "@VOID@"]
+  chil_xrefs <- unname(c(record@chil_xrefs))
+  chil_xrefs <- chil_xrefs[chil_xrefs != "@VOID@"]
   
-  for(indi in c(spou_xref, chil_xref)){
-    if(!indi %in% names(gedcom@indi)){
+  for(indi in c(spou_xref, chil_xrefs)){
+    if(!indi %in% gedcom@xrefs[["indi"]]){
       stop("There is no individual with xref ", indi)
     }
   }
@@ -118,36 +118,26 @@ refresh_fam_links <- function(gedcom, record){
     }
   }
   
-  for(chil in chil_xref){
+  for(chil in chil_xrefs){
     chil_rec <- gedcom@indi[[chil]]
     famc <- find_ged_values(chil_rec, "FAMC")
     if(!record@xref %in% famc){
-      
-      if(chil %in% record@chil_adop_xref){
-        pedi <- "adopted"
-      } else if(chil %in% record@chil_fost_xref){
-        pedi <- "foster"
-      } else if(chil %in% record@chil_biol_xref){
-        pedi <- "birth"
-      }
-      
       gedcom@indi[[chil]] <- c(
         gedcom@indi[[chil]],
-        sprintf("1 FAMC %s", record@xref),
-        sprintf("2 PEDI %s", pedi)
+        sprintf("1 FAMC %s", record@xref)
       )
     }
   }
   
   # Ensure no one else has the family link
-  for(indi in names(gedcom@indi)){
-    if(indi %in% c(spou_xref, chil_xref)) next
+  for(indi in gedcom@xrefs[["indi"]]){
+    if(indi %in% c(spou_xref, chil_xrefs)) next
     
     rec <- gedcom@indi[[indi]]
     
     fam_row <- grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), rec)
     
-    if(length(fam_row) == 1){
+    if(length(fam_row) > 0){
       # Might want to alert the user if extra stuff is being deleted
       gedcom@indi[[indi]] <- delete_ged_section(rec, fam_row)
     }
@@ -164,71 +154,69 @@ refresh_indi_links <- function(gedcom, record){
   
   # Go through each family link
   # Ensure record@xref is properly reflected in family record membership
-  famg_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
-  for(famg in famg_lnks){
-    if(!famg %in% names(gedcom@famg)){
-      stop("There is no Family Group with xref ", famg)
+  fam_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
+  for(fam in fam_lnks){
+    if(!fam %in% gedcom@xrefs[["fam"]]){
+      stop("There is no family with xref ", fam)
     }
   }
   
-  for(lnk in record@family_links){
-    fam_xref <- lnk@xref
+  for(lnk in record@fam_links_spou){
+    fam_rec <- gedcom@fam[[lnk@fam_xref]]
     
-    fam_rec <- gedcom@famg[[fam_xref]]
+    fam_husb <- find_ged_values(fam_rec, "HUSB")
+    fam_wife <- find_ged_values(fam_rec, "WIFE")
+    fam_spou <- c(fam_husb, fam_wife)
     
-    if(is_child_link(lnk)){
-      fam_chil <- find_ged_values(fam_rec, "CHIL")
-      
-      if(!record@xref %in% fam_chil){
-        gedcom@famg[[fam_xref]] <- c(
-          gedcom@famg[[fam_xref]],
-          sprintf("1 CHIL %s", record@xref)
-        )
-      }
-
-    } else if(is_spouse_link(lnk)){
-      fam_husb <- find_ged_values(fam_rec, "HUSB")
-      fam_wife <- find_ged_values(fam_rec, "WIFE")
-      fam_spou <- c(fam_husb, fam_wife)
-      
-      if(!record@xref %in% fam_spou){
-        if(length(fam_spou) == 0){
-          # use sex as determinant
-          if(record@sex == "M"){
-            spou_type <- "HUSB"
-          } else {
-            spou_type <- "WIFE"
-          }
-          
-        } else if(length(fam_husb) == 0) {
+    if(!record@xref %in% fam_spou){
+      if(length(fam_spou) == 0){
+        # use sex as determinant
+        if(record@sex == "M"){
           spou_type <- "HUSB"
-        } else if(length(fam_wife) == 0) {
-          spou_type <- "WIFE"
         } else {
-          # Both a HUSB and WIFE already exist
-          stop("This individual cannot be a spouse of a family that already has two spouses.")
+          spou_type <- "WIFE"
         }
         
-        gedcom@famg[[fam_xref]] <- c(
-          gedcom@famg[[fam_xref]],
-          sprintf("1 %s %s", spou_type, record@xref)
-        )
+      } else if(length(fam_husb) == 0) {
+        spou_type <- "HUSB"
+      } else if(length(fam_wife) == 0) {
+        spou_type <- "WIFE"
+      } else {
+        # Both a HUSB and WIFE already exist
+        stop("This individual cannot be a spouse of a family that already has two spouses.")
       }
+      
+      gedcom@fam[[lnk@fam_xref]] <- c(
+        gedcom@fam[[lnk@fam_xref]],
+        sprintf("1 %s %s", spou_type, record@xref)
+      )
     }
   }
   
+  for(lnk in record@fam_links_chil){
+    fam_rec <- gedcom@fam[[lnk@fam_xref]]
+    fam_chil <- find_ged_values(fam_rec, "CHIL")
+    
+    if(!record@xref %in% fam_chil){
+      gedcom@fam[[lnk@fam_xref]] <- c(
+        gedcom@fam[[lnk@fam_xref]],
+        sprintf("1 CHIL %s", record@xref)
+      )
+    }
+  } 
+  
   # Ensure this individual (record@xref) appears in no other famg records
-  for(famg in names(gedcom@famg)){
+  for(fam in gedcom@xrefs[["fam"]]){
     
-    if(famg %in% famg_lnks) next
+    if(fam %in% fam_lnks) next
     
-    rec <- gedcom@famg[[famg]]
+    rec <- gedcom@fam[[fam]]
     
     memb_row <- grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), rec)
     
-    if(length(memb_row) == 1){
+    if(length(memb_row) > 0){
       # Might want to alert the user if extra stuff is being deleted
-      gedcom@famg[[famg]] <- delete_ged_section(rec, memb_row)
+      gedcom@fam[[fam]] <- delete_ged_section(rec, memb_row)
     }
     
   }

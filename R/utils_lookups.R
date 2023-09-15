@@ -2,7 +2,7 @@
 #' Lookup values
 #' @export
 val_record_types <- function(){
-  c(Individual = "indi", `Family Group` = "fam", Source = "sour",
+  c(Individual = "indi", Family = "fam", Source = "sour", Submitter = "subm",
     Repository = "repo", Multimedia = "media", Note = "note")
 }
 
