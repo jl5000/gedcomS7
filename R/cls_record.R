@@ -10,19 +10,70 @@ class_record <- S7::new_class(
   "class_record", 
   abstract = TRUE,
   properties = list(
-    xref = S7::new_property(S7::class_character, default = "@ORPHAN@"),
-    confidential = S7::new_property(S7::class_logical, default = FALSE),
-    locked = S7::new_property(S7::class_logical, default = FALSE),
-    private = S7::new_property(S7::class_logical, default = FALSE),
-    user_ids = S7::class_character, # potentially named
-    unique_ids = S7::class_character, # not named
-    ext_ids = S7::class_character, # definitely named
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
-    media_links = S7::class_list | class_media_link | S7::class_character,
-    created = NULL | class_creation_date,
-    updated = NULL | class_change_date,
+    xref = S7::new_property(S7::class_character, default = "@ORPHAN@",
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, "@xref", 1, 1),
+                                chk_input_pattern(value, "@xref", reg_xref(TRUE))
+                              )
+                            }),
+    confidential = S7::new_property(S7::class_logical, default = FALSE,
+                                    validator = function(value){
+                                      chk_input_size(value, "@confidential", 1, 1)
+                                    }),
+    locked = S7::new_property(S7::class_logical, default = FALSE,
+                              validator = function(value){
+                                chk_input_size(value, "@locked", 1, 1)
+                              }),
+    private = S7::new_property(S7::class_logical, default = FALSE,
+                               validator = function(value){
+                                 chk_input_size(value, "@private", 1, 1)
+                               }),
+    user_ids = S7::new_property(S7::class_character, # potentially named
+                                validator = function(value){
+                                  chk_input_size(value, "@user_ids", min_val = 1)
+                                }), 
+    unique_ids = S7::new_property(S7::class_character, # not named
+                                  validator = function(value){
+                                    chk_input_pattern(value, "@unique_ids", reg_uuid(TRUE))
+                                  }), 
+    ext_ids = S7::new_property(S7::class_character, # definitely named
+                               validator = function(value){
+                                 c(
+                                   chk_input_size(value, "@ext_ids", min_val = 1),
+                                   chk_input_size(names(value), "@ext_ids names", length(value), length(value))
+                                 )
+                               }), 
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, "@note_xrefs", reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, "@notes", class_note, ".+")
+                             }),
+    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, "@citations", class_citation, reg_xref(TRUE))
+                                 }),
+    media_links = S7::new_property(S7::class_list | class_media_link | S7::class_character,
+                                   validator = function(value){
+                                     chk_input_S7classes(value, "@media_links", class_media_link, reg_xref(TRUE))
+                                   }),
+    created = S7::new_property(NULL | class_creation_date,
+                               validator = function(value){
+                                 c(
+                                   chk_input_size(value, "@created", 0, 1),
+                                   chk_input_pattern(value, "@created", reg_date_exact(TRUE))
+                                 )
+                               }),
+    updated = S7::new_property(NULL | class_change_date,
+                               validator = function(value){
+                                 c(
+                                   chk_input_size(value, "@updated", 0, 1),
+                                   chk_input_pattern(value, "@updated", reg_date_exact(TRUE))
+                                 )
+                               }),
     
     restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){
@@ -44,28 +95,7 @@ class_record <- S7::new_class(
                                named_vec_to_ged(self@ext_ids, "EXID", "TYPE")
                              )
                            })
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@xref, "@xref", 1, 1),
-      chk_input_pattern(self@xref, "@xref", reg_xref(TRUE)),
-      chk_input_size(self@confidential, "@confidential", 1, 1),
-      chk_input_size(self@locked, "@locked", 1, 1),
-      chk_input_size(self@private, "@private", 1, 1),
-      chk_input_size(self@user_ids, "@user_ids", min_val = 1),
-      chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE)),
-      chk_input_size(self@ext_ids, "@ext_ids", min_val = 1),
-      chk_input_size(names(self@ext_ids), "@ext_ids names", length(self@ext_ids), length(self@ext_ids)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE)),
-      chk_input_size(self@created, "@created", 0, 1),
-      chk_input_pattern(self@created, "@created", reg_date_exact(TRUE)),
-      chk_input_size(self@updated, "@updated", 0, 1),
-      chk_input_pattern(self@updated, "@updated", reg_date_exact(TRUE))
-    )
-  }
+  )
 )
 
 
