@@ -18,7 +18,12 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of gedcomS7 is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. It has just one dependency - the S7 package for Object Oriented Programming, which will at some point be subsumed into base R. NOTE: this package is likely to change name soon.
+The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. The key changes are:
+
+* The package is designed to work with GEDCOM 7.1, rather than 5.5.5.
+* The package has minimal dependencies; currently only two.
+* GEDCOM files are stored as S7 objects rather than dataframes.
+* The package contains all functionality to create, edit, and interrogate GEDCOM files.
 
 > This package is still in development. Be wary of editing your file with it for the time being.
 
@@ -30,6 +35,16 @@ You can install the development version of gedcomS7 from [GitHub](https://github
 # install.packages("remotes")
 remotes::install_github("jl5000/gedcomS7")
 ```
+
+## Key limitations
+
+The package does not currently implement the following:
+
+* LDS_SPOUSE_SEALING structures of Family records 
+* LDS_INDIVIDUAL_ORDINANCE of Individual records
+* Extension tags
+
+If you import a file with any of these features, the package may behave unpredictably.
 
 ## Import / creation
 
@@ -124,4 +139,11 @@ pull_record(ged, "@I1@")
 
 ## References
 
-* [The GEDCOM 5.5.5 Specification](https://www.gedcom.org/gedcom.html)
+
+
+## Notice
+
+>This work comprises, is based on, or is derived from the FAMILYSEARCH GEDCOM™ Specification, © 1984-2023 Intellectual Reserve, Inc. All rights reserved.
+
+>“FAMILYSEARCH GEDCOM™” and “FAMILYSEARCH®” are trademarks of Intellectual Reserve, Inc. and may not be used except as allowed by the Apache 2.0 license that governs this work or as expressly authorized in writing and in advance by Intellectual Reserve, Inc.
+
