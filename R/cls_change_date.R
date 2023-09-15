@@ -18,8 +18,20 @@ class_creation_date <- S7::new_class(
   package = "gedcomS7",
   properties = list(
     date_exact = S7::new_property(S7::class_character | class_date_exact, 
-                            default = date_exact_current()),
-    time = S7::class_character | class_time,
+                                  default = date_exact_current(),
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 1, 1),
+                                      chk_input_pattern(value, reg_date_exact())
+                                    )
+                                  }),
+    time = S7::new_property(S7::class_character | class_time,
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 0, 1),
+                                chk_input_pattern(value, reg_time())
+                              )
+                            }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -30,15 +42,7 @@ class_creation_date <- S7::new_class(
           sprintf("2 TIME %s", obj_to_val(self@time))
         )
       })
-  ),
-  validator = function(self) {
-    c(
-      chk_input_size(self@date_exact, "@date_exact", 1, 1),
-      chk_input_pattern(self@date_exact, "@date_exact", reg_date_exact()),
-      chk_input_size(self@time, "@time", 0, 1),
-      chk_input_pattern(self@time, "@time", reg_time())
-    )
-  }
+  )
 )
 
 #' Create a change date object
@@ -56,8 +60,14 @@ class_change_date <- S7::new_class(
   package = "gedcomS7",
   parent = class_creation_date,
   properties = list(
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -71,13 +81,7 @@ class_change_date <- S7::new_class(
         )
         
       })
-  ),
-  validator = function(self) {
-    c(
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
-    )
-  }
+  )
 )
 
 extract_creation_date <- function(rec_lines){

@@ -29,11 +29,26 @@ class_address <- S7::new_class(
   "class_address",
   package = "gedcomS7",
   properties = list(
-    full = S7::class_character,
-    city = S7::class_character,
-    state = S7::class_character,
-    postal_code = S7::class_character,
-    country = S7::class_character,
+    full = S7::new_property(S7::class_character,
+                            validator = function(value){
+                              chk_input_size(value, 1, 1, 1)
+                            }),
+    city = S7::new_property(S7::class_character,
+                            validator = function(value){
+                              chk_input_size(value, 0, 1, 1)
+                            }),
+    state = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    postal_code = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    country = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
     
     as_val = S7::new_property(S7::class_character, 
                               getter = function(self) self@full),
@@ -49,17 +64,7 @@ class_address <- S7::new_class(
           sprintf("1 CTRY %s", self@country)
         )
       })
-  ),
-  
-  validator = function(self) {
-    c(
-      chk_input_size(self@full, "@full", 1, 1, 1),
-      chk_input_size(self@city, "@city", 0, 1, 1),
-      chk_input_size(self@state, "@state", 0, 1, 1),
-      chk_input_size(self@postal_code, "@postal_code", 0, 1, 1),
-      chk_input_size(self@country, "@country", 0, 1, 1)
-    )
-  }
+  )
 )
 
 

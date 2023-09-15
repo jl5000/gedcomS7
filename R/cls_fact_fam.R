@@ -11,10 +11,28 @@ class_fact_fam <- S7::new_class(
   parent = class_fact,
   abstract = TRUE,
   properties = list(
-    husb_age = S7::class_character,
-    husb_age_phrase = S7::class_character,
-    wife_age = S7::class_character,
-    wife_age_phrase = S7::class_character,
+    husb_age = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1),
+                                    chk_input_pattern(value, reg_age_at_event())
+                                  )
+                                }),
+    husb_age_phrase = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         chk_input_size(value, 0, 1, 1)
+                                       }),
+    wife_age = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1),
+                                    chk_input_pattern(value, reg_age_at_event())
+                                  )
+                                }),
+    wife_age_phrase = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         chk_input_size(value, 0, 1, 1)
+                                       }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -38,17 +56,7 @@ class_fact_fam <- S7::new_class(
         )
       }
     )
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@husb_age, "@husb_age", 0, 1),
-      chk_input_pattern(self@husb_age, "@husb_age", reg_age_at_event()),
-      chk_input_size(self@husb_age_phrase, "@husb_age_phrase", 0, 1, 1),
-      chk_input_size(self@wife_age, "@wife_age", 0, 1),
-      chk_input_pattern(self@wife_age, "@wife_age", reg_age_at_event()),
-      chk_input_size(self@wife_age_phrase, "@wife_age_phrase", 0, 1, 1)
-    )
-  }
+  )
 )
 
 
@@ -74,16 +82,8 @@ class_event_fam <- S7::new_class(
   package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
-    # Non EVEN events can only have Y value
-    fact_val_err <- NULL
-    if(self@fact_type != "EVEN")
-      fact_val_err <- chk_input_choice(self@fact_val, "@fact_val", "Y")
-    
-    c(
-      chk_input_choice(self@fact_type, "@fact_type", val_family_event_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", as.integer(self@fact_type == "EVEN"), 1, 1),
-      fact_val_err
-    )
+    if(!self@fact_type %in% val_family_event_types(TRUE))
+      return("This is not a valid @fact_type for this event.")
   }
 )
 
@@ -104,10 +104,8 @@ class_attr_fam <- S7::new_class(
   package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
-    c(
-      chk_input_choice(self@fact_type, "@fact_type", val_family_attribute_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", self@fact_type != "RESI", 1, 1)
-    )
+    if(!self@fact_type %in% val_family_attribute_types(TRUE))
+      return("This is not a valid @fact_type for this attribute.")
   }
 )
 

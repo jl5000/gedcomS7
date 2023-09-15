@@ -10,19 +10,49 @@ NULL
 class_gedcom_source <- S7::new_class(
   "class_gedcom_source",
   properties = list(
-    product_id = S7::class_character,
-    product_name = S7::class_character,
-    product_version = S7::class_character,
-    business_name = S7::class_character,
+    product_id = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    
+                                  }),
+    product_name = S7::new_property(S7::class_character,
+                                    validator = function(value){
+                                      
+                                    }),
+    product_version = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         
+                                       }),
+    business_name = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       
+                                     }),
     business_address = S7::class_character | class_address,
-    phone_numbers = S7::class_character,
-    emails = S7::class_character,
-    faxes = S7::class_character,
-    web_pages = S7::class_character,
-    data_name = S7::class_character,
+    phone_numbers = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       chk_input_size(value, min_val = 1)
+                                     }),
+    emails = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, min_val = 1)
+                              }),
+    faxes = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, min_val = 1)
+                             }),
+    web_pages = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, min_val = 1)
+                                 }),
+    data_name = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   
+                                 }),
     data_pubdate = S7::class_character | class_date_exact,
     data_pubtime = S7::class_character | class_time,
-    data_copyright = S7::class_character,
+    data_copyright = S7::new_property(S7::class_character,
+                                      validator = function(value){
+                                        
+                                      }),
     
     as_ged = S7::new_property(
       S7::class_character,

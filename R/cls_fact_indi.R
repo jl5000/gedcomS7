@@ -11,8 +11,17 @@ class_fact_indi <- S7::new_class(
   parent = class_fact,
   abstract = TRUE,
   properties = list(
-    age = S7::class_character,
-    age_phrase = S7::class_character,
+    age = S7::new_property(S7::class_character,
+                           validator = function(value){
+                             c(
+                               chk_input_size(value, 0, 1),
+                               chk_input_pattern(value, reg_age_at_event())
+                             )
+                           }),
+    age_phrase = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_size(value, 0, 1, 1)
+                                  }),
     
     .indi_fact_detail_as_ged = S7::new_property(
       S7::class_character,
@@ -28,14 +37,7 @@ class_fact_indi <- S7::new_class(
         )
       }
     )
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@age, "@age", 0, 1),
-      chk_input_pattern(self@age, "@age", reg_age_at_event()),
-      chk_input_size(self@age_phrase, "@age_phrase", 0, 1, 1)
-    )
-  }
+  )
 )
 
 
@@ -78,9 +80,24 @@ class_event_indi <- S7::new_class(
   package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
-    fam_xref = S7::class_character,
-    adop_parent = S7::class_character,
-    adop_parent_phrase = S7::class_character,
+    fam_xref = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1),
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  )
+                                }),
+    adop_parent = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     c(
+                                       chk_input_size(value, 0, 1),
+                                       chk_input_choice(value, val_adoptive_parents())
+                                     )
+                                   }),
+    adop_parent_phrase = S7::new_property(S7::class_character,
+                                          validator = function(value){
+                                            chk_input_size(value, 0, 1, 1)
+                                          }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -94,36 +111,21 @@ class_event_indi <- S7::new_class(
       })
   ),
   validator = function(self){
-    # Non EVEN events can only have Y value
-    fact_val_err <- NULL
-    if(self@fact_type != "EVEN")
-      fact_val_err <- chk_input_choice(self@fact_val, "@fact_val", "Y")
+    errs <- NULL
+    if(!self@fact_type %in% val_individual_event_types(TRUE))
+      errs <- c(errs, "This is not a valid @fact_type for this event.")
     
     # Only ADOP, BIRT and CHR can have xref
-    fam_xref_err <- NULL
-    if(!self@fact_type %in% c("ADOP","BIRT","CHR"))
-      fam_xref_err <- chk_input_size(self@fam_xref, "@fam_xref", 0, 0)
+    if(length(self@fam_xref) > 0 && !self@fact_type %in% c("ADOP","BIRT","CHR"))
+      errs <- c(errs, "Only adoption, birth, and christening events can have a @fam_xref")
     
-    # Only ADOP can have xref, adop_parent, and phrase
-    adop_err <- NULL
-    if(self@fact_type != "ADOP")
-      adop_err <- c(
-        chk_input_size(self@adop_parent, "@adop_parent", 0, 0),
-        chk_input_size(self@adop_parent_phrase, "@adop_parent_phrase", 0, 0)
-      )
+    if(length(self@adop_parent) + length(self@adop_parent_phrase) > 0 &&
+       self@fact_type != "ADOP")
+      errs <- c(errs, "Only adoption events can have a @adop_parent or @adop_parent_phrase")
     
     c(
-      chk_input_choice(self@fact_type, "@fact_type", val_individual_event_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", as.integer(self@fact_type == "EVEN"), 1, 1),
-      fact_val_err,
-      fam_xref_err,
-      chk_input_size(self@fam_xref, "@fam_xref", 0, 1),
-      chk_input_pattern(self@fam_xref, "@fam_xref", reg_xref(TRUE)),
-      adop_err,
-      chk_input_size(self@adop_parent, "@adop_parent", 0, 1),
-      chk_input_choice(self@adop_parent, "@adop_parent", val_adoptive_parents()),
+      errs,
       chk_input_parents(self@adop_parent, "@adop_parent", self@fam_xref, "@fam_xref"),
-      chk_input_size(self@adop_parent_phrase, "@adop_parent_phrase", 0, 1, 1),
       chk_input_parents(self@adop_parent_phrase, "@adop_parent_phrase", self@adop_parent, "@adop_parent")
     )
   }
@@ -169,15 +171,14 @@ class_attr_indi <- S7::new_class(
                               getter = function(self) self@.indi_fact_detail_as_ged)
   ),
   validator = function(self){
-    integer_err <- NULL
-    if(self@fact_type %in% c("NCHI","NMR"))
-      integer_err <- chk_input_pattern(self@fact_val, "@fact_val", "^\\d+$")
+    errs <- NULL
+    if(!self@fact_type %in% val_individual_attribute_types(TRUE))
+      errs <- c(errs, "This is not a valid @fact_type for this attribute.")
+    
+    if(self@fact_type %in% c("NCHI","NMR") && !grepl("^\\d+$", self@fact_val))
+      errs <- c(errs, "Number of children/marriages must be a whole number.")
       
-    c(
-      chk_input_choice(self@fact_type, "@fact_type", val_individual_attribute_types(TRUE)),
-      chk_input_size(self@fact_val, "@fact_val", self@fact_type != "RESI", 1, 1),
-      integer_err
-    )
+    errs
   }
 )
 

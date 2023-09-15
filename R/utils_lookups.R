@@ -106,6 +106,15 @@ val_event_types <- function(inc_generic = FALSE) {
 
 #' @rdname val_record_types
 #' @export
+val_attribute_types <- function(inc_generic = FALSE) {
+  c(
+    val_individual_attribute_types(inc_generic),
+    val_family_attribute_types(inc_generic)
+  )
+}
+
+#' @rdname val_record_types
+#' @export
 val_fact_types <- function(inc_generic = FALSE) {
   c(
     val_event_types(inc_generic),

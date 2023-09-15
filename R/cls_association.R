@@ -23,13 +23,40 @@ class_association <- S7::new_class(
   "class_association",
   package = "gedcomS7",
   properties = list(
-    indi_xref = S7::new_property(S7::class_character, default = "@VOID@"),
-    indi_phrase = S7::class_character,
-    relation_is = S7::class_character,
-    relation_phrase = S7::class_character,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
+    indi_xref = S7::new_property(S7::class_character, default = "@VOID@",
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 1, 1),
+                                     chk_input_pattern(value, reg_xref(TRUE))
+                                   )
+                                 }),
+    indi_phrase = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    relation_is = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     c(
+                                       chk_input_size(value, 1, 1),
+                                       chk_input_choice(value, val_roles())
+                                     )
+                                   }),
+    relation_phrase = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         chk_input_size(value, 0, 1, 1)
+                                       }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                 }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -44,21 +71,7 @@ class_association <- S7::new_class(
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
-  ),
-  
-  validator = function(self){
-    c(
-      chk_input_size(self@indi_xref, "@indi_xref", 1, 1),
-      chk_input_pattern(self@indi_xref, "@indi_xref", reg_xref(TRUE)),
-      chk_input_size(self@indi_phrase, "@indi_phrase", 0, 1, 1),
-      chk_input_size(self@relation_is, "@relation_is", 1, 1),
-      chk_input_choice(self@relation_is, "@relation_is", val_roles()),
-      chk_input_size(self@relation_phrase, "@relation_phrase", 0, 1, 1),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
-    )
-  }
+  )
 )
 
 

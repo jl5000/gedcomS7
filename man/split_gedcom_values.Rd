@@ -2,7 +2,7 @@
 % Please edit documentation in R/io_export.R
 \name{split_gedcom_values}
 \alias{split_gedcom_values}
-\title{Convert the GEDCOM form to GEDCOM grammar}
+\title{Create continuation lines}
 \usage{
 split_gedcom_values(lines)
 }

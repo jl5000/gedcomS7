@@ -13,30 +13,106 @@ class_fact <- S7::new_class(
   abstract = TRUE,
   properties = list(
     # Not part of detail, but want them to appear first
-    fact_type = S7::class_character,
-    fact_val = S7::class_character,
-    fact_desc = S7::class_character,
+    fact_type = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 1, 1)
+                                   # fact_type enum checked later
+                                 }),
+    fact_val = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  chk_input_size(value, 0, 1)
+                                }),
+    fact_desc = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 0, 1, 1)
+                                 }),
     
-    date = S7::class_character | class_date_value,
-    place = S7::class_character | class_place,
-    address = S7::class_character | class_address,
-    phone_numbers = S7::class_character,
-    emails = S7::class_character,
-    faxes = S7::class_character,
-    web_pages = S7::class_character,
-    agency = S7::class_character,
-    relig_affil = S7::class_character,
-    cause = S7::class_character,
-    confidential = S7::new_property(S7::class_logical, default = FALSE),
-    locked = S7::new_property(S7::class_logical, default = FALSE),
-    private = S7::new_property(S7::class_logical, default = FALSE),
-    date_sort = S7::class_character | class_date_sort,
-    associations = S7::class_list | class_association,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
-    media_links = S7::class_list | class_media_link | S7::class_character,
-    unique_ids = S7::class_character,
+    date = S7::new_property(S7::class_character | class_date_value,
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 0, 1),
+                                chk_input_pattern(value, reg_date_value())
+                              )
+                            }),
+    place = S7::new_property(S7::class_character | class_place,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    address = S7::new_property(S7::class_character | class_address,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
+    phone_numbers = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       chk_input_size(value, min_val = 1)
+                                     }),
+    emails = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, min_val = 1)
+                              }),
+    faxes = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, min_val = 1)
+                             }),
+    web_pages = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, min_val = 1)
+                                 }),
+    agency = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, 0, 1, 1)
+                              }),
+    relig_affil = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    cause = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    confidential = S7::new_property(S7::class_logical, default = FALSE,
+                                    validator = function(value){
+                                      chk_input_size(value, 1, 1)
+                                    }),
+    locked = S7::new_property(S7::class_logical, default = FALSE,
+                              validator = function(value){
+                                chk_input_size(value, 1, 1)
+                              }),
+    private = S7::new_property(S7::class_logical, default = FALSE,
+                               validator = function(value){
+                                 chk_input_size(value, 1, 1)
+                               }),
+    date_sort = S7::new_property(S7::class_character | class_date_sort,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 0, 1),
+                                     chk_input_pattern(value, reg_date_gregorian())
+                                   )
+                                 }),
+    associations = S7::new_property(S7::class_list | class_association,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_association)
+                                    }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                 }),
+    media_links = S7::new_property(S7::class_list | class_media_link | S7::class_character,
+                                   validator = function(value){
+                                     chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
+                                   }),
+    unique_ids = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_uuid(TRUE))
+                                  }),
     
     restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){
@@ -105,33 +181,18 @@ class_fact <- S7::new_class(
     )
   ),
   validator = function(self) {
-    c(
-      chk_input_size(self@fact_type, "@fact_type", 1, 1),
-      # fact_type enum and fact_val checked later
-      chk_input_size(self@fact_desc, "@fact_desc", as.integer(self@fact_type %in% c("FACT","EVEN","IDNO")), 1, 1),
-      chk_input_size(self@date, "@date", 0, 1),
-      chk_input_pattern(self@date, "@date", reg_date_value()),
-      chk_input_size(self@place, "@place", 0, 1, 1),
-      chk_input_size(self@address, "@address", 0, 1, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
-      chk_input_size(self@emails, "@emails", min_val = 1),
-      chk_input_size(self@faxes, "@faxes", min_val = 1),
-      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
-      chk_input_size(self@agency, "@agency", 0, 1, 1),
-      chk_input_size(self@relig_affil, "@relig_affil", 0, 1, 1),
-      chk_input_size(self@cause, "@cause", 0, 1, 1),
-      chk_input_size(self@confidential, "@confidential", 1, 1),
-      chk_input_size(self@locked, "@locked", 1, 1),
-      chk_input_size(self@private, "@private", 1, 1),
-      chk_input_size(self@date_sort, "@date_sort", 0, 1),
-      chk_input_pattern(self@date_sort, "@date_sort", reg_date_gregorian()),
-      chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE)),
-      chk_input_S7classes(self@media_links, "@media_links", class_media_link, reg_xref(TRUE)),
-      chk_input_pattern(self@unique_ids, "@unique_ids", reg_uuid(TRUE))
-    )
+    if(self@fact_type %in% val_event_types(FALSE) && 
+       length(self@fact_val) == 1 && 
+       self@fact_val != "Y")
+      return("Only a @fact_val of 'Y' is permitted for this event.")
+    
+    if(self@fact_type %in% c("EVEN", val_attribute_types(TRUE)) && 
+       self@fact_type != "RESI" &&
+       length(self@fact_val) == 0)
+      return("A @fact_val is required for this fact.")
+    
+    if(self@fact_type %in% c("FACT","EVEN","IDNO") && length(self@fact_desc) == 0)
+      return("A @fact_desc is required for this type of fact.")
   }
 )
 

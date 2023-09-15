@@ -16,9 +16,21 @@ class_spouse_family_link <- S7::new_class(
   "class_spouse_family_link",
   package = "gedcomS7",
   properties = list(
-    fam_xref = S7::class_character,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
+    fam_xref = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 1, 1),
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  )
+                                }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -29,15 +41,7 @@ class_spouse_family_link <- S7::new_class(
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@fam_xref, "@fam_xref", 1, 1),
-      chk_input_pattern(self@fam_xref, "@fam_xref", reg_xref(TRUE)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
-    )
-  }
+  )
 )
 
 #' Create a family link (as child) object
@@ -66,10 +70,28 @@ class_child_family_link <- S7::new_class(
   package = "gedcomS7",
   parent = class_spouse_family_link,
   properties = list(
-    pedigree = S7::class_character,
-    pedigree_phrase = S7::class_character,
-    confidence = S7::class_character,
-    confidence_phrase = S7::class_character,
+    pedigree = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1),
+                                    chk_input_choice(value, val_pedigree_types())
+                                  )
+                                }),
+    pedigree_phrase = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         chk_input_size(value, 0, 1, 1)
+                                       }),
+    confidence = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1),
+                                      chk_input_choice(value, val_confidence_types())
+                                    )
+                                  }),
+    confidence_phrase = S7::new_property(S7::class_character,
+                                         validator = function(value){
+                                           chk_input_size(value, 0, 1, 1)
+                                         }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -86,14 +108,12 @@ class_child_family_link <- S7::new_class(
       })
   ),
   validator = function(self){
+    err <- NULL
+    if(chronify(self@pedigree) == "OTHER" && length(self@pedigree_phrase) == 0)
+      err <- "An OTHER pedigree requires explanation in @pedigree_phrase."
     c(
-      chk_input_size(self@pedigree, "@pedigree", 0, 1),
-      chk_input_choice(self@pedigree, "@pedigree", val_pedigree_types()),
-      chk_input_size(self@pedigree_phrase, "@pedigree_phrase", as.integer(chronify(self@pedigree) == "OTHER"), 1, 1),
+      err,
       chk_input_parents(self@pedigree_phrase, "@pedigree_phrase", self@pedigree, "@pedigree"),
-      chk_input_size(self@confidence, "@confidence", 0, 1),
-      chk_input_choice(self@confidence, "@confidence", val_confidence_types()),
-      chk_input_size(self@confidence_phrase, "@confidence_phrase", 0, 1, 1),
       chk_input_parents(self@confidence_phrase, "@confidence_phrase", self@confidence, "@confidence")
     )
   }
