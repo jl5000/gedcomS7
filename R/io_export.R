@@ -41,6 +41,13 @@ write_gedcom <- function(gedcom,
 
 
 
+#' Prepare GEDCOM lines for export
+#'
+#' @param lines A character vector of gedcom lines.
+#' @param inc_confid Whether to retain structures marked as confidential.
+#' @param inc_private Whether to retain structures marked as private.
+#'
+#' @return A vector of GEDCOM lines ready for export.
 prepare_gedcom_lines <- function(lines, inc_confid, inc_private){
   
   if(!inc_confid) remove_sensitive_sections(lines, "CONFIDENTIAL")
@@ -48,18 +55,18 @@ prepare_gedcom_lines <- function(lines, inc_confid, inc_private){
   
   check_for_xref_mentions(lines)
     
-  # For lines with these patterns, we don't want to replace @ with @@
-  exclude <- which(extract_ged_xref(lines) != "" | 
-                     grepl(reg_xref(TRUE), extract_ged_value(lines)))
-  
-  lines[-exclude] <- gsub("@", "@@", lines[-exclude])
-  
-  lines <- split_gedcom_values(lines)
+  lines <- split_gedcom_values(lines) |> 
+    add_at_escapes()
   
   lines
 }
 
-
+#' Remove gedcom structures marked as sensitive
+#'
+#' @param lines A character vector of gedcom lines.
+#' @param restriction Whether to remove structures marked as "CONFIDENTIAL" or "PRIVATE".
+#'
+#' @return A vector of sanitised GEDCOM lines.
 remove_sensitive_sections <- function(lines, restriction){
   
   restriction_rows <- function(lines, restriction){
@@ -79,13 +86,19 @@ remove_sensitive_sections <- function(lines, restriction){
   lines
 }
 
+#' Check gedcom lines for inappropriate mentions of xrefs
+#'
+#' @param lines A character vector of gedcom lines.
+#'
+#' @return Nothing. If applicable, the function will result in a warning if
+#' inappropriate mentions of xrefs are found.
 check_for_xref_mentions <- function(lines){
   
   # Check for xrefs mentioned beyond pointers
   vals <- extract_ged_value(lines)
   line_no <- intersect(
-    grep(reg_xref(FALSE), vals),
-    grep(reg_xref(TRUE), vals, invert = TRUE)
+    grep(reg_xref(FALSE), vals), # xrefs appear
+    grep(reg_xref(TRUE), vals, invert = TRUE) # but they do not appear alone
   )
   
   if(length(line_no) > 0){
@@ -94,7 +107,23 @@ check_for_xref_mentions <- function(lines){
   }
 }
 
-#' Convert the GEDCOM form to GEDCOM grammar
+
+add_at_escapes <- function(lines){
+  
+  # For lines with these patterns, we don't want to replace @ with @@
+  exclude <- unique(c(
+    grep(".+", extract_ged_xref(lines)), # start of record
+    grep(reg_xref(TRUE), extract_ged_value(lines)) # xref pointer
+  ))
+  
+  # sub() will pick up the first instance which should be the beginning of the value
+  lines[-exclude] <- sub(" @", " @@", lines[-exclude])
+  
+  lines
+  
+}
+
+#' Create continuation lines
 #' 
 #' This function introduces CONT lines for line values that contain line breaks.
 #'

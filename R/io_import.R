@@ -65,11 +65,11 @@ remove_at_escapes <- function(lines){
   
   vals <- extract_ged_value(lines)
   
-  escape_lines <- which(substr(vals, 1, 2) == "@@")
+  escape_lines <- grep("^@@", vals)
   
   if(length(escape_lines) == 0) return(lines)
   
-  lines[escape_lines] <- sub("^([0-9] [A-Z0-9_]+ )@", "\\1", lines[escape_lines])
+  lines[escape_lines] <- sub("^([0-9]+ [A-Z0-9_]+ )@", "\\1", lines[escape_lines])
   lines
 }
 
@@ -80,13 +80,13 @@ remove_at_escapes <- function(lines){
 #' @return A new character vector of gedcom lines.
 combine_cont_lines <- function(lines) {
   
-  reg_cont <- sprintf("^[1-9] CONT (.*)$")
+  reg_cont <- sprintf("^\\d+ CONT (.*)$")
   cont_lines <- grep(reg_cont, lines)
   if(length(cont_lines) == 0) return(lines)
   
   unique_delim <- "<><>unique_delim<><>"
   
-  lines <- sub("^([1-9] CONT )", "\\1\n", lines)
+  lines <- sub("^(\\d+ CONT )", "\\1\n", lines)
   
   # Prepare lines for merging
   lines[cont_lines] <- sub(reg_cont, "\\1", lines[cont_lines])
