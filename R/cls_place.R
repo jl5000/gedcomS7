@@ -13,7 +13,7 @@ NULL
 #' expect_snapshot_value(class_place("here")@as_ged, "json2")
 #' expect_error(class_place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
 #' expect_snapshot_value(class_place("here", lat_long = "N12 E56")@as_ged, "json2")
-#' expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations names has too few elements")
+#' expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
 #' expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@as_ged, "json2")
 #' expect_snapshot_value(class_place("here", 
 #'                                   place_translations = c(nl = "hier", da = "her"),
@@ -28,14 +28,50 @@ class_place <- S7::new_class(
   "class_place",
   package = "gedcomS7",
   properties = list(
-    place_name = S7::class_character,
-    place_form = S7::class_character,
-    language = S7::class_character,
-    place_translations = S7::class_character,
-    lat_long = S7::class_character,
-    ext_ids = S7::class_character,
-    note_xrefs = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
+    place_name = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_size(value, 1, 1, 1)
+                                  }),
+    place_form = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_size(value, 0, 1, 1)
+                                  }),
+    language = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1)
+                                    #TODO: language lookup
+                                  )
+                                }),
+    place_translations = S7::new_property(S7::class_character,
+                                          validator = function(value){
+                                            c(
+                                              chk_input_size(value, min_val = 1),
+                                              chk_input_size(names(value), length(value), length(value))
+                                            )
+                                          }),
+    lat_long = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1),
+                                    chk_input_pattern(value, sprintf("^%s %s$", reg_latitude(), reg_longitude()))
+                                  )
+                                }),
+    ext_ids = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 c(
+                                   chk_input_size(value, min_val = 1),
+                                   chk_input_size(names(value), length(value), length(value))
+                                 )
+                               }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
     
     lat = S7::new_property(S7::class_character,
                            getter = function(self){
@@ -66,25 +102,7 @@ class_place <- S7::new_class(
                                   obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
                                 )
                               })
-  ),
-  
-  validator = function(self) {
-    c(
-      chk_input_size(self@place_name, "@place_name", 1, 1, 1),
-      chk_input_size(self@place_form, "@place_form", 0, 1, 1),
-      chk_input_size(self@language, "@language", 0, 1),
-      #TODO: language lookup
-      chk_input_size(self@place_translations, "@place_translations", min_val = 1),
-      chk_input_size(names(self@place_translations), "@place_translations names", length(self@place_translations), length(self@place_translations)),
-      #TODO: language lookup
-      chk_input_size(self@lat_long, "@lat_long", 0, 1),
-      chk_input_pattern(self@lat_long, "@lat_long", sprintf("^%s %s$", reg_latitude(), reg_longitude())),
-      chk_input_size(self@ext_ids, "@ext_ids", min_val = 1),
-      chk_input_size(names(self@ext_ids), "@ext_ids names", length(self@ext_ids), length(self@ext_ids)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+")
-    )
-  }
+  )
 )
 
 extract_place <- function(lines, location = NULL){

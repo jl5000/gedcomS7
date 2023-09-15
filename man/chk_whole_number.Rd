@@ -4,12 +4,10 @@
 \alias{chk_whole_number}
 \title{Validate an numeric input to be a whole number}
 \usage{
-chk_whole_number(input, name)
+chk_whole_number(input)
 }
 \arguments{
 \item{input}{The input.}
-
-\item{name}{The name of the input used in any error messages.}
 }
 \value{
 Either a character string giving an error message, or NULL.

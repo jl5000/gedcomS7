@@ -9,8 +9,6 @@ chk_input_parents(input, name, parent, parent_name)
 \arguments{
 \item{input}{The input.}
 
-\item{name}{The name of the input used in any error messages.}
-
 \item{parent}{The parent input.}
 
 \item{parent_name}{The name of the parent input used in any error messages.}

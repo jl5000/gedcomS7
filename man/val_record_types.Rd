@@ -8,6 +8,7 @@
 \alias{val_family_event_types}
 \alias{val_family_attribute_types}
 \alias{val_event_types}
+\alias{val_attribute_types}
 \alias{val_fact_types}
 \alias{val_medium_types}
 \alias{val_pedigree_types}
@@ -32,6 +33,8 @@ val_family_event_types(inc_generic = FALSE)
 val_family_attribute_types(inc_generic = FALSE)
 
 val_event_types(inc_generic = FALSE)
+
+val_attribute_types(inc_generic = FALSE)
 
 val_fact_types(inc_generic = FALSE)
 

@@ -17,10 +17,28 @@ class_record_note <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    text = S7::class_character,
-    media_type = S7::class_character,
-    language = S7::class_character,
-    translations = S7::class_list | class_translation_txt,
+    text = S7::new_property(S7::class_character,
+                            validator = function(value){
+                              chk_input_size(value, 1, 1, 1)
+                            }),
+    media_type = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1, 1)
+                                      #TODO: media type pattern (text/plain or text/html)
+                                    )
+                                  }),
+    language = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1, 1)
+                                    #TODO: language option
+                                  )
+                                }),
+    translations = S7::new_property(S7::class_list | class_translation_txt,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_translation_txt)
+                                    }),
     
     as_ged = S7::new_property(
       S7::class_data.frame,
@@ -39,17 +57,14 @@ class_record_note <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@text, "@text", 1, 1, 1),
-      chk_input_size(self@media_type, "@media_type", 0, 1, 1),
-      #TODO: media type pattern (text/plain or text/html)
-      chk_input_size(self@language, "@language", 0, 1, 1),
-      #TODO: language option
-      chk_input_S7classes(self@translations, "@translations", class_translation_txt),
-      chk_input_size(self@notes, "@notes", 0, 0),
-      chk_input_size(self@note_xrefs, "@note_xrefs", 0, 0),
-      chk_input_size(self@media_links, "@media_links", 0, 0)
-    )
+    if(length(self@notes) > 0)
+      return("This record does not use @notes")
+    
+    if(length(self@note_xrefs) > 0)
+      return("This record does not use @note_xrefs")
+    
+    if(length(self@media_links) > 0)
+      return("This record does not use @media_links")
   }
 )
 

@@ -13,10 +13,25 @@ class_repository_citation <- S7::new_class(
   "class_repository_citation",
   package = "gedcomS7",
   properties = list(
-    repo_xref = S7::new_property(S7::class_character, default = "@VOID@"),
-    notes = S7::class_list | class_note | S7::class_character,
-    note_xrefs = S7::class_character,
-    call_numbers = S7::class_character,
+    repo_xref = S7::new_property(S7::class_character, default = "@VOID@",
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 1, 1),
+                                     chk_input_pattern(value, reg_xref(TRUE))
+                                   )
+                                 }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    call_numbers = S7::new_property(S7::class_character,
+                                    validator = function(value){
+                                      chk_input_size(value, min_val = 1)
+                                    }),
     # media = S7::class_character, TODO: too much nesting
     # media_phrase = S7::class_character,
     
@@ -32,17 +47,7 @@ class_repository_citation <- S7::new_class(
           # sprintf("3 PHRASE %s", self@media_phrase)
         )
       })
-  ),
-  
-  validator = function(self){
-    c(
-      chk_input_size(self@repo_xref, "@repo_xref", 1, 1),
-      chk_input_pattern(self@repo_xref, "@repo_xref", reg_xref(TRUE)),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_size(self@call_numbers, "@call_numbers", min_val = 1)
-    )
-  }
+  )
 )
 
 extract_repo_citations <- function(rec_lines){
@@ -80,10 +85,30 @@ class_facts_recorded <- S7::new_class(
   "class_facts_recorded",
   package = "gedcomS7",
   properties = list(
-    fact_types = S7::class_character,
-    date_period = S7::class_character | class_date_period,
-    date_phrase = S7::class_character,
-    territory = S7::class_character | class_place,
+    fact_types = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 1, 1),
+                                      chk_input_pattern(value, sprintf("^(%s)(, (%s))*$", 
+                                                                       paste(val_fact_types(), collapse = "|"),
+                                                                       paste(val_fact_types(), collapse = "|")))
+                                    )
+                                  }),
+    date_period = S7::new_property(S7::class_character | class_date_period,
+                                   validator = function(value){
+                                     c(
+                                       chk_input_size(value, 0, 1),
+                                       chk_input_pattern(value, reg_date_period())
+                                     )
+                                   }),
+    date_phrase = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    territory = S7::new_property(S7::class_character | class_place,
+                                 validator = function(value){
+                                   chk_input_size(value, 0, 1, 1)
+                                 }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -95,20 +120,8 @@ class_facts_recorded <- S7::new_class(
           obj_to_ged(self@territory, "PLAC") |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@fact_types, "@fact_types", 1, 1),
-      chk_input_pattern(self@fact_types, "@fact_types", sprintf("^(%s)(, (%s))*$", 
-                                                                paste(val_fact_types(), collapse = "|"),
-                                                                paste(val_fact_types(), collapse = "|"))),
-      chk_input_size(self@date_period, "@date_period", 0, 1),
-      chk_input_pattern(self@date_period, "@date_period", reg_date_period()),
-      chk_input_size(self@date_phrase, "@date_phrase", 0, 1, 1),
-      chk_input_size(self@territory, "@territory", 0, 1),
-      chk_input_pattern(self@territory, "@territory", ".+")
-    )
-  })
+  )
+)
 
 extract_events_recorded <- function(rec_lines){
   even_lst <- find_ged_values(rec_lines, c("DATA","EVEN"), return_list = TRUE)
@@ -137,17 +150,50 @@ class_record_sour <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    facts_recorded = S7::class_list | class_facts_recorded | S7::class_character,
-    agency = S7::class_character,
-    data_note_xrefs = S7::class_character,
-    data_notes = S7::class_list | class_note | S7::class_character,
-    originator = S7::class_character,
-    full_title = S7::class_character,
-    short_title = S7::class_character,
-    publication_facts = S7::class_character,
+    facts_recorded = S7::new_property(S7::class_list | class_facts_recorded | S7::class_character,
+                                      validator = function(value){
+                                        chk_input_S7classes(value, class_facts_recorded,
+                                                            sprintf("^(%s)(, (%s))*$", 
+                                                                    paste(val_fact_types(), collapse = "|"),
+                                                                    paste(val_fact_types(), collapse = "|")))
+                                      }),
+    agency = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, 0, 1, 1)
+                              }),
+    data_note_xrefs = S7::new_property(S7::class_character,
+                                       validator = function(value){
+                                         chk_input_pattern(value, reg_xref(TRUE))
+                                       }),
+    data_notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                                  validator = function(value){
+                                    chk_input_S7classes(value, class_note, ".+")
+                                  }),
+    originator = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_size(value, 0, 1, 1)
+                                  }),
+    full_title = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_size(value, 0, 1, 1)
+                                  }),
+    short_title = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    publication_facts = S7::new_property(S7::class_character,
+                                         validator = function(value){
+                                           chk_input_size(value, 0, 1, 1)
+                                         }),
     # NOTE I've made the cardinality of this {0,M} to match source citation
-    source_text = S7::class_list | class_translation_txt | S7::class_character,
-    repo_citations = S7::class_list | class_repository_citation | S7::class_character,
+    source_text = S7::new_property(S7::class_list | class_translation_txt | S7::class_character,
+                                   validator = function(value){
+                                     chk_input_S7classes(value, class_translation_txt, ".+")
+                                   }),
+    repo_citations = S7::new_property(S7::class_list | class_repository_citation | S7::class_character,
+                                      validator = function(value){
+                                        chk_input_S7classes(value, class_repository_citation, reg_xref(TRUE))
+                                      }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -178,22 +224,8 @@ class_record_sour <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_S7classes(self@facts_recorded, "@facts_recorded", class_facts_recorded,
-                          sprintf("^(%s)(, (%s))*$", 
-                                  paste(val_fact_types(), collapse = "|"),
-                                  paste(val_fact_types(), collapse = "|"))),
-      chk_input_size(self@agency, "@agency", 0, 1, 1),
-      chk_input_pattern(self@data_note_xrefs, "@data_note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@data_notes, "@data_notes", class_note, ".+"),
-      chk_input_size(self@originator, "@originator", 0, 1, 1),
-      chk_input_size(self@full_title, "@full_title", 0, 1, 1),
-      chk_input_size(self@short_title, "@short_title", 0, 1, 1),
-      chk_input_size(self@publication_facts, "@publication_facts", 0, 1, 1),
-      chk_input_S7classes(self@source_text, "@source_text", class_translation_txt, ".+"),
-      chk_input_S7classes(self@repo_citations, "@repo_citations", class_repository_citation, reg_xref(TRUE)),
-      chk_input_size(self@citations, "@citations", 0, 0)
-    )
+    if(length(self@citations) > 0)
+      return("This record does not use @citations")
   })
 
 extract_record_sour <- function(rec_lines){

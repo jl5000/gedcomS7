@@ -12,12 +12,30 @@ class_record_repo <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    repo_name = S7::class_character,
-    address = S7::class_character | class_address,
-    phone_numbers = S7::class_character,
-    emails = S7::class_character,
-    faxes = S7::class_character,
-    web_pages = S7::class_character,
+    repo_name = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 1, 1, 1)
+                                 }),
+    address = S7::new_property(S7::class_character | class_address,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
+    phone_numbers = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       chk_input_size(value, min_val = 1)
+                                     }),
+    emails = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, min_val = 1)
+                              }),
+    faxes = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, min_val = 1)
+                             }),
+    web_pages = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, min_val = 1)
+                                 }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -40,16 +58,11 @@ class_record_repo <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@repo_name, "@repo_name", 1, 1, 1),
-      chk_input_size(self@address, "@address", 0, 1),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
-      chk_input_size(self@emails, "@emails", min_val = 1),
-      chk_input_size(self@faxes, "@faxes", min_val = 1),
-      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
-      chk_input_size(self@citations, "@citations", 0, 0),
-      chk_input_size(self@media_links, "@media_links", 0, 0)
-    )
+    if(length(self@citations) > 0)
+      return("This record does not use @citations")
+    
+    if(length(self@media_links) > 0)
+      return("This record does not use @media_links")
   }
 )
 

@@ -89,7 +89,7 @@ test_that("Function class_date_period() @ L250", {
 
 
 test_that("Function class_date_range() @ L335", {
-  expect_error(class_date_range(), regexp = "@start_date \\+ @end_date has too few elements")
+  expect_error(class_date_range(), regexp = "has too few elements")
   expect_error(class_date_range(""), regexp = "@start_date is in an invalid format")
   expect_error(class_date_range(end_date = ""), regexp = "@end_date is in an invalid format")
   expect_equal(class_date_range("2 JUL 1989")@as_val, "AFT 2 JUL 1989")

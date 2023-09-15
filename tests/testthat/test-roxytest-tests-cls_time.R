@@ -6,7 +6,7 @@ test_that("Function class_time() @ L21", {
   expect_error(class_time(), regexp = "@hour has too few elements.*@minute has too few elements")
   expect_error(class_time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
   expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
-  expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction has too many elements")
+  expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction requires @second")
   expect_error(class_time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
   expect_equal(class_time(hour = 10, minute = 59)@as_val, "10:59Z")
   expect_equal(class_time(5, 6)@as_val, "05:06Z")

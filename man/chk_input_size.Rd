@@ -6,7 +6,6 @@
 \usage{
 chk_input_size(
   input,
-  name,
   min_len = NULL,
   max_len = NULL,
   min_val = NULL,
@@ -15,8 +14,6 @@ chk_input_size(
 }
 \arguments{
 \item{input}{The input.}
-
-\item{name}{The name of the input used in any error messages.}
 
 \item{min_len}{The minimum number of elements the input should have.}
 

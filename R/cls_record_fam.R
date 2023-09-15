@@ -17,7 +17,7 @@
 #'                                        citations = c("@S34@","@S65@"))@as_ged, "json2")
 #' expect_error(class_record_fam("REF"), regexp = "@xref is in an invalid format")
 #' expect_error(class_record_fam("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
-#' expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids names has too few elements")
+#' expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
 #' expect_snapshot_value(class_record_fam("@1@",
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = setNames(letters, LETTERS)[1:5],
@@ -27,13 +27,40 @@ class_record_fam <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    facts = S7::class_list | class_fact_fam,
-    non_events = S7::class_list | class_non_event,
-    husb_xref = S7::class_character,
-    wife_xref = S7::class_character,
-    chil_xrefs = S7::class_character,
-    associations = S7::class_list | class_association,
-    subm_xrefs = S7::class_character,
+    facts = S7::new_property(S7::class_list | class_fact_fam,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_fact_fam)
+                             }),
+    non_events = S7::new_property(S7::class_list | class_non_event,
+                                  validator = function(value){
+                                    chk_input_S7classes(value, class_non_event)
+                                  }),
+    husb_xref = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 0, 1),
+                                     chk_input_pattern(value, reg_xref(TRUE))
+                                   )
+                                 }),
+    wife_xref = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 0, 1),
+                                     chk_input_pattern(value, reg_xref(TRUE))
+                                   )
+                                 }),
+    chil_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    associations = S7::new_property(S7::class_list | class_association,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_association)
+                                    }),
+    subm_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
     
     marriage_date = S7::new_property(
       S7::class_character,
@@ -75,20 +102,8 @@ class_record_fam <- S7::new_class(
           obj_to_ged(self@created) |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_S7classes(self@facts, "@facts", class_fact_fam),
-      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
-      chk_input_size(self@husb_xref, "@husb_xref", 0, 1),
-      chk_input_pattern(self@husb_xref, "@husb_xref", reg_xref(TRUE)),
-      chk_input_size(self@wife_xref, "@wife_xref", 0, 1),
-      chk_input_pattern(self@wife_xref, "@wife_xref", reg_xref(TRUE)),
-      chk_input_pattern(self@chil_xrefs, "@chil_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_pattern(self@subm_xrefs, "@subm_xrefs", reg_xref(TRUE))
-    )
-  })
+  )
+)
 
 
 extract_record_fam <- function(rec_lines){

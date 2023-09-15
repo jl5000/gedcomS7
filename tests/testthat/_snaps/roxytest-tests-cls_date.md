@@ -1,4 +1,4 @@
-# Function class_date_value() @ L339
+# Function class_date_value() @ L375
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 DATE", "1 TIME 02:24", "1 PHRASE Phrase only"]
     }
 
-# Function class_date_sort() @ L396
+# Function class_date_sort() @ L438
 
     {
       "type": "character",

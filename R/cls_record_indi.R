@@ -28,17 +28,53 @@ class_record_indi <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    pers_names = S7::class_list | class_personal_name | S7::class_character,
-    sex = S7::new_property(S7::class_character, default = "U"),
-    facts = S7::class_list,
-    non_events = S7::class_list,
-    fam_links_chil = S7::class_list | class_child_family_link | S7::class_character,
-    fam_links_spou = S7::class_list | class_spouse_family_link | S7::class_character,
-    subm_xrefs = S7::class_character,
-    associations = S7::class_list,
-    alia_xrefs = S7::class_character,
-    anci_xrefs = S7::class_character,
-    desi_xrefs = S7::class_character,
+    pers_names = S7::new_property(S7::class_list | class_personal_name | S7::class_character,
+                                  validator = function(value){
+                                    chk_input_S7classes(value, class_personal_name, ".+")
+                                  }),
+    sex = S7::new_property(S7::class_character, default = "U",
+                           validator = function(value){
+                             c(
+                               chk_input_size(value, 0, 1),
+                               chk_input_choice(value, val_sexes())
+                             )
+                           }),
+    facts = S7::new_property(S7::class_list,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_fact_indi)
+                             }),
+    non_events = S7::new_property(S7::class_list,
+                                  validator = function(value){
+                                    chk_input_S7classes(value, class_non_event)
+                                  }),
+    fam_links_chil = S7::new_property(S7::class_list | class_child_family_link | S7::class_character,
+                                      validator = function(value){
+                                        chk_input_S7classes(value, class_child_family_link, reg_xref(TRUE))
+                                      }),
+    fam_links_spou = S7::new_property(S7::class_list | class_spouse_family_link | S7::class_character,
+                                      validator = function(value){
+                                        chk_input_S7classes(value, class_spouse_family_link, reg_xref(TRUE))
+                                      }),
+    subm_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    associations = S7::new_property(S7::class_list,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_association)
+                                    }),
+    alia_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    anci_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    desi_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
     
     primary_name = S7::new_property(
       S7::class_character,
@@ -140,23 +176,7 @@ class_record_indi <- S7::new_class(
           obj_to_ged(self@created) |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_S7classes(self@pers_names, "@pers_names", class_personal_name, ".+"),
-      chk_input_size(self@sex, "@sex", 0, 1),
-      chk_input_choice(self@sex, "@sex", val_sexes()),
-      chk_input_S7classes(self@facts, "@facts", class_fact_indi),
-      chk_input_S7classes(self@non_events, "@non_events", class_non_event),
-      chk_input_S7classes(self@fam_links_chil, "@fam_links_chil", class_child_family_link, reg_xref(TRUE)),
-      chk_input_S7classes(self@fam_links_spou, "@fam_links_spou", class_spouse_family_link, reg_xref(TRUE)),
-      chk_input_pattern(self@subm_xrefs, "@subm_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@associations, "@associations", class_association),
-      chk_input_pattern(self@alia_xrefs, "@alia_xrefs", reg_xref(TRUE)),
-      chk_input_pattern(self@anci_xrefs, "@anci_xrefs", reg_xref(TRUE)),
-      chk_input_pattern(self@desi_xrefs, "@desi_xrefs", reg_xref(TRUE))
-    )
-  }
+  )
 )
 
 

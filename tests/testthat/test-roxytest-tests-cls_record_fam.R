@@ -14,7 +14,7 @@ test_that("Function class_record_fam() @ L25", {
                                          citations = c("@S34@","@S65@"))@as_ged, "json2")
   expect_error(class_record_fam("REF"), regexp = "@xref is in an invalid format")
   expect_error(class_record_fam("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
-  expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids names has too few elements")
+  expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
   expect_snapshot_value(class_record_fam("@1@",
                                      unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
                                      ext_ids = setNames(letters, LETTERS)[1:5],

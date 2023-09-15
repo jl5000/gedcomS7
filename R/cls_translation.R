@@ -10,15 +10,30 @@ NULL
 #' @tests
 #' expect_error(class_translation_txt(), regexp = "@text has too few elements")
 #' expect_error(class_translation_txt(letters[1:2]), regexp = "@text has too many elements")
-#' expect_error(class_translation_txt("test"), regexp = "A text language or media_type must be defined")
+#' expect_error(class_translation_txt("test"), regexp = "A @language or @media_type must be defined")
 #' expect_snapshot_value(class_translation_txt("test", language = "en")@as_ged, "json2")
 class_translation_txt <- S7::new_class(
   "class_translation_txt",
   package = "gedcomS7",
   properties = list(
-    text = S7::class_character,
-    language = S7::class_character,
-    media_type = S7::class_character,
+    text = S7::new_property(S7::class_character,
+                            validator = function(value){
+                              chk_input_size(value, 1, 1)
+                            }),
+    language = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1, 1)
+                                    #TODO: language option
+                                  )
+                                }),
+    media_type = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1, 1)
+                                      #TODO: media type pattern
+                                    )
+                                  }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -31,18 +46,10 @@ class_translation_txt <- S7::new_class(
       })
   ),
   validator = function(self){
-    input_err <- NULL
     if(length(self@language) + length(self@media_type) == 0)
-      input_err <- "A text language or media_type must be defined."
-    c(
-      chk_input_size(self@text, "@text", 1, 1),
-      chk_input_size(self@language, "@language", 0, 1, 1),
-      #TODO: language option
-      chk_input_size(self@media_type, "@media_type", 0, 1, 1),
-      #TODO: media type pattern
-      input_err
-    )
-  })
+      return("A @language or @media_type must be defined.")
+  }
+)
 
 
 extract_translations <- function(lines, location = NULL){

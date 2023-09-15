@@ -67,11 +67,11 @@ class_fact_fam <- S7::new_class(
 #' @export
 #' @tests
 #' expect_error(class_event_fam("marr", fact_val = "Y"), 
-#'              regexp = "@fact_type has an invalid value")
+#'              regexp = "This is not a valid @fact_type for this event")
 #' expect_error(class_event_fam("MARR", fact_val = "Yes"), 
-#'              regexp = "@fact_val has an invalid value")
+#'              regexp = "Only a @fact_val of 'Y' is permitted for this event")
 #' expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
-#'              regexp = "@fact_val has too few elements")       
+#'              regexp = "A @fact_val is required for this fact")       
 #' expect_error(class_event_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
 #' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@as_ged, "json2")
 #' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@as_ged, "json2")
@@ -94,10 +94,10 @@ class_event_fam <- S7::new_class(
 #' @export
 #' @tests
 #' expect_error(class_attr_fam("residence", fact_val = "Earth"), 
-#'              regexp = "@fact_type has an invalid value")
+#'              regexp = "This is not a valid @fact_type for this attribute")
 #' expect_error(class_attr_fam("RESI", fact_val = ""), 
 #'              regexp = "@fact_val has too few characters")   
-#' expect_error(class_attr_fam("FACT"), regexp = "@fact_desc has too few elements")   
+#' expect_error(class_attr_fam("FACT"), regexp = "A @fact_val is required for this fact")   
 
 class_attr_fam <- S7::new_class(
   "class_attr_fam",

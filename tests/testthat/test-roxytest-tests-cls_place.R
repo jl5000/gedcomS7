@@ -8,7 +8,7 @@ test_that("Function class_place() @ L27", {
   expect_snapshot_value(class_place("here")@as_ged, "json2")
   expect_error(class_place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
   expect_snapshot_value(class_place("here", lat_long = "N12 E56")@as_ged, "json2")
-  expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations names has too few elements")
+  expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
   expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@as_ged, "json2")
   expect_snapshot_value(class_place("here", 
                                     place_translations = c(nl = "hier", da = "her"),

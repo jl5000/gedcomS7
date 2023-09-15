@@ -44,12 +44,35 @@ class_note <- S7::new_class(
   "class_note",
   package = "gedcomS7",
   properties = list(
-    text = S7::class_character,
-    language = S7::class_character,
-    media_type = S7::class_character,
-    translations = S7::class_list | class_translation_txt,
+    text = S7::new_property(S7::class_character,
+                            validator = function(value){
+                              chk_input_size(value, 1, 1, 1)
+                            }),
+    language = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 0, 1)
+                                    #TODO: language option
+                                  )
+                                }),
+    media_type = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1)
+                                      #TODO: media type pattern
+                                    )
+                                  }),
+    translations = S7::new_property(S7::class_list | class_translation_txt,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_translation_txt)
+                                    }),
     # Using S3 because of recursion
-    citations = S7::class_list | S7::new_S3_class("gedcomS7::class_citation") | S7::class_character,
+    citations = S7::new_property(S7::class_list | 
+                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                 }),
 
     
     as_ged = S7::new_property(
@@ -63,18 +86,7 @@ class_note <- S7::new_class(
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@text, "@text", 1, 1, 1),
-      chk_input_size(self@language, "@language", 0, 1),
-      #TODO: language option
-      chk_input_size(self@media_type, "@media_type", 0, 1),
-      #TODO: media type pattern
-      chk_input_S7classes(self@translations, "@translations", class_translation_txt),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
-    )
-  }
+  )
 )
 
 # Need location when top level has no xref

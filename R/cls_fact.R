@@ -20,7 +20,7 @@ class_fact <- S7::new_class(
                                  }),
     fact_val = S7::new_property(S7::class_character,
                                 validator = function(value){
-                                  chk_input_size(value, 0, 1)
+                                  chk_input_size(value, 0, 1, 1)
                                 }),
     fact_desc = S7::new_property(S7::class_character,
                                  validator = function(value){

@@ -2,17 +2,17 @@
 
 # File R/cls_fact_indi.R: @tests
 
-test_that("Function class_event_indi() @ L76", {
+test_that("Function class_event_indi() @ L78", {
   expect_error(class_event_indi("birth", fact_val = "Y"), 
-               regexp = "@fact_type has an invalid value")
+               regexp = "This is not a valid @fact_type for this event")
   expect_error(class_event_indi("BIRT", fact_val = "Yes"), 
-               regexp = "@fact_val has an invalid value")
+               regexp = "Only a @fact_val of 'Y' is permitted for this event")
   expect_error(class_event_indi("DEAT", fact_val = "Y", fam_xref = "@12@"), 
-               regexp = "@fam_xref has too many elements")
+               regexp = "Only adoption, birth, and christening events can have a @fam_xref")
   expect_error(class_event_indi("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
-               regexp = "@adop_parent has too many elements")
+               regexp = "Only adoption events can have a @adop_parent or @adop_parent_phrase")
   expect_error(class_event_indi("EVEN", fact_desc = "Fact desc"), 
-               regexp = "@fact_val has too few elements")
+               regexp = "A @fact_val is required for this fact")
   expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
                regexp = "@adop_parent has an invalid value")
   expect_error(class_event_indi("ADOP", fact_val = "Y", adop_parent = "BOTH"), 
@@ -34,13 +34,13 @@ test_that("Function class_event_indi() @ L76", {
 })
 
 
-test_that("Function class_attr_indi() @ L163", {
+test_that("Function class_attr_indi() @ L165", {
   expect_error(class_attr_indi("descr", fact_val = "Tall"), 
-               regexp = "@fact_type has an invalid value")
+               regexp = "This is not a valid @fact_type for this attribute")
   expect_error(class_attr_indi("DSCR"), 
-               regexp = "@fact_val has too few elements")
+               regexp = "A @fact_val is required for this fact")
   expect_error(class_attr_indi("NCHI", fact_val = "2.4"), 
-               regexp = "@fact_val is in an invalid format")
+               regexp = "Number of children/marriages must be a whole number")
   expect_snapshot_value(class_attr_indi("FACT", "Diabetes",
                                    fact_desc = "Medical condition",
                                    date = "26 JUN 2001",

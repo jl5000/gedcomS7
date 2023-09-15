@@ -4,12 +4,10 @@
 \alias{chk_input_S7classes}
 \title{Validate a list to ensure it contains elements of the correct S7 class}
 \usage{
-chk_input_S7classes(input, name, target_class, backup_pattern = NULL)
+chk_input_S7classes(input, target_class, backup_pattern = NULL)
 }
 \arguments{
 \item{input}{The input.}
-
-\item{name}{The name of the input used in any error messages.}
 
 \item{target_class}{The S7 class that the elements of the list should contain.}
 

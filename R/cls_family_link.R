@@ -54,7 +54,7 @@ class_spouse_family_link <- S7::new_class(
 #' expect_error(class_child_family_link("@F123@", pedigree = "father"), 
 #'                                      regexp = "@pedigree has an invalid value")
 #' expect_error(class_child_family_link("@F123@", pedigree = "OTHER"), 
-#'                                      regexp = "@pedigree_phrase has too few elements")
+#'                                      regexp = "An OTHER pedigree requires explanation in @pedigree_phrase")
 #' expect_error(class_child_family_link("@F123@", confidence = "LOW"), 
 #'                                      regexp = "@confidence has an invalid value")  
 #' expect_error(class_child_family_link("@F123@", confidence_phrase = "Don't know"), 

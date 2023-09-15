@@ -4,12 +4,10 @@
 \alias{chk_input_pattern}
 \title{Validate the regex pattern(s) of a character vector}
 \usage{
-chk_input_pattern(input, name, pattern)
+chk_input_pattern(input, pattern)
 }
 \arguments{
 \item{input}{The input.}
-
-\item{name}{The name of the input used in any error messages.}
 
 \item{pattern}{The regex pattern each element must match.}
 }

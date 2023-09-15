@@ -18,12 +18,30 @@ class_name_pieces <- S7::new_class(
   "class_name_pieces",
   package = "gedcomS7",
   properties = list(
-    prefix = S7::class_character,
-    given = S7::class_character,
-    nickname = S7::class_character,
-    surname_prefix = S7::class_character,
-    surname = S7::class_character,
-    suffix = S7::class_character,
+    prefix = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, min_val = 1)
+                              }),
+    given = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, min_val = 1)
+                             }),
+    nickname = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  chk_input_size(value, min_val = 1)
+                                }),
+    surname_prefix = S7::new_property(S7::class_character,
+                                      validator = function(value){
+                                        chk_input_size(value, min_val = 1)
+                                      }),
+    surname = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 chk_input_size(value, min_val = 1)
+                               }),
+    suffix = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                chk_input_size(value, min_val = 1)
+                              }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -37,18 +55,7 @@ class_name_pieces <- S7::new_class(
           sprintf("0 NSFX %s", self@suffix)
         )
       })
-  ),
-  validator = function(self) {
-    c(
-      chk_input_size(self@prefix, "@prefix", min_val = 1),
-      chk_input_size(self@given, "@given", min_val = 1),
-      chk_input_size(self@nickname,"@nickname", min_val = 1),
-      chk_input_size(self@surname_prefix, "@surname_prefix", min_val = 1),
-      chk_input_size(self@surname, "@surname", min_val = 1),
-      chk_input_size(self@suffix, "@suffix", min_val = 1)
-    )
-  }
-  
+  )
 )
 
 
@@ -68,9 +75,21 @@ class_personal_name_tran <- S7::new_class(
   "class_personal_name_tran",
   package = "gedcomS7",
   properties = list(
-    pers_name = S7::class_character,
-    language = S7::class_character,
-    name_pieces = NULL | class_name_pieces,
+    pers_name = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 1, 1, 1)
+                                 }),
+    language = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  c(
+                                    chk_input_size(value, 1, 1)
+                                    #TODO: language option
+                                  )
+                                }),
+    name_pieces = S7::new_property(NULL | class_name_pieces,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1)
+                                   }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -81,15 +100,8 @@ class_personal_name_tran <- S7::new_class(
           obj_to_ged(self@name_pieces) |> increase_level(by = 1)
         )
       })
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@pers_name, "@pers_name", 1, 1, 1),
-      chk_input_size(self@language, "@language", 1, 1),
-      #TODO: language option
-      chk_input_size(self@name_pieces, "@name_pieces", 0, 1)
-    )
-  })
+  )
+)
 
 
 
@@ -117,14 +129,41 @@ class_personal_name <- S7::new_class(
   "class_personal_name",
   package = "gedcomS7",
   properties = list(
-    pers_name = S7::class_character,
-    name_type = S7::class_character,
-    type_phrase = S7::class_character,
-    name_pieces = NULL | class_name_pieces,
-    name_translations = S7::class_list | class_personal_name_tran,
-    notes = S7::class_list | class_note | S7::class_character,
-    note_xrefs = S7::class_character,
-    citations = S7::class_list | class_citation | S7::class_character,
+    pers_name = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 1, 1, 1)
+                                 }),
+    name_type = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 0, 1),
+                                     chk_input_choice(value, val_name_types())
+                                   )
+                                 }),
+    type_phrase = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    name_pieces = S7::new_property(NULL | class_name_pieces,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1)
+                                   }),
+    name_translations = S7::new_property(S7::class_list | class_personal_name_tran,
+                                         validator = function(value){
+                                           chk_input_S7classes(value, class_personal_name_tran)
+                                         }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                 }),
     
     as_val = S7::new_property(S7::class_character, 
                               getter = function(self) self@pers_name),
@@ -146,18 +185,7 @@ class_personal_name <- S7::new_class(
   ),
   
   validator = function(self){
-    c(
-      chk_input_size(self@pers_name, "@pers_name", 1, 1, 1),
-      chk_input_size(self@name_type, "@name_type", 0, 1),
-      chk_input_choice(self@name_type, "@name_type", val_name_types()),
-      chk_input_size(self@type_phrase, "@type_phrase", 0, 1, 1),
-      chk_input_parents(self@type_phrase, "@type_phrase", self@name_type, "@name_type"),
-      chk_input_size(self@name_pieces, "@name_pieces", 0, 1),
-      chk_input_S7classes(self@name_translations, "@name_translations", class_personal_name_tran),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE)),
-      chk_input_S7classes(self@citations, "@citations", class_citation, reg_xref(TRUE))
-    )
+    chk_input_parents(self@type_phrase, "@type_phrase", self@name_type, "@name_type")
   }
 )
 

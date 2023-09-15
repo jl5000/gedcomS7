@@ -4,12 +4,10 @@
 \alias{chk_input_choice}
 \title{Validate an input against a set of valid values.}
 \usage{
-chk_input_choice(input, name, choices)
+chk_input_choice(input, choices)
 }
 \arguments{
 \item{input}{The input.}
-
-\item{name}{The name of the input used in any error messages.}
 
 \item{choices}{A vector of valid values.}
 }

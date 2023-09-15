@@ -10,7 +10,7 @@ NULL
 #' expect_error(class_time(), regexp = "@hour has too few elements.*@minute has too few elements")
 #' expect_error(class_time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
 #' expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
-#' expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction has too many elements")
+#' expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction requires @second")
 #' expect_error(class_time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
 #' expect_equal(class_time(hour = 10, minute = 59)@as_val, "10:59Z")
 #' expect_equal(class_time(5, 6)@as_val, "05:06Z")
@@ -22,11 +22,35 @@ class_time <- S7::new_class(
   "class_time",
   package = "gedcomS7",
   properties = list(
-    hour = S7::class_numeric,
-    minute = S7::class_numeric,
-    second = S7::class_numeric,
-    fraction = S7::class_numeric,
-    utc = S7::new_property(S7::class_logical, default = TRUE),
+    hour = S7::new_property(S7::class_numeric,
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 1, 1, 0, 23),
+                                chk_whole_number(value)
+                              )
+                            }),
+    minute = S7::new_property(S7::class_numeric,
+                              validator = function(value){
+                                c(
+                                  chk_input_size(value, 1, 1, 0, 59),
+                                  chk_whole_number(value)
+                                )
+                              }),
+    second = S7::new_property(S7::class_numeric,
+                              validator = function(value){
+                                c(
+                                  chk_input_size(value, 0, 1, 0, 59),
+                                  chk_whole_number(value)
+                                )
+                              }),
+    fraction = S7::new_property(S7::class_numeric,
+                                validator = function(value){
+                                  chk_whole_number(value)
+                                }),
+    utc = S7::new_property(S7::class_logical, default = TRUE,
+                           validator = function(value){
+                             chk_input_size(value, 1, 1)
+                           }),
     
     as_val = S7::new_property(
       S7::class_character,
@@ -43,15 +67,6 @@ class_time <- S7::new_class(
     )
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@hour, "@hour", 1, 1, 0, 23),
-      chk_whole_number(self@hour, "@hour"),
-      chk_input_size(self@minute, "@minute", 1, 1, 0, 59),
-      chk_whole_number(self@minute, "@minute"),
-      chk_input_size(self@second, "@second", 0, 1, 0, 59),
-      chk_whole_number(self@second, "@second"),
-      chk_input_size(self@fraction, "@fraction", 0, length(self@second), 1),
-      chk_whole_number(self@fraction, "@fraction"),
-      chk_input_size(self@utc, "@utc", 1, 1)
-    )
+    if(length(self@fraction) == 1 && length(self@second) == 0)
+      return("@fraction requires @second")
   })

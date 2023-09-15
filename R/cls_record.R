@@ -13,65 +13,65 @@ class_record <- S7::new_class(
     xref = S7::new_property(S7::class_character, default = "@ORPHAN@",
                             validator = function(value){
                               c(
-                                chk_input_size(value, "@xref", 1, 1),
-                                chk_input_pattern(value, "@xref", reg_xref(TRUE))
+                                chk_input_size(value, 1, 1),
+                                chk_input_pattern(value, reg_xref(TRUE))
                               )
                             }),
     confidential = S7::new_property(S7::class_logical, default = FALSE,
                                     validator = function(value){
-                                      chk_input_size(value, "@confidential", 1, 1)
+                                      chk_input_size(value, 1, 1)
                                     }),
     locked = S7::new_property(S7::class_logical, default = FALSE,
                               validator = function(value){
-                                chk_input_size(value, "@locked", 1, 1)
+                                chk_input_size(value, 1, 1)
                               }),
     private = S7::new_property(S7::class_logical, default = FALSE,
                                validator = function(value){
-                                 chk_input_size(value, "@private", 1, 1)
+                                 chk_input_size(value, 1, 1)
                                }),
     user_ids = S7::new_property(S7::class_character, # potentially named
                                 validator = function(value){
-                                  chk_input_size(value, "@user_ids", min_val = 1)
+                                  chk_input_size(value, min_val = 1)
                                 }), 
     unique_ids = S7::new_property(S7::class_character, # not named
                                   validator = function(value){
-                                    chk_input_pattern(value, "@unique_ids", reg_uuid(TRUE))
+                                    chk_input_pattern(value, reg_uuid(TRUE))
                                   }), 
     ext_ids = S7::new_property(S7::class_character, # definitely named
                                validator = function(value){
                                  c(
-                                   chk_input_size(value, "@ext_ids", min_val = 1),
-                                   chk_input_size(names(value), "@ext_ids names", length(value), length(value))
+                                   chk_input_size(value, min_val = 1),
+                                   chk_input_size(names(value), length(value), length(value))
                                  )
                                }), 
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
-                                    chk_input_pattern(value, "@note_xrefs", reg_xref(TRUE))
+                                    chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | class_note | S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, "@notes", class_note, ".+")
+                               chk_input_S7classes(value, class_note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, "@citations", class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),
     media_links = S7::new_property(S7::class_list | class_media_link | S7::class_character,
                                    validator = function(value){
-                                     chk_input_S7classes(value, "@media_links", class_media_link, reg_xref(TRUE))
+                                     chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
                                    }),
     created = S7::new_property(NULL | class_creation_date,
                                validator = function(value){
                                  c(
-                                   chk_input_size(value, "@created", 0, 1),
-                                   chk_input_pattern(value, "@created", reg_date_exact(TRUE))
+                                   chk_input_size(value, 0, 1),
+                                   chk_input_pattern(value, reg_date_exact(TRUE))
                                  )
                                }),
     updated = S7::new_property(NULL | class_change_date,
                                validator = function(value){
                                  c(
-                                   chk_input_size(value, "@updated", 0, 1),
-                                   chk_input_pattern(value, "@updated", reg_date_exact(TRUE))
+                                   chk_input_size(value, 0, 1),
+                                   chk_input_pattern(value, reg_date_exact(TRUE))
                                  )
                                }),
     

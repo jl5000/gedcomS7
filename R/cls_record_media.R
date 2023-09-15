@@ -26,12 +26,39 @@ class_media_file <- S7::new_class(
   "class_media_file",
   package = "gedcomS7",
   properties = list(
-    location = S7::class_character,
-    title = S7::class_character,
-    media_type = S7::class_character,
-    medium = S7::class_character,
-    medium_phrase = S7::class_character,
-    media_alt = S7::class_character,
+    location = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  chk_input_size(value, 1, 1, 1)
+                                }),
+    title = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    media_type = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 1, 1)
+                                      #chk_input_choice(value, val_multimedia_formats()), TODO
+                                    )
+                                  }),
+    medium = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                c(
+                                  chk_input_size(value, 0, 1),
+                                  chk_input_choice(value, val_medium_types())
+                                )
+                              }),
+    medium_phrase = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       chk_input_size(value, 0, 1, 1)
+                                     }),
+    media_alt = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, min_val = 1)
+                                     #chk_input_choice(names(value), val_multimedia_formats())
+                                   )
+                                 }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -47,18 +74,7 @@ class_media_file <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@location, "@location", 1, 1, 1),
-      chk_input_size(self@media_type, "@media_type", 1, 1),
-      #chk_input_choice(self@media_type, "@media_type", val_multimedia_formats()), TODO
-      chk_input_size(self@medium, "@medium", 0, 1),
-      chk_input_choice(self@medium, "@medium", val_medium_types()),
-      chk_input_size(self@medium_phrase, "@medium_phrase", 0, 1, 1),
-      chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium"),
-      chk_input_size(self@title, "@title", 0, 1, 1),
-      chk_input_size(self@media_alt, "@media_alt", min_val = 1)
-      #chk_input_choice(names(self@media_alt), "@media_alt types", val_multimedia_formats())
-    )
+    chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
   }
 )
 
@@ -89,7 +105,13 @@ class_record_media <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    files = S7::class_list | class_media_file,
+    files = S7::new_property(S7::class_list | class_media_file,
+                             validator = function(value){
+                               c(
+                                 chk_input_size(value, 1),
+                                 chk_input_S7classes(value, class_media_file)
+                               )
+                             }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -108,11 +130,8 @@ class_record_media <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@files, "@files", 1),
-      chk_input_S7classes(self@files, "@files", class_media_file),
-      chk_input_size(self@media_links, "@media_links", 0, 0)
-    )
+    if(length(self@media_links) > 0)
+      return("This record does not use @media_links")
   }
 )
 

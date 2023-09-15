@@ -26,12 +26,45 @@ class_media_link <- S7::new_class(
   "class_media_link",
   package = "gedcomS7",
   properties = list(
-    media_xref = S7::new_property(S7::class_character, default = "@VOID@"),
-    title = S7::class_character,
-    top = S7::class_numeric,
-    left = S7::class_numeric,
-    height = S7::class_numeric,
-    width = S7::class_numeric,
+    media_xref = S7::new_property(S7::class_character, default = "@VOID@",
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 1, 1),
+                                      chk_input_pattern(value, reg_xref(TRUE))
+                                    )
+                                  }),
+    title = S7::new_property(S7::class_character,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    top = S7::new_property(S7::class_numeric,
+                           validator = function(value){
+                             c(
+                               chk_input_size(value, 0, 1, 0),
+                               chk_whole_number(value)
+                             )
+                           }),
+    left = S7::new_property(S7::class_numeric,
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 0, 1, 0),
+                                chk_whole_number(value)
+                              )
+                            }),
+    height = S7::new_property(S7::class_numeric,
+                              validator = function(value){
+                                c(
+                                  chk_input_size(value, 0, 1, 1),
+                                  chk_whole_number(value)
+                                )
+                              }),
+    width = S7::new_property(S7::class_numeric,
+                             validator = function(value){
+                               c(
+                                 chk_input_size(value, 0, 1, 1),
+                                 chk_whole_number(value)
+                               )
+                             }),
     
     as_ged = S7::new_property(
       S7::class_character,
@@ -47,22 +80,7 @@ class_media_link <- S7::new_class(
           sprintf("1 TITL %s", self@title)
         )
       })
-  ),
-  validator = function(self) {
-    c(
-      chk_input_size(self@media_xref, "@media_xref", 1, 1),
-      chk_input_pattern(self@media_xref, "@media_xref", reg_xref(TRUE)),
-      chk_input_size(self@title, "@title", 0, 1, 1),
-      chk_input_size(self@top, "@top", 0, 1, 0),
-      chk_whole_number(self@top, "@top"),
-      chk_input_size(self@left, "@left", 0, 1, 0),
-      chk_whole_number(self@left, "@left"),
-      chk_input_size(self@height, "@height", 0, 1, 1),
-      chk_whole_number(self@height, "@height"),
-      chk_input_size(self@width, "@width", 0, 1, 1),
-      chk_whole_number(self@width, "@width")
-    )
-  }
+  )
 )
 
 extract_media_links <- function(lines, location = NULL){

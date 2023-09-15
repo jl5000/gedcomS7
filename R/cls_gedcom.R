@@ -12,21 +12,24 @@ class_gedcom_source <- S7::new_class(
   properties = list(
     product_id = S7::new_property(S7::class_character,
                                   validator = function(value){
-                                    
+                                    chk_input_size(value, 1, 1, 1)
                                   }),
     product_name = S7::new_property(S7::class_character,
                                     validator = function(value){
-                                      
+                                      chk_input_size(value, 0, 1, 1)
                                     }),
     product_version = S7::new_property(S7::class_character,
                                        validator = function(value){
-                                         
+                                         chk_input_size(value, 0, 1, 1)
                                        }),
     business_name = S7::new_property(S7::class_character,
                                      validator = function(value){
-                                       
+                                       chk_input_size(value, 0, 1, 1)
                                      }),
-    business_address = S7::class_character | class_address,
+    business_address = S7::new_property(S7::class_character | class_address,
+                                        validator = function(value){
+                                          chk_input_size(value, 0, 1, 1)
+                                        }),
     phone_numbers = S7::new_property(S7::class_character,
                                      validator = function(value){
                                        chk_input_size(value, min_val = 1)
@@ -45,13 +48,25 @@ class_gedcom_source <- S7::new_class(
                                  }),
     data_name = S7::new_property(S7::class_character,
                                  validator = function(value){
-                                   
+                                   chk_input_size(value, 0, 1, 1)
                                  }),
-    data_pubdate = S7::class_character | class_date_exact,
-    data_pubtime = S7::class_character | class_time,
+    data_pubdate = S7::new_property(S7::class_character | class_date_exact,
+                                    validator = function(value){
+                                      c(
+                                        chk_input_size(value, 0, 1),
+                                        chk_input_pattern(value, reg_date_exact())
+                                      )
+                                    }),
+    data_pubtime = S7::new_property(S7::class_character | class_time,
+                                    validator = function(value){
+                                      c(
+                                        chk_input_size(value, 0, 1),
+                                        chk_input_pattern(value, reg_time())
+                                      )
+                                    }),
     data_copyright = S7::new_property(S7::class_character,
                                       validator = function(value){
-                                        
+                                        chk_input_size(value, 0, 1, 1)
                                       }),
     
     as_ged = S7::new_property(
@@ -76,32 +91,17 @@ class_gedcom_source <- S7::new_class(
     )),
   validator = function(self){
     c(
-      chk_input_size(self@product_id, "@product_id", 1, 1, 1),
-      chk_input_size(self@product_name, "@product_name", 0, 1, 1),
       chk_input_parents(self@product_name, "@product_name", self@product_id, "@product_id"),
-      chk_input_size(self@product_version, "@product_version", 0, 1, 1),
       chk_input_parents(self@product_version, "@product_version", self@product_id, "@product_id"),
-      chk_input_size(self@business_name, "@business_name", 0, 1, 1),
       chk_input_parents(self@business_name, "@business_name", self@product_id, "@product_id"),
-      chk_input_size(self@business_address, "@business_address", 0, 1, 1),
       chk_input_parents(self@business_address, "@business_address", self@business_name, "@business_name"),
-      chk_input_size(self@phone_numbers, "@phone_numbers", min_val = 1),
       chk_input_parents(self@phone_numbers, "@phone_numbers", self@business_name, "@business_name"),
-      chk_input_size(self@emails, "@emails", min_val = 1),
       chk_input_parents(self@emails, "@emails", self@business_name, "@business_name"),
-      chk_input_size(self@faxes, "@faxes", min_val = 1),
       chk_input_parents(self@faxes, "@faxes", self@business_name, "@business_name"),
-      chk_input_size(self@web_pages, "@web_pages", min_val = 1),
       chk_input_parents(self@web_pages, "@web_pages", self@business_name, "@business_name"),
-      chk_input_size(self@data_name, "@data_name", 0, 1, 1),
       chk_input_parents(self@data_name, "@data_name", self@product_id, "@product_id"),
-      chk_input_size(self@data_pubdate, "@data_pubdate", 0, 1),
-      chk_input_pattern(self@data_pubdate, "@data_pubdate", reg_date_exact()),
       chk_input_parents(self@data_pubdate, "@data_pubdate", self@data_name, "@data_name"),
-      chk_input_size(self@data_pubtime, "@data_pubtime", 0, 1),
-      chk_input_pattern(self@data_pubtime, "@data_pubtime", reg_time()),
       chk_input_parents(self@data_pubtime, "@data_pubtime", self@data_pubdate, "@data_pubdate"),
-      chk_input_size(self@data_copyright, "@data_copyright", 0, 1, 1),
       chk_input_parents(self@data_copyright, "@data_copyright", self@data_name, "@data_name")
     )
   }
@@ -116,18 +116,69 @@ class_gedcom_header <- S7::new_class(
   "class_gedcom_header",
   abstract = TRUE,
   properties = list(
-    gedcom_version = S7::class_character,
-    ext_tags = S7::class_character,
-    source = NULL | class_gedcom_source,
-    destination = S7::class_character,
-    creation_date = S7::class_character | class_date_exact,
-    creation_time = S7::class_character | class_time,
-    subm_xref = S7::class_character,
-    gedcom_copyright = S7::class_character,
-    default_language = S7::class_character,
-    default_place_form = S7::class_character,
-    notes = S7::class_list | class_note | S7::class_character,
-    note_xrefs = S7::class_character,
+    gedcom_version = S7::new_property(S7::class_character,
+                                      validator = function(value){
+                                        c(
+                                          chk_input_size(value, 1, 1),
+                                          chk_input_pattern(value, "^\\d+\\.\\d+(\\.\\d+)?$")
+                                        )
+                                      }),
+    ext_tags = S7::new_property(S7::class_character,
+                                validator = function(value){
+                                  #chk_input_size(value, 0, 0), # extension tags not supported
+                                }),
+    source = S7::new_property(NULL | class_gedcom_source,
+                              validator = function(value){
+                                chk_input_size(value, 0, 1)
+                              }),
+    destination = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    creation_date = S7::new_property(S7::class_character | class_date_exact,
+                                     validator = function(value){
+                                       c(
+                                         chk_input_size(value, 0, 1),
+                                         chk_input_pattern(value, reg_date_exact())
+                                       )
+                                     }),
+    creation_time = S7::new_property(S7::class_character | class_time,
+                                     validator = function(value){
+                                       c(
+                                         chk_input_size(value, 0, 1),
+                                         chk_input_pattern(value, reg_time())
+                                       )
+                                     }),
+    subm_xref = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   c(
+                                     chk_input_size(value, 0, 1),
+                                     chk_input_pattern(value, reg_xref(TRUE))
+                                   )
+                                 }),
+    gedcom_copyright = S7::new_property(S7::class_character,
+                                        validator = function(value){
+                                          chk_input_size(value, 0, 1, 1)
+                                        }),
+    default_language = S7::new_property(S7::class_character,
+                                        validator = function(value){
+                                          c(
+                                            chk_input_size(value, 0, 1, 1)
+                                            # chk_input_choice(value, val_languages()),#TODO
+                                          )
+                                        }),
+    default_place_form = S7::new_property(S7::class_character,
+                                          validator = function(value){
+                                            chk_input_size(value, 0, 1, 1)
+                                          }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
     
     hd_as_ged = S7::new_property(
       S7::class_character, 
@@ -153,26 +204,7 @@ class_gedcom_header <- S7::new_class(
       })
   ),
   validator = function(self){
-    c(
-      chk_input_size(self@gedcom_version, "@gedcom_version", 1, 1),
-      chk_input_pattern(self@gedcom_version,  "@gedcom_version", "^\\d+\\.\\d+(\\.\\d+)?$"),
-      #chk_input_size(self@ext_tags, "@ext_tags", 0, 0), # extension tags not supported
-      chk_input_size(self@source, "@source", 0, 1),
-      chk_input_size(self@destination, "@destination", 0, 1, 1),
-      chk_input_size(self@creation_date, "@creation_date", 0, 1),
-      chk_input_pattern(self@creation_date, "@creation_date", reg_date_exact()),
-      chk_input_size(self@creation_time, "@creation_time", 0, 1),
-      chk_input_pattern(self@creation_time, "@creation_time", reg_time()),
-      chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date"),
-      chk_input_size(self@subm_xref, "@subm_xref", 0, 1),
-      chk_input_pattern(self@subm_xref, "@subm_xref", reg_xref(TRUE)),
-      chk_input_size(self@gedcom_copyright, "@gedcom_copyright", 0, 1, 1),
-      chk_input_size(self@default_language, "@default_language", 0, 1, 1),
-      #    chk_input_choice(self@default_language, "@default_language", val_languages()),#TODO
-      chk_input_size(self@default_place_form, "@default_place_form", 0, 1, 1),
-      chk_input_S7classes(self@notes, "@notes", class_note, ".+"),
-      chk_input_pattern(self@note_xrefs, "@note_xrefs", reg_xref(TRUE))
-    )
+    chk_input_parents(self@creation_time, "@creation_time", self@creation_date, "@creation_date")
   }
 )
 
@@ -188,8 +220,14 @@ class_gedcomS7 <- S7::new_class(
   parent = class_gedcom_header,
   package = "gedcomS7",
   properties = list(
-    update_change_dates = S7::new_property(S7::class_logical, default = FALSE),
-    add_creation_dates = S7::new_property(S7::class_logical, default = FALSE),
+    update_change_dates = S7::new_property(S7::class_logical, default = FALSE,
+                                           validator = function(value){
+                                             chk_input_size(value, 1, 1)
+                                           }),
+    add_creation_dates = S7::new_property(S7::class_logical, default = FALSE,
+                                          validator = function(value){
+                                            chk_input_size(value, 1, 1)
+                                          }),
     
     # Records
     subm = S7::class_list,
@@ -203,7 +241,14 @@ class_gedcomS7 <- S7::new_class(
     # This serves as both a record of prefixes and order of records
     xref_prefixes = S7::new_property(S7::class_character,
                                      default = c(subm = "U", indi = "I", fam = "F", sour = "S", 
-                                                 repo = "R", media = "M", note = "N")),
+                                                 repo = "R", media = "M", note = "N"),
+                                     validator = function(value){
+                                       c(
+                                         chk_input_size(value, 7, 7, 0, 6),
+                                         chk_input_choice(names(value), c("indi","fam","sour","subm",
+                                                                          "repo","media","note"))
+                                       )
+                                     }),
     
     # List of xrefs for each record type
     xrefs = S7::new_property(S7::class_list,
@@ -250,24 +295,7 @@ class_gedcomS7 <- S7::new_class(
       }
     )
     
-  ),
-  validator = function(self){
-    c(
-      chk_input_size(self@update_change_dates, "@update_change_dates", 1, 1),
-      chk_input_size(self@add_creation_dates, "@add_creation_dates", 1, 1),
-      
-      # chk_input_S7classes(self@subm, "@subm", class_record_subm),
-      # chk_input_S7classes(self@indi, "@indi", class_record_indi),
-      # chk_input_S7classes(self@fam, "@fam", class_record_fam),
-      # chk_input_S7classes(self@sour, "@sour", class_record_sour),
-      # chk_input_S7classes(self@repo, "@repo", class_record_repo),
-      # chk_input_S7classes(self@media, "@media", class_record_media),
-      # chk_input_S7classes(self@note, "@note", class_record_note),
-      chk_input_size(self@xref_prefixes, "@xref_prefixes", 7, 7, 0, 6),
-      chk_input_choice(names(self@xref_prefixes), "@xref_prefixes names", c("indi","fam","sour","subm",
-                                                                            "repo","media","note"))
-    )
-  }
+  )
 )
 
 
