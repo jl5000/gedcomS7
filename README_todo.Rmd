@@ -43,6 +43,7 @@ The package does not currently implement the following:
 * LDS_SPOUSE_SEALING structures of Family records 
 * LDS_INDIVIDUAL_ORDINANCE of Individual records
 * Extension tags
+* Media types of SOURCE_REPOSITORY_CITATION call numbers (SOUR.REPO.CALN.MEDI)
 
 If you import a file with any of these features, the package may behave unpredictably.
 
@@ -53,10 +54,10 @@ The intent is to allow the user to import GEDCOM files or create them from scrat
 ```{r example}
 library(gedcomS7)
 
-ged <- read_gedcom(system.file("extdata", "555SAMPLE.GED", package = "gedcomS7"))
+ged <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
 ged
 
-ged <- new_gedcomS7(my_name = "Jamie")
+ged <- new_gedcom()
 ged
 ```
 
@@ -66,11 +67,13 @@ Once you have created or imported your file, you can set various high level opti
 
 You can influence how the gedcom object is modified as you add and edit records within it. 
 
-The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 6 types). This vector must be of a particular length with these specific names.
+The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
 
 ```{r}
 ged@xref_prefixes
 ```
+
+The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
 
 Since we have no existing records in our gedcom object, the next xrefs of each type will be:
 
@@ -78,19 +81,22 @@ Since we have no existing records in our gedcom object, the next xrefs of each t
 ged@next_xref
 ```
 
-You can also use the `update_change_dates` property to determine whether records should include the date an edit was made.
+Note: xrefs are not supposed to be exposed to the typical user...
+
+You can also use the `add_creation_dates` and `update_change_dates` properties to add or update the date a record was created/edited (they don't by default as it can bloat files considerably).
 
 ```{r}
+ged@add_creation_dates <- TRUE
 ged@update_change_dates <- TRUE
 ```
 
 ## GEDCOM metadata
 
-The metadata for the gedcom object (ged@...) and the submitter (ged@subm@...) can be modified.
+The metadata for the gedcom object (ged@...) can be modified.
 
 ```{r}
-ged@content_description <- "This file contains my family tree"
-ged@subm@name <- "Jamie Lendrum"
+ged@notes <- "This file contains my family tree"
+ged@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
 ged
 ```
 

@@ -136,6 +136,7 @@ class_gedcom_header <- S7::new_class(
                                      chk_input_size(value, 0, 1, 1)
                                    }),
     creation_date = S7::new_property(S7::class_character | class_date_exact,
+                                     default = date_exact_current(),
                                      validator = function(value){
                                        c(
                                          chk_input_size(value, 0, 1),

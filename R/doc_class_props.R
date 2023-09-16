@@ -145,7 +145,8 @@
 #'  
 #' 
 #' 
-#' @param xref 
+#' @param xref The cross-reference identifier for this record. You should not edit this at all
+#' as maintenance of these is done automatically.
 #' @param indi_xref The cross-reference identifier of an individual record. If the individual
 #' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
 #' you will need to define an @indi_phrase.
@@ -159,16 +160,20 @@
 #' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
 #' @param data_note_xrefs
-#' @param subm_xref
-#' @param subm_xrefs
+#' @param subm_xref The cross-reference identifier of a submitter record.
+#' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
 #' @param husb_xref named vector
 #' @param wife_xref named vector
 #' @param chil_xrefs named vector
-#' @param alia_xrefs
-#' @param anci_xrefs
-#' @param desi_xrefs
+#' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
+#' who records also represent this individual. The vector names may provide a description of these records.
+#' @param anci_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the ancestors of this individual.
+#' @param desi_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the descendants of this individual.
 #' 
-#' @param unique_ids ds
+#' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
+#' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
 #' @param user_ids fwe
 #' @param ext_ids dsfse
 #' 
@@ -224,7 +229,9 @@
 #' @param created
 #' @param updated
 #' 
-#' @param update_change_dates
-#' @param add_creation_dates
+#' @param update_change_dates Whether to automatically update change dates when updating records.
+#' This happens when the record is pushed to the gedcom object.
+#' @param add_creation_dates Whether to automatically add creation dates when creating records.
+#' This happens when the record is pushed to the gedcom object.
 #' 
 NULL
