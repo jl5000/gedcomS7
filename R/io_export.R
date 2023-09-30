@@ -130,6 +130,20 @@ add_at_escapes <- function(lines){
 #' @param lines A character vector of gedcom lines.
 #' 
 #' @return A new character vector of gedcom lines, possibly expanded to include CONT lines.
+#' @tests
+#' test1 <- c(
+#' "0 TEMP",
+#' "1 TAG This is a line\nthen this\nand this\nalso this"
+#' )
+#' test2 <- c(
+#'   "0 TEMP",
+#'   "1 TAG A tag",
+#'   "2 QUAY This is a line\nthen this\nand this\nalso this",
+#'   "1 DATE Today"
+#' )
+#' 
+#' expect_snapshot_value(split_gedcom_values(test1), "json2")
+#' expect_snapshot_value(split_gedcom_values(test2), "json2")
 split_gedcom_values <- function(lines) {
 
   lines <- gsub("\n\r|\r\n", "\n", lines)

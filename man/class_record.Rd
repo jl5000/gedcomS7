@@ -21,11 +21,13 @@ class_record(
 )
 }
 \arguments{
-\item{xref}{}
+\item{xref}{The cross-reference identifier for this record. You should not edit this at all
+as maintenance of these is done automatically.}
 
 \item{user_ids}{fwe}
 
-\item{unique_ids}{ds}
+\item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
+to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{ext_ids}{dsfse}
 

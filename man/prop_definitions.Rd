@@ -85,7 +85,8 @@ would be BIRT, DEAT, MARR.}
 
 \item{default_place_form}{}
 
-\item{xref}{}
+\item{xref}{The cross-reference identifier for this record. You should not edit this at all
+as maintenance of these is done automatically.}
 
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
@@ -105,15 +106,27 @@ you will need to describe the repository in @notes.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
+\item{subm_xref}{The cross-reference identifier of a submitter record.}
+
+\item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
+
 \item{husb_xref}{named vector}
 
 \item{wife_xref}{named vector}
 
 \item{chil_xrefs}{named vector}
 
-\item{desi_xrefs}{}
+\item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
+who records also represent this individual. The vector names may provide a description of these records.}
 
-\item{unique_ids}{ds}
+\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the ancestors of this individual.}
+
+\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the descendants of this individual.}
+
+\item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
+to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{user_ids}{fwe}
 
@@ -189,7 +202,11 @@ but if TRUE, only the year should be given.}
 
 \item{updated}{}
 
-\item{add_creation_dates}{}
+\item{update_change_dates}{Whether to automatically update change dates when updating records.
+This happens when the record is pushed to the gedcom object.}
+
+\item{add_creation_dates}{Whether to automatically add creation dates when creating records.
+This happens when the record is pushed to the gedcom object.}
 }
 \description{
 Define all properties used in S7 classes.

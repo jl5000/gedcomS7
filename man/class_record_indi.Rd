@@ -32,11 +32,13 @@ class_record_indi(
 )
 }
 \arguments{
-\item{xref}{}
+\item{xref}{The cross-reference identifier for this record. You should not edit this at all
+as maintenance of these is done automatically.}
 
 \item{user_ids}{fwe}
 
-\item{unique_ids}{ds}
+\item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
+to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{ext_ids}{dsfse}
 
@@ -59,7 +61,16 @@ associated information is not required.}
 
 \item{updated}{}
 
-\item{desi_xrefs}{}
+\item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
+
+\item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
+who records also represent this individual. The vector names may provide a description of these records.}
+
+\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the ancestors of this individual.}
+
+\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the descendants of this individual.}
 }
 \value{
 An S7 object representing a GEDCOM INDIVIDUAL_RECORD.

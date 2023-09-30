@@ -65,7 +65,8 @@ or a character vector of XREFs of multimedia records. If a character vector is p
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{unique_ids}{ds}
+\item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
+to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{fam_xref}{The cross-reference identifier of a family record.}
 }

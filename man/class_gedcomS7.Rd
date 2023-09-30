@@ -30,6 +30,8 @@ class_gedcomS7(
 )
 }
 \arguments{
+\item{subm_xref}{The cross-reference identifier of a submitter record.}
+
 \item{default_place_form}{}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
@@ -39,7 +41,11 @@ associated information is not required.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{add_creation_dates}{}
+\item{update_change_dates}{Whether to automatically update change dates when updating records.
+This happens when the record is pushed to the gedcom object.}
+
+\item{add_creation_dates}{Whether to automatically add creation dates when creating records.
+This happens when the record is pushed to the gedcom object.}
 }
 \value{
 An S7 object representing a GEDCOM file.

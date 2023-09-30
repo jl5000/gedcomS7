@@ -7,17 +7,12 @@ is_media_rec <- function(record) S7::S7_inherits(record, class_record_media)
 is_note_rec <- function(record) S7::S7_inherits(record, class_record_note)
 is_subm_rec <- function(record) S7::S7_inherits(record, class_record_subm)
 
-is_indi_uid <- function(x, uid) uid %in% x@uids[["indi"]]
-is_fam_uid <- function(x, uid) uid %in% x@uids[["fam"]]
-is_sour_uid <- function(x, uid) uid %in% x@uids[["sour"]]
-is_repo_uid <- function(x, uid) uid %in% x@uids[["repo"]]
-is_media_uid <- function(x, uid) uid %in% x@uids[["media"]]
-is_note_uid <- function(x, uid) uid %in% x@uids[["note"]]
-is_subm_uid <- function(x, uid) uid %in% x@uids[["subm"]]
+is_indi_xref <- function(x, xref) xref %in% x@xrefs[["indi"]]
+is_fam_xref <- function(x, xref) xref %in% x@xrefs[["fam"]]
+is_sour_xref <- function(x, xref) xref %in% x@xrefs[["sour"]]
+is_repo_xref <- function(x, xref) xref %in% x@xrefs[["repo"]]
+is_media_xref <- function(x, xref) xref %in% x@xrefs[["media"]]
+is_note_xref <- function(x, xref) xref %in% x@xrefs[["note"]]
+is_subm_xref <- function(x, xref) xref %in% x@xrefs[["subm"]]
 
-is_spouse_link <- function(lnk) class(lnk)[1] == "class_spouse_family_link"
-is_child_link <- function(lnk) S7::S7_inherits(lnk, class_child_family_link_biol)
-is_birth_child_link <- function(lnk) class(lnk)[1] == "class_child_family_link_biol"
-is_adop_child_link <- function(lnk) class(lnk)[1] == "class_child_family_link_adop"
-is_fost_child_link <- function(lnk) class(lnk)[1] == "class_child_family_link_fost"
 

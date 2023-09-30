@@ -20,6 +20,8 @@ class_gedcom_header(
 )
 }
 \arguments{
+\item{subm_xref}{The cross-reference identifier of a submitter record.}
+
 \item{default_place_form}{}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,

@@ -9,7 +9,7 @@ get_ancestors(
   xref,
   inc_indi = FALSE,
   inc_sibs = FALSE,
-  inc_famg = FALSE,
+  inc_fam = FALSE,
   inc_supp = FALSE,
   birth_only = TRUE
 )
@@ -24,7 +24,7 @@ get_ancestors(
 \item{inc_sibs}{Whether to also include all siblings of ancestors (siblings of this individual will only be
 included if the individual is included).}
 
-\item{inc_famg}{Whether to also include all Family Group records where this individual is a child
+\item{inc_fam}{Whether to also include all Family Group records where this individual is a child
 (and all ancestors' Family Group records).}
 
 \item{inc_supp}{Whether to also include all supporting records (Note, Source, Repository, Multimedia).}

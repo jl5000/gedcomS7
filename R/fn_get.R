@@ -8,9 +8,10 @@
 #' @export
 get_fam_partners <- function(x, xref){
   
-  if(!is_fam_uid(x, xref)) stop("The xref is not a Family Group record.")
+  if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
   
-  find_ged_values(x@famg[[xref]], "HUSB|WIFE")
+  find_ged_values(x@fam[[xref]], "HUSB|WIFE") |> 
+    remove_void_xrefs()
 }
 
 #' Identify all children in a Family Group
@@ -25,10 +26,11 @@ get_fam_children <- function(x,
                               xref,
                               birth_only = FALSE){
   
-  if(!is_fam_uid(x, xref)) stop("The xref is not a Family Group record.")
+  if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
   
-  famg_ged <- x@famg[[xref]]
-  all_chil_xref <- find_ged_values(famg_ged, "CHIL")
+  fam_ged <- x@fam[[xref]]
+  all_chil_xref <- find_ged_values(fam_ged, "CHIL") |> 
+    remove_void_xrefs()
   
   if(!birth_only) return(all_chil_xref)
   
@@ -38,7 +40,10 @@ get_fam_children <- function(x,
     links <- extract_family_links(chil_ged)
     
     for(lnk in links){
-      if(lnk@xref == xref && is_birth_child_link(lnk)){
+      if(lnk@fam_xref == xref && 
+         S7::S7_inherits(lnk, class_child_family_link) &&
+         (length(lnk@pedigree) == 0 || lnk@pedigree == "BIRTH")){
+        
         birth_chil_xref <- c(birth_chil_xref, chil_xref)
         break
       }
@@ -60,10 +65,11 @@ get_fam_as_child <- function(x,
                               xref,
                               birth_only = FALSE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   indi_ged <- x@indi[[xref]]
-  all_fam_xref <- find_ged_values(indi_ged, "FAMC")
+  all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
+    remove_void_xrefs()
   
   if(!birth_only) return(all_fam_xref)
   
@@ -71,7 +77,10 @@ get_fam_as_child <- function(x,
   
   famc_xref <- character()
   for(lnk in links){
-    if(is_birth_child_link(lnk)) famc_xref <- c(famc_xref, lnk@xref)
+    if(S7::S7_inherits(lnk, class_child_family_link) &&
+       (length(lnk@pedigree) == 0 || lnk@pedigree == "BIRTH")){
+      famc_xref <- c(famc_xref, lnk@fam_xref)
+    } 
   }
   famc_xref
 }
@@ -85,11 +94,12 @@ get_fam_as_child <- function(x,
 #' @export
 get_fam_as_partner <- function(x, xref){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   indi_ged <- x@indi[[xref]]
   
-  find_ged_values(indi_ged, "FAMS")
+  find_ged_values(indi_ged, "FAMS") |> 
+    remove_void_xrefs()
 }
 
 
@@ -102,7 +112,7 @@ get_fam_as_partner <- function(x, xref){
 #' @export
 get_indi_partners <- function(x, xref){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   fams_xref <- get_fam_as_partner(x, xref)
   
@@ -125,7 +135,7 @@ get_indi_children <- function(x,
                               xref,
                               birth_only = FALSE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   fams_xref <- get_fam_as_partner(x, xref)
   
@@ -148,7 +158,7 @@ get_indi_parents <- function(x,
                              xref,
                              birth_only = FALSE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   famc_xref <- get_fam_as_child(x, xref, birth_only)
   
@@ -202,10 +212,11 @@ get_indi_parents_fathmoth <- function(x,
   for(xref in famc_xref){
     spou_xref <- c(
       spou_xref,
-      find_ged_values(x@famg[[xref]], tag)
+      find_ged_values(x@fam[[xref]], tag)
     )
   }
-  unique(spou_xref)
+  unique(spou_xref) |> 
+    remove_void_xrefs()
 }
 
 #' Identify all siblings for an individual
@@ -222,7 +233,7 @@ get_indi_siblings <- function(x,
                               birth_only = FALSE,
                               inc_half = FALSE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   if(inc_half){
     spou_xref <- get_indi_parents(x, xref, birth_only)
@@ -255,7 +266,7 @@ get_indi_cousins <- function(x,
                              degree = 1,
                              inc_half = FALSE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   if(degree < 1) stop("The degree must be at least 1.")
   degree <- floor(degree)
   
@@ -308,7 +319,7 @@ get_supporting_recs <- function(x,
   if(length(tags) == 0) return(character())
   
   vals <- lapply(xrefs, \(xref){
-    rec_lines <- c(x@indi, x@famg, x@sour,
+    rec_lines <- c(x@indi, x@fam, x@sour,
                    x@repo, x@media, x@note)[[xref]]
     
     tgs <- extract_ged_tag(rec_lines)
@@ -356,7 +367,7 @@ get_unused_recs <- function(x){
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_part Whether to also include all partners of this individual (and their descendants and
 #' descendants' partners).
-#' @param inc_famg Whether to also include all Family Group records where this individual is a partner 
+#' @param inc_fam Whether to also include all Family Group records where this individual is a partner 
 #' (and all descendants' Family Group records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
 #' @param birth_only Whether to only include biological descendants.
@@ -367,11 +378,11 @@ get_descendants <- function(x,
                             xref,
                             inc_indi = FALSE,
                             inc_part = FALSE,
-                            inc_famg = FALSE,
+                            inc_fam = FALSE,
                             inc_supp = FALSE,
                             birth_only = TRUE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   return_xrefs <- character()
   
@@ -388,20 +399,20 @@ get_descendants <- function(x,
   }
   
   #deal with family groups first (while the individuals are still in them)
-  if (inc_famg) return_xrefs <- c(return_xrefs, fams_xref)
+  if (inc_fam) return_xrefs <- c(return_xrefs, fams_xref)
   if (inc_part) return_xrefs <- c(return_xrefs, spou_xref)
   if (inc_indi) return_xrefs <- c(return_xrefs, xref)
   
   # identify children
   for(i in seq_along(chil_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_descendants(x, chil_xref[i], TRUE, inc_part, inc_famg, FALSE, birth_only))
+                      get_descendants(x, chil_xref[i], TRUE, inc_part, inc_fam, FALSE, birth_only))
   }
   
   # only get supporting records if this is the top level call
   if (inc_supp && length(as.character(sys.call())) == 8 && 
       any(as.character(sys.call()) != c("get_descendants","x","chil_xref[i]","TRUE",
-                                        "inc_part","inc_famg","FALSE","birth_only"))){
+                                        "inc_part","inc_fam","FALSE","birth_only"))){
     
     c(return_xrefs,
       get_supporting_recs(x, return_xrefs))
@@ -419,7 +430,7 @@ get_descendants <- function(x,
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_sibs Whether to also include all siblings of ancestors (siblings of this individual will only be
 #' included if the individual is included).
-#' @param inc_famg Whether to also include all Family Group records where this individual is a child 
+#' @param inc_fam Whether to also include all Family Group records where this individual is a child 
 #' (and all ancestors' Family Group records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
 #' @param birth_only Whether to only include biological ancestors.
@@ -430,11 +441,11 @@ get_ancestors <- function(x,
                           xref,
                           inc_indi = FALSE,
                           inc_sibs = FALSE,
-                          inc_famg = FALSE,
+                          inc_fam = FALSE,
                           inc_supp = FALSE,
                           birth_only = TRUE){
   
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   return_xrefs <- character()
   
@@ -449,19 +460,19 @@ get_ancestors <- function(x,
     pars_xref <- unique(c(pars_xref, sib_par_xref))
   }
   
-  if (inc_famg) return_xrefs <- c(return_xrefs, famc_xref)
+  if (inc_fam) return_xrefs <- c(return_xrefs, famc_xref)
   if (inc_indi & inc_sibs) return_xrefs <- c(return_xrefs, sibs_xref)
   if (inc_indi) return_xrefs <- c(return_xrefs, xref)
   
   for(i in seq_along(pars_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_ancestors(x, pars_xref[i], TRUE, inc_sibs, inc_famg, FALSE, birth_only))
+                      get_ancestors(x, pars_xref[i], TRUE, inc_sibs, inc_fam, FALSE, birth_only))
   }
   
   # only get supporting records if this is the top level call
   if (inc_supp && length(as.character(sys.call())) == 8 && 
       any(as.character(sys.call()) != c("get_ancestors","x","pars_xref[i]","TRUE",
-                                        "inc_sibs","inc_famg","FALSE"))) {
+                                        "inc_sibs","inc_fam","FALSE"))) {
     
     c(return_xrefs,
       get_supporting_recs(x, return_xrefs))

@@ -9,7 +9,7 @@ get_descendants(
   xref,
   inc_indi = FALSE,
   inc_part = FALSE,
-  inc_famg = FALSE,
+  inc_fam = FALSE,
   inc_supp = FALSE,
   birth_only = TRUE
 )
@@ -24,7 +24,7 @@ get_descendants(
 \item{inc_part}{Whether to also include all partners of this individual (and their descendants and
 descendants' partners).}
 
-\item{inc_famg}{Whether to also include all Family Group records where this individual is a partner
+\item{inc_fam}{Whether to also include all Family Group records where this individual is a partner
 (and all descendants' Family Group records).}
 
 \item{inc_supp}{Whether to also include all supporting records (Note, Source, Repository, Multimedia).}

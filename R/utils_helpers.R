@@ -300,3 +300,7 @@ parse_gedcom_age <- function(age_string) {
   years_num + months_prop + weeks_prop + days_prop
   
 }
+
+remove_void_xrefs <- function(xrefs){
+  xrefs[xrefs != "@VOID@"]
+}
