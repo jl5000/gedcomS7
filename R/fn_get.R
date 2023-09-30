@@ -18,13 +18,14 @@ get_fam_partners <- function(x, xref){
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of a Family Group record.
-#' @param birth_only Whether to only return biological children.
+#' @param pedigrees A character vector of allowed pedigrees. By default, NULL means all pedigrees.
+#' If it includes "BIRTH" then this will also pick up non-existent values.
 #'
 #' @return A character vector of children xrefs.
 #' @export
 get_fam_children <- function(x, 
                               xref,
-                              birth_only = FALSE){
+                              pedigrees = NULL){
   
   if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
   
@@ -32,9 +33,9 @@ get_fam_children <- function(x,
   all_chil_xref <- find_ged_values(fam_ged, "CHIL") |> 
     remove_void_xrefs()
   
-  if(!birth_only) return(all_chil_xref)
+  if(is.null(pedigrees)) return(all_chil_xref)
   
-  birth_chil_xref <- character()
+  ped_chil_xref <- character()
   for(chil_xref in all_chil_xref){
     chil_ged <- x@indi[[chil_xref]]
     links <- extract_family_links(chil_ged)
@@ -42,9 +43,9 @@ get_fam_children <- function(x,
     for(lnk in links){
       if(lnk@fam_xref == xref && 
          S7::S7_inherits(lnk, class_child_family_link) &&
-         (length(lnk@pedigree) == 0 || lnk@pedigree == "BIRTH")){
+         pedigree_in_set(lnk@pedigree, pedigrees)){
         
-        birth_chil_xref <- c(birth_chil_xref, chil_xref)
+        ped_chil_xref <- c(ped_chil_xref, chil_xref)
         break
       }
     }
@@ -63,7 +64,7 @@ get_fam_children <- function(x,
 #' @export
 get_fam_as_child <- function(x, 
                               xref,
-                              birth_only = FALSE){
+                             pedigrees = NULL){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
@@ -71,14 +72,14 @@ get_fam_as_child <- function(x,
   all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
     remove_void_xrefs()
   
-  if(!birth_only) return(all_fam_xref)
+  if(is.null(pedigrees)) return(all_fam_xref)
   
   links <- extract_family_links(indi_ged)
   
   famc_xref <- character()
   for(lnk in links){
     if(S7::S7_inherits(lnk, class_child_family_link) &&
-       (length(lnk@pedigree) == 0 || lnk@pedigree == "BIRTH")){
+       pedigree_in_set(lnk@pedigree, pedigrees)){
       famc_xref <- c(famc_xref, lnk@fam_xref)
     } 
   }
@@ -133,13 +134,13 @@ get_indi_partners <- function(x, xref){
 #' @export
 get_indi_children <- function(x, 
                               xref,
-                              birth_only = FALSE){
+                              pedigrees = NULL){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   fams_xref <- get_fam_as_partner(x, xref)
   
-  chil_xref <- lapply(fams_xref, \(fam) get_fam_children(x, fam, birth_only)) |>
+  chil_xref <- lapply(fams_xref, \(fam) get_fam_children(x, fam, pedigrees)) |>
     unlist()
   if(is.null(chil_xref)) return(character())
   
@@ -156,11 +157,11 @@ get_indi_children <- function(x,
 #' @export
 get_indi_parents <- function(x, 
                              xref,
-                             birth_only = FALSE){
+                             pedigrees = NULL){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
-  famc_xref <- get_fam_as_child(x, xref, birth_only)
+  famc_xref <- get_fam_as_child(x, xref, pedigrees)
   
   spou_xref <- lapply(famc_xref, \(fam) get_fam_partners(x, fam)) |>
     unlist()
@@ -180,9 +181,9 @@ get_indi_parents <- function(x,
 #' @export
 get_indi_mothers <- function(x,
                              xref,
-                             birth_only = FALSE){
+                             pedigrees = NULL){
   
-  get_indi_parents_fathmoth(x, xref, birth_only, FALSE)
+  get_indi_parents_fathmoth(x, xref, pedigrees, FALSE)
 }
 
 #' Identify all fathers for an individual
@@ -195,17 +196,17 @@ get_indi_mothers <- function(x,
 #' @export
 get_indi_fathers <- function(x,
                              xref,
-                             birth_only = FALSE){
+                             pedigrees = NULL){
   
-  get_indi_parents_fathmoth(x, xref, birth_only, TRUE)
+  get_indi_parents_fathmoth(x, xref, pedigrees, TRUE)
 }
 
 get_indi_parents_fathmoth <- function(x,
                                       xref,
-                                      birth_only = FALSE,
+                                      pedigrees = NULL,
                                       father = TRUE){
   
-  famc_xref <- get_fam_as_child(x, xref, birth_only)
+  famc_xref <- get_fam_as_child(x, xref, pedigrees)
   if(father) tag <- "HUSB" else tag <- "WIFE"
   
   spou_xref <- character()
@@ -230,21 +231,21 @@ get_indi_parents_fathmoth <- function(x,
 #' @export
 get_indi_siblings <- function(x, 
                               xref,
-                              birth_only = FALSE,
+                              pedigrees = NULL,
                               inc_half = FALSE){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   if(inc_half){
-    spou_xref <- get_indi_parents(x, xref, birth_only)
+    spou_xref <- get_indi_parents(x, xref, pedigrees)
     
-    sibs_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, birth_only)) |>
+    sibs_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, pedigrees)) |>
       unlist()
     
   } else {
     famc_xref <- get_fam_as_child(x, xref, birth_only)
     
-    sibs_xref <- lapply(famc_xref, \(fam) get_fam_children(x, fam, birth_only)) |>
+    sibs_xref <- lapply(famc_xref, \(fam) get_fam_children(x, fam, pedigrees)) |>
       unlist()
   }
   
@@ -272,16 +273,16 @@ get_indi_cousins <- function(x,
   
   pars_xref <- xref
   for(i in seq_len(degree)){
-    pars_xref <- lapply(pars_xref, \(par) get_indi_parents(x, par, birth_only = TRUE)) |>
+    pars_xref <- lapply(pars_xref, \(par) get_indi_parents(x, par, "BIRTH")) |>
       unlist()
   }
   
-  sibs_xref <- lapply(pars_xref, \(par) get_indi_siblings(x, par, birth_only = TRUE, inc_half)) |>
+  sibs_xref <- lapply(pars_xref, \(par) get_indi_siblings(x, par, "BIRTH", inc_half)) |>
     unlist()
 
   chil_xref <- sibs_xref
   for(i in seq_len(degree)){
-    chil_xref <- lapply(chil_xref, \(ch) get_indi_children(x, ch, birth_only = TRUE)) |>
+    chil_xref <- lapply(chil_xref, \(ch) get_indi_children(x, ch, "BIRTH")) |>
       unlist()
   }
   
@@ -380,19 +381,19 @@ get_descendants <- function(x,
                             inc_part = FALSE,
                             inc_fam = FALSE,
                             inc_supp = FALSE,
-                            birth_only = TRUE){
+                            pedigrees = NULL){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   return_xrefs <- character()
   
   spou_xref <- get_indi_partners(x, xref)
-  chil_xref <- get_indi_children(x, xref, birth_only)
+  chil_xref <- get_indi_children(x, xref, pedigrees)
   fams_xref <- get_fam_as_partner(x, xref)
   
   # if partner is to be included, add their children to be included
   if (inc_part) {
-    part_chil_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, birth_only)) |> 
+    part_chil_xref <- lapply(spou_xref, \(par) get_indi_children(x, par, pedigrees)) |> 
       unlist()
     
     chil_xref <- unique(c(chil_xref, part_chil_xref))
@@ -406,13 +407,13 @@ get_descendants <- function(x,
   # identify children
   for(i in seq_along(chil_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_descendants(x, chil_xref[i], TRUE, inc_part, inc_fam, FALSE, birth_only))
+                      get_descendants(x, chil_xref[i], TRUE, inc_part, inc_fam, FALSE, pedigrees))
   }
   
   # only get supporting records if this is the top level call
   if (inc_supp && length(as.character(sys.call())) == 8 && 
       any(as.character(sys.call()) != c("get_descendants","x","chil_xref[i]","TRUE",
-                                        "inc_part","inc_fam","FALSE","birth_only"))){
+                                        "inc_part","inc_fam","FALSE","pedigrees"))){
     
     c(return_xrefs,
       get_supporting_recs(x, return_xrefs))
@@ -443,18 +444,18 @@ get_ancestors <- function(x,
                           inc_sibs = FALSE,
                           inc_fam = FALSE,
                           inc_supp = FALSE,
-                          birth_only = TRUE){
+                          pedigrees = NULL){
   
   if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
   
   return_xrefs <- character()
   
-  sibs_xref <- get_indi_siblings(x, xref, birth_only)
-  pars_xref <- get_indi_parents(x, xref, birth_only)
-  famc_xref <- get_fam_as_child(x, xref, birth_only)
+  sibs_xref <- get_indi_siblings(x, xref, pedigrees)
+  pars_xref <- get_indi_parents(x, xref, pedigrees)
+  famc_xref <- get_fam_as_child(x, xref, pedigrees)
   
   if (inc_indi & inc_sibs) {
-    sib_par_xref <- lapply(sibs_xref, \(sib) get_indi_parents(x, sib, birth_only)) |>
+    sib_par_xref <- lapply(sibs_xref, \(sib) get_indi_parents(x, sib, pedigrees)) |>
       unlist()
     
     pars_xref <- unique(c(pars_xref, sib_par_xref))
@@ -466,7 +467,7 @@ get_ancestors <- function(x,
   
   for(i in seq_along(pars_xref)) {
     return_xrefs <- c(return_xrefs,
-                      get_ancestors(x, pars_xref[i], TRUE, inc_sibs, inc_fam, FALSE, birth_only))
+                      get_ancestors(x, pars_xref[i], TRUE, inc_sibs, inc_fam, FALSE, pedigrees))
   }
   
   # only get supporting records if this is the top level call
@@ -479,4 +480,11 @@ get_ancestors <- function(x,
   } else {
     return_xrefs
   }
+}
+
+pedigree_in_set <- function(pedigree, set){
+  if(length(pedigree) == 0){
+    return("BIRTH" %in% set)
+  }
+  pedigree %in% set
 }
