@@ -45,6 +45,11 @@ rm_indi <- function(x, xref){
   x  
 }
 
+# Also want remove_change_dates, order_fam_children, add_ancestors, indi_census_df
+rm_living <- function(x){
+  
+}
+
 rm_famg <- function(x, xref){
   x@famg[[xref]] <- NULL
   # Remove family links

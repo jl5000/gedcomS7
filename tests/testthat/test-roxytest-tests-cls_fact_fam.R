@@ -17,7 +17,7 @@ test_that("Function class_event_fam() @ L80", {
 })
 
 
-test_that("Function class_attr_fam() @ L102", {
+test_that("Function class_attr_fam() @ L101", {
   expect_error(class_attr_fam("residence", fact_val = "Earth"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(class_attr_fam("RESI", fact_val = ""), 

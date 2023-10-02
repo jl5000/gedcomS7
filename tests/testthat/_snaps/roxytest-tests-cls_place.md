@@ -35,6 +35,6 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 PLAC here", "1 LANG en", "1 TRAN hier", "2 LANG nl", "1 TRAN her", "2 LANG da", "1 MAP", "2 LATI N12", "2 LONG E56", "1 SNOTE @N1@", "1 SNOTE @N562@", "1 NOTE Thing 1"]
+      "value": ["0 PLAC here", "1 LANG en", "1 TRAN hier", "2 LANG nl", "1 TRAN her", "2 LANG da", "1 MAP", "2 LATI N12", "2 LONG E56", "1 NOTE Thing 1", "1 SNOTE @N1@", "1 SNOTE @N562@"]
     }
 

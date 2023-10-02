@@ -200,7 +200,11 @@ but if TRUE, only the year should be given.}
 \item{time}{The time given either as a formatted GEDCOM string, or a
 \code{class_time} object.}
 
-\item{updated}{}
+\item{created}{A \code{class_creation_date} object containing the date the record was created.
+Creating an object with no parameters sets the date to today.}
+
+\item{updated}{A \code{class_change_date} object containing the date the record was updated.
+Creating an object with no parameters sets the date to today.}
 
 \item{update_change_dates}{Whether to automatically update change dates when updating records.
 This happens when the record is pushed to the gedcom object.}

@@ -35,7 +35,7 @@ If it includes "BIRTH" then this will also pick up non-existent values
 (since BIRTH is assumed to be the default).}
 }
 \value{
-A vector of xrefs of ancestors.
+A character vector of xrefs.
 }
 \description{
 This function identifies records in an entire branch of the family tree above a certain individual.

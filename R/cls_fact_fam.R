@@ -98,7 +98,6 @@ class_event_fam <- S7::new_class(
 #' expect_error(class_attr_fam("RESI", fact_val = ""), 
 #'              regexp = "@fact_val has too few characters")   
 #' expect_error(class_attr_fam("FACT"), regexp = "A @fact_val is required for this fact")   
-
 class_attr_fam <- S7::new_class(
   "class_attr_fam",
   package = "gedcomS7",

@@ -98,8 +98,8 @@ class_place <- S7::new_class(
                                   sprintf("2 LATI %s", self@lat),
                                   sprintf("2 LONG %s", self@long),
                                   named_vec_to_ged(self@ext_ids, "EXID", "TYPE") |> increase_level(by = 1),
-                                  sprintf("1 SNOTE %s", self@note_xrefs),
-                                  obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
+                                  obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+                                  sprintf("1 SNOTE %s", self@note_xrefs)
                                 )
                               })
   )
@@ -119,9 +119,9 @@ extract_place <- function(lines, location = NULL){
     place_name = place_name,
     place_form = find_ged_values(lines, c(location, "PLAC","FORM")),
     language = find_ged_values(lines, c(location, "PLAC","LANG")),
-    place_translations = extract_vals_and_types(lines, "TRAN"),
+    place_translations = extract_vals_and_types(lines, c(location, "PLAC","TRAN")),
     lat_long = latlong,
-    ext_ids = extract_vals_and_types(lines, "EXID"),
+    ext_ids = extract_vals_and_types(lines, c(location, "PLAC","EXID")),
     note_xrefs = find_ged_values(lines, c(location, "PLAC","SNOTE")),
     notes = extract_notes(lines, c(location, "PLAC"))
   )

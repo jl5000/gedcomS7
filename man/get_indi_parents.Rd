@@ -17,7 +17,7 @@ If it includes "BIRTH" then this will also pick up non-existent values
 (since BIRTH is assumed to be the default).}
 }
 \value{
-A character vector of parent xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all parents for an individual

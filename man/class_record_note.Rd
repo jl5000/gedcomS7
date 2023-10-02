@@ -46,7 +46,11 @@ associated information is not required.}
 
 \item{media_links}{Not used.}
 
-\item{updated}{}
+\item{created}{A \code{class_creation_date} object containing the date the record was created.
+Creating an object with no parameters sets the date to today.}
+
+\item{updated}{A \code{class_change_date} object containing the date the record was updated.
+Creating an object with no parameters sets the date to today.}
 
 \item{text}{A character string. New lines are created with \n.}
 

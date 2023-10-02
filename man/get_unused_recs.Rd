@@ -10,7 +10,7 @@ get_unused_recs(x)
 \item{x}{A gedcom object.}
 }
 \value{
-A character vector of xrefs that are not referenced anywhere else in the gedcom object.
+A character vector of xrefs.
 }
 \description{
 This function identifies records that are not referenced in any other records.

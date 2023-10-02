@@ -226,8 +226,10 @@
 #' `class_date_greg` object.
 #' @param time The time given either as a formatted GEDCOM string, or a
 #' `class_time` object.
-#' @param created
-#' @param updated
+#' @param created A `class_creation_date` object containing the date the record was created.
+#' Creating an object with no parameters sets the date to today.
+#' @param updated A `class_change_date` object containing the date the record was updated.
+#' Creating an object with no parameters sets the date to today.
 #' 
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.

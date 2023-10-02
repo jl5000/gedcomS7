@@ -62,17 +62,11 @@ class_record <- S7::new_class(
                                    }),
     created = S7::new_property(NULL | class_creation_date,
                                validator = function(value){
-                                 c(
-                                   chk_input_size(value, 0, 1),
-                                   chk_input_pattern(value, reg_date_exact(TRUE))
-                                 )
+                                 chk_input_size(value, 0, 1)
                                }),
     updated = S7::new_property(NULL | class_change_date,
                                validator = function(value){
-                                 c(
-                                   chk_input_size(value, 0, 1),
-                                   chk_input_pattern(value, reg_date_exact(TRUE))
-                                 )
+                                 chk_input_size(value, 0, 1)
                                }),
     
     restrictions = S7::new_property(S7::class_character,

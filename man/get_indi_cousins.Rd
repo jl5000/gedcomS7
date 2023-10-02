@@ -16,7 +16,7 @@ get_indi_cousins(x, xref, degree = 1, inc_half = FALSE)
 \item{inc_half}{Whether to include half cousins.}
 }
 \value{
-A character vector of cousin xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all cousins for an individual

@@ -40,8 +40,8 @@ class_repository_citation <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 REPO %s", self@repo_xref),
-          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           sprintf("1 CALN %s", self@call_numbers)
           # sprintf("2 MEDI %s", self@media),
           # sprintf("3 PHRASE %s", self@media_phrase)
@@ -56,7 +56,9 @@ extract_repo_citations <- function(rec_lines){
   
   lapply(repo_lst, \(x){
     class_repository_citation(
-      xref = find_ged_values(x, "REPO"),
+      repo_xref = find_ged_values(x, "REPO"),
+      note_xrefs = find_ged_values(rec_lines, "SNOTE"),
+      notes = extract_notes(rec_lines),
       call_numbers = find_ged_values(x, c("REPO","CALN"))
     )
   })
@@ -129,9 +131,10 @@ extract_events_recorded <- function(rec_lines){
   
   lapply(even_lst, \(x){
     class_facts_recorded(
-      events = find_ged_values(x, "EVEN"),
+      fact_types = find_ged_values(x, "EVEN"),
       date_period = find_ged_values(x, c("EVEN","DATE")),
-      territory = find_ged_values(x, c("EVEN","PLAC"))
+      date_phrase = find_ged_values(x, c("EVEN","DATE","PHRASE")),
+      territory = extract_place(x, "EVEN")
     )
   })
   
@@ -205,8 +208,8 @@ class_record_sour <- S7::new_class(
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
           sprintf("2 AGNC %s", self@agency),
-          sprintf("2 SNOTE %s", self@data_note_xrefs),
           obj_to_ged(self@data_notes, "NOTE") |> increase_level(by = 2),
+          sprintf("2 SNOTE %s", self@data_note_xrefs),
           sprintf("1 AUTH %s", self@originator),
           sprintf("1 TITL %s", self@full_title),
           sprintf("1 ABBR %s", self@short_title),
@@ -215,8 +218,8 @@ class_record_sour <- S7::new_class(
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
           self@ids |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
@@ -230,19 +233,17 @@ class_record_sour <- S7::new_class(
 
 extract_record_sour <- function(rec_lines){
   
-  data_nts <- find_ged_values(rec_lines, c("DATA","NOTE"))
-  
   rec <- class_record_sour(
     xref = extract_ged_xref(rec_lines[1]),
-    full_title = find_ged_values(rec_lines, "TITL"),
     facts_recorded = extract_events_recorded(rec_lines),
-    responsible_agency = find_ged_values(rec_lines, c("DATA","AGNC")),
-    data_note_links = data_nts[grepl(reg_xref(TRUE), data_nts)],
-    data_notes = data_nts[!grepl(reg_xref(TRUE), data_nts)],
+    agency = find_ged_values(rec_lines, c("DATA","AGNC")),
+    data_note_xrefs = find_ged_values(rec_lines, c("DATA","SNOTE")),
+    data_notes = extract_notes(rec_lines, "DATA"),
     originator = find_ged_values(rec_lines, "AUTH"),
+    full_title = find_ged_values(rec_lines, "TITL"),
     short_title = find_ged_values(rec_lines, "ABBR"),
     publication_facts = find_ged_values(rec_lines, "PUBL"),
-    source_text = find_ged_values(rec_lines, "TEXT"),
+    source_text = extract_translations(rec_lines),
     repo_citations = extract_repo_citations(rec_lines)
   )
   

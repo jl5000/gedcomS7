@@ -121,8 +121,8 @@ class_record_media <- S7::new_class(
           sprintf("1 RESN %s", self@restrictions),
           obj_to_ged(self@files) |> increase_level(by = 1),
           self@ids |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)

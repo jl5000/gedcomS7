@@ -12,7 +12,7 @@ get_indi_partners(x, xref)
 \item{xref}{The xref of an Individual record.}
 }
 \value{
-A character vector of partner xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all partners for an individual

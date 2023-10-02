@@ -111,7 +111,7 @@ class_citation <- S7::new_class(
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        c(
+        ged <- c(
           sprintf("0 SOUR %s", self@sour_xref),
           sprintf("1 PAGE %s", self@where),
           rep("1 DATA", length(self@date) + 
@@ -124,9 +124,11 @@ class_citation <- S7::new_class(
           sprintf("3 PHRASE %s", self@role_phrase),
           sprintf("1 QUAY %s", self@certainty),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs)
         ) 
+        
+        sub("^(\\d+) TRAN ", "\\1 TEXT ", ged)
       })
   ),
   
@@ -146,19 +148,6 @@ extract_citations <- function(lines, location = NULL){
   if(length(sour_lst) == 0) return(list())
   
   lapply(sour_lst, \(x){
-    # nts <- extract_notes(x, c("SOUR","NOTE"))
-    # nt_xrefs <- find_ged_values(x, c("SOUR","SNOTE"))
-    # rec_date <- extract_date_value(x)
-    # 
-    # if(length(rec_date) == 1 && !grepl(reg_custom_value(), rec_date)){
-    #   rec_date <- toupper(rec_date)
-    #   rec_date <- sub("@#DGREGORIAN@ ", "", rec_date)
-    # }
-    # role <- find_ged_values(x, c("SOUR","EVEN","ROLE"))
-    # if(length(role) == 1 && !grepl(reg_custom_value(), role)){
-    #   role <- toupper(role)
-    # }
-    
     class_citation(
       sour_xref = find_ged_values(x, "SOUR"),
       where = find_ged_values(x, c("SOUR","PAGE")),
@@ -170,8 +159,8 @@ extract_citations <- function(lines, location = NULL){
       role_phrase = find_ged_values(x, c("SOUR","EVEN","ROLE","PHRASE")),
       certainty = find_ged_values(x, c("SOUR","QUAY")),
       media_links = extract_media_links(x, "SOUR"),
-      note_xrefs = find_ged_values(x, c("SOUR","SNOTE")),
-      notes = extract_notes(x, "SOUR")
+      notes = extract_notes(x, "SOUR"),
+      note_xrefs = find_ged_values(x, c("SOUR","SNOTE"))
     )
   })
   

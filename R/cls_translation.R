@@ -53,7 +53,7 @@ class_translation_txt <- S7::new_class(
 
 
 extract_translations <- function(lines, location = NULL){
-  # TEXT to handle SOUR.TEXT
+  # TEXT to handle source citations
   tran_lst <- find_ged_values(lines, c(location, "TRAN|TEXT"), return_list = TRUE)
   if(length(tran_lst) == 0) return(list())
   

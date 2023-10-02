@@ -19,7 +19,7 @@ If it includes "BIRTH" then this will also pick up non-existent values
 \item{inc_half}{Whether to include siblings that only share one parent.}
 }
 \value{
-A character vector of sibling xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all siblings for an individual

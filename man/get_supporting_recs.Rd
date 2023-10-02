@@ -27,7 +27,7 @@ get_supporting_recs(
 \item{inc_repo}{Whether to include Repository records.}
 }
 \value{
-A character vector of supporting record xrefs.
+A character vector of xrefs.
 }
 \description{
 This function gets all supporting records (and onwards dependencies) for a set of records. Supporting records

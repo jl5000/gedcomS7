@@ -55,8 +55,8 @@ class_record_subm <- S7::new_class(
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           sprintf("1 LANG %s", self@languages),
           self@ids |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )

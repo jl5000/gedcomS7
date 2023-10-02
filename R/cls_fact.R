@@ -171,8 +171,8 @@ class_fact <- S7::new_class(
           sprintf("1 RESN %s", self@restrictions),
           obj_to_ged(self@date_sort, "SDATE") |> increase_level(by = 1),
           obj_to_ged(self@associations) |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           sprintf("1 UID %s", self@unique_ids)

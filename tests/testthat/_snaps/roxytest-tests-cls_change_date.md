@@ -19,6 +19,6 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 CHAN", "1 DATE 1 JAN 2005", "1 SNOTE @23@", "1 NOTE note 1", "1 NOTE note 2"]
+      "value": ["0 CHAN", "1 DATE 1 JAN 2005", "1 NOTE note 1", "1 NOTE note 2", "1 SNOTE @23@"]
     }
 

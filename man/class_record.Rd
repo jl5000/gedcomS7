@@ -48,7 +48,11 @@ or a character vector of XREFs of multimedia records. If a character vector is p
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{updated}{}
+\item{created}{A \code{class_creation_date} object containing the date the record was created.
+Creating an object with no parameters sets the date to today.}
+
+\item{updated}{A \code{class_change_date} object containing the date the record was updated.
+Creating an object with no parameters sets the date to today.}
 }
 \value{
 An S7 object containing common elements of a GEDCOM record.

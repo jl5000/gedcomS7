@@ -37,8 +37,8 @@ class_spouse_family_link <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 FAMS %s", self@fam_xref),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs)
         )
       })
   )
