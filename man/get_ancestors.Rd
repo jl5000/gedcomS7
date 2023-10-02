@@ -11,7 +11,7 @@ get_ancestors(
   inc_sibs = FALSE,
   inc_fam = FALSE,
   inc_supp = FALSE,
-  birth_only = TRUE
+  pedigrees = NULL
 )
 }
 \arguments{
@@ -29,7 +29,10 @@ included if the individual is included).}
 
 \item{inc_supp}{Whether to also include all supporting records (Note, Source, Repository, Multimedia).}
 
-\item{birth_only}{Whether to only include biological ancestors.}
+\item{pedigrees}{A character vector of allowed family-child linkages.
+By default, NULL means all pedigrees (e.g. inc. ADOPTED).
+If it includes "BIRTH" then this will also pick up non-existent values
+(since BIRTH is assumed to be the default).}
 }
 \value{
 A vector of xrefs of ancestors.

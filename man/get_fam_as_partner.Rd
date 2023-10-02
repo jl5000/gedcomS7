@@ -12,7 +12,7 @@ get_fam_as_partner(x, xref)
 \item{xref}{The xref of an Individual record.}
 }
 \value{
-A character vector of family xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all families for an individual where they are a partner

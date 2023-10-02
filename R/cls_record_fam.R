@@ -65,7 +65,7 @@ class_record_fam <- S7::new_class(
     marriage_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "MARR") return(fact@fact_date)
         }
         character()
@@ -74,7 +74,7 @@ class_record_fam <- S7::new_class(
     marriage_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "MARR") return(fact@fact_location)
         }
         character()

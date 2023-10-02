@@ -4,7 +4,7 @@
 rm_records <- function(x, xrefs){
   xrefs <- unique(xrefs)
   for(xref in xrefs){
-    if(is_indi_uid(x, xref)){
+    if(is_indi_xref(x, xref)){
       x <- rm_indi(x, xref)
     } else if(is_fam_uid(x, xref)){
       x <- rm_famg(x, xref)

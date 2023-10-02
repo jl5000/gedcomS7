@@ -4,17 +4,20 @@
 \alias{get_fam_as_child}
 \title{Identify all families for an individual where they are a child}
 \usage{
-get_fam_as_child(x, xref, birth_only = FALSE)
+get_fam_as_child(x, xref, pedigrees = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xref}{The xref of an Individual record.}
 
-\item{birth_only}{Whether to only return the family containing the biological parents.}
+\item{pedigrees}{A character vector of allowed family-child linkages.
+By default, NULL means all pedigrees (e.g. inc. ADOPTED).
+If it includes "BIRTH" then this will also pick up non-existent values
+(since BIRTH is assumed to be the default).}
 }
 \value{
-A character vector of family xrefs.
+A character vector of xrefs.
 }
 \description{
 Identify all families for an individual where they are a child

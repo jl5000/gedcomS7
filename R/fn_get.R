@@ -1,14 +1,64 @@
 
-#' Identify all partners in a Family Group
+#' Identify all families for an individual where they are a child
 #'
 #' @param x A gedcom object.
+#' @param xref The xref of an Individual record.
+#' @param pedigrees A character vector of allowed family-child linkages. 
+#' By default, NULL means all pedigrees (e.g. inc. ADOPTED). 
+#' If it includes "BIRTH" then this will also pick up non-existent values 
+#' (since BIRTH is assumed to be the default).
+#'
+#' @return A character vector of xrefs.
+#' @export
+get_fam_as_child <- function(x, 
+                             xref,
+                             pedigrees = NULL){
+  
+  check_indi_rec(x, xref)
+  
+  indi_ged <- x@indi[[xref]]
+  all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
+    remove_void_xrefs()
+  
+  if(is.null(pedigrees)) return(all_fam_xref)
+  
+  chil_links <- extract_family_links(indi_ged, as_spouse = FALSE)
+  
+  famc_xref <- character()
+  for(lnk in chil_links){
+    if(pedigree_in_set(lnk@pedigree, pedigrees))
+      famc_xref <- c(famc_xref, lnk@fam_xref)
+  }
+  famc_xref
+}
+
+#' Identify all families for an individual where they are a partner
+#' 
+#' @inheritParams get_fam_as_child
+#'
+#' @inherit get_fam_as_child return
+#' @export
+get_fam_as_partner <- function(x, xref){
+  
+  check_indi_rec(x, xref)
+  
+  indi_ged <- x@indi[[xref]]
+  
+  find_ged_values(indi_ged, "FAMS") |> 
+    remove_void_xrefs()
+}
+
+
+#' Identify all partners in a Family Group
+#'
+#' @inheritParams get_fam_as_child
 #' @param xref The xref of a Family Group record.
 #'
-#' @return A character vector of partner xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_fam_partners <- function(x, xref){
   
-  if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
+  check_fam_rec(x, xref)
   
   find_ged_values(x@fam[[xref]], "HUSB|WIFE") |> 
     remove_void_xrefs()
@@ -16,18 +66,16 @@ get_fam_partners <- function(x, xref){
 
 #' Identify all children in a Family Group
 #'
-#' @param x A gedcom object.
+#' @inheritParams get_fam_as_child
 #' @param xref The xref of a Family Group record.
-#' @param pedigrees A character vector of allowed pedigrees. By default, NULL means all pedigrees.
-#' If it includes "BIRTH" then this will also pick up non-existent values.
 #'
-#' @return A character vector of children xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_fam_children <- function(x, 
                               xref,
                               pedigrees = NULL){
   
-  if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
+  check_fam_rec(x, xref)
   
   fam_ged <- x@fam[[xref]]
   all_chil_xref <- find_ged_values(fam_ged, "CHIL") |> 
@@ -38,11 +86,10 @@ get_fam_children <- function(x,
   ped_chil_xref <- character()
   for(chil_xref in all_chil_xref){
     chil_ged <- x@indi[[chil_xref]]
-    links <- extract_family_links(chil_ged)
+    chil_links <- extract_family_links(chil_ged, as_spouse = FALSE)
     
-    for(lnk in links){
+    for(lnk in chil_links){
       if(lnk@fam_xref == xref && 
-         S7::S7_inherits(lnk, class_child_family_link) &&
          pedigree_in_set(lnk@pedigree, pedigrees)){
         
         ped_chil_xref <- c(ped_chil_xref, chil_xref)
@@ -51,69 +98,20 @@ get_fam_children <- function(x,
     }
     
   }
-  birth_chil_xref
+  ped_chil_xref
 }
 
-#' Identify all families for an individual where they are a child
-#'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return the family containing the biological parents.
-#'
-#' @return A character vector of family xrefs.
-#' @export
-get_fam_as_child <- function(x, 
-                              xref,
-                             pedigrees = NULL){
-  
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
-  
-  indi_ged <- x@indi[[xref]]
-  all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
-    remove_void_xrefs()
-  
-  if(is.null(pedigrees)) return(all_fam_xref)
-  
-  links <- extract_family_links(indi_ged)
-  
-  famc_xref <- character()
-  for(lnk in links){
-    if(S7::S7_inherits(lnk, class_child_family_link) &&
-       pedigree_in_set(lnk@pedigree, pedigrees)){
-      famc_xref <- c(famc_xref, lnk@fam_xref)
-    } 
-  }
-  famc_xref
-}
-
-#' Identify all families for an individual where they are a partner
-#' 
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#'
-#' @return A character vector of family xrefs.
-#' @export
-get_fam_as_partner <- function(x, xref){
-  
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
-  
-  indi_ged <- x@indi[[xref]]
-  
-  find_ged_values(indi_ged, "FAMS") |> 
-    remove_void_xrefs()
-}
 
 
 #' Identify all partners for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of partner xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_partners <- function(x, xref){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   fams_xref <- get_fam_as_partner(x, xref)
   
@@ -126,17 +124,15 @@ get_indi_partners <- function(x, xref){
 
 #' Identify all children for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return biological children.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of children xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_children <- function(x, 
                               xref,
                               pedigrees = NULL){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   fams_xref <- get_fam_as_partner(x, xref)
   
@@ -149,17 +145,15 @@ get_indi_children <- function(x,
 
 #' Identify all parents for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return biological parents.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of parent xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_parents <- function(x, 
                              xref,
                              pedigrees = NULL){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   famc_xref <- get_fam_as_child(x, xref, pedigrees)
   
@@ -173,11 +167,9 @@ get_indi_parents <- function(x,
 
 #' Identify all mothers for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return the biological mother.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of mother xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_mothers <- function(x,
                              xref,
@@ -188,11 +180,9 @@ get_indi_mothers <- function(x,
 
 #' Identify all fathers for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return the biological father.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of father xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_fathers <- function(x,
                              xref,
@@ -205,6 +195,8 @@ get_indi_parents_fathmoth <- function(x,
                                       xref,
                                       pedigrees = NULL,
                                       father = TRUE){
+  
+  check_indi_rec(x, xref)
   
   famc_xref <- get_fam_as_child(x, xref, pedigrees)
   if(father) tag <- "HUSB" else tag <- "WIFE"
@@ -222,19 +214,17 @@ get_indi_parents_fathmoth <- function(x,
 
 #' Identify all siblings for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param birth_only Whether to only return biological siblings.
+#' @inheritParams get_fam_as_child
 #' @param inc_half Whether to include siblings that only share one parent.
 #'
-#' @return A character vector of sibling xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_siblings <- function(x, 
                               xref,
                               pedigrees = NULL,
                               inc_half = FALSE){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   if(inc_half){
     spou_xref <- get_indi_parents(x, xref, pedigrees)
@@ -243,7 +233,7 @@ get_indi_siblings <- function(x,
       unlist()
     
   } else {
-    famc_xref <- get_fam_as_child(x, xref, birth_only)
+    famc_xref <- get_fam_as_child(x, xref, pedigrees)
     
     sibs_xref <- lapply(famc_xref, \(fam) get_fam_children(x, fam, pedigrees)) |>
       unlist()
@@ -255,19 +245,18 @@ get_indi_siblings <- function(x,
 
 #' Identify all cousins for an individual
 #'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
+#' @inheritParams get_fam_as_child
 #' @param degree Whether to return first cousins (degree = 1), second cousins (degree = 2), etc.
 #' @param inc_half Whether to include half cousins.
 #'
-#' @return A character vector of cousin xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_indi_cousins <- function(x, 
                              xref,
                              degree = 1,
                              inc_half = FALSE){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   if(degree < 1) stop("The degree must be at least 1.")
   degree <- floor(degree)
   
@@ -302,7 +291,7 @@ get_indi_cousins <- function(x,
 #' @param inc_sour Whether to include Source records.
 #' @param inc_repo Whether to include Repository records.
 #'
-#' @return A character vector of supporting record xrefs.
+#' @inherit get_fam_as_child return
 #' @export
 get_supporting_recs <- function(x, 
                                 xrefs,
@@ -344,9 +333,9 @@ get_supporting_recs <- function(x,
 #' records should reference Family Group records (and vice-versa), Repository records should be referenced
 #' by Source records, and Source records should be cited by other records.
 #'
-#' @param x A gedcom object.
+#' @inheritParams get_fam_as_child
 #'
-#' @return A character vector of xrefs that are not referenced anywhere else in the gedcom object.
+#' @inherit get_fam_as_child return
 #' @export
 get_unused_recs <- function(x){
   
@@ -363,17 +352,15 @@ get_unused_recs <- function(x){
 #' 
 #' This function identifies records in an entire branch of the family tree below a certain individual.
 #' 
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
+#' @inheritParams get_fam_as_child
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_part Whether to also include all partners of this individual (and their descendants and
 #' descendants' partners).
 #' @param inc_fam Whether to also include all Family Group records where this individual is a partner 
 #' (and all descendants' Family Group records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
-#' @param birth_only Whether to only include biological descendants.
 #'
-#' @return A vector of xrefs of descendants.
+#' @inherit get_fam_as_child return
 #' @export
 get_descendants <- function(x, 
                             xref,
@@ -383,7 +370,7 @@ get_descendants <- function(x,
                             inc_supp = FALSE,
                             pedigrees = NULL){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   return_xrefs <- character()
   
@@ -426,17 +413,15 @@ get_descendants <- function(x,
 #' 
 #' This function identifies records in an entire branch of the family tree above a certain individual.
 #' 
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
+#' @inheritParams get_fam_as_child
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_sibs Whether to also include all siblings of ancestors (siblings of this individual will only be
 #' included if the individual is included).
 #' @param inc_fam Whether to also include all Family Group records where this individual is a child 
 #' (and all ancestors' Family Group records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
-#' @param birth_only Whether to only include biological ancestors.
 #'
-#' @return A vector of xrefs of ancestors.
+#' @inherit get_fam_as_child return
 #' @export
 get_ancestors <- function(x, 
                           xref,
@@ -446,7 +431,7 @@ get_ancestors <- function(x,
                           inc_supp = FALSE,
                           pedigrees = NULL){
   
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
   return_xrefs <- character()
   

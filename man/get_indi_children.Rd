@@ -4,14 +4,17 @@
 \alias{get_indi_children}
 \title{Identify all children for an individual}
 \usage{
-get_indi_children(x, xref, birth_only = FALSE)
+get_indi_children(x, xref, pedigrees = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xref}{The xref of an Individual record.}
 
-\item{birth_only}{Whether to only return biological children.}
+\item{pedigrees}{A character vector of allowed family-child linkages.
+By default, NULL means all pedigrees (e.g. inc. ADOPTED).
+If it includes "BIRTH" then this will also pick up non-existent values
+(since BIRTH is assumed to be the default).}
 }
 \value{
 A character vector of children xrefs.

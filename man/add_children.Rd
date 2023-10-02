@@ -4,7 +4,7 @@
 \alias{add_children}
 \title{Create multiple children for a Family Group}
 \usage{
-add_children(x, xref, sexes = NULL)
+add_children(x, xref, sexes)
 }
 \arguments{
 \item{x}{A gedcom object.}

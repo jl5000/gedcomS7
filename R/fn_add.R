@@ -14,61 +14,57 @@
 #'
 #' @return A gedcom object with additional parent records.
 #' @export
-add_parents <- function(x, xref, inc_sex = TRUE){
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = NULL){
+  check_indi_rec(x, xref)
   
-  pars_xref <- get_indi_parents(x, xref, birth_only = TRUE)
+  moth_xref <- get_indi_mothers(x, xref, "BIRTH")
+  fath_xref <- get_indi_fathers(x, xref, "BIRTH")
   
-  if(length(pars_xref) == 2) return(x)
+  if(length(moth_xref) > 0 && !is.null(moth_name))
+    warning("Mother name not used as mother already exists")
   
-  # Get family group xref as child
-  famc_xref <- get_fam_as_child(x, xref, birth_only = TRUE)
-  if(length(famc_xref) > 1) stop("Individual already has more than one birth family.")
+  if(length(fath_xref) > 0 && !is.null(fath_name))
+    warning("Father name not used as father already exists")
+  
+  if(length(fath_xref) > 0 && length(moth_xref) > 0)
+    return(x)
+    
+  # Get family xref as child
+  famc_xref <- get_fam_as_child(x, xref, "BIRTH")
   
   # Create new family record if necessary
   if(length(famc_xref) == 0){
-    famc_xref <- x@next_xref[["famg"]]
+    famc_xref <- x@next_xref[["fam"]]
     
     famc_rec <- class_record_fam(
-      chil_biol_xref = xref
+      chil_xrefs = xref
     )
     
     x <- push_record(x, famc_rec)
   }
 
-  if(length(pars_xref) == 1){
-    # Add one parent
-    par_rec <- class_record_indi(
-      family_links = list(class_spouse_family_link(xref = famc_xref))
-    )
+  # Add father
+  if(length(fath_xref) == 0){
     
-    if(inc_sex){
-      par_sex_cur <- find_ged_values(x@indi[[pars_xref]], "SEX")
-      
-      if(length(par_sex_cur) == 1){
-        if(par_sex_cur == "F") par_rec@sex <- "M"
-        if(par_sex_cur == "M") par_rec@sex <- "F"
-      }
-    }
+    par_rec <- class_record_indi(
+      fam_links_spou = famc_xref
+    )
+    if(inc_sex) par_rec@sex <- "M"
+    if(!is.null(fath_name)) par_rec@pers_names <- fath_name
     
     x <- push_record(x, par_rec)
+  }
+  
+  # Add mother
+  if(length(moth_xref) == 0){
     
-  } else {
-    # No parents - add them both
-    husb_rec <- class_record_indi(
-      family_links = list(class_spouse_family_link(xref = famc_xref))
+    par_rec <- class_record_indi(
+      fam_links_spou = famc_xref
     )
-    wife_rec <- class_record_indi(
-      family_links = list(class_spouse_family_link(xref = famc_xref))
-    )
+    if(inc_sex) par_rec@sex <- "F"
+    if(!is.null(moth_name)) par_rec@pers_names <- moth_name
     
-    if(inc_sex){
-      husb_rec@sex <- "M"
-      wife_rec@sex <- "F"
-    }
-    
-    x <- push_record(x, husb_rec) |>
-      push_record(wife_rec)
+    x <- push_record(x, par_rec)
   }
   
   x
@@ -86,17 +82,16 @@ add_parents <- function(x, xref, inc_sex = TRUE){
 #'
 #' @return A gedcom object with additional sibling records.
 #' @export
-add_siblings <- function(x, xref, sexes = NULL){
-  if(is.null(sexes)) return(x)
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+add_siblings <- function(x, xref, sexes){
+  check_indi_rec(x, xref)
   
-  famc_xref <- get_fam_as_child(x, xref, birth_only = TRUE)
+  famc_xref <- get_fam_as_child(x, xref, "BIRTH")
   
   if(length(famc_xref) == 0){
-    famc_xref <- x@next_xref[["famg"]]
+    famc_xref <- x@next_xref[["fam"]]
     
     famc_rec <- class_record_fam(
-      chil_biol_xref = xref
+      chil_xrefs = xref
     )
     
     x <- push_record(x, famc_rec)
@@ -112,7 +107,7 @@ add_siblings <- function(x, xref, sexes = NULL){
     
     sib_rec <- class_record_indi(
       sex = sx,
-      family_links = list(class_child_family_link_biol(xref = famc_xref))
+      fam_links_chil = famc_xref
     )
     
     x <- push_record(x, sib_rec)
@@ -130,9 +125,8 @@ add_siblings <- function(x, xref, sexes = NULL){
 #'
 #' @return A gedcom object with additional child records.
 #' @export
-add_children <- function(x, xref, sexes = NULL){
-  if(is.null(sexes)) return(x)
-  if(!is_fam_uid(x, xref)) stop("The xref is not a Family Group record.")
+add_children <- function(x, xref, sexes){
+  check_fam_rec(x, xref)
   
   sexes_vec <- unlist(strsplit(sexes, split = NULL))
   
@@ -144,7 +138,7 @@ add_children <- function(x, xref, sexes = NULL){
     
     chil_rec <- class_record_indi(
       sex = sx,
-      family_links = list(class_child_family_link_biol(xref = xref))
+      fam_links_chil = xref
     )
 
     x <- push_record(x, chil_rec)
@@ -165,14 +159,15 @@ add_children <- function(x, xref, sexes = NULL){
 #'
 #' @return A gedcom object with additional spouse and Family Group records.
 #' @export
-add_spouse <- function(x, xref, sex = "U"){
-  if(!is_indi_uid(x, xref)) stop("The xref is not an Individual record.")
+add_spouse <- function(x, xref, sex = "U", name = NULL){
+  check_indi_rec(x, xref)
   
   spou_xref <- x@next_xref[["indi"]]
   
   spou_rec <- class_record_indi(
     sex = sex
   )
+  if(!is.null(name)) spou_rec@pers_names <- name
   
   x <- push_record(x, spou_rec)
   

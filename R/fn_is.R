@@ -15,4 +15,6 @@ is_media_xref <- function(x, xref) xref %in% x@xrefs[["media"]]
 is_note_xref <- function(x, xref) xref %in% x@xrefs[["note"]]
 is_subm_xref <- function(x, xref) xref %in% x@xrefs[["subm"]]
 
+check_indi_rec <- function(x, xref) if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+check_fam_rec <- function(x, xref) if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
 

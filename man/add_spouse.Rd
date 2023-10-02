@@ -4,7 +4,7 @@
 \alias{add_spouse}
 \title{Add a spouse for an individual}
 \usage{
-add_spouse(x, xref, sex = "U")
+add_spouse(x, xref, sex = "U", name = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}

@@ -95,10 +95,10 @@ refresh_fam_links <- function(gedcom, record){
   # Ensure FAMS/FAMC in indi records are correct
   
   # Who are the members of this family?
-  spou_xref <- unname(c(record@husb_xref, record@wife_xref))
-  spou_xref <- spou_xref[spou_xref != "@VOID@"]
-  chil_xrefs <- unname(c(record@chil_xrefs))
-  chil_xrefs <- chil_xrefs[chil_xrefs != "@VOID@"]
+  spou_xref <- unname(c(record@husb_xref, record@wife_xref)) |> 
+    remove_void_xrefs()
+  chil_xrefs <- unname(c(record@chil_xrefs)) |> 
+    remove_void_xrefs()
   
   for(indi in c(spou_xref, chil_xrefs)){
     if(!indi %in% gedcom@xrefs[["indi"]]){
@@ -162,7 +162,8 @@ refresh_indi_links <- function(gedcom, record){
   }
   
   for(lnk in record@fam_links_spou){
-    fam_rec <- gedcom@fam[[lnk@fam_xref]]
+    fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
+    fam_rec <- gedcom@fam[[fam_xref]]
     
     fam_husb <- find_ged_values(fam_rec, "HUSB")
     fam_wife <- find_ged_values(fam_rec, "WIFE")
@@ -186,26 +187,27 @@ refresh_indi_links <- function(gedcom, record){
         stop("This individual cannot be a spouse of a family that already has two spouses.")
       }
       
-      gedcom@fam[[lnk@fam_xref]] <- c(
-        gedcom@fam[[lnk@fam_xref]],
+      gedcom@fam[[fam_xref]] <- c(
+        gedcom@fam[[fam_xref]],
         sprintf("1 %s %s", spou_type, record@xref)
       )
     }
   }
   
   for(lnk in record@fam_links_chil){
-    fam_rec <- gedcom@fam[[lnk@fam_xref]]
+    fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
+    fam_rec <- gedcom@fam[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")
     
     if(!record@xref %in% fam_chil){
-      gedcom@fam[[lnk@fam_xref]] <- c(
-        gedcom@fam[[lnk@fam_xref]],
+      gedcom@fam[[fam_xref]] <- c(
+        gedcom@fam[[fam_xref]],
         sprintf("1 CHIL %s", record@xref)
       )
     }
   } 
   
-  # Ensure this individual (record@xref) appears in no other famg records
+  # Ensure this individual (record@xref) appears in no other fam records
   for(fam in gedcom@xrefs[["fam"]]){
     
     if(fam %in% fam_lnks) next

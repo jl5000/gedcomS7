@@ -4,14 +4,17 @@
 \alias{get_fam_children}
 \title{Identify all children in a Family Group}
 \usage{
-get_fam_children(x, xref, birth_only = FALSE)
+get_fam_children(x, xref, pedigrees = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xref}{The xref of a Family Group record.}
 
-\item{birth_only}{Whether to only return biological children.}
+\item{pedigrees}{A character vector of allowed family-child linkages.
+By default, NULL means all pedigrees (e.g. inc. ADOPTED).
+If it includes "BIRTH" then this will also pick up non-existent values
+(since BIRTH is assumed to be the default).}
 }
 \value{
 A character vector of children xrefs.

@@ -4,7 +4,7 @@
 \alias{add_siblings}
 \title{Create siblings for an Individual}
 \usage{
-add_siblings(x, xref, sexes = NULL)
+add_siblings(x, xref, sexes)
 }
 \arguments{
 \item{x}{A gedcom object.}

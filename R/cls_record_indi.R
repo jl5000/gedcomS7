@@ -82,14 +82,14 @@ class_record_indi <- S7::new_class(
         if(length(self@pers_names) == 0){
           character()
         } else {
-          obj_to_val(self@pers_names[[1]])
+          obj_to_val(iterable(self@pers_names)[[1]])
         }
       }),
     
     all_names = S7::new_property(
       S7::class_character,
       getter = function(self){
-        vapply(self@pers_names, \(nm){
+        vapply(iterable(self@pers_names), \(nm){
           obj_to_val(nm)
         }, FUN.VALUE = character(1), USE.NAMES = FALSE)
       }),
@@ -108,7 +108,7 @@ class_record_indi <- S7::new_class(
     birth_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "BIRT") return(fact@fact_date)
         }
         character()
@@ -117,7 +117,7 @@ class_record_indi <- S7::new_class(
     birth_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "BIRT") return(fact@fact_location)
         }
         character()
@@ -126,7 +126,7 @@ class_record_indi <- S7::new_class(
     is_alive = S7::new_property(
       S7::class_logical,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "DEAT") return(FALSE)
         }
         TRUE
@@ -135,7 +135,7 @@ class_record_indi <- S7::new_class(
     death_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "DEAT") return(fact@fact_date)
         }
         character()
@@ -144,7 +144,7 @@ class_record_indi <- S7::new_class(
     death_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in self@facts){
+        for(fact in iterable(self@facts)){
           if(fact@fact_type == "DEAT") return(fact@fact_location)
         }
         character()

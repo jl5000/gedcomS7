@@ -4,7 +4,7 @@
 \alias{add_parents}
 \title{Add parent records for an individual}
 \usage{
-add_parents(x, xref, inc_sex = TRUE)
+add_parents(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
