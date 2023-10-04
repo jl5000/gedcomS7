@@ -90,7 +90,8 @@
 #' @param fact_val
 #' @param fact_desc
 #' @param place see territory
-#' @param address
+#' @param address The address given either as a `class_address` object or as a character string.
+#' This would be as written on a mailing label with new lines separated by \n.
 #' @param phone_numbers 
 #' @param emails
 #' @param faxes
@@ -162,15 +163,14 @@
 #' @param data_note_xrefs
 #' @param subm_xref The cross-reference identifier of a submitter record.
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
-#' @param husb_xref named vector
-#' @param wife_xref named vector
-#' @param chil_xrefs named vector
+#' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of the member's individual records.
+#' If the individual does not have a record, then the value "@VOID@" can be used. 
+#' However, you will need to describe the individual by using a named vector (a description can be used
+#' in either case), e.g. c("Joe Bloggs" = "@VOID@")
 #' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
-#' who records also represent this individual. The vector names may provide a description of these records.
-#' @param anci_xrefs A character vector of relevant submitter record cross-reference identifiers
-#' who are interested in the ancestors of this individual.
-#' @param desi_xrefs A character vector of relevant submitter record cross-reference identifiers
-#' who are interested in the descendants of this individual.
+#' whose records also represent this individual. The vector names may provide a description of these records.
+#' @param anci_xrefs,desi_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the ancestors/descendants of this individual.
 #' 
 #' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
 #' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
@@ -196,8 +196,7 @@
 #' @param hour The hour of the day given as an integer between 0 and 23.
 #' @param minute The minute of the hour given as an integer between 0 and 59.
 #' @param second The second of the minute given as an integer between 0 and 59.
-#' @param fraction The fraction of the second given as 
-#' an integer.
+#' @param fraction The fraction of the second given as an integer.
 #' @param utc Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
 #' is in local time (FALSE).
 #' @param year The year given as an integer (greater than 0).
