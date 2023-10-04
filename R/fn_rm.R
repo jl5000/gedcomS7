@@ -4,133 +4,21 @@
 rm_records <- function(x, xrefs){
   xrefs <- unique(xrefs)
   for(xref in xrefs){
-    if(is_indi_xref(x, xref)){
-      x <- rm_indi(x, xref)
-    } else if(is_fam_uid(x, xref)){
-      x <- rm_famg(x, xref)
-    } else if(is_sour_uid(x, xref)){
-      x <- rm_sour(x, xref)
-    } else if(is_repo_uid(x, xref)){
-      x <- rm_repo(x, xref)
-    } else if(is_media_uid(x, xref)){
-      x <- rm_media(x, xref)
-    } else if(is_note_uid(x, xref)){
-      x <- rm_note(x, xref)
-    } else {
-      warning("There is no record with xref ", xref)
+    for(rec_type in val_record_types()){
+      
+      S7::prop(x, rec_type)[[xref]] <- NULL
+      
+      S7::prop(x, rec_type) <- lapply(S7::prop(x, rec_type), 
+                                      \(lines) replace_xref_values(lines, xref))
     }
   }
   x
 }
 
-# TODO: remove other links to these records
-rm_indi <- function(x, xref){
-  x@indi[[xref]] <- NULL
-  # Remove associations
-  for(i in seq_along(x@indi)){
-    asso_rows <- grep(sprintf("^1 ASSO %s$", xref), x@indi[[i]])
-    while(length(asso_rows) > 0){
-      x@indi[[i]] <- delete_ged_section(x@indi[[i]], asso_rows[1])
-      asso_rows <- grep(sprintf("^1 ASSO %s$", xref), x@indi[[i]])
-    }
-  }
-  # Remove family membership
-  for(i in seq_along(x@famg)){
-    vals <- extract_ged_value(x@famg[[i]])
-    memb_rows <- which(vals == xref)
-    if(memb_rows > 0)
-      x@famg[[i]] <- x@famg[[i]][-memb_rows]
-  }
-  
-  x  
-}
 
-# Also want remove_change_dates, order_fam_children, add_ancestors, indi_census_df
-rm_living <- function(x){
-  
-}
-
-rm_famg <- function(x, xref){
-  x@famg[[xref]] <- NULL
-  # Remove family links
-  # Also in birth/chris/adop events
-  for(i in seq_along(x@indi)){
-    link_rows <- grep(sprintf("^(1|2) (FAMS|FAMC) %s$", xref), x@indi[[i]])
-    while(length(link_rows) > 0){
-      x@indi[[i]] <- delete_ged_section(x@indi[[i]], link_rows[1])
-      link_rows <- grep(sprintf("^(1|2) (FAMS|FAMC) %s$", xref), x@indi[[i]])
-    }
-  }
-  
-  x  
-}
-
-rm_sour <- function(x, xref){
-  x@sour[[xref]] <- NULL
-  # Remove citations
-  rec_types <- c("indi", "famg", "media", "note")
-  for(rec_type in rec_types){
-    for(i in seq_along(S7::prop(x, rec_type))){
-      cit_rows <- grep(sprintf("^[1-6] SOUR %s$", xref), 
-                       S7::prop(x, rec_type)[[i]])
-      while(length(cit_rows) > 0){
-        S7::prop(x, rec_type)[[i]] <- delete_ged_section(S7::prop(x, rec_type)[[i]], 
-                                                         cit_rows[1])
-        cit_rows <- grep(sprintf("^[1-6] SOUR %s$", xref), 
-                         S7::prop(x, rec_type)[[i]])
-      }
-    }
-  }
-  
-  x  
-}
-
-rm_repo <- function(x, xref){
-  x@repo[[xref]] <- NULL
-  # Remove repo citations
-  for(i in seq_along(x@sour)){
-    cit_rows <- grep(sprintf("^1 REPO %s$", xref), x@sour[[i]])
-    while(length(cit_rows) > 0){
-      x@sour[[i]] <- delete_ged_section(x@sour[[i]], cit_rows[1])
-      cit_rows <- grep(sprintf("^1 REPO %s$", xref), x@sour[[i]])
-    }
-  }
-  
-  x  
-}
-
-rm_media <- function(x, xref){
-  x@media[[xref]] <- NULL
-  # Remove media links (inc. submitter)
-  x@subm@media_links <- x@subm@media_links[x@subm@media_links != xref]
-  
-  rec_types <- c("indi", "famg", "media", "note", "sour")
-  for(rec_type in rec_types){
-    for(i in seq_along(S7::prop(x, rec_type))){
-      vals <- extract_ged_value(S7::prop(x, rec_type)[[i]])
-      link_rows <- which(vals == xref)
-      if(link_rows > 0)
-        S7::prop(x, rec_type)[[i]] <- S7::prop(x, rec_type)[[i]][-link_rows]
-    }
-  }
-  x  
-}
-
-rm_note <- function(x, xref){
-  x@note[[xref]] <- NULL
-  # Remove note links (inc Submitter)
-  x@subm@note_links <- x@subm@note_links[x@subm@note_links != xref]
-  if(!is.null(x@subm@last_updated))
-    x@subm@last_updated@note_links <- x@subm@last_updated@note_links[x@subm@last_updated@note_links != xref]
-  
-  rec_types <- c("indi", "famg", "media", "note", "sour")
-  for(rec_type in rec_types){
-    for(i in seq_along(S7::prop(x, rec_type))){
-      vals <- extract_ged_value(S7::prop(x, rec_type)[[i]])
-      note_rows <- which(vals == xref)
-      if(note_rows > 0)
-        S7::prop(x, rec_type)[[i]] <- S7::prop(x, rec_type)[[i]][-note_rows]
-    }
-  }
-  x  
+replace_xref_values <- function(lines, xref){
+  rows <- extract_ged_value(lines) == xref
+  if(sum(rows) == 0) return(lines)
+  lines[rows] <- sub(paste0(xref, "$"), "@VOID@", lines[rows])
+  lines
 }
