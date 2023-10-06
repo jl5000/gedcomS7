@@ -38,7 +38,7 @@ get_fam_as_child <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
-get_fam_as_partner <- function(x, xref){
+get_fam_as_spouse <- function(x, xref){
   
   check_indi_rec(x, xref)
   
@@ -113,7 +113,7 @@ get_indi_partners <- function(x, xref){
   
   check_indi_rec(x, xref)
   
-  fams_xref <- get_fam_as_partner(x, xref)
+  fams_xref <- get_fam_as_spouse(x, xref)
   
   spou_xref <- lapply(fams_xref, \(fam) get_fam_partners(x, fam)) |>
     unlist()
@@ -134,7 +134,7 @@ get_indi_children <- function(x,
   
   check_indi_rec(x, xref)
   
-  fams_xref <- get_fam_as_partner(x, xref)
+  fams_xref <- get_fam_as_spouse(x, xref)
   
   chil_xref <- lapply(fams_xref, \(fam) get_fam_children(x, fam, pedigrees)) |>
     unlist()
@@ -376,7 +376,7 @@ get_descendants <- function(x,
   
   spou_xref <- get_indi_partners(x, xref)
   chil_xref <- get_indi_children(x, xref, pedigrees)
-  fams_xref <- get_fam_as_partner(x, xref)
+  fams_xref <- get_fam_as_spouse(x, xref)
   
   # if partner is to be included, add their children to be included
   if (inc_part) {

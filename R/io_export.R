@@ -15,7 +15,8 @@
 write_gedcom <- function(gedcom, 
                          filepath = file.choose(),
                          inc_confid = TRUE,
-                         inc_private = TRUE) {
+                         inc_private = TRUE,
+                         inc_living = TRUE) {
   
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
     stop("Output is not being saved as a GEDCOM file (*.ged)")
@@ -32,34 +33,17 @@ write_gedcom <- function(gedcom,
   
   lines <- gedcom@as_ged
   
-  lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
+  if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
+  if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVATE")
   
-  writeLines(lines2, con)
+  # Moved to as_ged property
+  #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
+  
+  writeLines(lines, con)
   
   invisible(filepath)
 }
 
-
-
-#' Prepare GEDCOM lines for export
-#'
-#' @param lines A character vector of gedcom lines.
-#' @param inc_confid Whether to retain structures marked as confidential.
-#' @param inc_private Whether to retain structures marked as private.
-#'
-#' @return A vector of GEDCOM lines ready for export.
-prepare_gedcom_lines <- function(lines, inc_confid, inc_private){
-  
-  if(!inc_confid) remove_sensitive_sections(lines, "CONFIDENTIAL")
-  if(!inc_private) remove_sensitive_sections(lines, "PRIVATE")
-  
-  check_for_xref_mentions(lines)
-    
-  lines <- split_gedcom_values(lines) |> 
-    add_at_escapes()
-  
-  lines
-}
 
 #' Remove gedcom structures marked as sensitive
 #'
@@ -84,6 +68,19 @@ remove_sensitive_sections <- function(lines, restriction){
     
   }
   lines
+}
+
+#' Prepare GEDCOM lines for export
+#'
+#' @param lines A character vector of gedcom lines.
+#'
+#' @return A vector of GEDCOM lines ready for export.
+prepare_gedcom_lines <- function(lines){
+  
+  check_for_xref_mentions(lines)
+    
+  split_gedcom_values(lines) |> 
+    add_at_escapes()
 }
 
 #' Check gedcom lines for inappropriate mentions of xrefs

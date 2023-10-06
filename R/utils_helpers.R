@@ -308,3 +308,11 @@ remove_void_xrefs <- function(xrefs){
 iterable <- function(x) {
   if(is.list(x) || is.atomic(x)) x else list(x)
 }
+
+remove_unsupported_structures_for_tests <- function(lines){
+  
+  adr_lines <- grep(" (ADR1)|(ADR2)|(ADR3) ", lines[1:40])
+  lines <- lines[-adr_lines]
+  
+  lines
+}

@@ -47,7 +47,7 @@ class_place <- S7::new_class(
                                           validator = function(value){
                                             c(
                                               chk_input_size(value, min_val = 1),
-                                              chk_input_size(names(value), length(value), length(value))
+                                              chk_input_size(names(value), length(value), length(value), 1)
                                             )
                                           }),
     lat_long = S7::new_property(S7::class_character,
@@ -61,7 +61,7 @@ class_place <- S7::new_class(
                                validator = function(value){
                                  c(
                                    chk_input_size(value, min_val = 1),
-                                   chk_input_size(names(value), length(value), length(value))
+                                   chk_input_size(names(value), length(value), length(value), 1)
                                  )
                                }),
     note_xrefs = S7::new_property(S7::class_character,

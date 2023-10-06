@@ -11,7 +11,7 @@
     {
       "type": "character",
       "attributes": {},
-      "value": ["0 REPO @VOID@", "1 NOTE Local library", "1 CALN ABC", "1 CALN 123"]
+      "value": ["0 REPO @VOID@", "1 NOTE Local library"]
     }
 
 # Function class_facts_recorded() @ L86

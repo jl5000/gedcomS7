@@ -1,9 +1,9 @@
 
 #' Add parent records for an individual
 #' 
-#' This function adds placeholder records for an individual's parents.
+#' This function adds records for an individual's parents.
 #' 
-#' @details This function may also create a Family Group record and will 
+#' @details This function may also create a Family record and will 
 #' not modify existing parents.
 #'
 #' @param x A gedcom object.
@@ -75,7 +75,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
 
 #' Create siblings for an Individual
 #' 
-#' @details This function may also create a Family Group record and will 
+#' @details This function may also create a Family record and will 
 #' not modify existing siblings.
 #'
 #' @param x A gedcom object.
@@ -125,10 +125,10 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
   x
 }
 
-#' Create multiple children for a Family Group
+#' Create multiple children for a Family
 #'
 #' @param x A gedcom object.
-#' @param xref The xref of a Family Group record.
+#' @param xref The xref of a Family record.
 #' @param sexes A character string giving the sexes of each child. For example,
 #' "FFM" to add two daughters and one son.
 #' @param chil_names A character vector of children's names. If provided, it must be
@@ -166,7 +166,7 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
 
 #' Add a spouse for an individual
 #' 
-#' This creates a record for a spouse and their Family Group record.
+#' This creates a record for a spouse and their Family record.
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of an Individual record.
@@ -247,4 +247,40 @@ add_ancestors <- function(x, xref, num_gen, inc_sex = TRUE){
   }
   
   x
+}
+
+
+
+
+
+#' Remove records from a GEDCOM object
+#'
+#' @param x A gedcom object.
+#' @param xrefs A character vector of xrefs to remove.
+#'
+#' @return The gedcom object with the records removed. Pointers to the record will
+#' be replaced with @VOID@.
+#' @export
+rm_records <- function(x, xrefs){
+  xrefs <- unique(xrefs)
+  for(xref in xrefs){
+    for(rec_type in val_record_types()){
+      
+      # Delete the record (if it is this type of record)
+      S7::prop(x, rec_type)[[xref]] <- NULL
+      
+      # Delete the pointers to it
+      S7::prop(x, rec_type) <- lapply(S7::prop(x, rec_type), 
+                                      \(lines) void_xref_ptrs(lines, xref))
+    }
+  }
+  x
+}
+
+
+void_xref_ptrs <- function(lines, xref){
+  rows <- extract_ged_value(lines) == xref
+  if(sum(rows) == 0) return(lines)
+  lines[rows] <- sub(paste0(xref, "$"), "@VOID@", lines[rows])
+  lines
 }

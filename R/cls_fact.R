@@ -156,8 +156,6 @@ class_fact <- S7::new_class(
         # }
         
         c(
-          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
-          sprintf("1 TYPE %s", self@fact_desc),
           obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
           obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),

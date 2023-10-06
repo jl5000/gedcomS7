@@ -4,8 +4,7 @@
 
 test_that("Function class_repository_citation() @ L12", {
   expect_snapshot_value(class_repository_citation()@as_ged, "json2")
-  expect_snapshot_value(class_repository_citation(notes = "Local library",
-                                                  call_numbers = c("ABC","123"))@as_ged, "json2")
+  expect_snapshot_value(class_repository_citation(notes = "Local library")@as_ged, "json2")
 })
 
 

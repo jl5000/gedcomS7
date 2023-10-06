@@ -2,44 +2,42 @@
 df_indi <- function(x){
   if(length(x@indi) == 0) return(NULL)
   
-  xrefs <- names(x@indi)
-  nms <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, "NAME")))
-  nms <- gsub("/", "", nms)
-  sexes <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, "SEX")))
-  dobs <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))))
-  pobs <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))))
-  alive <- sapply(x@indi, \(lines) length(grep("^1 DEAT", lines)) == 0)
-  dods <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))))
-  pods <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))))
-  moth_xref <- sapply(xrefs, \(xref) chronify(get_indi_mothers(x, xref, TRUE)))
-  moth_nm <- sapply(moth_xref, \(xref) if(xref == "") "" else chronify(find_ged_values(x@indi[[xref]], "NAME")))
-  moth_nm <- gsub("/", "", moth_nm)
-  fath_xref <- sapply(xrefs, \(xref) chronify(get_indi_fathers(x, xref, TRUE)))
-  fath_nm <- sapply(fath_xref, \(xref) if(xref == "") "" else chronify(find_ged_values(x@indi[[xref]], "NAME")))
-  fath_nm <- gsub("/", "", fath_nm)
-  chan_dt <- sapply(x@indi, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))))
-  
-  data.frame(
-    xref = xrefs,
-    name = nms,
-    sex = sexes,
-    birth_date = dobs,
-    birth_place = pobs,
-    is_alive = alive,
-    death_date = dods,
-    death_place = pods,
-    mother_xref = moth_xref,
-    mother_name = moth_nm,
-    father_xref = fath_xref,
-    father_name = fath_nm,
-    last_modified = chan_dt
+  df <- data.frame(
+    xref = names(x@indi),
+    name = desc_indi_name(x, names(x@indi), unnamed = ""),
+    sex = vapply(x@indi, \(lines) chronify(find_ged_values(lines, "SEX")), FUN.VALUE = character(1)),
+    birth_date = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))), FUN.VALUE = character(1)),
+    birth_place = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))), FUN.VALUE = character(1)),
+    is_alive = vapply(x@indi, \(lines) length(grep("^1 DEAT", lines)) == 0, FUN.VALUE = logical(1)),
+    death_date = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))), FUN.VALUE = character(1)),
+    death_place = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))), FUN.VALUE = character(1)),
+    fam_as_child = vapply(names(x@indi), \(xref) get_fam_as_child(x, xref, "BIRTH") |> 
+                            paste(collapse = ";"), FUN.VALUE = character(1)),
+    fam_as_spouse = vapply(names(x@indi), \(xref) get_fam_as_spouse(x, xref) |> 
+                             paste(collapse = ";"), FUN.VALUE = character(1)),
+    last_modified = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
   )
   
+  rownames(df) <- NULL
+  df
 }
 
-df_famg <- function(x){
-  if(length(x@famg) == 0) return(NULL)
+df_fam <- function(x){
+  if(length(x@fam) == 0) return(NULL)
   
+  df <- data.frame(
+    xref = names(x@fam),
+    husb_xref = vapply(x@fam, \(lines) chronify(find_ged_values(lines, "HUSB")), FUN.VALUE = character(1)),
+    wife_xref = vapply(x@fam, \(lines) chronify(find_ged_values(lines, "WIFE")), FUN.VALUE = character(1)),
+    chil_xref = vapply(x@fam, \(lines) find_ged_values(lines, "CHIL") |>
+                          paste(collapse = ";"), FUN.VALUE = character(1)),
+    marr_date = vapply(x@fam, \(lines) chronify(find_ged_values(lines, c("MARR","DATE"))), FUN.VALUE = character(1)),
+    marr_place = vapply(x@fam, \(lines) chronify(find_ged_values(lines, c("MARR","PLAC"))), FUN.VALUE = character(1)),
+    last_modified = vapply(x@fam, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
 }
 
 df_sour <- function(x){
@@ -63,13 +61,36 @@ df_note <- function(x){
 }
 
 df_indi_facts <- function(x, xref){
-  if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
+  check_indi_rec(x, xref)
   
+  indi <- pull_record(x, xref)
+  fcts <- indi@facts
   
+  data.frame(
+    xref = xref,
+    type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
+    val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
+    desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@fact_date), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@fact_location), FUN.VALUE = character(1)),
+    age = vapply(fcts, \(fct) chronify(fct@age), FUN.VALUE = character(1))
+  )
 }
 
-df_famg_facts <- function(x, xref){
-  if(!is_fam_uid(x, xref)) stop("The xref is not for a Family record.")
+df_fam_facts <- function(x, xref){
+  check_fam_rec(x, xref)
   
+  fam <- pull_record(x, xref)
+  fcts <- fam@facts
+  
+  data.frame(
+    xref = xref,
+    type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
+    val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
+    desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@fact_date), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@fact_location), FUN.VALUE = character(1)),
+    husb_age = vapply(fcts, \(fct) chronify(fct@husb_age), FUN.VALUE = character(1)),
+    wife_age = vapply(fcts, \(fct) chronify(fct@wife_age), FUN.VALUE = character(1))
+  )
 }
-

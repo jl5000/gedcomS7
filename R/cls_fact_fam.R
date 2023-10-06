@@ -46,13 +46,15 @@ class_fact_fam <- S7::new_class(
           wife_age <- chronify(self@wife_age)
         
         c(
-          self@.fact_detail_as_ged,
+          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
+          sprintf("1 TYPE %s", self@fact_desc),
           rep("1 HUSB", length(husb_age)),
           sprintf("2 AGE %s", husb_age) |> trimws(),
           sprintf("3 PHRASE %s", self@husb_age_phrase),
           rep("1 WIFE", length(wife_age)),
           sprintf("2 AGE %s", wife_age) |> trimws(),
-          sprintf("3 PHRASE %s", self@wife_age_phrase)
+          sprintf("3 PHRASE %s", self@wife_age_phrase),
+          self@.fact_detail_as_ged
         )
       }
     )

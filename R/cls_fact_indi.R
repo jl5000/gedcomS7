@@ -21,22 +21,7 @@ class_fact_indi <- S7::new_class(
     age_phrase = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_size(value, 0, 1, 1)
-                                  }),
-    
-    .indi_fact_detail_as_ged = S7::new_property(
-      S7::class_character,
-      getter = function(self){
-        age <- self@age
-        if(length(self@age_phrase) == 1)
-          age <- chronify(self@age)
-        
-        c(
-          self@.fact_detail_as_ged,
-          sprintf("1 AGE %s", age) |> trimws(),
-          sprintf("2 PHRASE %s", self@age_phrase)
-        )
-      }
-    )
+                                  })
   )
 )
 
@@ -102,8 +87,16 @@ class_event_indi <- S7::new_class(
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
+        age <- self@age
+        if(length(self@age_phrase) == 1)
+          age <- chronify(self@age)
+        
         c(
-          self@.indi_fact_detail_as_ged,
+          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
+          sprintf("1 TYPE %s", self@fact_desc),
+          self@.fact_detail_as_ged,
+          sprintf("1 AGE %s", age) |> trimws(),
+          sprintf("2 PHRASE %s", self@age_phrase),
           sprintf("1 FAMC %s", self@fam_xref),
           sprintf("2 ADOP %s", self@adop_parent),
           sprintf("3 PHRASE %s", self@adop_parent_phrase)
@@ -167,8 +160,21 @@ class_attr_indi <- S7::new_class(
   package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
-    as_ged = S7::new_property(S7::class_character, 
-                              getter = function(self) self@.indi_fact_detail_as_ged)
+    as_ged = S7::new_property(
+      S7::class_character, 
+      getter = function(self){
+        age <- self@age
+        if(length(self@age_phrase) == 1)
+          age <- chronify(self@age)
+        
+        c(
+          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
+          sprintf("1 TYPE %s", self@fact_desc),
+          self@.fact_detail_as_ged,
+          sprintf("1 AGE %s", age) |> trimws(),
+          sprintf("2 PHRASE %s", self@age_phrase)
+        )
+      })
   ),
   validator = function(self){
     errs <- NULL

@@ -216,6 +216,15 @@ class_gedcom_header <- S7::new_class(
 #' @export
 #' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
 #' cls_record_repo.R cls_record_sour.R cls_record_subm.R
+#' @tests
+#' ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7")) |> 
+#'             remove_unsupported_structures_for_tests()
+#' ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+#' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
+#'                                note = "N", sour = "S", subm = "U")
+#' ged_raw2 <- ged_parsed@as_ged
+#' 
+#' expect_equal(ged_raw, ged_raw2)
 class_gedcomS7 <- S7::new_class(
   "class_gedcomS7",
   parent = class_gedcom_header,
@@ -292,7 +301,8 @@ class_gedcomS7 <- S7::new_class(
           unlist(S7::prop(self, names(self@xref_prefixes)[6])),
           unlist(S7::prop(self, names(self@xref_prefixes)[7])),
           tr
-        ) |> unname()
+        ) |> unname() |> 
+          prepare_gedcom_lines()
       }
     )
     
