@@ -2,7 +2,7 @@
 
 # File R/cls_fact_fam.R: @tests
 
-test_that("Function class_event_fam() @ L80", {
+test_that("Function class_event_fam() @ L82", {
   expect_error(class_event_fam("marr", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
   expect_error(class_event_fam("MARR", fact_val = "Yes"), 
@@ -17,7 +17,7 @@ test_that("Function class_event_fam() @ L80", {
 })
 
 
-test_that("Function class_attr_fam() @ L101", {
+test_that("Function class_attr_fam() @ L103", {
   expect_error(class_attr_fam("residence", fact_val = "Earth"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(class_attr_fam("RESI", fact_val = ""), 

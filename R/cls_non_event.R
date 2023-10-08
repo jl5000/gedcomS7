@@ -71,8 +71,8 @@ class_non_event <- S7::new_class(
   }
 )
 
-extract_non_events <- function(rec_lines, location = NULL){
-  none_lst <- find_ged_values(rec_lines, c(location, "NO"), return_list = TRUE)
+extract_non_events <- function(rec_lines){
+  none_lst <- find_ged_values(rec_lines, "NO", return_list = TRUE)
   if(length(none_lst) == 0) return(list())
   
   lapply(none_lst, \(x){

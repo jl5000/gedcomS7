@@ -135,10 +135,19 @@ class_fact <- S7::new_class(
     fact_location = S7::new_property(
       S7::class_character,
       getter = function(self){
+        want_addr <- self@fact_type %in% c("RESI","CENS","PROP")
+        if(want_addr && length(self@address) == 1){
+          return(obj_to_val(self@address))
+        }
+          
         if(length(self@place) == 1){
           obj_to_val(self@place)
         } else if(length(self@address) == 1) {
-          obj_to_val(self@address)
+          obj_to_val(self@address) |> 
+            strsplit(", ") |> 
+            unlist() |> 
+            tail(2) |> 
+            paste(collapse = ", ")
         } else {
           character()
         }

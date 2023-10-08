@@ -81,6 +81,9 @@ would be BIRT, DEAT, MARR.}
 
 \item{place}{see territory}
 
+\item{address}{The address given either as a \code{class_address} object or as a character string.
+This would be as written on a mailing label with new lines separated by \n.}
+
 \item{phone_numbers}{}
 
 \item{default_place_form}{}
@@ -110,20 +113,16 @@ you will need to describe the repository in @notes.}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 
-\item{husb_xref}{named vector}
-
-\item{wife_xref}{named vector}
-
-\item{chil_xrefs}{named vector}
+\item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@")}
 
 \item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
-who records also represent this individual. The vector names may provide a description of these records.}
+whose records also represent this individual. The vector names may provide a description of these records.}
 
-\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the ancestors of this individual.}
-
-\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the descendants of this individual.}
+\item{anci_xrefs, desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the ancestors/descendants of this individual.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
@@ -153,8 +152,7 @@ associated information is not required.}
 
 \item{second}{The second of the minute given as an integer between 0 and 59.}
 
-\item{fraction}{The fraction of the second given as
-an integer.}
+\item{fraction}{The fraction of the second given as an integer.}
 
 \item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
 is in local time (FALSE).}

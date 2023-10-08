@@ -2,7 +2,7 @@
 
 # File R/cls_fact_indi.R: @tests
 
-test_that("Function class_event_indi() @ L78", {
+test_that("Function class_event_indi() @ L63", {
   expect_error(class_event_indi("birth", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
   expect_error(class_event_indi("BIRT", fact_val = "Yes"), 
@@ -34,7 +34,7 @@ test_that("Function class_event_indi() @ L78", {
 })
 
 
-test_that("Function class_attr_indi() @ L165", {
+test_that("Function class_attr_indi() @ L158", {
   expect_error(class_attr_indi("descr", fact_val = "Tall"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(class_attr_indi("DSCR"), 

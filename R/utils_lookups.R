@@ -56,6 +56,7 @@ val_individual_event_types <- function(inc_generic = FALSE) {
     Graduation = "GRAD", 
     Immigration = "IMMI", 
     Naturalization = "NATU",
+    Ordination = "ORDN",
     Probate = "PROB", 
     Retirement = "RETI",
     Will = "WILL"
@@ -120,6 +121,23 @@ val_fact_types <- function(inc_generic = FALSE) {
     val_event_types(inc_generic),
     val_individual_attribute_types(inc_generic),
     val_family_attribute_types(inc_generic)
+  )
+}
+
+val_individual_ordinance_types <- function(){
+  c(
+    Baptism = "BAPL", 
+    Confirmation = "CONL", 
+    Endowment = "ENDL", 
+    Initiatory = "INIL",
+    `Child sealing` = "SLGC"
+  )
+}
+
+val_ordinance_states <- function(){
+  c(
+    "BIC","CANCELED","CHILD","COMPLETED","EXCLUDED","DNS",
+    "DNS_CAN","INFANT","PRE_1970","STILLBORN","SUBMITTED","UNCLEARED"
   )
 }
 

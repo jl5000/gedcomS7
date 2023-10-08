@@ -2,7 +2,7 @@
 
 # File R/io_export.R: @tests
 
-test_that("Function split_gedcom_values() @ L147", {
+test_that("Function split_gedcom_values() @ L144", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

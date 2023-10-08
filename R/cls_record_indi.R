@@ -4,7 +4,7 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
-#' @include cls_record.R cls_personal_name.R cls_fact_indi.R cls_non_event.R cls_association.R
+#' @include cls_record.R cls_personal_name.R cls_fact_indi.R cls_non_event.R cls_association.R cls_ordinance.R
 #' @tests
 #' nms <- list(class_personal_name("Joe /Bloggs/"),
 #'             class_personal_name("Joseph /Bloggs/"))
@@ -39,13 +39,17 @@ class_record_indi <- S7::new_class(
                                chk_input_choice(value, val_sexes())
                              )
                            }),
-    facts = S7::new_property(S7::class_list,
+    facts = S7::new_property(S7::class_list | class_fact_indi,
                              validator = function(value){
                                chk_input_S7classes(value, class_fact_indi)
                              }),
-    non_events = S7::new_property(S7::class_list,
+    non_events = S7::new_property(S7::class_list | class_non_event,
                                   validator = function(value){
                                     chk_input_S7classes(value, class_non_event)
+                                  }),
+    ordinances = S7::new_property(S7::class_list | class_ordinance,
+                                  validator = function(value){
+                                    chk_input_S7classes(value, class_ordinance)
                                   }),
     fam_links_chil = S7::new_property(S7::class_list | class_child_family_link | S7::class_character,
                                       validator = function(value){
@@ -59,7 +63,7 @@ class_record_indi <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    associations = S7::new_property(S7::class_list,
+    associations = S7::new_property(S7::class_list | class_association,
                                     validator = function(value){
                                       chk_input_S7classes(value, class_association)
                                     }),
@@ -160,6 +164,7 @@ class_record_indi <- S7::new_class(
           sprintf("1 SEX %s", self@sex),
           obj_to_ged(self@facts) |> increase_level(by = 1),
           obj_to_ged(self@non_events) |> increase_level(by = 1),
+          obj_to_ged(self@ordinances) |> increase_level(by = 1),
           obj_to_ged(self@fam_links_chil, "FAMC") |> increase_level(by = 1),
           obj_to_ged(self@fam_links_spou, "FAMS") |> increase_level(by = 1),
           sprintf("1 SUBM %s", self@subm_xrefs),
@@ -188,6 +193,7 @@ extract_record_indi <- function(rec_lines){
     pers_names = extract_personal_names(rec_lines),
     facts = extract_facts_indi(rec_lines),
     non_events = extract_non_events(rec_lines),
+    ordinances = extract_ordinances(rec_lines),
     fam_links_chil = extract_family_links(rec_lines, as_spouse = FALSE),
     fam_links_spou = extract_family_links(rec_lines, as_spouse = TRUE),
     subm_xrefs = find_ged_values(rec_lines, "SUBM"),

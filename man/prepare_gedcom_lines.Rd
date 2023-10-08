@@ -4,14 +4,10 @@
 \alias{prepare_gedcom_lines}
 \title{Prepare GEDCOM lines for export}
 \usage{
-prepare_gedcom_lines(lines, inc_confid, inc_private)
+prepare_gedcom_lines(lines)
 }
 \arguments{
 \item{lines}{A character vector of gedcom lines.}
-
-\item{inc_confid}{Whether to retain structures marked as confidential.}
-
-\item{inc_private}{Whether to retain structures marked as private.}
 }
 \value{
 A vector of GEDCOM lines ready for export.

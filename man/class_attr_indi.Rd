@@ -40,6 +40,9 @@ class_attr_indi(
 
 \item{place}{see territory}
 
+\item{address}{The address given either as a \code{class_address} object or as a character string.
+This would be as written on a mailing label with new lines separated by \n.}
+
 \item{phone_numbers}{}
 
 \item{date_sort}{The date given either as a formatted GEDCOM string, or a

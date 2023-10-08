@@ -19,8 +19,7 @@ class_time(
 
 \item{second}{The second of the minute given as an integer between 0 and 59.}
 
-\item{fraction}{The fraction of the second given as
-an integer.}
+\item{fraction}{The fraction of the second given as an integer.}
 
 \item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
 is in local time (FALSE).}

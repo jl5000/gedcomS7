@@ -8,7 +8,8 @@ write_gedcom(
   gedcom,
   filepath = file.choose(),
   inc_confid = TRUE,
-  inc_private = TRUE
+  inc_private = TRUE,
+  inc_living = TRUE
 )
 }
 \arguments{

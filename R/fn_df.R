@@ -43,21 +43,73 @@ df_fam <- function(x){
 df_sour <- function(x){
   if(length(x@sour) == 0) return(NULL)
   
+  df <- data.frame(
+    xref = names(x@sour),
+    originator = vapply(x@sour, \(lines) chronify(find_ged_values(lines, "AUTH")), FUN.VALUE = character(1)),
+    title = vapply(x@sour, \(lines) chronify(find_ged_values(lines, "TITL")), FUN.VALUE = character(1)),
+    repo_xref = vapply(x@sour, \(lines) find_ged_values(lines, "REPO") |>
+                         paste(collapse = ";"), FUN.VALUE = character(1)),
+    last_modified = vapply(x@sour, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
 }
 
 df_repo <- function(x){
   if(length(x@repo) == 0) return(NULL)
   
+  df <- data.frame(
+    xref = names(x@repo),
+    name = vapply(x@repo, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
+    address = vapply(x@repo, \(lines) chronify(find_ged_values(lines, "ADDR")), FUN.VALUE = character(1)),
+    last_modified = vapply(x@repo, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
 }
 
 df_media <- function(x){
   if(length(x@media) == 0) return(NULL)
   
+  df <- data.frame(
+    xref = names(x@media),
+    num_files = vapply(x@media, \(lines) length(find_ged_values(lines, "FILE")), FUN.VALUE = integer(1)),
+    paths = vapply(x@media, \(lines) find_ged_values(lines, "FILE") |>
+                     paste(collapse = ";"), FUN.VALUE = character(1)),
+    last_modified = vapply(x@media, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
 }
 
 df_note <- function(x){
   if(length(x@note) == 0) return(NULL)
   
+  df <- data.frame(
+    xref = names(x@note),
+    language = vapply(x@note, \(lines) chronify(find_ged_values(lines, "LANG")), FUN.VALUE = character(1)),
+    last_modified = vapply(x@note, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
+}
+
+df_subm <- function(x){
+  if(length(x@subm) == 0) return(NULL)
+  
+  df <- data.frame(
+    xref = names(x@subm),
+    name = vapply(x@subm, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
+    address = vapply(x@subm, \(lines) chronify(find_ged_values(lines, "ADDR")), FUN.VALUE = character(1)),
+    last_modified = vapply(x@subm, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
+  )
+  
+  rownames(df) <- NULL
+  df
 }
 
 df_indi_facts <- function(x, xref){

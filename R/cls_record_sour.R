@@ -7,7 +7,8 @@
 #' @include cls_note.R
 #' @tests
 #' expect_snapshot_value(class_repository_citation()@as_ged, "json2")
-#' expect_snapshot_value(class_repository_citation(notes = "Local library")@as_ged, "json2")
+#' expect_snapshot_value(class_repository_citation(notes = "Local library",
+#'                                                 call_numbers = c("ABC","123"))@as_ged, "json2")
 class_repository_citation <- S7::new_class(
   "class_repository_citation",
   package = "gedcomS7",
@@ -27,11 +28,11 @@ class_repository_citation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
+    call_numbers = S7::new_property(S7::class_character,
+                                    validator = function(value){
+                                      chk_input_size(value, min_val = 1)
+                                    }),
     # TODO: too much nesting
-    # call_numbers = S7::new_property(S7::class_character,
-    #                                 validator = function(value){
-    #                                   chk_input_size(value, min_val = 1)
-    #                                 }),
     # media = S7::class_character, 
     # media_phrase = S7::class_character,
     
@@ -41,8 +42,8 @@ class_repository_citation <- S7::new_class(
         c(
           sprintf("0 REPO %s", self@repo_xref),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
-          # sprintf("1 CALN %s", self@call_numbers)
+          sprintf("1 SNOTE %s", self@note_xrefs),
+          sprintf("1 CALN %s", self@call_numbers)
           # sprintf("2 MEDI %s", self@media),
           # sprintf("3 PHRASE %s", self@media_phrase)
         )
@@ -58,8 +59,8 @@ extract_repo_citations <- function(rec_lines){
     class_repository_citation(
       repo_xref = find_ged_values(x, "REPO"),
       note_xrefs = find_ged_values(rec_lines, "SNOTE"),
-      notes = extract_notes(rec_lines)
-      #call_numbers = find_ged_values(x, c("REPO","CALN"))
+      notes = extract_notes(rec_lines),
+      call_numbers = find_ged_values(x, c("REPO","CALN"))
     )
   })
 }

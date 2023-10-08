@@ -4,7 +4,7 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
-#' @include cls_record.R cls_fact_fam.R cls_non_event.R cls_association.R
+#' @include cls_record.R cls_fact_fam.R cls_non_event.R cls_association.R cls_ordinance.R
 #' @tests
 #' fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
 #'                            date = "22 AUG 1907", place = "Church"))
@@ -61,6 +61,10 @@ class_record_fam <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
+    spouse_sealings = S7::new_property(S7::class_list | class_spouse_sealing,
+                                    validator = function(value){
+                                      chk_input_S7classes(value, class_spouse_sealing)
+                                    }),
     
     marriage_date = S7::new_property(
       S7::class_character,
@@ -93,6 +97,7 @@ class_record_fam <- S7::new_class(
           named_vec_to_ged(self@chil_xrefs, "CHIL", "PHRASE") |> increase_level(by = 1),
           obj_to_ged(self@associations) |> increase_level(by = 1),
           sprintf("1 SUBM %s", self@subm_xrefs),
+          obj_to_ged(self@spouse_sealings) |> increase_level(by = 1),
           self@ids |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
@@ -116,7 +121,8 @@ extract_record_fam <- function(rec_lines){
     wife_xref = extract_vals_and_types(rec_lines, "WIFE"),
     chil_xrefs = extract_vals_and_types(rec_lines, "CHIL"),
     associations = extract_associations(rec_lines),
-    subm_xrefs = find_ged_values(rec_lines, "SUBM")
+    subm_xrefs = find_ged_values(rec_lines, "SUBM"),
+    spouse_sealings = extract_ordinances(rec_lines)
   )
   
   extract_common_record_elements(rec, rec_lines)
