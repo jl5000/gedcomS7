@@ -40,8 +40,6 @@ remotes::install_github("jl5000/gedcomS7")
 
 The package does not currently implement the following:
 
-* LDS_SPOUSE_SEALING structures of Family records 
-* LDS_INDIVIDUAL_ORDINANCE of Individual records
 * Extension tags
 * Media types of SOURCE_REPOSITORY_CITATION call numbers (SOUR.REPO.CALN.MEDI)
 

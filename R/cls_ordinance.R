@@ -32,7 +32,6 @@ class_ordinance <- S7::new_class(
     ord_state = S7::new_property(S7::class_character,
                                  validator = function(value){
                                    chk_input_size(value, 0, 1)
-                                   chk_input_choice(value, val_ordinance_states())
                                  }),
     state_date = S7::new_property(S7::class_character | class_date_exact, 
                                   validator = function(value){
@@ -87,21 +86,8 @@ class_ordinance <- S7::new_class(
       })
   ),
   validator = function(self){
-    errs <- NULL
-    if(length(self@ord_state) == 1){
-      if(self@ord_state == "BIC" && self@ord_type != "SLGC")
-        errs <- c(errs, "An @ord_state of BIC is only for @ord_type of SLGC")
-      
-      if(self@ord_state %in% c("CANCELED","DNS_CAN") && self@ord_type != "SLGS")
-        errs <- c(errs, "An @ord_state of CANCELED/DNS_CAN is only for @ord_type of SLGS")
-      
-      if(self@ord_state %in% c("CHILD","INFANT") && self@ord_type == "SLGC")
-        errs <- c(errs, "An @ord_state of CHILD/INFANT cannot be used for @ord_type of SLGC")
-      
-      if(self@ord_state == "DNS" && !self@ord_type %in% c("SLGC","SLGS"))
-        errs <- c(errs, "An @ord_state of DNS is only for @ord_type of SLGC/SLGS")
-    }
-    
+    errs <- chk_input_choice(self@ord_state, val_ordinance_states(self@ord_type))
+
     if(length(self@fam_xref) == 0 && self@ord_type == "SLGC")
       errs <- c(errs, "A child sealing requires a @fam_xref")
     
@@ -117,19 +103,83 @@ class_ordinance <- S7::new_class(
   }
 )
 
+
 #' @export
 class_spouse_sealing <- S7::new_class(
   "class_spouse_sealing",
   package = "gedcomS7",
-  parent = class_ordinance,
   properties = list( 
-    ord_type = S7::new_property(S7::class_character,
-                                getter = function(self) "SLGS"),
-    fam_xref = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  chk_input_size(value, 0, 0)
-                                })
-  )
+    date = S7::new_property(S7::class_character | class_date_value,
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 0, 1),
+                                chk_input_pattern(value, reg_date_value())
+                              )
+                            }),
+    temple_name = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    place = S7::new_property(S7::class_character | class_place,
+                             validator = function(value){
+                               chk_input_size(value, 0, 1, 1)
+                             }),
+    ord_state = S7::new_property(S7::class_character,
+                                 validator = function(value){
+                                   chk_input_size(value, 0, 1)
+                                   chk_input_choice(value, val_ordinance_states("SLGS"))
+                                 }),
+    state_date = S7::new_property(S7::class_character | class_date_exact, 
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1),
+                                      chk_input_pattern(value, reg_date_exact())
+                                    )
+                                  }),
+    state_time = S7::new_property(S7::class_character | class_time,
+                                  validator = function(value){
+                                    c(
+                                      chk_input_size(value, 0, 1),
+                                      chk_input_pattern(value, reg_time())
+                                    )
+                                  }),
+    note_xrefs = S7::new_property(S7::class_character,
+                                  validator = function(value){
+                                    chk_input_pattern(value, reg_xref(TRUE))
+                                  }),
+    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+                             validator = function(value){
+                               chk_input_S7classes(value, class_note, ".+")
+                             }),
+    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+                                 validator = function(value){
+                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                 }),
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          "0 SLGS",
+          obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
+          sprintf("1 TEMP %s", self@temple_name),
+          obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
+          sprintf("1 STAT %s", self@ord_state),
+          sprintf("2 DATE %s", obj_to_val(self@state_date)),
+          sprintf("3 TIME %s", obj_to_val(self@state_time)),
+          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
+          sprintf("1 SNOTE %s", self@note_xrefs),
+          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+        )
+      })
+  ),
+  validator = function(self){
+    c(
+      chk_input_parents(self@ord_state, "@ord_state", self@state_date, "@state_date"),
+      chk_input_parents(self@state_date, "@state_date", self@ord_state, "@ord_state"),
+      chk_input_parents(self@state_time, "@state_time", self@state_date, "@state_date")
+    )
+  }
 )
 
 

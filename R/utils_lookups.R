@@ -134,11 +134,18 @@ val_individual_ordinance_types <- function(){
   )
 }
 
-val_ordinance_states <- function(){
-  c(
-    "BIC","CANCELED","CHILD","COMPLETED","EXCLUDED","DNS",
-    "DNS_CAN","INFANT","PRE_1970","STILLBORN","SUBMITTED","UNCLEARED"
+val_ordinance_states <- function(ord_type){
+  types <- c(
+    "COMPLETED","EXCLUDED","PRE_1970","STILLBORN","SUBMITTED","UNCLEARED"
   )
+  if(ord_type == "SLGC") types <- c(types, "BIC")
+  if(ord_type == "SLGS") types <- c(types, "CANCELED")
+  if(ord_type != "SLGC") types <- c(types, "CHILD")
+  if(ord_type != "SLGC") types <- c(types, "INFANT")
+  if(ord_type %in% c("SLGC","SLGS")) types <- c(types, "DNS")
+  if(ord_type == "SLGS") types <- c(types, "DNS_CAN")
+
+  types
 }
 
 #' @rdname val_record_types
