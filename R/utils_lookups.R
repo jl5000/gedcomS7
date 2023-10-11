@@ -1,5 +1,6 @@
 
 #' Lookup values
+#' @return A vector of allowed values.
 #' @export
 val_record_types <- function(){
   c(Individual = "indi", Family = "fam", Source = "sour", Submitter = "subm",
@@ -13,6 +14,7 @@ val_adoptive_parents <- function() {
 }
 
 #' @rdname val_record_types
+#' @param inc_generic Whether to include a generic attribute.
 #' @export
 val_individual_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -35,6 +37,7 @@ val_individual_attribute_types <- function(inc_generic = FALSE) {
 }
 
 #' @rdname val_record_types
+#' @param inc_generic Whether to include a generic event.
 #' @export
 val_individual_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -65,7 +68,7 @@ val_individual_event_types <- function(inc_generic = FALSE) {
   c(vals, `Other individual event` = "EVEN")
 }
 
-#' @rdname val_record_types
+#' @rdname val_individual_event_types
 #' @export
 val_family_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -85,7 +88,7 @@ val_family_event_types <- function(inc_generic = FALSE) {
 }
 
 
-#' @rdname val_record_types
+#' @rdname val_individual_attribute_types
 #' @export
 val_family_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -96,7 +99,7 @@ val_family_attribute_types <- function(inc_generic = FALSE) {
   c(vals, `Other family attribute` = "FACT")
 }
 
-#' @rdname val_record_types
+#' @rdname val_individual_event_types
 #' @export
 val_event_types <- function(inc_generic = FALSE) {
   c(
@@ -105,7 +108,7 @@ val_event_types <- function(inc_generic = FALSE) {
   )
 }
 
-#' @rdname val_record_types
+#' @rdname val_individual_attribute_types
 #' @export
 val_attribute_types <- function(inc_generic = FALSE) {
   c(
@@ -115,6 +118,7 @@ val_attribute_types <- function(inc_generic = FALSE) {
 }
 
 #' @rdname val_record_types
+#' @param inc_generic Whether to include a generic fact.
 #' @export
 val_fact_types <- function(inc_generic = FALSE) {
   c(
@@ -124,6 +128,8 @@ val_fact_types <- function(inc_generic = FALSE) {
   )
 }
 
+#' @rdname val_record_types
+#' @export
 val_individual_ordinance_types <- function(){
   c(
     Baptism = "BAPL", 
@@ -134,6 +140,18 @@ val_individual_ordinance_types <- function(){
   )
 }
 
+#' @rdname val_record_types
+#' @export
+val_family_ordinance_types <- function(){
+  c(
+    `Spouse sealing` = "SLGS"
+  )
+}
+
+#' @rdname val_record_types
+#' @param ord_type One of the values in `val_individual_ordinance_types()` or
+#' `val_family_ordinance_types()`.
+#' @export
 val_ordinance_states <- function(ord_type){
   types <- c(
     "COMPLETED","EXCLUDED","PRE_1970","STILLBORN","SUBMITTED","UNCLEARED"

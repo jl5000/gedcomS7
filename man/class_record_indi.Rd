@@ -22,6 +22,7 @@ class_record_indi(
   sex = class_missing,
   facts = class_missing,
   non_events = class_missing,
+  ordinances = class_missing,
   fam_links_chil = class_missing,
   fam_links_spou = class_missing,
   subm_xrefs = class_missing,

@@ -57,7 +57,7 @@ class_address <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 ADDR %s", self@full),
+          sprintf("0 ADDR %s", gsub("; ", "\n", self@full)),
           sprintf("1 CITY %s", self@city),
           sprintf("1 STAE %s", self@state),
           sprintf("1 POST %s", self@postal_code),
@@ -74,7 +74,7 @@ extract_address <- function(lines, location = NULL){
   if(length(addr) == 0) return(character())
   
   class_address(
-    full = addr,
+    full = gsub("\n", "; ", addr),
     city = find_ged_values(lines, c(location, "ADDR","CITY")),
     state = find_ged_values(lines, c(location, "ADDR","STAE")),
     postal_code = find_ged_values(lines, c(location, "ADDR","POST")),

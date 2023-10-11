@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and the other packages in the `gedcompendium`. The key changes are:
+The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and many of the other packages in the `gedcompendium`. The key changes are:
 
 * The package is designed to work with GEDCOM 7.1, rather than 5.5.5.
 * The package has minimal dependencies; currently only two.
@@ -38,12 +38,12 @@ remotes::install_github("jl5000/gedcomS7")
 
 ## Key limitations
 
-The package does not currently implement the following:
+The package does not currently support the following:
 
 * Extension tags
-* Media types of SOURCE_REPOSITORY_CITATION call numbers (SOUR.REPO.CALN.MEDI)
+* Mediums of SOURCE_REPOSITORY_CITATION call numbers (SOUR.REPO.CALN.MEDI)
 
-If you import a file with any of these features, the package may behave unpredictably.
+If you import a file with these features, the package may behave unpredictably.
 
 ## Import / creation
 

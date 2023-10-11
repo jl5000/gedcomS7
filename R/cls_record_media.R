@@ -37,7 +37,7 @@ class_media_file <- S7::new_class(
     media_type = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     c(
-                                      chk_input_size(value, 1, 1)
+                                      chk_input_size(value, 1, 1, 1)
                                       #chk_input_choice(value, val_multimedia_formats()), TODO
                                     )
                                   }),

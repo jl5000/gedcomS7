@@ -1,4 +1,11 @@
 
+
+#' Summarise records of a particular type in a dataframe
+#'
+#' @param x A gedcom object.
+#'
+#' @return A dataframe summarising a record on each row.
+#' @export
 df_indi <- function(x){
   if(length(x@indi) == 0) return(NULL)
   
@@ -22,6 +29,8 @@ df_indi <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_fam <- function(x){
   if(length(x@fam) == 0) return(NULL)
   
@@ -40,6 +49,8 @@ df_fam <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_sour <- function(x){
   if(length(x@sour) == 0) return(NULL)
   
@@ -56,6 +67,8 @@ df_sour <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_repo <- function(x){
   if(length(x@repo) == 0) return(NULL)
   
@@ -70,6 +83,8 @@ df_repo <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_media <- function(x){
   if(length(x@media) == 0) return(NULL)
   
@@ -85,6 +100,8 @@ df_media <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_note <- function(x){
   if(length(x@note) == 0) return(NULL)
   
@@ -98,6 +115,8 @@ df_note <- function(x){
   df
 }
 
+#' @rdname df_indi
+#' @export
 df_subm <- function(x){
   if(length(x@subm) == 0) return(NULL)
   
@@ -112,13 +131,20 @@ df_subm <- function(x){
   df
 }
 
+#' Summarise an individual's attributes/events in a dataframe
+#'
+#' @param x A gedcom object.
+#' @param xref The cross-reference identifier of an individual record.
+#'
+#' @return A dataframe summarising an attribute/event on each row.
+#' @export
 df_indi_facts <- function(x, xref){
   check_indi_rec(x, xref)
   
   indi <- pull_record(x, xref)
   fcts <- indi@facts
   
-  data.frame(
+  df <- data.frame(
     xref = xref,
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
@@ -127,15 +153,27 @@ df_indi_facts <- function(x, xref){
     place = vapply(fcts, \(fct) chronify(fct@fact_location), FUN.VALUE = character(1)),
     age = vapply(fcts, \(fct) chronify(fct@age), FUN.VALUE = character(1))
   )
+  
+  indi_facts <- c(val_individual_attribute_types(TRUE),
+                  val_individual_event_types(TRUE))
+  df$type <- names(indi_facts)[match(df$type, indi_facts)]
+  df
 }
 
+#' Summarise a family's attributes/events in a dataframe
+#'
+#' @param x A gedcom object.
+#' @param xref The cross-reference identifier of a family record.
+#'
+#' @return A dataframe summarising an attribute/event on each row.
+#' @export
 df_fam_facts <- function(x, xref){
   check_fam_rec(x, xref)
   
   fam <- pull_record(x, xref)
   fcts <- fam@facts
   
-  data.frame(
+  df <- data.frame(
     xref = xref,
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
@@ -145,4 +183,9 @@ df_fam_facts <- function(x, xref){
     husb_age = vapply(fcts, \(fct) chronify(fct@husb_age), FUN.VALUE = character(1)),
     wife_age = vapply(fcts, \(fct) chronify(fct@wife_age), FUN.VALUE = character(1))
   )
+  
+  fam_facts <- c(val_family_attribute_types(TRUE),
+                  val_family_event_types(TRUE))
+  df$type <- names(fam_facts)[match(df$type, fam_facts)]
+  df
 }

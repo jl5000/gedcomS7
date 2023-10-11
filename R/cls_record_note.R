@@ -24,8 +24,8 @@ class_record_note <- S7::new_class(
     media_type = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     c(
-                                      chk_input_size(value, 0, 1, 1)
-                                      #TODO: media type pattern (text/plain or text/html)
+                                      chk_input_size(value, 0, 1),
+                                      chk_input_choice(value, c("text/plain","text/html"))
                                     )
                                   }),
     language = S7::new_property(S7::class_character,

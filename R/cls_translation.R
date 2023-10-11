@@ -30,8 +30,8 @@ class_translation_txt <- S7::new_class(
     media_type = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     c(
-                                      chk_input_size(value, 0, 1, 1)
-                                      #TODO: media type pattern
+                                      chk_input_size(value, 0, 1),
+                                      chk_input_choice(value, c("text/plain","text/html"))
                                     )
                                   }),
     

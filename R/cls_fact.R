@@ -144,7 +144,7 @@ class_fact <- S7::new_class(
           obj_to_val(self@place)
         } else if(length(self@address) == 1) {
           obj_to_val(self@address) |> 
-            strsplit(", ") |> 
+            strsplit("; ") |> 
             unlist() |> 
             tail(2) |> 
             paste(collapse = ", ")

@@ -8,15 +8,15 @@
 #' @name prop_definitions
 #' 
 #' @param full A full address as it would appear on a mailing label, with lines separated
-#' by \n. For example:
-#' "The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"
+#' by semi-colon and a space. For example:
+#' "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"
 #' @param city The city component of the address.
 #' @param state The state component of the address.
 #' @param postal_code The postal code component of the address.
 #' @param country The country component of the address.
 #' @param text A character string. New lines are created with \n.
-#' @param language Language tags as defined in BCP 47.
-#' @param languages
+#' @param language A character string of language tags as defined in BCP 47.
+#' @param languages A character vector of language tags as defined in BCP 47.
 #' @param media_type The media type as defined in RFC 2045.
 #' @param translations A `class_translation_txt` object or a list of them.
 #' One for each alternate translation of the text.

@@ -24,7 +24,8 @@ class_record_fam(
   wife_xref = class_missing,
   chil_xrefs = class_missing,
   associations = class_missing,
-  subm_xrefs = class_missing
+  subm_xrefs = class_missing,
+  spouse_sealings = class_missing
 )
 }
 \arguments{

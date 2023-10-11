@@ -5,11 +5,10 @@
 \alias{val_adoptive_parents}
 \alias{val_individual_attribute_types}
 \alias{val_individual_event_types}
-\alias{val_family_event_types}
-\alias{val_family_attribute_types}
-\alias{val_event_types}
-\alias{val_attribute_types}
 \alias{val_fact_types}
+\alias{val_individual_ordinance_types}
+\alias{val_family_ordinance_types}
+\alias{val_ordinance_states}
 \alias{val_medium_types}
 \alias{val_pedigree_types}
 \alias{val_certainty}
@@ -28,15 +27,13 @@ val_individual_attribute_types(inc_generic = FALSE)
 
 val_individual_event_types(inc_generic = FALSE)
 
-val_family_event_types(inc_generic = FALSE)
-
-val_family_attribute_types(inc_generic = FALSE)
-
-val_event_types(inc_generic = FALSE)
-
-val_attribute_types(inc_generic = FALSE)
-
 val_fact_types(inc_generic = FALSE)
+
+val_individual_ordinance_types()
+
+val_family_ordinance_types()
+
+val_ordinance_states(ord_type)
 
 val_medium_types()
 
@@ -53,6 +50,15 @@ val_sexes()
 val_confidence_types()
 
 val_name_types()
+}
+\arguments{
+\item{inc_generic}{Whether to include a generic fact.}
+
+\item{ord_type}{One of the values in \code{val_individual_ordinance_types()} or
+\code{val_family_ordinance_types()}.}
+}
+\value{
+A vector of allowed values.
 }
 \description{
 Lookup values

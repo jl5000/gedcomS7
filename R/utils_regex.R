@@ -78,7 +78,6 @@ reg_time <- function(only = TRUE){
 #' the xref.
 #'
 #' @return A regular expression pattern for an xref.
-#' @export
 reg_xref <- function(only = TRUE) {
   reg <- "@[A-Z0-9_]+@"
   if(only) reg <- anchor_it(reg)
@@ -156,7 +155,6 @@ reg_date_exact <- function(only = TRUE) {
 #' the regular expression accepts patterns where text can come before or after
 #' the date().
 #' @return Either a single regex string or a vector of them
-#' @export
 #' @tests
 #' expect_equal(grepl(reg_date(), "14 JAN 2005"), TRUE)
 #' expect_equal(grepl(reg_date(), "14 JAM 2005"), FALSE)
