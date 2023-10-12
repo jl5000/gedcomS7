@@ -140,7 +140,8 @@ class_fact <- S7::new_class(
           return(obj_to_val(self@address))
         }
         
-        if(length(self@address@city) + 
+        if(length(self@address) == 1 &&
+           length(self@address@city) + 
            length(self@address@state) + 
            length(self@address@country) > 1){
           toString(c(self@address@city, self@address@state, self@address@country))

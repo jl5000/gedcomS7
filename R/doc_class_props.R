@@ -98,21 +98,22 @@
 #' @param web_pages
 #' @param agency
 #' @param relig_affil
-#' @param cause
+#' @param cause Used in special cases to record the reasons which precipitated the fact (e.g. cause of death). 
 #' @param confidential
 #' @param locked
 #' @param private
 #' @param associations
-#' @param age
-#' @param age_phrase
-#' @param husb_age
-#' @param husb_age_phrase
-#' @param wife_age
-#' @param wife_age_phrase
+#' @param age,husb_age,wife_age A character string that indicates the age in years, months, weeks and/or days 
+#' that the individual was at the time of the fact. Any combination of these is permitted. 
+#' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
+#' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
+#' in the corresponding phrase parameter.
+#' @param age_phrase,husb_age_phrase,wife_age_phrase Textual information that cannot be expressed in the age.
 #' @param adop_parent
 #' @param adop_parent_phrase
 #' @param pers_names
-#' @param sex
+#' @param sex The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
+#' "U" (undetermined, the default),
 #' @param fam_links_chil
 #' @param fam_links_spou
 #' @param files
@@ -166,7 +167,7 @@
 #' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of the member's individual records.
 #' If the individual does not have a record, then the value "@VOID@" can be used. 
 #' However, you will need to describe the individual by using a named vector (a description can be used
-#' in either case), e.g. c("Joe Bloggs" = "@VOID@")
+#' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")
 #' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
 #' whose records also represent this individual. The vector names may provide a description of these records.
 #' @param anci_xrefs,desi_xrefs A character vector of relevant submitter record cross-reference identifiers
