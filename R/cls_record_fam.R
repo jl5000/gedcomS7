@@ -111,19 +111,19 @@ class_record_fam <- S7::new_class(
 )
 
 
-extract_record_fam <- function(rec_lines){
+parse_record_fam <- function(rec_lines){
   
   rec <- class_record_fam(
     xref = extract_ged_xref(rec_lines[1]),
-    facts = extract_facts_fam(rec_lines),
-    non_events = extract_non_events(rec_lines),
-    husb_xref = extract_vals_and_types(rec_lines, "HUSB"),
-    wife_xref = extract_vals_and_types(rec_lines, "WIFE"),
-    chil_xrefs = extract_vals_and_types(rec_lines, "CHIL"),
-    associations = extract_associations(rec_lines),
+    facts = parse_facts_fam(rec_lines),
+    non_events = parse_non_events(rec_lines),
+    husb_xref = parse_vals_and_types(rec_lines, "HUSB"),
+    wife_xref = parse_vals_and_types(rec_lines, "WIFE"),
+    chil_xrefs = parse_vals_and_types(rec_lines, "CHIL"),
+    associations = parse_associations(rec_lines),
     subm_xrefs = find_ged_values(rec_lines, "SUBM"),
-    spouse_sealings = extract_ordinances(rec_lines)
+    spouse_sealings = parse_ordinances(rec_lines)
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

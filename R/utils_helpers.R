@@ -177,7 +177,7 @@ named_vec_to_ged <- function(vec, tag1, tag2){
   ged
 }
 
-extract_vals_and_types <- function(lines, val_tag){
+parse_vals_and_types <- function(lines, val_tag){
   val_lst <- find_ged_values(lines, val_tag, return_list = TRUE)
   if(length(val_lst) == 0) return(character())
   

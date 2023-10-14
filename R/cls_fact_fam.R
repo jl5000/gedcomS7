@@ -110,7 +110,7 @@ class_attr_fam <- S7::new_class(
   }
 )
 
-extract_facts_fam <- function(rec_lines){
+parse_facts_fam <- function(rec_lines){
   fact_lst <- find_ged_values(rec_lines, return_list = TRUE,
                               tag = paste(c(val_family_attribute_types(TRUE),
                                             val_family_event_types(TRUE)),
@@ -141,6 +141,6 @@ extract_facts_fam <- function(rec_lines){
       wife_age_phrase = find_ged_values(x, c(tag, "WIFE", "AGE", "PHRASE"))
     )
     
-    extract_common_fact_elements(fact, x)
+    parse_common_fact_elements(fact, x)
   })
 }

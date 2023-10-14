@@ -90,7 +90,7 @@ class_note <- S7::new_class(
 )
 
 # Need location when top level has no xref
-extract_notes <- function(lines, location = NULL){
+parse_notes <- function(lines, location = NULL){
   note_lst <- find_ged_values(lines, c(location, "NOTE"), return_list = TRUE)
   if(length(note_lst) == 0) return(list())
   
@@ -99,8 +99,8 @@ extract_notes <- function(lines, location = NULL){
       text = find_ged_values(x, "NOTE"),
       language = find_ged_values(x, c("NOTE","LANG")),
       media_type = find_ged_values(x, c("NOTE","MIME")),
-      translations = extract_translations(x, "NOTE"),
-      citations = extract_citations(x, "NOTE")
+      translations = parse_translations(x, "NOTE"),
+      citations = parse_citations(x, "NOTE")
     )
   })
   

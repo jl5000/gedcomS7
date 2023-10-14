@@ -83,7 +83,7 @@ class_media_link <- S7::new_class(
   )
 )
 
-extract_media_links <- function(lines, location = NULL){
+parse_media_links <- function(lines, location = NULL){
   media_lst <- find_ged_values(lines, c(location, "OBJE"), return_list = TRUE)
   if(length(media_lst) == 0) return(list())
   

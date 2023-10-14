@@ -22,7 +22,7 @@ get_fam_as_child <- function(x,
   
   if(is.null(pedigrees)) return(all_fam_xref)
   
-  chil_links <- extract_family_links(indi_ged, as_spouse = FALSE)
+  chil_links <- parse_family_links(indi_ged, as_spouse = FALSE)
   
   famc_xref <- character()
   for(lnk in chil_links){
@@ -86,7 +86,7 @@ get_fam_children <- function(x,
   ped_chil_xref <- character()
   for(chil_xref in all_chil_xref){
     chil_ged <- x@indi[[chil_xref]]
-    chil_links <- extract_family_links(chil_ged, as_spouse = FALSE)
+    chil_links <- parse_family_links(chil_ged, as_spouse = FALSE)
     
     for(lnk in chil_links){
       if(lnk@fam_xref == xref && 

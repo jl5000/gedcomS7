@@ -185,23 +185,23 @@ class_record_indi <- S7::new_class(
 )
 
 
-extract_record_indi <- function(rec_lines){
+parse_record_indi <- function(rec_lines){
   
   rec <- class_record_indi(
     xref = extract_ged_xref(rec_lines[1]),
     sex = find_ged_values(rec_lines, "SEX"),
-    pers_names = extract_personal_names(rec_lines),
-    facts = extract_facts_indi(rec_lines),
-    non_events = extract_non_events(rec_lines),
-    ordinances = extract_ordinances(rec_lines),
-    fam_links_chil = extract_family_links(rec_lines, as_spouse = FALSE),
-    fam_links_spou = extract_family_links(rec_lines, as_spouse = TRUE),
+    pers_names = parse_personal_names(rec_lines),
+    facts = parse_facts_indi(rec_lines),
+    non_events = parse_non_events(rec_lines),
+    ordinances = parse_ordinances(rec_lines),
+    fam_links_chil = parse_family_links(rec_lines, as_spouse = FALSE),
+    fam_links_spou = parse_family_links(rec_lines, as_spouse = TRUE),
     subm_xrefs = find_ged_values(rec_lines, "SUBM"),
-    associations = extract_associations(rec_lines),
-    alia_xrefs = extract_vals_and_types(rec_lines, "ALIA"),
+    associations = parse_associations(rec_lines),
+    alia_xrefs = parse_vals_and_types(rec_lines, "ALIA"),
     anci_xrefs = find_ged_values(rec_lines, "ANCI"),
     desi_xrefs = find_ged_values(rec_lines, "DESI")
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

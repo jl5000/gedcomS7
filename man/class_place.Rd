@@ -18,7 +18,8 @@ class_place(
 \arguments{
 \item{language}{A character string of language tags as defined in BCP 47.}
 
-\item{ext_ids}{dsfse}
+\item{ext_ids}{A named character vector of identifiers maintained by an external authority.
+The names must be given as a URI. See the GEDCOM specification for more information.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 

@@ -208,14 +208,14 @@ class_fact <- S7::new_class(
   }
 )
 
-extract_common_fact_elements <- function(fact, lines){
+parse_common_fact_elements <- function(fact, lines){
   
   tag <- extract_ged_tag(lines[1])
   
   S7::props(fact) <- list(
-    date = extract_date_value(lines, tag),
-    place = extract_place(lines, tag),
-    address = extract_address(lines, tag),
+    date = parse_date_value(lines, tag),
+    place = parse_place(lines, tag),
+    address = parse_address(lines, tag),
     phone_numbers = find_ged_values(lines, c(tag, "PHON")),
     emails = find_ged_values(lines, c(tag, "EMAIL")),
     faxes = find_ged_values(lines, c(tag, "FAX")),
@@ -223,12 +223,12 @@ extract_common_fact_elements <- function(fact, lines){
     agency = find_ged_values(lines, c(tag, "AGNC")),
     relig_affil = find_ged_values(lines, c(tag, "RELI")),
     cause = find_ged_values(lines, c(tag, "CAUS")),
-    date_sort = extract_date_value(lines, tag, sorting = TRUE),
-    associations = extract_associations(lines, tag),
+    date_sort = parse_date_value(lines, tag, sorting = TRUE),
+    associations = parse_associations(lines, tag),
     note_xrefs = find_ged_values(lines, c(tag, "SNOTE")),
-    notes = extract_notes(lines, tag),
-    citations = extract_citations(lines, tag),
-    media_links = extract_media_links(lines, tag),
+    notes = parse_notes(lines, tag),
+    citations = parse_citations(lines, tag),
+    media_links = parse_media_links(lines, tag),
     unique_ids = find_ged_values(lines, c(tag, "UID"))
   )
   

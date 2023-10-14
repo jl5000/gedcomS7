@@ -115,18 +115,18 @@ class_record <- S7::new_class(
 #' @param rec_lines A character vector of lines of a GEDCOM record.
 #'
 #' @return The S7 record object with common elements added as properties.
-extract_common_record_elements <- function(rec, rec_lines){
+parse_common_record_elements <- function(rec, rec_lines){
   
   S7::props(rec) <- list(
-    user_ids = extract_vals_and_types(rec_lines, "REFN"),
-    ext_ids = extract_vals_and_types(rec_lines, "EXID"),
+    user_ids = parse_vals_and_types(rec_lines, "REFN"),
+    ext_ids = parse_vals_and_types(rec_lines, "EXID"),
     unique_ids = find_ged_values(rec_lines, "UID"),
     note_xrefs = find_ged_values(rec_lines, "SNOTE"),
-    notes = extract_notes(rec_lines),
-    media_links = extract_media_links(rec_lines),
-    citations = extract_citations(rec_lines),
-    updated = extract_change_date(rec_lines),
-    created = extract_creation_date(rec_lines)
+    notes = parse_notes(rec_lines),
+    media_links = parse_media_links(rec_lines),
+    citations = parse_citations(rec_lines),
+    updated = parse_change_date(rec_lines),
+    created = parse_creation_date(rec_lines)
   )
   
   resn <- find_ged_values(rec_lines, "RESN")

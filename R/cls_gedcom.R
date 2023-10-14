@@ -329,7 +329,7 @@ new_gedcom <- function(my_language = "en"){
                  default_language = my_language)
 }
 
-extract_gedcom_header <- function(hd_lines){
+parse_gedcom_header <- function(hd_lines){
   
   sour <- NULL
   product_id <- find_ged_values(hd_lines, c("HEAD","SOUR"))
@@ -341,7 +341,7 @@ extract_gedcom_header <- function(hd_lines){
       product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
       product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
       business_name = find_ged_values(hd_lines, c("HEAD","SOUR","CORP")),
-      business_address = extract_address(hd_lines, c("HEAD","SOUR","CORP")),
+      business_address = parse_address(hd_lines, c("HEAD","SOUR","CORP")),
       phone_numbers = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","PHON")),
       emails = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","EMAIL")),
       faxes = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","FAX")),
@@ -364,7 +364,7 @@ extract_gedcom_header <- function(hd_lines){
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),
     default_language = find_ged_values(hd_lines, c("HEAD","LANG")),
     default_place_form = find_ged_values(hd_lines, c("HEAD","PLAC","FORM")),
-    notes = extract_notes(hd_lines, "HEAD"),
+    notes = parse_notes(hd_lines, "HEAD"),
     note_xrefs = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
   

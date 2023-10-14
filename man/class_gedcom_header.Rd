@@ -20,6 +20,12 @@ class_gedcom_header(
 )
 }
 \arguments{
+\item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
+\code{class_date_exact} object.}
+
+\item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
+\code{class_time} object.}
+
 \item{subm_xref}{The cross-reference identifier of a submitter record.}
 
 \item{default_place_form}{}

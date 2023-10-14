@@ -68,15 +68,15 @@ class_record_note <- S7::new_class(
   }
 )
 
-extract_record_note <- function(rec_lines){
+parse_record_note <- function(rec_lines){
   
   rec <- class_record_note(
     xref = extract_ged_xref(rec_lines[1]),
     text = extract_ged_value(rec_lines[1]),
     media_type = find_ged_values(rec_lines, "MIME"),
     language = find_ged_values(rec_lines, "LANG"),
-    translations = extract_translations(rec_lines)
+    translations = parse_translations(rec_lines)
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

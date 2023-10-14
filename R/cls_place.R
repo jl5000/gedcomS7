@@ -105,7 +105,7 @@ class_place <- S7::new_class(
   )
 )
 
-extract_place <- function(lines, location = NULL){
+parse_place <- function(lines, location = NULL){
   
   place_name <- find_ged_values(lines, c(location, "PLAC"))
   if(length(place_name) == 0) return(character())
@@ -119,11 +119,11 @@ extract_place <- function(lines, location = NULL){
     place_name = place_name,
     place_form = find_ged_values(lines, c(location, "PLAC","FORM")),
     language = find_ged_values(lines, c(location, "PLAC","LANG")),
-    place_translations = extract_vals_and_types(lines, c(location, "PLAC","TRAN")),
+    place_translations = parse_vals_and_types(lines, c(location, "PLAC","TRAN")),
     lat_long = latlong,
-    ext_ids = extract_vals_and_types(lines, c(location, "PLAC","EXID")),
+    ext_ids = parse_vals_and_types(lines, c(location, "PLAC","EXID")),
     note_xrefs = find_ged_values(lines, c(location, "PLAC","SNOTE")),
-    notes = extract_notes(lines, c(location, "PLAC"))
+    notes = parse_notes(lines, c(location, "PLAC"))
   )
   
 }

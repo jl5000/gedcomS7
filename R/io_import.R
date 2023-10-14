@@ -107,7 +107,7 @@ parse_records <- function(records_lst){
   records_lst <- records_lst[-length(records_lst)]
   
   # parse header
-  x <- extract_gedcom_header(records_lst[[1]])
+  x <- parse_gedcom_header(records_lst[[1]])
   records_lst <- records_lst[-1]
   
   subset_recs <- function(rec_lst, rec_type){

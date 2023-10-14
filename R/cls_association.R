@@ -75,7 +75,7 @@ class_association <- S7::new_class(
 )
 
 
-extract_associations <- function(rec_lines, location = NULL){
+parse_associations <- function(rec_lines, location = NULL){
   asso_lst <- find_ged_values(rec_lines, c(location, "ASSO"), return_list = TRUE)
   if(length(asso_lst) == 0) return(list())
   
@@ -86,8 +86,8 @@ extract_associations <- function(rec_lines, location = NULL){
       relation_is = find_ged_values(x, c("ASSO","ROLE")),
       relation_phrase = find_ged_values(x, c("ASSO","ROLE","PHRASE")),
       note_xrefs = find_ged_values(x, c("ASSO","SNOTE")),
-      notes = extract_notes(x, "ASSO"),
-      citations = extract_citations(x, "ASSO")
+      notes = parse_notes(x, "ASSO"),
+      citations = parse_citations(x, "ASSO")
     )
   })
 }

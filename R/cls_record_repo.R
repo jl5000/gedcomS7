@@ -67,17 +67,17 @@ class_record_repo <- S7::new_class(
 )
 
 
-extract_record_repo <- function(rec_lines){
+parse_record_repo <- function(rec_lines){
   
   rec <- class_record_repo(
     xref = extract_ged_xref(rec_lines[1]),
     repo_name = find_ged_values(rec_lines, "NAME"),
-    address = extract_address(rec_lines),
+    address = parse_address(rec_lines),
     phone_numbers = find_ged_values(rec_lines, "PHON"),
     emails = find_ged_values(rec_lines, "EMAIL"),
     faxes = find_ged_values(rec_lines, "FAX"),
     web_pages = find_ged_values(rec_lines, "WWW")
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

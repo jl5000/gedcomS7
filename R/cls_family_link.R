@@ -119,7 +119,7 @@ class_child_family_link <- S7::new_class(
   }
 )
 
-extract_family_links <- function(rec_lines, as_spouse = TRUE){
+parse_family_links <- function(rec_lines, as_spouse = TRUE){
   if(as_spouse) tag <- "FAMS" else tag <- "FAMC"
   link_lst <- find_ged_values(rec_lines, tag, return_list = TRUE) 
   if(length(link_lst) == 0) return(list())
@@ -141,7 +141,7 @@ extract_family_links <- function(rec_lines, as_spouse = TRUE){
     }
     
     lnk@note_xrefs <- find_ged_values(x, c(tag,"SNOTE"))
-    lnk@notes <- extract_notes(x, tag)
+    lnk@notes <- parse_notes(x, tag)
     lnk
   })
 }

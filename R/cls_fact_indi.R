@@ -189,7 +189,7 @@ class_attr_indi <- S7::new_class(
 )
 
 
-extract_facts_indi <- function(rec_lines){
+parse_facts_indi <- function(rec_lines){
   fact_lst <- find_ged_values(rec_lines, return_list = TRUE,
                               tag = paste(c(val_individual_attribute_types(TRUE),
                                             val_individual_event_types(TRUE)),
@@ -222,7 +222,7 @@ extract_facts_indi <- function(rec_lines){
       age_phrase = find_ged_values(x, c(tag, "AGE", "PHRASE"))
     )
     
-    extract_common_fact_elements(fact, x)
+    parse_common_fact_elements(fact, x)
   })
 }
 

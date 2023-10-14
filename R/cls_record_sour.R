@@ -1,4 +1,9 @@
 
+#' Create a source call number object
+#' 
+#' @inheritParams prop_definitions
+#' @return An S7 object representing the CALN substructure of a GEDCOM 
+#' SOURCE_REPOSITORY_CITATION.
 #' @export
 class_source_call_number <- S7::new_class(
   "class_source_call_number",
@@ -35,7 +40,7 @@ class_source_call_number <- S7::new_class(
   }
 )
 
-extract_call_numbers <- function(lines, location){
+parse_call_numbers <- function(lines, location){
   call_lst <- find_ged_values(lines, c(location, "CALN"), return_list = TRUE) 
   if(length(call_lst) == 0) return(list())
   
@@ -96,7 +101,7 @@ class_repository_citation <- S7::new_class(
   )
 )
 
-extract_repo_citations <- function(rec_lines){
+parse_repo_citations <- function(rec_lines){
   repo_lst <- find_ged_values(rec_lines, "REPO", return_list = TRUE) 
   if(length(repo_lst) == 0) return(list())
   
@@ -104,8 +109,8 @@ extract_repo_citations <- function(rec_lines){
     class_repository_citation(
       repo_xref = find_ged_values(x, "REPO"),
       note_xrefs = find_ged_values(x, c("REPO","SNOTE")),
-      notes = extract_notes(x, "REPO"),
-      call_numbers = extract_call_numbers(x, "REPO")
+      notes = parse_notes(x, "REPO"),
+      call_numbers = parse_call_numbers(x, "REPO")
     )
   })
 }
@@ -171,7 +176,7 @@ class_facts_recorded <- S7::new_class(
   )
 )
 
-extract_events_recorded <- function(rec_lines){
+parse_events_recorded <- function(rec_lines){
   even_lst <- find_ged_values(rec_lines, c("DATA","EVEN"), return_list = TRUE)
   if(length(even_lst) == 0) return(character())
   
@@ -180,7 +185,7 @@ extract_events_recorded <- function(rec_lines){
       fact_types = find_ged_values(x, "EVEN"),
       date_period = find_ged_values(x, c("EVEN","DATE")),
       date_phrase = find_ged_values(x, c("EVEN","DATE","PHRASE")),
-      territory = extract_place(x, "EVEN")
+      territory = parse_place(x, "EVEN")
     )
   })
   
@@ -277,21 +282,21 @@ class_record_sour <- S7::new_class(
       return("This record does not use @citations")
   })
 
-extract_record_sour <- function(rec_lines){
+parse_record_sour <- function(rec_lines){
   
   rec <- class_record_sour(
     xref = extract_ged_xref(rec_lines[1]),
-    facts_recorded = extract_events_recorded(rec_lines),
+    facts_recorded = parse_events_recorded(rec_lines),
     agency = find_ged_values(rec_lines, c("DATA","AGNC")),
     data_note_xrefs = find_ged_values(rec_lines, c("DATA","SNOTE")),
-    data_notes = extract_notes(rec_lines, "DATA"),
+    data_notes = parse_notes(rec_lines, "DATA"),
     originator = find_ged_values(rec_lines, "AUTH"),
     full_title = find_ged_values(rec_lines, "TITL"),
     short_title = find_ged_values(rec_lines, "ABBR"),
     publication_facts = find_ged_values(rec_lines, "PUBL"),
-    source_text = extract_translations(rec_lines),
-    repo_citations = extract_repo_citations(rec_lines)
+    source_text = parse_translations(rec_lines),
+    repo_citations = parse_repo_citations(rec_lines)
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

@@ -21,13 +21,13 @@ pull_record <- function(x, xref){
     stop("Record type not recognised: ", rec_type)
   
   rec <- switch(rec_type,
-                INDI = extract_record_indi(rec_lines),
-                FAM = extract_record_fam(rec_lines),
-                SOUR = extract_record_sour(rec_lines),
-                REPO = extract_record_repo(rec_lines),
-                OBJE = extract_record_media(rec_lines),
-                SNOTE = extract_record_note(rec_lines),
-                SUBM = extract_record_subm(rec_lines)
+                INDI = parse_record_indi(rec_lines),
+                FAM = parse_record_fam(rec_lines),
+                SOUR = parse_record_sour(rec_lines),
+                REPO = parse_record_repo(rec_lines),
+                OBJE = parse_record_media(rec_lines),
+                SNOTE = parse_record_note(rec_lines),
+                SUBM = parse_record_subm(rec_lines)
   )
   
   if(rec@locked)

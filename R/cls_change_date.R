@@ -84,7 +84,7 @@ class_change_date <- S7::new_class(
   )
 )
 
-extract_creation_date <- function(rec_lines){
+parse_creation_date <- function(rec_lines){
   crea_date <- find_ged_values(rec_lines, c("CREA","DATE"))
   if(length(crea_date) == 0) return(NULL)
   
@@ -94,14 +94,14 @@ extract_creation_date <- function(rec_lines){
   )
 }
 
-extract_change_date <- function(rec_lines){
+parse_change_date <- function(rec_lines){
   change_date <- find_ged_values(rec_lines, c("CHAN","DATE"))
   if(length(change_date) == 0) return(NULL)
   
   class_change_date(
     date_exact = toupper(change_date),
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
-    notes = extract_notes(rec_lines, "CHAN"),
+    notes = parse_notes(rec_lines, "CHAN"),
     note_xrefs = find_ged_values(rec_lines, c("CHAN","SNOTE"))
   )
 }

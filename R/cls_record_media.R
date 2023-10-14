@@ -135,7 +135,7 @@ class_record_media <- S7::new_class(
   }
 )
 
-extract_media_files <- function(rec_lines){
+parse_media_files <- function(rec_lines){
   file_lst <- find_ged_values(rec_lines, "FILE", return_list = TRUE)
   if(length(file_lst) == 0) return(list())
   
@@ -146,18 +146,18 @@ extract_media_files <- function(rec_lines){
       media_type = find_ged_values(x, c("FILE","FORM")),
       medium = find_ged_values(x, c("FILE","FORM","MEDI")),
       medium_phrase = find_ged_values(x, c("FILE","FORM","MEDI","PHRASE")),
-      media_alt = extract_vals_and_types(x, c("FILE","TRAN"))
+      media_alt = parse_vals_and_types(x, c("FILE","TRAN"))
     )
   })
   
 }
 
-extract_record_media <- function(rec_lines){
+parse_record_media <- function(rec_lines){
   
   rec <- class_record_media(
     xref = extract_ged_xref(rec_lines[1]),
-    files = extract_media_files(rec_lines)
+    files = parse_media_files(rec_lines)
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }

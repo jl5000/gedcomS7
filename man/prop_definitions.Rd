@@ -83,6 +83,20 @@ would be BIRT, DEAT, MARR.}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
+\item{prefix}{The name prefix, e.g. Cmdr.}
+
+\item{given}{The given name or earned name.}
+
+\item{nickname}{A descriptive or familiar name that is used instead of, or in addition to, one’s proper
+name.}
+
+\item{surname_prefix}{Surname prefix or article used in a family name.
+For example in the name "de la Cruz", this value would be "de la".}
+
+\item{surname}{Surname or family name.}
+
+\item{suffix}{Name piece that appears after the given name and surname parts, e.g. Jr.}
+
 \item{place}{see territory}
 
 \item{address}{The address given either as a \code{class_address} object or as a character string.
@@ -144,9 +158,11 @@ who are interested in the ancestors/descendants of this individual.}
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
-\item{user_ids}{fwe}
+\item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
+be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
-\item{ext_ids}{dsfse}
+\item{ext_ids}{A named character vector of identifiers maintained by an external authority.
+The names must be given as a URI. See the GEDCOM specification for more information.}
 
 \item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
@@ -220,6 +236,12 @@ Creating an object with no parameters sets the date to today.}
 
 \item{updated}{A \code{class_change_date} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
+
+\item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
+\code{class_date_exact} object.}
+
+\item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
+\code{class_time} object.}
 
 \item{update_change_dates}{Whether to automatically update change dates when updating records.
 This happens when the record is pushed to the gedcom object.}

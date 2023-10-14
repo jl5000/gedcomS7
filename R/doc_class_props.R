@@ -60,7 +60,6 @@
 #' @param place_form
 #' @param place_translations
 #' @param lat_long
-#' @param ext_ids
 #' @param fact_types A character string indicating the types
 #' of events that were recorded in a particular source. Each event type is separated by a
 #' comma and space. For example, a parish register of births, deaths, and marriages
@@ -76,13 +75,14 @@
 #' @param medium
 #' @param medium_phrase
 #' @param media_alt A named vector of the media in alternative media forms, c(form = location)
-#' @param prefix
-#' @param given
-#' @param nickname
-#' @param surname_prefix
-#' @param surname
-#' @param suffix
-#' @param pers_name
+#' @param prefix The name prefix, e.g. Cmdr.
+#' @param given The given name or earned name.
+#' @param nickname A descriptive or familiar name that is used instead of, or in addition to, one’s proper
+#' name.
+#' @param surname_prefix Surname prefix or article used in a family name. 
+#' For example in the name "de la Cruz", this value would be "de la".
+#' @param surname Surname or family name.
+#' @param suffix Name piece that appears after the given name and surname parts, e.g. Jr.
 #' @param name_pieces
 #' @param pers_name
 #' @param name_type
@@ -140,8 +140,6 @@
 #' @param ext_tags
 #' @param source
 #' @param destination
-#' @param creation_date
-#' @param creation_time
 #' @param gedcom_copyright
 #' @param default_language
 #' @param default_place_form
@@ -177,8 +175,10 @@
 #' 
 #' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
 #' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
-#' @param user_ids fwe
-#' @param ext_ids dsfse
+#' @param user_ids A character vector of user-generated identifiers. The type of the identifiers can
+#' be given in the vector names, e.g. c("Driving license number" = "ABC123")
+#' @param ext_ids A named character vector of identifiers maintained by an external authority.
+#' The names must be given as a URI. See the GEDCOM specification for more information.
 #' 
 #' 
 #' @param media_links Associated multimedia. This can either be a `class_media_link` object, a list of them,
@@ -232,6 +232,10 @@
 #' Creating an object with no parameters sets the date to today.
 #' @param updated A `class_change_date` object containing the date the record was updated.
 #' Creating an object with no parameters sets the date to today.
+#' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
+#' `class_date_exact` object.
+#' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
+#' `class_time` object.
 #' 
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.

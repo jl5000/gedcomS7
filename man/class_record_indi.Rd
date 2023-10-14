@@ -36,12 +36,14 @@ class_record_indi(
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
-\item{user_ids}{fwe}
+\item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
+be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
-\item{ext_ids}{dsfse}
+\item{ext_ids}{A named character vector of identifiers maintained by an external authority.
+The names must be given as a URI. See the GEDCOM specification for more information.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 

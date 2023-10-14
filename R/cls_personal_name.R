@@ -189,7 +189,7 @@ class_personal_name <- S7::new_class(
   }
 )
 
-extract_name_pieces <- function(lines, location = NULL){
+parse_name_pieces <- function(lines, location = NULL){
   class_name_pieces(
     prefix = find_ged_values(lines, c(location, "NPFX")),
     given = find_ged_values(lines, c(location, "GIVN")),
@@ -200,7 +200,7 @@ extract_name_pieces <- function(lines, location = NULL){
   )
 }
 
-extract_personal_name_tran <- function(lines, location = NULL){
+parse_personal_name_tran <- function(lines, location = NULL){
   tran_lst <- find_ged_values(lines, c(location, "TRAN"), return_list = TRUE)
   if(length(tran_lst) == 0) return(list())
   
@@ -208,13 +208,13 @@ extract_personal_name_tran <- function(lines, location = NULL){
     class_personal_name_tran(
       pers_name = find_ged_values(x, "TRAN"),
       language = find_ged_values(x, c("TRAN","LANG")),
-      name_pieces = extract_name_pieces(x, "TRAN")
+      name_pieces = parse_name_pieces(x, "TRAN")
     )
   })
   
 }
 
-extract_personal_names <- function(rec_lines){
+parse_personal_names <- function(rec_lines){
   
   name_lst <- find_ged_values(rec_lines, "NAME", return_list = TRUE)
   if(length(name_lst) == 0) return(list())
@@ -224,11 +224,11 @@ extract_personal_names <- function(rec_lines){
       pers_name = find_ged_values(x, "NAME"),
       name_type = find_ged_values(x, c("NAME","TYPE")),
       type_phrase = find_ged_values(x, c("NAME","TYPE","PHRASE")),
-      name_pieces = extract_name_pieces(x, "NAME"),
-      name_translations = extract_personal_name_tran(x, "NAME"),
-      notes = extract_notes(x, "NAME"),
+      name_pieces = parse_name_pieces(x, "NAME"),
+      name_translations = parse_personal_name_tran(x, "NAME"),
+      notes = parse_notes(x, "NAME"),
       note_xrefs = find_ged_values(x, c("NAME","SNOTE")),
-      citations = extract_citations(x, "NAME")
+      citations = parse_citations(x, "NAME")
     )
   })
 }

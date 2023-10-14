@@ -183,7 +183,7 @@ class_spouse_sealing <- S7::new_class(
 )
 
 
-extract_ordinances <- function(rec_lines){
+parse_ordinances <- function(rec_lines){
   ord_lst <- find_ged_values(rec_lines, return_list = TRUE, 
                              tag = paste(c(val_individual_ordinance_types(),"SLGS"),
                                          collapse = "|"))
@@ -202,15 +202,15 @@ extract_ordinances <- function(rec_lines){
     }
     
     S7::props(ord) <- list(
-      date = extract_date_value(x, tag),
+      date = parse_date_value(x, tag),
       temple_name = find_ged_values(x, c(tag,"TEMP")),
-      place = extract_place(x, tag),
+      place = parse_place(x, tag),
       ord_state = find_ged_values(x, c(tag,"STAT")),
       state_date = find_ged_values(x, c(tag,"STAT","DATE")),
       state_time = find_ged_values(x, c(tag,"STAT","DATE","TIME")),
       note_xrefs = find_ged_values(x, c(tag,"SNOTE")),
-      notes = extract_notes(x, tag),
-      citations = extract_citations(x, tag)
+      notes = parse_notes(x, tag),
+      citations = parse_citations(x, tag)
     )
     
     ord

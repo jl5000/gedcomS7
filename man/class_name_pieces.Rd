@@ -13,6 +13,21 @@ class_name_pieces(
   suffix = class_missing
 )
 }
+\arguments{
+\item{prefix}{The name prefix, e.g. Cmdr.}
+
+\item{given}{The given name or earned name.}
+
+\item{nickname}{A descriptive or familiar name that is used instead of, or in addition to, one’s proper
+name.}
+
+\item{surname_prefix}{Surname prefix or article used in a family name.
+For example in the name "de la Cruz", this value would be "de la".}
+
+\item{surname}{Surname or family name.}
+
+\item{suffix}{Name piece that appears after the given name and surname parts, e.g. Jr.}
+}
 \value{
 An S7 object representing a GEDCOM PERSONAL_NAME_PIECES.
 }

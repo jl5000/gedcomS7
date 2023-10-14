@@ -141,7 +141,7 @@ class_citation <- S7::new_class(
   
 )
 
-extract_citations <- function(lines, location = NULL){
+parse_citations <- function(lines, location = NULL){
   
   sour_lst <- find_ged_values(lines, c(location, "SOUR"), return_list = TRUE)
   if(length(sour_lst) == 0) return(list())
@@ -150,15 +150,15 @@ extract_citations <- function(lines, location = NULL){
     class_citation(
       sour_xref = find_ged_values(x, "SOUR"),
       where = find_ged_values(x, c("SOUR","PAGE")),
-      date = extract_date_value(x, c("SOUR","DATA")),
-      source_text = extract_translations(x, c("SOUR","DATA")),
+      date = parse_date_value(x, c("SOUR","DATA")),
+      source_text = parse_translations(x, c("SOUR","DATA")),
       fact_type = find_ged_values(x, c("SOUR","EVEN")),
       fact_phrase = find_ged_values(x, c("SOUR","EVEN","PHRASE")),
       role = find_ged_values(x, c("SOUR","EVEN","ROLE")),
       role_phrase = find_ged_values(x, c("SOUR","EVEN","ROLE","PHRASE")),
       certainty = find_ged_values(x, c("SOUR","QUAY")),
-      media_links = extract_media_links(x, "SOUR"),
-      notes = extract_notes(x, "SOUR"),
+      media_links = parse_media_links(x, "SOUR"),
+      notes = parse_notes(x, "SOUR"),
       note_xrefs = find_ged_values(x, c("SOUR","SNOTE"))
     )
   })

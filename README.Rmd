@@ -38,12 +38,7 @@ remotes::install_github("jl5000/gedcomS7")
 
 ## Key limitations
 
-The package does not currently support the following:
-
-* Extension tags
-* Mediums of SOURCE_REPOSITORY_CITATION call numbers (SOUR.REPO.CALN.MEDI)
-
-If you import a file with these features, the package may behave unpredictably.
+The package does not currently support extension tags. If you import a file with these features, the package may behave unpredictably.
 
 ## Import / creation
 
@@ -105,20 +100,12 @@ New records are created using the set of `class_record_*()` functions:
 ```{r}
 luke <- class_record_indi(
   sex = "M",
+  pers_names = "Luke /Skywalker/"
 )
 ```
 
 An individual can have many names, which are created using `class_personal_name()` and `class_name_info()` and must be stored in a list:
 
-```{r}
-main_name <- class_personal_name(name = class_name_info(full = "Luke /Skywalker/",
-                                                        type = "birth",
-                                                        given = "Luke",
-                                                        surname = "Skywalker"))
-
-luke@personal_names <- list(main_name) 
-luke
-```
 
 ## The push/pull paradigm
 

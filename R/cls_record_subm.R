@@ -68,12 +68,12 @@ class_record_subm <- S7::new_class(
   }
 )
 
-extract_record_subm <- function(rec_lines){
+parse_record_subm <- function(rec_lines){
   
   rec <- class_record_subm(
     xref = extract_ged_xref(rec_lines[1]),
     subm_name = find_ged_values(rec_lines, "NAME"),
-    address = extract_address(rec_lines),
+    address = parse_address(rec_lines),
     phone_numbers = find_ged_values(rec_lines, "PHON"),
     emails = find_ged_values(rec_lines, "EMAIL"),
     faxes = find_ged_values(rec_lines, "FAX"),
@@ -81,5 +81,5 @@ extract_record_subm <- function(rec_lines){
     languages = find_ged_values(rec_lines, "LANG")
   )
   
-  extract_common_record_elements(rec, rec_lines)
+  parse_common_record_elements(rec, rec_lines)
 }
