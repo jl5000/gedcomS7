@@ -2,16 +2,17 @@
 
 # File R/cls_record.R: @tests
 
-test_that("Function class_record() @ L24", {
+test_that("Function class_record() @ L25", {
   ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
   ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
   
-  for(rec_type in names(ged_parsed@xref_prefixes[2:7])){
+  for(rec_type in names(ged_parsed@xref_prefixes)){
     xrefs <- ged_parsed@xrefs[[rec_type]]
     
     for(xref in xrefs){
       rec_raw <- S7::prop(ged_parsed, rec_type)[[xref]]
-      rec_raw <- rec_raw
+      # Remove extension tags
+      rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), extract_ged_tag(rec_raw))]
       rec_parsed <- suppressWarnings(pull_record(ged_parsed, xref))
       
       expect_equal(rec_parsed@as_ged, rec_raw)

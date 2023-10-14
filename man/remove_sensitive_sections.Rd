@@ -9,7 +9,7 @@ remove_sensitive_sections(lines, restriction)
 \arguments{
 \item{lines}{A character vector of gedcom lines.}
 
-\item{restriction}{Whether to remove structures marked as "CONFIDENTIAL" or "PRIVATE".}
+\item{restriction}{Whether to remove structures marked as "CONFIDENTIAL" or "PRIVACY".}
 }
 \value{
 A vector of sanitised GEDCOM lines.
