@@ -5,8 +5,10 @@
 \title{Define properties in GEDCOM 7.0 specification}
 \arguments{
 \item{full}{A full address as it would appear on a mailing label, with lines separated
-by \n. For example:
-"The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"}
+by semi-colon and a space. For example:
+"The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"}
+
+\item{adr1, adr2, adr3}{Deprecated.}
 
 \item{city}{The city component of the address.}
 
@@ -18,7 +20,9 @@ by \n. For example:
 
 \item{text}{A character string. New lines are created with \n.}
 
-\item{language}{Language tags as defined in BCP 47.}
+\item{language}{A character string of language tags as defined in BCP 47.}
+
+\item{languages}{A character vector of language tags as defined in BCP 47.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
@@ -86,6 +90,19 @@ This would be as written on a mailing label with new lines separated by \n.}
 
 \item{phone_numbers}{}
 
+\item{cause}{Used in special cases to record the reasons which precipitated the fact (e.g. cause of death).}
+
+\item{age, husb_age, wife_age}{A character string that indicates the age in years, months, weeks and/or days
+that the individual was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.}
+
+\item{age_phrase, husb_age_phrase, wife_age_phrase}{Textual information that cannot be expressed in the age.}
+
+\item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
+"U" (undetermined, the default),}
+
 \item{default_place_form}{}
 
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
@@ -116,7 +133,7 @@ you will need to describe the repository in @notes.}
 \item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
-in either case), e.g. c("Joe Bloggs" = "@VOID@")}
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
 
 \item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
 whose records also represent this individual. The vector names may provide a description of these records.}

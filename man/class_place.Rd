@@ -16,7 +16,7 @@ class_place(
 )
 }
 \arguments{
-\item{language}{Language tags as defined in BCP 47.}
+\item{language}{A character string of language tags as defined in BCP 47.}
 
 \item{ext_ids}{dsfse}
 

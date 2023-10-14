@@ -111,13 +111,14 @@ class_citation <- S7::new_class(
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
-        ged <- c(
+        c(
           sprintf("0 SOUR %s", self@sour_xref),
           sprintf("1 PAGE %s", self@where),
           rep("1 DATA", length(self@date) + 
                 length(self@source_text) > 0),
           obj_to_ged(self@date, "DATE") |> increase_level(by = 2),
-          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 2),
+          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 2) |> 
+            gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           sprintf("1 EVEN %s", self@fact_type),
           sprintf("2 PHRASE %s", self@fact_phrase),
           sprintf("2 ROLE %s", self@role),
@@ -127,8 +128,6 @@ class_citation <- S7::new_class(
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs)
         ) 
-        
-        sub("^(\\d+) TRAN ", "\\1 TEXT ", ged)
       })
   ),
   

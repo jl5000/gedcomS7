@@ -9,7 +9,7 @@ extract_common_record_elements(rec, rec_lines)
 \arguments{
 \item{rec}{An S7 record object.}
 
-\item{lines}{A character vector of lines of a GEDCOM record.}
+\item{rec_lines}{A character vector of lines of a GEDCOM record.}
 }
 \value{
 The S7 record object with common elements added as properties.

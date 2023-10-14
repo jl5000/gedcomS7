@@ -6,6 +6,22 @@ NULL
 #' @inheritParams prop_definitions 
 #' @return An S7 object containing common elements of a GEDCOM record.
 #' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
+#' @tests
+#' #1,4,6 not working (subm,sour,media)
+#' ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+#' ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+#' 
+#' for(rec_type in names(ged_parsed@xref_prefixes[7])){
+#'   xrefs <- ged_parsed@xrefs[[rec_type]]
+#'   
+#'   for(xref in xrefs){
+#'     rec_raw <- S7::prop(ged_parsed, rec_type)[[xref]]
+#'     rec_raw <- rec_raw
+#'     rec_parsed <- suppressWarnings(pull_record(ged_parsed, xref))
+#'     
+#'     expect_equal(rec_parsed@as_ged, rec_raw)
+#'   }
+#' }
 class_record <- S7::new_class(
   "class_record", 
   abstract = TRUE,
@@ -118,7 +134,7 @@ extract_common_record_elements <- function(rec, rec_lines){
     S7::props(rec) <- list(
       locked = grepl("LOCKED", resn),
       confidential = grepl("CONFIDENTIAL", resn),
-      private = grepl("PRIVATE", resn)
+      private = grepl("PRIVACY", resn)
     )
   }
   

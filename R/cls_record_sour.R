@@ -1,4 +1,54 @@
 
+#' @export
+class_source_call_number <- S7::new_class(
+  "class_source_call_number",
+  package = "gedcomS7",
+  properties = list(
+    call_number = S7::new_property(S7::class_character,
+                                    validator = function(value){
+                                      chk_input_size(value, 1, 1, 1)
+                                    }),
+    medium = S7::new_property(S7::class_character,
+                              validator = function(value){
+                                c(
+                                  chk_input_size(value, 0, 1),
+                                  chk_input_choice(value, val_medium_types())
+                                )
+                              }),
+    medium_phrase = S7::new_property(S7::class_character,
+                                     validator = function(value){
+                                       chk_input_size(value, 0, 1, 1)
+                                     }),
+    
+    as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          sprintf("0 CALN %s", self@call_number),
+          sprintf("1 MEDI %s", self@medium),
+          sprintf("2 PHRASE %s", self@medium_phrase)
+        )
+      })
+  ),
+  validator = function(self){
+    chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
+  }
+)
+
+extract_call_numbers <- function(lines, location){
+  call_lst <- find_ged_values(lines, c(location, "CALN"), return_list = TRUE) 
+  if(length(call_lst) == 0) return(list())
+  
+  lapply(call_lst, \(x){
+    class_source_call_number(
+      call_number = find_ged_values(x, "CALN"),
+      medium = find_ged_values(x, c("CALN","MEDI")),
+      medium_phrase = find_ged_values(x, c("CALN","MEDI","PHRASE"))
+    )
+  })
+}
+
+
 #' Create a repository citation object
 #' 
 #' @inheritParams prop_definitions
@@ -28,14 +78,11 @@ class_repository_citation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    call_numbers = S7::new_property(S7::class_character,
+    call_numbers = S7::new_property(S7::class_list | class_source_call_number | S7::class_character,
                                     validator = function(value){
-                                      chk_input_size(value, min_val = 1)
+                                      chk_input_S7classes(value, class_source_call_number, ".+")
                                     }),
-    # TODO: too much nesting
-    # media = S7::class_character, 
-    # media_phrase = S7::class_character,
-    
+
     as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
@@ -43,9 +90,7 @@ class_repository_citation <- S7::new_class(
           sprintf("0 REPO %s", self@repo_xref),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
-          sprintf("1 CALN %s", self@call_numbers)
-          # sprintf("2 MEDI %s", self@media),
-          # sprintf("3 PHRASE %s", self@media_phrase)
+          obj_to_ged(self@call_numbers, "CALN") |> increase_level(by = 1)
         )
       })
   )
@@ -58,9 +103,9 @@ extract_repo_citations <- function(rec_lines){
   lapply(repo_lst, \(x){
     class_repository_citation(
       repo_xref = find_ged_values(x, "REPO"),
-      note_xrefs = find_ged_values(rec_lines, "SNOTE"),
-      notes = extract_notes(rec_lines),
-      call_numbers = find_ged_values(x, c("REPO","CALN"))
+      note_xrefs = find_ged_values(x, c("REPO","SNOTE")),
+      notes = extract_notes(x, "REPO"),
+      call_numbers = extract_call_numbers(x, "REPO")
     )
   })
 }

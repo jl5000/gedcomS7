@@ -2,9 +2,8 @@
 
 # File R/cls_gedcom.R: @tests
 
-test_that("Function class_gedcomS7() @ L228", {
-  ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7")) |> 
-              remove_unsupported_structures_for_tests()
+test_that("Function class_gedcomS7() @ L227", {
+  ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
   ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
   ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
                                  note = "N", sour = "S", subm = "U")

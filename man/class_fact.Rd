@@ -43,6 +43,8 @@ This would be as written on a mailing label with new lines separated by \n.}
 
 \item{phone_numbers}{}
 
+\item{cause}{Used in special cases to record the reasons which precipitated the fact (e.g. cause of death).}
+
 \item{date_sort}{The date given either as a formatted GEDCOM string, or a
 \code{class_date_sort} object.}
 

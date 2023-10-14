@@ -217,8 +217,7 @@ class_gedcom_header <- S7::new_class(
 #' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
 #' cls_record_repo.R cls_record_sour.R cls_record_subm.R
 #' @tests
-#' ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7")) |> 
-#'             remove_unsupported_structures_for_tests()
+#' ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
 #' ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
 #' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                                note = "N", sour = "S", subm = "U")

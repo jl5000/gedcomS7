@@ -56,7 +56,7 @@ Creating an object with no parameters sets the date to today.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
-\item{language}{Language tags as defined in BCP 47.}
+\item{language}{A character string of language tags as defined in BCP 47.}
 
 \item{translations}{A \code{class_translation_txt} object or a list of them.
 One for each alternate translation of the text.}

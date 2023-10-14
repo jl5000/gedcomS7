@@ -62,6 +62,8 @@ Creating an object with no parameters sets the date to today.}
 This would be as written on a mailing label with new lines separated by \n.}
 
 \item{phone_numbers}{}
+
+\item{languages}{A character vector of language tags as defined in BCP 47.}
 }
 \value{
 An S7 object representing a GEDCOM SUBMITTER_RECORD.

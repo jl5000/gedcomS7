@@ -9,13 +9,16 @@ class_address(
   city = class_missing,
   state = class_missing,
   postal_code = class_missing,
-  country = class_missing
+  country = class_missing,
+  adr1 = class_missing,
+  adr2 = class_missing,
+  adr3 = class_missing
 )
 }
 \arguments{
 \item{full}{A full address as it would appear on a mailing label, with lines separated
-by \n. For example:
-"The White House\n1600 Pennsylvania Avenue, N.W.\nWashington, DC 20500\nUnited States of America"}
+by semi-colon and a space. For example:
+"The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"}
 
 \item{city}{The city component of the address.}
 
@@ -24,6 +27,8 @@ by \n. For example:
 \item{postal_code}{The postal code component of the address.}
 
 \item{country}{The country component of the address.}
+
+\item{adr1, adr2, adr3}{Deprecated.}
 }
 \value{
 An S7 object representing a GEDCOM ADDRESS_STRUCTURE.

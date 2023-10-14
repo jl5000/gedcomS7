@@ -237,7 +237,7 @@ extract_common_fact_elements <- function(fact, lines){
     S7::props(fact) <- list(
       locked = grepl("LOCKED", resn),
       confidential = grepl("CONFIDENTIAL", resn),
-      private = grepl("PRIVATE", resn)
+      private = grepl("PRIVACY", resn)
     )
   }
   

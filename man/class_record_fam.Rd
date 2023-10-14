@@ -65,7 +65,7 @@ Creating an object with no parameters sets the date to today.}
 \item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
-in either case), e.g. c("Joe Bloggs" = "@VOID@")}
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 }

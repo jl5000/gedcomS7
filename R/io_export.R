@@ -34,7 +34,7 @@ write_gedcom <- function(gedcom,
   lines <- gedcom@as_ged
   
   if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
-  if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVATE")
+  if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
   
   # Moved to as_ged property
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
@@ -48,7 +48,7 @@ write_gedcom <- function(gedcom,
 #' Remove gedcom structures marked as sensitive
 #'
 #' @param lines A character vector of gedcom lines.
-#' @param restriction Whether to remove structures marked as "CONFIDENTIAL" or "PRIVATE".
+#' @param restriction Whether to remove structures marked as "CONFIDENTIAL" or "PRIVACY".
 #'
 #' @return A vector of sanitised GEDCOM lines.
 remove_sensitive_sections <- function(lines, restriction){

@@ -49,6 +49,18 @@ class_address <- S7::new_class(
                                validator = function(value){
                                  chk_input_size(value, 0, 1, 1)
                                }),
+    adr1 = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
+    adr2 = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
+    adr3 = S7::new_property(S7::class_character,
+                               validator = function(value){
+                                 chk_input_size(value, 0, 1, 1)
+                               }),
     
     as_val = S7::new_property(S7::class_character, 
                               getter = function(self) self@full),
@@ -58,6 +70,9 @@ class_address <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 ADDR %s", gsub("; ", "\n", self@full)),
+          sprintf("1 ADR1 %s", self@adr1),
+          sprintf("1 ADR2 %s", self@adr2),
+          sprintf("1 ADR3 %s", self@adr3),
           sprintf("1 CITY %s", self@city),
           sprintf("1 STAE %s", self@state),
           sprintf("1 POST %s", self@postal_code),
@@ -75,6 +90,9 @@ extract_address <- function(lines, location = NULL){
   
   class_address(
     full = gsub("\n", "; ", addr),
+    adr1 = find_ged_values(lines, c(location, "ADDR","ADR1")),
+    adr2 = find_ged_values(lines, c(location, "ADDR","ADR2")),
+    adr3 = find_ged_values(lines, c(location, "ADDR","ADR3")),
     city = find_ged_values(lines, c(location, "ADDR","CITY")),
     state = find_ged_values(lines, c(location, "ADDR","STAE")),
     postal_code = find_ged_values(lines, c(location, "ADDR","POST")),

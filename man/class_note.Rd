@@ -15,7 +15,7 @@ class_note(
 \arguments{
 \item{text}{A character string. New lines are created with \n.}
 
-\item{language}{Language tags as defined in BCP 47.}
+\item{language}{A character string of language tags as defined in BCP 47.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
