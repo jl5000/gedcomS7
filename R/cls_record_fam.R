@@ -69,7 +69,7 @@ class_record_fam <- S7::new_class(
     marriage_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in iterable(self@facts)){
+        for(fact in as.iterable(self@facts)){
           if(fact@fact_type == "MARR") return(fact@fact_date)
         }
         character()
@@ -78,7 +78,7 @@ class_record_fam <- S7::new_class(
     marriage_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in iterable(self@facts)){
+        for(fact in as.iterable(self@facts)){
           if(fact@fact_type == "MARR") return(fact@fact_location)
         }
         character()
@@ -114,7 +114,7 @@ class_record_fam <- S7::new_class(
 parse_record_fam <- function(rec_lines){
   
   rec <- class_record_fam(
-    xref = extract_ged_xref(rec_lines[1]),
+    xref = parse_line_xref(rec_lines[1]),
     facts = parse_facts_fam(rec_lines),
     non_events = parse_non_events(rec_lines),
     husb_xref = parse_vals_and_types(rec_lines, "HUSB"),

@@ -51,7 +51,7 @@ validate_lines <- function(lines){
   # UIDs should only appear once
   uid_rows <- grep("^1 UID ", lines)
   if(length(uid_rows) > 0){
-    vals <- extract_ged_value(lines)
+    vals <- parse_line_value(lines)
     uids <- vals[uid_rows]
     dupes <- duplicated(uids)
     if(sum(dupes) > 0)
@@ -63,7 +63,7 @@ validate_lines <- function(lines){
 
 remove_at_escapes <- function(lines){
   
-  vals <- extract_ged_value(lines)
+  vals <- parse_line_value(lines)
   
   escape_lines <- grep("^@@", vals)
   
@@ -112,7 +112,7 @@ parse_records <- function(records_lst){
   
   subset_recs <- function(rec_lst, rec_type){
     recs <- Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
-    names(recs) <- vapply(recs, \(rec) extract_ged_xref(rec[1]), FUN.VALUE = character(1))
+    names(recs) <- vapply(recs, \(rec) parse_line_xref(rec[1]), FUN.VALUE = character(1))
     recs
   }
   

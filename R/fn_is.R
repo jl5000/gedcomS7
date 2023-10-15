@@ -15,6 +15,28 @@ is_media_xref <- function(x, xref) xref %in% x@xrefs[["media"]]
 is_note_xref <- function(x, xref) xref %in% x@xrefs[["note"]]
 is_subm_xref <- function(x, xref) xref %in% x@xrefs[["subm"]]
 
+get_record_type <- function(record){
+  
+  if(S7::S7_inherits(record, class_record_indi)){
+    "indi"
+  } else if(S7::S7_inherits(record, class_record_fam)){
+    "fam"
+  } else if(S7::S7_inherits(record, class_record_sour)){
+    "sour"
+  } else if(S7::S7_inherits(record, class_record_repo)){
+    "repo"
+  } else if(S7::S7_inherits(record, class_record_media)){
+    "media"
+  } else if(S7::S7_inherits(record, class_record_note)){
+    "note"
+  } else if(S7::S7_inherits(record, class_record_subm)){
+    "subm"
+  } else {
+    stop("Unrecognised record")
+  }
+  
+}
+
 check_indi_rec <- function(x, xref) if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
 check_fam_rec <- function(x, xref) if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
 

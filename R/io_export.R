@@ -35,6 +35,7 @@ write_gedcom <- function(gedcom,
   
   if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
   if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
+  if(!inc_living) lines <- remove_living(lines)
   
   # Moved to as_ged property
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
@@ -55,8 +56,8 @@ remove_sensitive_sections <- function(lines, restriction){
   
   restriction_rows <- function(lines, restriction){
     intersect(
-      grep("RESN", extract_ged_tag(lines)), 
-      grep(restriction, extract_ged_value(lines))
+      grep("RESN", parse_line_tag(lines)), 
+      grep(restriction, parse_line_value(lines))
     )
   }
   
@@ -69,6 +70,43 @@ remove_sensitive_sections <- function(lines, restriction){
   }
   lines
 }
+
+
+#' Remove data for living individuals in a tidyged object
+#'
+#' @param gedcom A tidyged object.
+#' @param max_age The maximum age to assume for a living person (if a date of birth is given).
+#' @param guess Whether to guess the age of individuals if no death event or date of birth is given and possibly retain them, or be cautious and remove them anyway (the default).
+#'
+#' @return A tidyged object cleansed of information on living individuals.
+#' @export
+remove_living <- function(gedcom,
+                          max_age = 100,
+                          guess = FALSE) {
+  
+  indi_xrefs <- tidyged::xrefs_indi(gedcom)
+  
+  for(xref in indi_xrefs) {
+    death_events <- dplyr::filter(gedcom, record == xref, tag == "DEAT")
+    
+    # death events exist - go to next individual
+    if(nrow(death_events) > 0) next
+    
+    dob <- tidyged.internals::gedcom_value(gedcom, xref, "DATE", 2, "BIRT")
+    
+    # dob exists and age is bigger than max age - go to next individual
+    if(dob != "" && date_diff(dob, minimise = TRUE) > max_age) next
+    
+    # dob doesn't exist, but guessed age is bigger than max age - go to next individual
+    if(dob == "" && guess && guess_age(gedcom, xref) > max_age) next
+    
+    gedcom <- rm_records(gedcom, xref)
+    
+  }
+  
+  tg
+}
+
 
 #' Prepare GEDCOM lines for export
 #'
@@ -92,7 +130,7 @@ prepare_gedcom_lines <- function(lines){
 check_for_xref_mentions <- function(lines){
   
   # Check for xrefs mentioned beyond pointers
-  vals <- extract_ged_value(lines)
+  vals <- parse_line_value(lines)
   line_no <- intersect(
     grep(reg_xref(FALSE), vals), # xrefs appear
     grep(reg_xref(TRUE), vals, invert = TRUE) # but they do not appear alone
@@ -109,8 +147,8 @@ add_at_escapes <- function(lines){
   
   # For lines with these patterns, we don't want to replace @ with @@
   exclude <- unique(c(
-    grep(".+", extract_ged_xref(lines)), # start of record
-    grep(reg_xref(TRUE), extract_ged_value(lines)) # xref pointer
+    grep(".+", parse_line_xref(lines)), # start of record
+    grep(reg_xref(TRUE), parse_line_value(lines)) # xref pointer
   ))
   
   # sub() will pick up the first instance which should be the beginning of the value
@@ -153,7 +191,7 @@ split_gedcom_values <- function(lines) {
     if(substr(lines[i], 1, 6) == "0 CONT"){
       lines[i] <- increase_level(lines[i], lvl + 1)
     } else {
-      lvl <- extract_ged_level(lines[i])
+      lvl <- parse_line_level(lines[i])
     }
   }
   

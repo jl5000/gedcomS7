@@ -285,7 +285,7 @@ class_record_sour <- S7::new_class(
 parse_record_sour <- function(rec_lines){
   
   rec <- class_record_sour(
-    xref = extract_ged_xref(rec_lines[1]),
+    xref = parse_line_xref(rec_lines[1]),
     facts_recorded = parse_events_recorded(rec_lines),
     agency = find_ged_values(rec_lines, c("DATA","AGNC")),
     data_note_xrefs = find_ged_values(rec_lines, c("DATA","SNOTE")),

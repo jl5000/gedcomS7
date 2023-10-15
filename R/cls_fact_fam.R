@@ -118,7 +118,7 @@ parse_facts_fam <- function(rec_lines){
   if(length(fact_lst) == 0) return(list())
   
   lapply(fact_lst, \(x){
-    tag <- extract_ged_tag(x[1])
+    tag <- parse_line_tag(x[1])
     
     if(tag %in% val_family_attribute_types(TRUE)){
       fact <- class_attr_fam(

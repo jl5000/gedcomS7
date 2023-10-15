@@ -70,7 +70,7 @@ class_record_repo <- S7::new_class(
 parse_record_repo <- function(rec_lines){
   
   rec <- class_record_repo(
-    xref = extract_ged_xref(rec_lines[1]),
+    xref = parse_line_xref(rec_lines[1]),
     repo_name = find_ged_values(rec_lines, "NAME"),
     address = parse_address(rec_lines),
     phone_numbers = find_ged_values(rec_lines, "PHON"),

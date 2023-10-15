@@ -16,7 +16,7 @@ NULL
 #'   for(xref in xrefs){
 #'     rec_raw <- S7::prop(ged_parsed, rec_type)[[xref]]
 #'     # Remove extension tags
-#'     rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), extract_ged_tag(rec_raw))]
+#'     rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), parse_line_tag(rec_raw))]
 #'     rec_parsed <- suppressWarnings(pull_record(ged_parsed, xref))
 #'     
 #'     expect_equal(rec_parsed@as_ged, rec_raw)

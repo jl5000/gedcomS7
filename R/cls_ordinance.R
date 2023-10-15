@@ -190,7 +190,7 @@ parse_ordinances <- function(rec_lines){
   if(length(ord_lst) == 0) return(list())
   
   lapply(ord_lst, \(x){
-    tag <- extract_ged_tag(x[1])
+    tag <- parse_line_tag(x[1])
     
     if(tag == "SLGS"){
       ord <- class_spouse_sealing()

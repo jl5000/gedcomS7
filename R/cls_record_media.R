@@ -155,7 +155,7 @@ parse_media_files <- function(rec_lines){
 parse_record_media <- function(rec_lines){
   
   rec <- class_record_media(
-    xref = extract_ged_xref(rec_lines[1]),
+    xref = parse_line_xref(rec_lines[1]),
     files = parse_media_files(rec_lines)
   )
   

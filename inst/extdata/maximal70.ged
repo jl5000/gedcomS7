@@ -383,9 +383,9 @@
 2 DATE 1 JAN 2000
 1 CHR
 2 TYPE chr type
-2 DATE 9 JAN 2000
 2 AGE 8d
 3 PHRASE Age phrase
+2 DATE 9 JAN 2000
 1 EVEN Event
 2 TYPE Event type
 1 NO NATU

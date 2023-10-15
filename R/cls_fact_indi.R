@@ -94,9 +94,9 @@ class_event_indi <- S7::new_class(
         c(
           sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
           sprintf("1 TYPE %s", self@fact_desc),
-          self@.fact_detail_as_ged,
           sprintf("1 AGE %s", age) |> trimws(),
           sprintf("2 PHRASE %s", self@age_phrase),
+          self@.fact_detail_as_ged,
           sprintf("1 FAMC %s", self@fam_xref),
           sprintf("2 ADOP %s", self@adop_parent),
           sprintf("3 PHRASE %s", self@adop_parent_phrase)
@@ -170,9 +170,9 @@ class_attr_indi <- S7::new_class(
         c(
           sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
           sprintf("1 TYPE %s", self@fact_desc),
-          self@.fact_detail_as_ged,
           sprintf("1 AGE %s", age) |> trimws(),
-          sprintf("2 PHRASE %s", self@age_phrase)
+          sprintf("2 PHRASE %s", self@age_phrase),
+          self@.fact_detail_as_ged
         )
       })
   ),
@@ -197,7 +197,7 @@ parse_facts_indi <- function(rec_lines){
   if(length(fact_lst) == 0) return(list())
   
   lapply(fact_lst, \(x){
-    tag <- extract_ged_tag(x[1])
+    tag <- parse_line_tag(x[1])
     
     if(tag %in% val_individual_attribute_types(TRUE)){
       fact <- class_attr_indi(

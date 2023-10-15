@@ -312,8 +312,8 @@ get_supporting_recs <- function(x,
     rec_lines <- c(x@indi, x@fam, x@sour,
                    x@repo, x@media, x@note)[[xref]]
     
-    tgs <- extract_ged_tag(rec_lines)
-    extract_ged_value(rec_lines)[tgs %in% tags]
+    tgs <- parse_line_tag(rec_lines)
+    parse_line_value(rec_lines)[tgs %in% tags]
   }) |>
     unlist()
   
@@ -342,7 +342,7 @@ get_unused_recs <- function(x){
   ged <- x@as_ged
   
   xrefs <- unlist(x@xrefs)
-  vals <- extract_ged_value(ged)
+  vals <- parse_line_value(ged)
   xref_vals <- vals[grep(reg_xref(TRUE), vals)]
 
   setdiff(xrefs, xref_vals)  

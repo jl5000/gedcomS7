@@ -210,7 +210,7 @@ class_fact <- S7::new_class(
 
 parse_common_fact_elements <- function(fact, lines){
   
-  tag <- extract_ged_tag(lines[1])
+  tag <- parse_line_tag(lines[1])
   
   S7::props(fact) <- list(
     date = parse_date_value(lines, tag),

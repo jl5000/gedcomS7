@@ -16,7 +16,7 @@ pull_record <- function(x, xref){
   rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
                  x@media, x@note, x@subm)[[xref]]
   
-  rec_type <- extract_ged_tag(rec_lines[1])
+  rec_type <- parse_line_tag(rec_lines[1])
   if(!rec_type %in% c("INDI","FAM","SOUR","REPO","SNOTE","OBJE","SUBM"))
     stop("Record type not recognised: ", rec_type)
   
