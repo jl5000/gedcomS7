@@ -76,6 +76,8 @@ push_record <- function(gedcom, record){
     record@xref <- unname(gedcom@next_xref[rec_type])
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }
+  
+  if(rec_type %in% c("indi","fam")) record <- order_facts(record)
     
   S7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
   
@@ -226,3 +228,31 @@ refresh_indi_links <- function(gedcom, record){
   gedcom
 }
 
+order_facts <- function(record){
+  
+  if(length(record@facts) == 0) return(record)
+  
+  # get dates of all facts
+  dts <- lapply(record@facts, \(fct){
+    if(length(fct@date_sort) == 1){
+      dt <- obj_to_ged(fct@date_sort, "SDATE")[1]
+    } else if(length(fct@date) == 1) {
+      dt <- obj_to_ged(fct@date, "DATE")[1]
+    } else {
+      return("")
+    }
+    sub("^0 S?DATE ", "", dt)
+  })
+  
+  #extract first date gregorian
+  dts <- lapply(dts, \(dt){
+    sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE)), "\\1", dt)
+  })
+  
+  # Convert to date
+  dts <- unlist(lapply(dts, parse_gedcom_date))
+  
+  record@facts <- record@facts[order(dts)]
+  
+  record
+}

@@ -37,6 +37,6 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
 }
 
 
-S7::method(print, class_record) <- function(x, ...){
-  x@as_ged
-}
+# S7::method(print, class_record) <- function(x, ...){
+#   x@as_ged
+# }
