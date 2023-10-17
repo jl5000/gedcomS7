@@ -77,7 +77,8 @@ push_record <- function(gedcom, record){
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }
   
-  if(rec_type %in% c("indi","fam")) record <- order_facts(record)
+  # Don't do this yet
+  #if(rec_type %in% c("indi","fam")) record <- order_facts(record)
     
   S7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
   
@@ -239,9 +240,10 @@ order_facts <- function(record){
     } else if(length(fct@date) == 1) {
       dt <- obj_to_ged(fct@date, "DATE")[1]
     } else {
-      return("")
+      dt <- ""
     }
-    sub("^0 S?DATE ", "", dt)
+    sub("^0 S?DATE ", "", dt) |> 
+      setNames(fct@fact_type)
   })
   
   #extract first date gregorian
@@ -251,6 +253,8 @@ order_facts <- function(record){
   
   # Convert to date
   dts <- unlist(lapply(dts, parse_gedcom_date))
+  
+  # TODO: Don't reorder facts of the same type
   
   record@facts <- record@facts[order(dts)]
   

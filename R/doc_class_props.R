@@ -118,8 +118,9 @@
 #' "U" (undetermined, the default),
 #' @param fam_links_chil
 #' @param fam_links_spou
-#' @param files
-#' @param repo_name
+#' @param files A `class_media_file` object or a list of them. This refers to 1 or more external 
+#' digital files. Grouped files should each pertain to the same context.
+#' @param repo_name The name of the repository.
 #' @param facts_recorded
 #' @param originator
 #' @param full_title
