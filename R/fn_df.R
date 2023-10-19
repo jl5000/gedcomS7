@@ -15,7 +15,7 @@ df_indi <- function(x){
     sex = vapply(x@indi, \(lines) chronify(find_ged_values(lines, "SEX")), FUN.VALUE = character(1)),
     birth_date = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))), FUN.VALUE = character(1)),
     birth_place = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))), FUN.VALUE = character(1)),
-    is_alive = vapply(x@indi, \(lines) length(grep("^1 DEAT", lines)) == 0, FUN.VALUE = logical(1)),
+    is_alive = vapply(names(x@indi), \(xref) is_alive(x, xref), FUN.VALUE = logical(1)),
     death_date = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))), FUN.VALUE = character(1)),
     death_place = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))), FUN.VALUE = character(1)),
     fam_as_child = vapply(names(x@indi), \(xref) get_fam_as_child(x, xref, "BIRTH") |> 

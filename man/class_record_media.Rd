@@ -53,6 +53,9 @@ Creating an object with no parameters sets the date to today.}
 
 \item{updated}{A \code{class_change_date} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
+
+\item{files}{A \code{class_media_file} object or a list of them. This refers to 1 or more external
+digital files. Grouped files should each pertain to the same context.}
 }
 \value{
 An S7 object representing a GEDCOM MULTIMEDIA_RECORD.

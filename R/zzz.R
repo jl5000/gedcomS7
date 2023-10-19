@@ -8,8 +8,6 @@
       "including an online validator at https://ged-inline.org/"
     )
     
-  if (getRversion() < "4.3.0")
-    require(S7)
 }
 
 .onLoad <- function(...) {

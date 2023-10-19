@@ -31,11 +31,12 @@ write_gedcom <- function(gedcom,
   con <- file(filepath, encoding = "UTF-8", open = "a")
   on.exit(close(con))
   
+  if(!inc_living) gedcom <- remove_living(gedcom)
+  
   lines <- gedcom@as_ged
   
   if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
   if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
-  if(!inc_living) lines <- remove_living(lines)
   
   # Moved to as_ged property
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
@@ -72,41 +73,86 @@ remove_sensitive_sections <- function(lines, restriction){
 }
 
 
-#' Remove data for living individuals in a tidyged object
+#' Remove living individuals in a gedcom object
 #'
-#' @param gedcom A tidyged object.
+#' @param x A gedcom object.
 #' @param max_age The maximum age to assume for a living person (if a date of birth is given).
 #' @param guess Whether to guess the age of individuals if no death event or date of birth is given and possibly retain them, or be cautious and remove them anyway (the default).
 #'
-#' @return A tidyged object cleansed of information on living individuals.
+#' @return A gedcom object cleansed of information on living individuals.
 #' @export
-remove_living <- function(gedcom,
-                          max_age = 100,
-                          guess = FALSE) {
+remove_living <- function(x,
+                          max_age = 100) {
   
-  indi_xrefs <- tidyged::xrefs_indi(gedcom)
-  
-  for(xref in indi_xrefs) {
-    death_events <- dplyr::filter(gedcom, record == xref, tag == "DEAT")
+  remove <- NULL
+  for(xref in x@xrefs[["indi"]]) {
+    rec_lines <- x@indi[[xref]]
     
-    # death events exist - go to next individual
-    if(nrow(death_events) > 0) next
+    if(!is_alive(x, xref, max_age)) next
     
-    dob <- tidyged.internals::gedcom_value(gedcom, xref, "DATE", 2, "BIRT")
-    
-    # dob exists and age is bigger than max age - go to next individual
-    if(dob != "" && date_diff(dob, minimise = TRUE) > max_age) next
-    
-    # dob doesn't exist, but guessed age is bigger than max age - go to next individual
-    if(dob == "" && guess && guess_age(gedcom, xref) > max_age) next
-    
-    gedcom <- rm_records(gedcom, xref)
-    
+    remove <- c(remove, xref)
   }
   
-  tg
+  if(length(remove) > 0) x <- rm_records(x, remove)
+  
+  x
 }
 
+is_alive <- function(x, xref, max_age = 100){
+  check_indi_rec(x, xref)
+  
+  rec_lines <- x@indi[[xref]]
+  
+  deaths <- find_ged_values(rec_lines, "DEAT", return_list = TRUE)
+  
+  if(length(deaths) > 0){
+    # death events exist - Y/date/place/addr
+    death_occured <- grepl("^1 DEAT Y$", unlist(deaths))
+    if(sum(death_occured) > 0) return(FALSE)
+    death_occured <- grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+    if(sum(death_occured) > 0) return(FALSE)
+  }
+  
+  dobs <- find_ged_values(rec_lines, c("BIRT","DATE"))
+  dobs <- dobs[dobs != ""]
+  
+  if(length(dobs) > 0){
+    ages <- unlist(lapply(dobs, date_diff, minimise = TRUE))
+    if(suppressWarnings(max(ages, na.rm = TRUE)) > max_age) return(FALSE)
+  }
+  
+  TRUE
+}
+
+
+#' Determine the number of years between two dates
+#' 
+#' @param date1 A date string from the tidyged object.
+#' @param date2 A date string from the tidyged object. If no date is given, today's date is used.
+#' @param minimise If date ranges or periods are used in the dates, whether to choose the bounds which
+#' assume the minimum date difference. If this is FALSE, the maximum date difference is assumed.
+#'
+#' @return A numeric value giving the number of years. A numeric value less than zero means no
+#' determination could be made.
+#' @tests
+#' expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
+#' expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
+#' expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
+#' expect_equal(date_diff("28 JAN 2006", "14 DEC 2008"), 2.877, tolerance = 0.01)
+#' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016"), 4, tolerance = 0.01)
+#' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
+#' expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
+date_diff <- function(date1,
+                      date2 = date_exact_current()@as_val,
+                      minimise = TRUE) {
+  
+  date1 <- parse_gedcom_date(date1, minimise = !minimise)
+  date2 <- parse_gedcom_date(date2, minimise = minimise)
+  
+  if(is.na(date1) || is.na(date2)) return(-1)
+  
+  as.numeric(difftime(date2, date1, units = "days")) / 365.25
+}
 
 #' Prepare GEDCOM lines for export
 #'

@@ -243,3 +243,20 @@ val_name_types <- function() {
   )
 }
 
+val_uk_census_dates <- function(){
+  c(
+    "1841" = "6 JUN",
+    "1851" = "30 MAR",
+    "1861" = "7 APR",
+    "1871" = "2 APR",
+    "1881" = "3 APR",
+    "1891" = "5 APR",
+    "1901" = "31 MAR",
+    "1911" = "2 APR",
+    "1921" = "19 JUN",
+    "1931" = "26 APR",
+    "1939" = "29 SEP"
+  )
+}
+
+

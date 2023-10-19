@@ -27,20 +27,40 @@ parse_vals_and_types <- function(lines, val_tag){
 
 #' Convert a GEDCOM date into a date object
 #'
-#' @param date_string A Gregorian date string.
+#' @param date_string A date value string.
 #' @param minimise Whether to fill in missing date pieces so that the date is minimised. 
 #' For example, if no month is given, January is used. If minimise = FALSE, December will be used.
 #'
 #' @return A date.
 #' @export
 #' @tests
+#' expect_equal(parse_gedcom_date("BEF 1980"), as.Date(NA_character_))
+#' expect_equal(parse_gedcom_date("TO 23 JUN 2001"), as.Date(NA_character_))
+#' expect_equal(parse_gedcom_date("AFT 1600", FALSE), as.Date(NA_character_))
+#' expect_equal(parse_gedcom_date("FROM FEB 1900", FALSE), as.Date(NA_character_))
 #' expect_equal(parse_gedcom_date("2005"), as.Date("2005-01-01"))
 #' expect_equal(parse_gedcom_date("2005", FALSE), as.Date("2005-12-31"))
 #' expect_equal(parse_gedcom_date("JUL 1989"), as.Date("1989-07-01"))
 #' expect_equal(parse_gedcom_date("JUL 1989", FALSE), as.Date("1989-07-31"))
 #' expect_equal(parse_gedcom_date("25 MAR 1980"), as.Date("1980-03-25"))
 #' expect_equal(parse_gedcom_date("25 MAR 1980", FALSE), as.Date("1980-03-25"))
+#' expect_equal(parse_gedcom_date("FROM 25 MAR 1980 TO 1990", TRUE), as.Date("1980-03-25"))
+#' expect_equal(parse_gedcom_date("FROM 25 MAR 1980 TO 1990", FALSE), as.Date("1990-12-31"))
 parse_gedcom_date <- function(date_string, minimise = TRUE){
+  
+  # Extract relevant date_gregorian
+  if(minimise){
+    if(grepl("^(BEF|TO) ", date_string)) return(as.Date(NA_character_))
+    
+    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE)), 
+                       "\\1", date_string)
+  } else {
+    if(grepl("^(AFT|FROM) ", date_string) &&
+       !grepl(" TO ", date_string)) return(as.Date(NA_character_))
+    
+    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_gregorian(only = FALSE)), 
+                       "\\1", date_string)
+  }
   
   ged_year <- sub(".* ", "", date_string)
   

@@ -117,6 +117,36 @@ in the corresponding phrase parameter.}
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default),}
 
+\item{files}{A \code{class_media_file} object or a list of them. This refers to 1 or more external
+digital files. Grouped files should each pertain to the same context.}
+
+\item{repo_name}{The name of the repository.}
+
+\item{facts_recorded}{The facts recorded by the source. This can either be a \code{class_facts_recorded} object,
+a list of them, or a character vector of comma-delimited fact types. If a character vector is
+provided then only the fact types themselves can be recorded (and not associated information).
+This option is easier if associated information is not required. For example, a parish register of
+births, deaths, and marriages would be "BIRT, DEAT, MARR". The \code{val_fact_types()} function gives a
+list of possible fact types.}
+
+\item{originator}{The person, agency, or entity who created the record. For a published work,
+this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished
+source, this may be an individual, a government agency, church organization, or private organization.}
+
+\item{full_title}{The full title of the source.}
+
+\item{short_title}{A shortened name of the source used for sorting, filing, and retrieving records.}
+
+\item{publication_facts}{When and where the record was created. For published works, this
+includes information such as the city of publication, name of the publisher, and year of publication.}
+
+\item{repo_citations}{Associated repositories. This can either be a \code{class_repository_citation} object,
+a list of them, or a character vector of XREFs of repository records. If a character vector is
+provided then only the XREFs themselves can be recorded (and not associated information).
+This option is easier if associated information is not required.}
+
+\item{subm_name}{The name of the submitter.}
+
 \item{default_place_form}{}
 
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all

@@ -114,12 +114,6 @@ increase_level <- function(ged, by = 1){
   paste(cur_level + by, remainder)
 }
 
-
-
-
-
-
-
 remove_void_xrefs <- function(xrefs){
   xrefs[xrefs != "@VOID@"]
 }
@@ -128,59 +122,3 @@ as.iterable <- function(x) {
   if(is.list(x) || is.atomic(x)) x else list(x)
 }
 
-add_census <- function(x, year, addr, xrefs_ages, roles, sour){
-  
-  year <- as.character(year)
-  sour_xref <- x@next_xref["sour"]
-  
-  for(i in seq_along(xrefs_ages)){
-    indi_rec <- pull_record(x, xrefs_ages[i])
-    
-    cens <- class_event_indi("CENS", date = year, address = addr)
-    cens@age <- names(xrefs_ages)[i]
-    
-    cit <- class_citation(sour_xref = sour_xref,
-                          fact_type = "CENS")
-    
-    if(roles[i] %in% val_roles()){
-      cit@role <- roles[i]
-      cit@role_phrase <- character()
-    } else {
-      cit@role <- "OTHER"
-      cit@role_phrase <- roles[i]
-    }
-    
-    cens@citations <- cit
-    
-    #is there already a census event with this year?
-    existing <- overwrite <- FALSE
-    for(i in seq_along(indi_rec@facts)){
-      if(indi_rec@facts[[i]]@fact_type == "CENS" && indi_rec@facts[[i]]@date@as_val == year){
-        existing <- TRUE
-        message("Current:")
-        message(paste(indi_rec@facts[[i]]@as_ged, collapse = "\n"))
-        message("New:")
-        message(paste(cens@as_ged, collapse = "\n"))
-        overwrite <- utils::menu(c("Yes", "No"), title="Overwrite?")
-        overwrite <- overwrite == 1L
-        if(overwrite){
-          indi_rec@facts[[i]] <- cens
-        } else {
-          break
-        }
-      }
-    }
-    
-    if(!existing && !overwrite){
-      indi_rec@facts <- append(indi_rec@facts, cens)
-    }
-    
-    if(!existing || overwrite){
-      x <- push_record(x, indi_rec)
-      x <- push_record(x, sour)
-    }
-    
-  }
-  
-  x
-}

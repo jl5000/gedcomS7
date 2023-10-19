@@ -19,7 +19,6 @@
 #' expect_equal(birt_deat@birth_place, "USA")
 #' expect_equal(birt_deat@death_date, "18 JUN 2020")
 #' expect_equal(birt_deat@death_place, "London, UK")
-#' expect_equal(birt_deat@is_alive, FALSE)
 #' expect_snapshot_value(class_record_indi("@I4@", sex = "M", facts = fcts, pers_names = nms,
 #'                                         fam_links_chil = "@F132@", 
 #'                                         fam_links_spou = "@F67@")@as_ged, "json2")
@@ -125,15 +124,6 @@ class_record_indi <- S7::new_class(
           if(fact@fact_type == "BIRT") return(fact@fact_location)
         }
         character()
-      }),
-    
-    is_alive = S7::new_property(
-      S7::class_logical,
-      getter = function(self){
-        for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "DEAT") return(FALSE)
-        }
-        TRUE
       }),
     
     death_date = S7::new_property(

@@ -1,6 +1,10 @@
 #' @include cls_validators.R
 NULL
 
+#' Create an individual ordinance object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM LDS_INDIVIDUAL_ORDINANCE.
 #' @export
 #' @include cls_date.R cls_time.R cls_place.R cls_note.R cls_citation.R
 class_ordinance <- S7::new_class(
@@ -104,6 +108,10 @@ class_ordinance <- S7::new_class(
 )
 
 
+#' Create a spouse sealing object
+#' 
+#' @inheritParams prop_definitions 
+#' @return An S7 object representing a GEDCOM LDS_SPOUSE_SEALING.
 #' @export
 class_spouse_sealing <- S7::new_class(
   "class_spouse_sealing",

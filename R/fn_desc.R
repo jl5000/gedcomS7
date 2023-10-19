@@ -43,7 +43,7 @@ desc_indi_full <- function(x, xref){
   
   indi_dob <- indi@birth_date
   indi_pob <- indi@birth_place
-  indi_alive <- indi@is_alive
+  indi_alive <- is_alive(x, xref)
   indi_dod <- indi@death_date
   indi_pod <- indi@death_place
   
@@ -55,14 +55,14 @@ desc_indi_full <- function(x, xref){
   fath <- pull_record(x, fath_xref)
   fath_dob <- fath@birth_date
   fath_pob <- fath@birth_place
-  fath_alive <- fath@is_alive
+  fath_alive <- is_alive(x, fath_xref)
   fath_dod <- fath@death_date
   fath_pod <- fath@death_place
   
   moth <- pull_record(x, moth_xref)
   moth_dob <- moth@birth_date
   moth_pob <- moth@birth_place
-  moth_alive <- moth@is_alive
+  moth_alive <- is_alive(x, moth_xref)
   moth_dod <- moth@death_date
   moth_pod <- moth@death_place
   

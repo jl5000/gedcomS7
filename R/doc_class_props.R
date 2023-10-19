@@ -121,13 +121,25 @@
 #' @param files A `class_media_file` object or a list of them. This refers to 1 or more external 
 #' digital files. Grouped files should each pertain to the same context.
 #' @param repo_name The name of the repository.
-#' @param facts_recorded
-#' @param originator
-#' @param full_title
-#' @param short_title
-#' @param publication_facts
-#' @param repo_citations
-#' @param subm_name
+#' @param facts_recorded The facts recorded by the source. This can either be a `class_facts_recorded` object, 
+#' a list of them, or a character vector of comma-delimited fact types. If a character vector is 
+#' provided then only the fact types themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required. For example, a parish register of 
+#' births, deaths, and marriages would be "BIRT, DEAT, MARR". The `val_fact_types()` function gives a
+#' list of possible fact types.
+#' @param subm_name The name of the submitter.
+#' @param originator The person, agency, or entity who created the record. For a published work, 
+#' this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished 
+#' source, this may be an individual, a government agency, church organization, or private organization.
+#' @param full_title The full title of the source.
+#' @param short_title A shortened name of the source used for sorting, filing, and retrieving records.
+#' @param publication_facts When and where the record was created. For published works, this 
+#' includes information such as the city of publication, name of the publisher, and year of publication.
+#' @param repo_citations Associated repositories. This can either be a `class_repository_citation` object, 
+#' a list of them, or a character vector of XREFs of repository records. If a character vector is 
+#' provided then only the XREFs themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required.
+#' @param subm_name The name of the submitter.
 #' @param product_id
 #' @param product_name
 #' @param product_version

@@ -246,11 +246,6 @@ order_facts <- function(record){
       setNames(fct@fact_type)
   })
   
-  #extract first date gregorian
-  dts <- lapply(dts, \(dt){
-    sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE)), "\\1", dt)
-  })
-  
   # Convert to date
   dts <- unlist(lapply(dts, parse_gedcom_date))
   

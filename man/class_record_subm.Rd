@@ -60,6 +60,8 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{class_change_date} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
+\item{subm_name}{The name of the submitter.}
+
 \item{address}{The address given either as a \code{class_address} object or as a character string.
 This would be as written on a mailing label with new lines separated by \n.}
 

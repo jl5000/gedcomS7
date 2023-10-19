@@ -2,7 +2,7 @@
 
 # File R/cls_record_indi.R: @tests
 
-test_that("Function class_record_indi() @ L26", {
+test_that("Function class_record_indi() @ L25", {
   nms <- list(class_personal_name("Joe /Bloggs/"),
               class_personal_name("Joseph /Bloggs/"))
   fcts <- list(class_event_indi("BIRT", date = "2005", place = "USA"),
@@ -16,7 +16,6 @@ test_that("Function class_record_indi() @ L26", {
   expect_equal(birt_deat@birth_place, "USA")
   expect_equal(birt_deat@death_date, "18 JUN 2020")
   expect_equal(birt_deat@death_place, "London, UK")
-  expect_equal(birt_deat@is_alive, FALSE)
   expect_snapshot_value(class_record_indi("@I4@", sex = "M", facts = fcts, pers_names = nms,
                                           fam_links_chil = "@F132@", 
                                           fam_links_spou = "@F67@")@as_ged, "json2")
