@@ -3,6 +3,7 @@ add_census <- function(x, year, addr, xrefs_ages, roles, sour){
   
   year <- as.character(year)
   sour_xref <- x@next_xref["sour"]
+  x <- push_record(x, sour)
   
   for(i in seq_along(xrefs_ages)){
     indi_rec <- pull_record(x, xrefs_ages[i])
@@ -48,7 +49,6 @@ add_census <- function(x, year, addr, xrefs_ages, roles, sour){
     
     if(!existing || overwrite){
       x <- push_record(x, indi_rec)
-      x <- push_record(x, sour)
     }
     
   }
