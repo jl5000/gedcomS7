@@ -94,10 +94,10 @@
 #' @param place see territory
 #' @param address The address given either as a `class_address` object or as a character string.
 #' This would be as written on a mailing label with new lines separated by \n.
-#' @param phone_numbers 
-#' @param emails
-#' @param faxes
-#' @param web_pages
+#' @param phone_numbers A character vector of phone numbers.
+#' @param emails A character vector of email addresses.
+#' @param faxes A character vector of fax numbers.
+#' @param web_pages A character vector of web page URLs.
 #' @param agency
 #' @param relig_affil
 #' @param cause Used in special cases to record the reasons which precipitated the fact (e.g. cause of death). 

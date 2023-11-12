@@ -27,7 +27,7 @@ parse_vals_and_types <- function(lines, val_tag){
 
 #' Convert a GEDCOM date into a date object
 #'
-#' @param date_string A date value string.
+#' @param date_string A GEDCOM date value string.
 #' @param minimise Whether to fill in missing date pieces so that the date is minimised. 
 #' For example, if no month is given, January is used. If minimise = FALSE, December will be used.
 #'

@@ -86,11 +86,8 @@ remove_living <- function(x,
   
   remove <- NULL
   for(xref in x@xrefs[["indi"]]) {
-    rec_lines <- x@indi[[xref]]
-    
-    if(!is_alive(x, xref, max_age)) next
-    
-    remove <- c(remove, xref)
+    if(is_alive(x, xref, max_age))
+      remove <- c(remove, xref)
   }
   
   if(length(remove) > 0) x <- rm_records(x, remove)
@@ -127,8 +124,8 @@ is_alive <- function(x, xref, max_age = 100){
 
 #' Determine the number of years between two dates
 #' 
-#' @param date1 A date string from the tidyged object.
-#' @param date2 A date string from the tidyged object. If no date is given, today's date is used.
+#' @param date1 A GEDCOM date string.
+#' @param date2 A GEDCOM date string. If no date is given, today's date is used.
 #' @param minimise If date ranges or periods are used in the dates, whether to choose the bounds which
 #' assume the minimum date difference. If this is FALSE, the maximum date difference is assumed.
 #'

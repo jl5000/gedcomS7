@@ -1,4 +1,12 @@
 
+# This file is probably better in a separate package
+
+
+reg_uk_postcode <- function(){
+  "^[A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}$"
+}
+
+
 add_census <- function(x, year, addr, xrefs_ages, roles, sour){
   
   year <- as.character(year)
@@ -57,7 +65,7 @@ add_census <- function(x, year, addr, xrefs_ages, roles, sour){
 }
 
 
-# Should it show the censuses that exists, or the censuses that are expected?
+# the censuses that are expected
 df_indi_census <- function(x, xref, max_age = 100,
                            census_years = c(seq(1841, 1921, 10), 1939)){
   

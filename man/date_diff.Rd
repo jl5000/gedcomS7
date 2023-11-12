@@ -4,12 +4,12 @@
 \alias{date_diff}
 \title{Determine the number of years between two dates}
 \usage{
-date_diff(date1, date2 = date_exact_current(), minimise = TRUE)
+date_diff(date1, date2 = date_exact_current()@as_val, minimise = TRUE)
 }
 \arguments{
-\item{date1}{A date string from the tidyged object.}
+\item{date1}{A GEDCOM date string.}
 
-\item{date2}{A date string from the tidyged object. If no date is given, today's date is used.}
+\item{date2}{A GEDCOM date string. If no date is given, today's date is used.}
 
 \item{minimise}{If date ranges or periods are used in the dates, whether to choose the bounds which
 assume the minimum date difference. If this is FALSE, the maximum date difference is assumed.}
@@ -20,7 +20,4 @@ determination could be made.
 }
 \description{
 Determine the number of years between two dates
-}
-\details{
-Doesn't yet handle dual years or BCE dates.
 }

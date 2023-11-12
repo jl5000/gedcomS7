@@ -63,7 +63,10 @@ Collate:
     'fn_push_pull.R'
     'io_export.R'
     'io_import.R'
+    'utils_census.R'
+    'utils_convert.R'
     'utils_helpers.R'
+    'utils_parse.R'
     'zzz.R'
 Remotes: 
      S7=RConsortium/OOP-WG

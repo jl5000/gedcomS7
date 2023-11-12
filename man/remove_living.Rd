@@ -4,7 +4,7 @@
 \alias{remove_living}
 \title{Remove living individuals in a gedcom object}
 \usage{
-remove_living(x, max_age = 100, guess = FALSE)
+remove_living(x, max_age = 100)
 }
 \arguments{
 \item{x}{A gedcom object.}
