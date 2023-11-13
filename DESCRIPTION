@@ -15,11 +15,11 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.1)
 Imports:
-    S7,
-    uuid
+    S7
 Suggests: 
     testthat (>= 3.0.0),
-    roxytest
+    roxytest,
+    uuid
 Config/testthat/edition: 3
 Collate: 
     'doc_class_props.R'
@@ -63,7 +63,6 @@ Collate:
     'fn_push_pull.R'
     'io_export.R'
     'io_import.R'
-    'utils_census.R'
     'utils_convert.R'
     'utils_helpers.R'
     'utils_parse.R'

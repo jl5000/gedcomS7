@@ -77,8 +77,14 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{class_change_date} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
+\item{pers_names}{TODO}
+
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default),}
+
+\item{fam_links_chil}{TODO}
+
+\item{fam_links_spou}{TODO}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 

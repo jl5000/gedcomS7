@@ -21,6 +21,16 @@ class_gedcom_source(
 )
 }
 \arguments{
+\item{product_id}{TODO}
+
+\item{product_name}{TODO}
+
+\item{product_version}{TODO}
+
+\item{business_name}{TODO}
+
+\item{business_address}{TODO}
+
 \item{phone_numbers}{A character vector of phone numbers.}
 
 \item{emails}{A character vector of email addresses.}
@@ -28,6 +38,14 @@ class_gedcom_source(
 \item{faxes}{A character vector of fax numbers.}
 
 \item{web_pages}{A character vector of web page URLs.}
+
+\item{data_name}{TODO}
+
+\item{data_pubdate}{TODO}
+
+\item{data_pubtime}{TODO}
+
+\item{data_copyright}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM HEAD.SOUR.

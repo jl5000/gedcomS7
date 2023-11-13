@@ -11,7 +11,7 @@ class_translation_txt(
 )
 }
 \arguments{
-\item{text}{A character string. New lines are created with \n.}
+\item{text}{A character string. New lines are created with \\n.}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 

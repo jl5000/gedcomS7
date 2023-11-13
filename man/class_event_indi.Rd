@@ -36,7 +36,11 @@ class_event_indi(
 )
 }
 \arguments{
-\item{fact_type}{}
+\item{fact_type}{TODO}
+
+\item{fact_val}{TODO}
+
+\item{fact_desc}{TODO}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
 \code{class_date_value} object.}
@@ -44,7 +48,7 @@ class_event_indi(
 \item{place}{see territory}
 
 \item{address}{The address given either as a \code{class_address} object or as a character string.
-This would be as written on a mailing label with new lines separated by \n.}
+This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
 
@@ -57,6 +61,8 @@ This would be as written on a mailing label with new lines separated by \n.}
 \item{agency}{The organization, institution, corporation, person, or other entity that
 has responsibility for the associated fact. Examples are an employer of a person of an
 associated occupation, or an educational establishment that has awarded a scholastic award.}
+
+\item{relig_affil}{A religious denomination associated with the fact.}
 
 \item{cause}{Used in special cases to record the reasons which precipitated the fact (e.g. cause of death).}
 
@@ -95,6 +101,10 @@ associated information is not required.}
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{fam_xref}{The cross-reference identifier of a family record.}
+
+\item{adop_parent}{TODO}
+
+\item{adop_parent_phrase}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.

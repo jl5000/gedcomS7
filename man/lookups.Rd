@@ -5,6 +5,10 @@
 \alias{val_adoptive_parents}
 \alias{val_individual_attribute_types}
 \alias{val_individual_event_types}
+\alias{val_family_event_types}
+\alias{val_family_attribute_types}
+\alias{val_event_types}
+\alias{val_attribute_types}
 \alias{val_fact_types}
 \alias{val_individual_ordinance_types}
 \alias{val_family_ordinance_types}
@@ -26,6 +30,14 @@ val_adoptive_parents()
 val_individual_attribute_types(inc_generic = FALSE)
 
 val_individual_event_types(inc_generic = FALSE)
+
+val_family_event_types(inc_generic = FALSE)
+
+val_family_attribute_types(inc_generic = FALSE)
+
+val_event_types(inc_generic = FALSE)
+
+val_attribute_types(inc_generic = FALSE)
 
 val_fact_types(inc_generic = FALSE)
 
@@ -52,7 +64,7 @@ val_confidence_types()
 val_name_types()
 }
 \arguments{
-\item{inc_generic}{Whether to include a generic fact.}
+\item{inc_generic}{Whether to include a generic facts.}
 
 \item{ord_type}{One of the values in \code{val_individual_ordinance_types()} or
 \code{val_family_ordinance_types()}.}

@@ -68,7 +68,7 @@ Creating an object with no parameters sets the date to today.}
 \item{repo_name}{The name of the repository.}
 
 \item{address}{The address given either as a \code{class_address} object or as a character string.
-This would be as written on a mailing label with new lines separated by \n.}
+This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
 

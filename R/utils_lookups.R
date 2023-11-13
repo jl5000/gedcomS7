@@ -1,5 +1,9 @@
 
 #' Lookup values
+#' @rdname lookups
+#' @param inc_generic Whether to include a generic facts.
+#' @param ord_type One of the values in `val_individual_ordinance_types()` or
+#' `val_family_ordinance_types()`.
 #' @return A vector of allowed values.
 #' @export
 val_record_types <- function(){
@@ -7,14 +11,13 @@ val_record_types <- function(){
     Repository = "repo", Multimedia = "media", Note = "note")
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_adoptive_parents <- function() {
   c(Husband = "HUSB", Wife = "WIFE", Both = "BOTH")
 }
 
-#' @rdname val_record_types
-#' @param inc_generic Whether to include a generic attribute.
+#' @rdname lookups
 #' @export
 val_individual_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -36,8 +39,7 @@ val_individual_attribute_types <- function(inc_generic = FALSE) {
   c(vals, `Other individual attribute` = "FACT")
 }
 
-#' @rdname val_record_types
-#' @param inc_generic Whether to include a generic event.
+#' @rdname lookups
 #' @export
 val_individual_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -68,7 +70,7 @@ val_individual_event_types <- function(inc_generic = FALSE) {
   c(vals, `Other individual event` = "EVEN")
 }
 
-#' @rdname val_individual_event_types
+#' @rdname lookups
 #' @export
 val_family_event_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -88,7 +90,7 @@ val_family_event_types <- function(inc_generic = FALSE) {
 }
 
 
-#' @rdname val_individual_attribute_types
+#' @rdname lookups
 #' @export
 val_family_attribute_types <- function(inc_generic = FALSE) {
   vals <- c(
@@ -99,7 +101,7 @@ val_family_attribute_types <- function(inc_generic = FALSE) {
   c(vals, `Other family attribute` = "FACT")
 }
 
-#' @rdname val_individual_event_types
+#' @rdname lookups
 #' @export
 val_event_types <- function(inc_generic = FALSE) {
   c(
@@ -108,7 +110,7 @@ val_event_types <- function(inc_generic = FALSE) {
   )
 }
 
-#' @rdname val_individual_attribute_types
+#' @rdname lookups
 #' @export
 val_attribute_types <- function(inc_generic = FALSE) {
   c(
@@ -117,8 +119,7 @@ val_attribute_types <- function(inc_generic = FALSE) {
   )
 }
 
-#' @rdname val_record_types
-#' @param inc_generic Whether to include a generic fact.
+#' @rdname lookups
 #' @export
 val_fact_types <- function(inc_generic = FALSE) {
   c(
@@ -128,7 +129,7 @@ val_fact_types <- function(inc_generic = FALSE) {
   )
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_individual_ordinance_types <- function(){
   c(
@@ -140,7 +141,7 @@ val_individual_ordinance_types <- function(){
   )
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_family_ordinance_types <- function(){
   c(
@@ -148,9 +149,7 @@ val_family_ordinance_types <- function(){
   )
 }
 
-#' @rdname val_record_types
-#' @param ord_type One of the values in `val_individual_ordinance_types()` or
-#' `val_family_ordinance_types()`.
+#' @rdname lookups
 #' @export
 val_ordinance_states <- function(ord_type){
   types <- c(
@@ -166,7 +165,7 @@ val_ordinance_states <- function(ord_type){
   types
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_medium_types <- function() {
   vals <- c("AUDIO","BOOK","CARD","ELECTRONIC","FICHE","FILM",
@@ -175,14 +174,14 @@ val_medium_types <- function() {
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_pedigree_types <- function() {
   vals <- c("BIRTH", "ADOPTED", "FOSTER", "SEALING", "OTHER")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_certainty <- function() {
   c(
@@ -193,14 +192,14 @@ val_certainty <- function() {
   )
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_restriction <- function(){
   vals <- c("CONFIDENTIAL", "LOCKED", "PRIVACY")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_roles <- function() {
   c(
@@ -222,41 +221,24 @@ val_roles <- function() {
   )
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_sexes <- function() {
   c(Unknown = "U", Male = "M", Female = "F", `Non-binary` = "X")
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_confidence_types <- function() {
   vals <- c("CHALLENGED", "DISPROVEN", "PROVEN")
   stats::setNames(vals, tools::toTitleCase(vals))
 }
 
-#' @rdname val_record_types
+#' @rdname lookups
 #' @export
 val_name_types <- function() {
   c(
     "AKA","BIRTH","IMMIGRANT","MAIDEN","MARRIED","PROFESSIONAL","OTHER"
   )
 }
-
-val_uk_census_dates <- function(){
-  c(
-    "1841" = "6 JUN",
-    "1851" = "30 MAR",
-    "1861" = "7 APR",
-    "1871" = "2 APR",
-    "1881" = "3 APR",
-    "1891" = "5 APR",
-    "1901" = "31 MAR",
-    "1911" = "2 APR",
-    "1921" = "19 JUN",
-    "1931" = "26 APR",
-    "1939" = "29 SEP"
-  )
-}
-
 

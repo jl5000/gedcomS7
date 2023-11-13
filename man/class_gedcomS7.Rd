@@ -30,6 +30,14 @@ class_gedcomS7(
 )
 }
 \arguments{
+\item{gedcom_version}{TODO}
+
+\item{ext_tags}{TODO}
+
+\item{source}{TODO}
+
+\item{destination}{TODO}
+
 \item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
 \code{class_date_exact} object.}
 
@@ -38,7 +46,11 @@ class_gedcomS7(
 
 \item{subm_xref}{The cross-reference identifier of a submitter record.}
 
-\item{default_place_form}{}
+\item{gedcom_copyright}{TODO}
+
+\item{default_language}{TODO}
+
+\item{default_place_form}{TODO}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
@@ -52,6 +64,10 @@ This happens when the record is pushed to the gedcom object.}
 
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
+
+\item{subm, indi, fam, sour, repo, media, note}{TODO}
+
+\item{xref_prefixes}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM file.

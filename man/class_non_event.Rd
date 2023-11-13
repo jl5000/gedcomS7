@@ -14,6 +14,8 @@ class_non_event(
 )
 }
 \arguments{
+\item{event_type}{TODO}
+
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
 \code{class_date_period} object.}
 

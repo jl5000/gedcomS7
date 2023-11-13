@@ -10,6 +10,13 @@ class_source_call_number(
   medium_phrase = class_missing
 )
 }
+\arguments{
+\item{call_number}{TODO}
+
+\item{medium}{TODO}
+
+\item{medium_phrase}{TODO}
+}
 \value{
 An S7 object representing the CALN substructure of a GEDCOM
 SOURCE_REPOSITORY_CITATION.

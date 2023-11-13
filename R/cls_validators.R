@@ -115,7 +115,6 @@ chk_input_choice <- function(input, choices) {
 #' @param backup_pattern Need to handle List of mixed stuff vs character vector vs list of characters
 #'
 #' @inherit chk_input_size return
-#' @tests
 chk_input_S7classes <- function(input, target_class, backup_pattern = NULL){
   
   if("S7_object" %in% class(input)){
@@ -237,6 +236,7 @@ chk_whole_number <- function(input){
 #' Validate the existence of an input's parent value
 #'
 #' @inheritParams chk_input_size 
+#' @param name The input name.
 #' @param parent The parent input.
 #' @param parent_name The name of the parent input used in any error messages.
 #'

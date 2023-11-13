@@ -14,10 +14,16 @@ class_media_file(
 )
 }
 \arguments{
+\item{location}{TODO}
+
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
+
+\item{medium}{TODO}
+
+\item{medium_phrase}{TODO}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 }

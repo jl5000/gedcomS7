@@ -23,6 +23,14 @@ class_child_family_link(
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{pedigree}{TODO}
+
+\item{pedigree_phrase}{TODO}
+
+\item{confidence}{TODO}
+
+\item{confidence_phrase}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM family link as a child.

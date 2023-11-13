@@ -18,7 +18,7 @@ by semi-colon and a space. For example:
 
 \item{country}{The country component of the address.}
 
-\item{text}{A character string. New lines are created with \n.}
+\item{text}{A character string. New lines are created with \\n.}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 
@@ -57,7 +57,7 @@ either be a \code{class_translation_txt} object, a list of them, or a character 
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{fact_type}{}
+\item{fact_type}{TODO}
 
 \item{fact_phrase}{Textual information that cannot be expressed in the fact type.}
 
@@ -81,6 +81,12 @@ If a value of "OTHER" is used, a @relation_phrase must be given.}
 
 \item{relation_phrase}{Textual information that cannot be expressed in the relation.}
 
+\item{place_name}{TODO}
+
+\item{place_form}{TODO}
+
+\item{place_translations}{TODO}
+
 \item{lat_long}{The latitude and longitude of the place, separated by a space.
 The latitude coordinate is the direction North or South from the equator in degrees and
 fraction of degrees. The longitude coordinate is in degrees and fraction of degrees East
@@ -92,6 +98,26 @@ For example: 18 degrees, 9 minutes, and 3.4 seconds North, 168 degrees, 9 minute
 of events that were recorded in a particular source. Each event type is separated by a
 comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
+
+\item{territory}{TODO}
+
+\item{pedigree}{TODO}
+
+\item{pedigree_phrase}{TODO}
+
+\item{confidence}{TODO}
+
+\item{confidence_phrase}{TODO}
+
+\item{call_numbers}{TODO}
+
+\item{call_number}{TODO}
+
+\item{location}{TODO}
+
+\item{medium}{TODO}
+
+\item{medium_phrase}{TODO}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
@@ -111,10 +137,24 @@ For example in the name "de la Cruz", this value would be "de la".}
 
 \item{name_pieces}{A \code{class_name_pieces} object defining the pieces of the full name.}
 
+\item{pers_name}{TODO}
+
+\item{name_type}{TODO}
+
+\item{type_phrase}{TODO}
+
+\item{name_translations}{TODO}
+
+\item{event_type}{TODO}
+
+\item{fact_val}{TODO}
+
+\item{fact_desc}{TODO}
+
 \item{place}{see territory}
 
 \item{address}{The address given either as a \code{class_address} object or as a character string.
-This would be as written on a mailing label with new lines separated by \n.}
+This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
 
@@ -127,6 +167,8 @@ This would be as written on a mailing label with new lines separated by \n.}
 \item{agency}{The organization, institution, corporation, person, or other entity that
 has responsibility for the associated fact. Examples are an employer of a person of an
 associated occupation, or an educational establishment that has awarded a scholastic award.}
+
+\item{relig_affil}{A religious denomination associated with the fact.}
 
 \item{cause}{Used in special cases to record the reasons which precipitated the fact (e.g. cause of death).}
 
@@ -149,8 +191,18 @@ in the corresponding phrase parameter.}
 
 \item{age_phrase, husb_age_phrase, wife_age_phrase}{Textual information that cannot be expressed in the age.}
 
+\item{adop_parent}{TODO}
+
+\item{adop_parent_phrase}{TODO}
+
+\item{pers_names}{TODO}
+
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default),}
+
+\item{fam_links_chil}{TODO}
+
+\item{fam_links_spou}{TODO}
 
 \item{files}{A \code{class_media_file} object or a list of them. This refers to 1 or more external
 digital files. Grouped files should each pertain to the same context.}
@@ -182,7 +234,37 @@ This option is easier if associated information is not required.}
 
 \item{subm_name}{The name of the submitter.}
 
-\item{default_place_form}{}
+\item{product_id}{TODO}
+
+\item{product_name}{TODO}
+
+\item{product_version}{TODO}
+
+\item{business_name}{TODO}
+
+\item{business_address}{TODO}
+
+\item{data_name}{TODO}
+
+\item{data_pubdate}{TODO}
+
+\item{data_pubtime}{TODO}
+
+\item{data_copyright}{TODO}
+
+\item{gedcom_version}{TODO}
+
+\item{ext_tags}{TODO}
+
+\item{source}{TODO}
+
+\item{destination}{TODO}
+
+\item{gedcom_copyright}{TODO}
+
+\item{default_language}{TODO}
+
+\item{default_place_form}{TODO}
 
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
@@ -204,6 +286,8 @@ you will need to describe the repository in @notes.}
 \item{media_xref}{The cross-reference identifier of a multimedia record.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
+
+\item{data_note_xrefs}{TODO}
 
 \item{subm_xref}{The cross-reference identifier of a submitter record.}
 
@@ -238,6 +322,8 @@ associated information is not required.}
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
+
+\item{data_notes}{TODO}
 
 \item{citations}{Associated sources. This can either be a \code{class_citation} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
@@ -313,6 +399,10 @@ This happens when the record is pushed to the gedcom object.}
 
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
+
+\item{subm, indi, fam, sour, repo, media, note}{TODO}
+
+\item{xref_prefixes}{TODO}
 }
 \description{
 Define all properties used in S7 classes.

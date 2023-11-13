@@ -83,6 +83,10 @@ list of possible fact types.}
 has responsibility for the associated fact. Examples are an employer of a person of an
 associated occupation, or an educational establishment that has awarded a scholastic award.}
 
+\item{data_note_xrefs}{TODO}
+
+\item{data_notes}{TODO}
+
 \item{originator}{The person, agency, or entity who created the record. For a published work,
 this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished
 source, this may be an individual, a government agency, church organization, or private organization.}

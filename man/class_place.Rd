@@ -16,7 +16,13 @@ class_place(
 )
 }
 \arguments{
+\item{place_name}{TODO}
+
+\item{place_form}{TODO}
+
 \item{language}{A character string of language tags as defined in BCP 47.}
+
+\item{place_translations}{TODO}
 
 \item{lat_long}{The latitude and longitude of the place, separated by a space.
 The latitude coordinate is the direction North or South from the equator in degrees and

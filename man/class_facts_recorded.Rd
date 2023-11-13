@@ -21,6 +21,8 @@ would be BIRT, DEAT, MARR.}
 \code{class_date_period} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
+
+\item{territory}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM SOUR.EVEN structure.

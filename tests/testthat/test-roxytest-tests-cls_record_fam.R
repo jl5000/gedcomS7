@@ -17,7 +17,7 @@ test_that("Function class_record_fam() @ L25", {
   expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
   expect_snapshot_value(class_record_fam("@1@",
                                      unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
-                                     ext_ids = setNames(letters, LETTERS)[1:5],
+                                     ext_ids = stats::setNames(letters, LETTERS)[1:5],
                                      user_ids = month.abb[1:6])@ids, "json2")
 })
 

@@ -13,6 +13,9 @@ Any S7 class objects must have an \code{as_ged()} method.}
 \item{tag}{If the obj contains any atomic elements, then this
 will specify what tag they are recorded against.}
 }
+\value{
+A vector of GEDCOM lines.
+}
 \description{
 Convert an input into a vector of GEDCOM lines
 }

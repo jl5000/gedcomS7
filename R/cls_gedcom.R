@@ -264,7 +264,7 @@ class_gedcomS7 <- S7::new_class(
                              getter = function(self){
                                rec_types <- names(self@xref_prefixes)
                                rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
-                               setNames(rec_xrefs, rec_types)
+                               stats::setNames(rec_xrefs, rec_types)
                              }),
     
     next_xref = S7::new_property(S7::class_character,
@@ -280,7 +280,7 @@ class_gedcomS7 <- S7::new_class(
                                    }
                                    
                                    paste0("@", self@xref_prefixes, idx, "@") |>
-                                     setNames(names(self@xref_prefixes))
+                                     stats::setNames(names(self@xref_prefixes))
                                  }),
     
     as_ged = S7::new_property(

@@ -15,7 +15,7 @@
 #' @param state The state component of the address.
 #' @param postal_code The postal code component of the address.
 #' @param country The country component of the address.
-#' @param text A character string. New lines are created with \n.
+#' @param text A character string. New lines are created with \\n.
 #' @param language A character string of language tags as defined in BCP 47.
 #' @param languages A character vector of language tags as defined in BCP 47.
 #' @param media_type The media type as defined in RFC 2045.
@@ -41,7 +41,7 @@
 #' either be a `class_translation_txt` object, a list of them, or a character vector of text. 
 #' If any `class_translation_txt` objects are provided, then you will be forced to define an
 #' associated language or media type.
-#' @param fact_type 
+#' @param fact_type TODO
 #' @param fact_phrase Textual information that cannot be expressed in the fact type.
 #' @param role What role this person played in this fact.
 #' @param role_phrase Textual information that cannot be expressed in the role.
@@ -57,9 +57,9 @@
 #' @param relation_is The nature of the association. This must be a value from `val_roles()`.
 #' If a value of "OTHER" is used, a @relation_phrase must be given.
 #' @param relation_phrase Textual information that cannot be expressed in the relation.
-#' @param place_name
-#' @param place_form
-#' @param place_translations
+#' @param place_name TODO
+#' @param place_form TODO
+#' @param place_translations TODO
 #' @param lat_long The latitude and longitude of the place, separated by a space.
 #' The latitude coordinate is the direction North or South from the equator in degrees and 
 #' fraction of degrees. The longitude coordinate is in degrees and fraction of degrees East 
@@ -70,16 +70,16 @@
 #' of events that were recorded in a particular source. Each event type is separated by a
 #' comma and space. For example, a parish register of births, deaths, and marriages
 #' would be BIRT, DEAT, MARR. 
-#' @param territory
-#' @param pedigree
-#' @param pedigree_phrase
-#' @param confidence
-#' @param confidence_phrase
-#' @param call_numbers
-#' @param call_number
-#' @param location
-#' @param medium
-#' @param medium_phrase
+#' @param territory TODO
+#' @param pedigree TODO
+#' @param pedigree_phrase TODO
+#' @param confidence TODO
+#' @param confidence_phrase TODO
+#' @param call_numbers TODO
+#' @param call_number TODO
+#' @param location TODO
+#' @param medium TODO
+#' @param medium_phrase TODO
 #' @param media_alt A named vector of the media in alternative media forms, c(form = location)
 #' @param prefix The name prefix, e.g. Cmdr.
 #' @param given The given name or earned name.
@@ -90,16 +90,16 @@
 #' @param surname Surname or family name.
 #' @param suffix Name piece that appears after the given name and surname parts, e.g. Jr.
 #' @param name_pieces A `class_name_pieces` object defining the pieces of the full name.
-#' @param pers_name
-#' @param name_type
-#' @param type_phrase
-#' @param name_translations
-#' @param event_type
-#' @param fact_val
-#' @param fact_desc
+#' @param pers_name TODO
+#' @param name_type TODO
+#' @param type_phrase TODO
+#' @param name_translations TODO
+#' @param event_type TODO
+#' @param fact_val TODO
+#' @param fact_desc TODO
 #' @param place see territory
 #' @param address The address given either as a `class_address` object or as a character string.
-#' This would be as written on a mailing label with new lines separated by \n.
+#' This would be as written on a mailing label with new lines separated by \\n.
 #' @param phone_numbers A character vector of phone numbers.
 #' @param emails A character vector of email addresses.
 #' @param faxes A character vector of fax numbers.
@@ -107,7 +107,7 @@
 #' @param agency The organization, institution, corporation, person, or other entity that 
 #' has responsibility for the associated fact. Examples are an employer of a person of an 
 #' associated occupation, or an educational establishment that has awarded a scholastic award.
-#' @param relig_affil
+#' @param relig_affil A religious denomination associated with the fact.
 #' @param cause Used in special cases to record the reasons which precipitated the fact (e.g. cause of death). 
 #' @param confidential A logical value indicating whether the associated record/fact should be
 #' treated as confidential. This allows them to be excluded on export.
@@ -122,13 +122,13 @@
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
 #' @param age_phrase,husb_age_phrase,wife_age_phrase Textual information that cannot be expressed in the age.
-#' @param adop_parent
-#' @param adop_parent_phrase
-#' @param pers_names
+#' @param adop_parent TODO
+#' @param adop_parent_phrase TODO
+#' @param pers_names TODO
 #' @param sex The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 #' "U" (undetermined, the default),
-#' @param fam_links_chil
-#' @param fam_links_spou
+#' @param fam_links_chil TODO
+#' @param fam_links_spou TODO
 #' @param files A `class_media_file` object or a list of them. This refers to 1 or more external 
 #' digital files. Grouped files should each pertain to the same context.
 #' @param repo_name The name of the repository.
@@ -151,24 +151,24 @@
 #' provided then only the XREFs themselves can be recorded (and not associated information). 
 #' This option is easier if associated information is not required.
 #' @param subm_name The name of the submitter.
-#' @param product_id
-#' @param product_name
-#' @param product_version
-#' @param business_name
-#' @param business_address
-#' @param data_name
-#' @param data_pubdate
-#' @param data_pubtime
-#' @param data_copyright
-#' @param gedcom_version
-#' @param ext_tags
-#' @param source
-#' @param destination
-#' @param gedcom_copyright
-#' @param default_language
-#' @param default_place_form
+#' @param product_id TODO
+#' @param product_name TODO
+#' @param product_version TODO
+#' @param business_name TODO
+#' @param business_address TODO
+#' @param data_name TODO
+#' @param data_pubdate TODO
+#' @param data_pubtime TODO
+#' @param data_copyright TODO
+#' @param gedcom_version TODO
+#' @param ext_tags TODO
+#' @param source TODO
+#' @param destination TODO
+#' @param gedcom_copyright TODO
+#' @param default_language TODO
+#' @param default_place_form TODO
 #' 
-#'  
+#' 
 #' 
 #' 
 #' @param xref The cross-reference identifier for this record. You should not edit this at all
@@ -185,7 +185,7 @@
 #' you will need to describe the repository in @notes.
 #' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
-#' @param data_note_xrefs
+#' @param data_note_xrefs TODO
 #' @param subm_xref The cross-reference identifier of a submitter record.
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
 #' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of the member's individual records.
@@ -213,7 +213,7 @@
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param data_notes
+#' @param data_notes TODO
 #' @param citations Associated sources. This can either be a `class_citation` object, a list of them,
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
@@ -265,5 +265,6 @@
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
 #' This happens when the record is pushed to the gedcom object.
-#' 
+#' @param subm,indi,fam,sour,repo,media,note TODO
+#' @param xref_prefixes TODO
 NULL

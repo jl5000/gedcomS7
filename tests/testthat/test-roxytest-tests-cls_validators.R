@@ -44,7 +44,7 @@ test_that("Function chk_input_choice() @ L99", {
 })
 
 
-test_that("Function chk_input_date_cpts() @ L164", {
+test_that("Function chk_input_date_cpts() @ L163", {
   expect_equal(chk_input_date_cpts(numeric(),1,2),
                "Year must be defined")
   expect_equal(chk_input_date_cpts(2000,1,2, bce = TRUE),
@@ -61,13 +61,13 @@ test_that("Function chk_input_date_cpts() @ L164", {
 })
 
 
-test_that("Function chk_input_dates() @ L197", {
+test_that("Function chk_input_dates() @ L196", {
   expect_null(chk_input_dates(NULL,NULL))
   expect_null(chk_input_dates("2002-09-08",NULL))
 })
 
 
-test_that("Function chk_whole_number() @ L229", {
+test_that("Function chk_whole_number() @ L228", {
   expect_equal(chk_whole_number(1.1),
                "must be a whole number")
   expect_equal(chk_whole_number(4.2),

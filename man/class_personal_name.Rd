@@ -16,7 +16,15 @@ class_personal_name(
 )
 }
 \arguments{
+\item{pers_name}{TODO}
+
+\item{name_type}{TODO}
+
+\item{type_phrase}{TODO}
+
 \item{name_pieces}{A \code{class_name_pieces} object defining the pieces of the full name.}
+
+\item{name_translations}{TODO}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

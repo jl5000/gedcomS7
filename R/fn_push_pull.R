@@ -250,7 +250,7 @@ order_facts <- function(record){
       dt <- ""
     }
     sub("^0 S?DATE ", "", dt) |> 
-      setNames(fct@fact_type)
+      stats::setNames(fct@fact_type)
   })
   
   # Convert to date

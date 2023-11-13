@@ -42,7 +42,7 @@ either be a \code{class_translation_txt} object, a list of them, or a character 
 If any \code{class_translation_txt} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{fact_type}{}
+\item{fact_type}{TODO}
 
 \item{fact_phrase}{Textual information that cannot be expressed in the fact type.}
 

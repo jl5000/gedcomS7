@@ -20,6 +20,14 @@ class_gedcom_header(
 )
 }
 \arguments{
+\item{gedcom_version}{TODO}
+
+\item{ext_tags}{TODO}
+
+\item{source}{TODO}
+
+\item{destination}{TODO}
+
 \item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
 \code{class_date_exact} object.}
 
@@ -28,7 +36,11 @@ class_gedcom_header(
 
 \item{subm_xref}{The cross-reference identifier of a submitter record.}
 
-\item{default_place_form}{}
+\item{gedcom_copyright}{TODO}
+
+\item{default_language}{TODO}
+
+\item{default_place_form}{TODO}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

@@ -11,6 +11,8 @@ class_personal_name_tran(
 )
 }
 \arguments{
+\item{pers_name}{TODO}
+
 \item{language}{A character string of language tags as defined in BCP 47.}
 
 \item{name_pieces}{A \code{class_name_pieces} object defining the pieces of the full name.}
