@@ -30,9 +30,18 @@ pull_record <- function(x, xref){
                 SUBM = parse_record_subm(rec_lines)
   )
   
-  if(rec@locked)
-    warning("The record is locked. You may edit the record object, but you cannot push it back to the GEDCOM until @locked = FALSE")
-  
+  if(rec@locked){
+    warning("The record is locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object.") 
+  } else {
+    # Check facts
+    locked_facts <- vapply(rec@facts, \(fct) fct@locked, FUN.VALUE = logical(1))
+
+    if(sum(locked_facts) > 0){
+      warning(paste("The following facts are locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object:",
+                    toString(which(locked_facts)))) 
+    }
+  }
+
   rec
   
 }
@@ -51,9 +60,6 @@ pull_record <- function(x, xref){
 #' @return An updated GEDCOM object.
 #' @export
 push_record <- function(gedcom, record){
-  
-  if(record@locked)
-    stop("The record is locked and cannot be pushed back into the GEDCOM object. Set @locked = FALSE to remove this restriction.")
   
   if(gedcom@update_change_dates){
     if(length(record@updated) == 1){

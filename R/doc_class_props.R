@@ -59,7 +59,12 @@
 #' @param place_name
 #' @param place_form
 #' @param place_translations
-#' @param lat_long
+#' @param lat_long The latitude and longitude of the place, separated by a space.
+#' The latitude coordinate is the direction North or South from the equator in degrees and 
+#' fraction of degrees. The longitude coordinate is in degrees and fraction of degrees East 
+#' or West of the zero or base meridian coordinate.
+#' For example: 18 degrees, 9 minutes, and 3.4 seconds North, 168 degrees, 9 minutes, and 
+#' 3.4 seconds East would be formatted as "N18.150944 E168.150944".
 #' @param fact_types A character string indicating the types
 #' of events that were recorded in a particular source. Each event type is separated by a
 #' comma and space. For example, a parish register of births, deaths, and marriages
@@ -83,7 +88,7 @@
 #' For example in the name "de la Cruz", this value would be "de la".
 #' @param surname Surname or family name.
 #' @param suffix Name piece that appears after the given name and surname parts, e.g. Jr.
-#' @param name_pieces
+#' @param name_pieces A `class_name_pieces` object defining the pieces of the full name.
 #' @param pers_name
 #' @param name_type
 #' @param type_phrase
@@ -98,13 +103,18 @@
 #' @param emails A character vector of email addresses.
 #' @param faxes A character vector of fax numbers.
 #' @param web_pages A character vector of web page URLs.
-#' @param agency
+#' @param agency The organization, institution, corporation, person, or other entity that 
+#' has responsibility for the associated fact. Examples are an employer of a person of an 
+#' associated occupation, or an educational establishment that has awarded a scholastic award.
 #' @param relig_affil
 #' @param cause Used in special cases to record the reasons which precipitated the fact (e.g. cause of death). 
-#' @param confidential
-#' @param locked
-#' @param private
-#' @param associations
+#' @param confidential A logical value indicating whether the associated record/fact should be
+#' treated as confidential. This allows them to be excluded on export.
+#' @param locked A logical value indicating whether the associated record/fact should be
+#' treated as read-only.
+#' @param private A logical value indicating whether the associated record/fact should be
+#' treated as private. This allows them to be excluded on export.
+#' @param associations Associated individuals. This can either be a `class_association` object or a list of them.
 #' @param age,husb_age,wife_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 

@@ -87,14 +87,7 @@ class_record <- S7::new_class(
     
     restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){
-                                      if(sum(self@confidential, self@locked, self@private) == 0)
-                                        return(character())
-                                      
-                                      conf <- rep("CONFIDENTIAL", self@confidential)
-                                      lock <- rep("LOCKED", self@locked)
-                                      priv <- rep("PRIVACY", self@private)
-                                      
-                                      toString(c(conf, lock, priv))
+                                      restrictions_to_resn(self@confidential, self@locked, self@private)
                                     }),
     
     ids = S7::new_property(S7::class_character,

@@ -58,3 +58,14 @@ obj_to_val <- function(obj){
   }
   val
 }
+
+restrictions_to_resn <- function(confidential, locked, private){
+  if(sum(confidential, locked, private) == 0)
+    return(character())
+  
+  conf <- rep("CONFIDENTIAL", confidential)
+  lock <- rep("LOCKED", locked)
+  priv <- rep("PRIVACY", private)
+  
+  toString(c(conf, lock, priv))
+}
