@@ -1,6 +1,6 @@
 
 is_indi_rec <- function(record) S7::S7_inherits(record, class_record_indi)
-is_famg_rec <- function(record) S7::S7_inherits(record, class_record_fam)
+is_fam_rec <- function(record) S7::S7_inherits(record, class_record_fam)
 is_sour_rec <- function(record) S7::S7_inherits(record, class_record_sour)
 is_repo_rec <- function(record) S7::S7_inherits(record, class_record_repo)
 is_media_rec <- function(record) S7::S7_inherits(record, class_record_media)

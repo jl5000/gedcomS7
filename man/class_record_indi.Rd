@@ -36,6 +36,15 @@ class_record_indi(
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
+\item{confidential}{A logical value indicating whether the associated record/fact should be
+treated as confidential. This allows them to be excluded on export.}
+
+\item{locked}{A logical value indicating whether the associated record/fact should be
+treated as read-only.}
+
+\item{private}{A logical value indicating whether the associated record/fact should be
+treated as private. This allows them to be excluded on export.}
+
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
@@ -72,6 +81,8 @@ Creating an object with no parameters sets the date to today.}
 "U" (undetermined, the default),}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
+
+\item{associations}{Associated individuals. This can either be a \code{class_association} object or a list of them.}
 
 \item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
 whose records also represent this individual. The vector names may provide a description of these records.}

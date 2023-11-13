@@ -30,6 +30,15 @@ class_record_repo(
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
+\item{confidential}{A logical value indicating whether the associated record/fact should be
+treated as confidential. This allows them to be excluded on export.}
+
+\item{locked}{A logical value indicating whether the associated record/fact should be
+treated as read-only.}
+
+\item{private}{A logical value indicating whether the associated record/fact should be
+treated as private. This allows them to be excluded on export.}
+
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
@@ -61,7 +70,13 @@ Creating an object with no parameters sets the date to today.}
 \item{address}{The address given either as a \code{class_address} object or as a character string.
 This would be as written on a mailing label with new lines separated by \n.}
 
-\item{phone_numbers}{}
+\item{phone_numbers}{A character vector of phone numbers.}
+
+\item{emails}{A character vector of email addresses.}
+
+\item{faxes}{A character vector of fax numbers.}
+
+\item{web_pages}{A character vector of web page URLs.}
 }
 \value{
 An S7 object representing a GEDCOM REPOSITORY_RECORD.

@@ -33,12 +33,13 @@ pull_record <- function(x, xref){
   if(rec@locked){
     warning("The record is locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object.") 
   } else {
-    # Check facts
-    locked_facts <- vapply(rec@facts, \(fct) fct@locked, FUN.VALUE = logical(1))
-
-    if(sum(locked_facts) > 0){
-      warning(paste("The following facts are locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object:",
-                    toString(which(locked_facts)))) 
+    if(is_indi_rec(rec) || is_fam_rec(rec)){
+      # Check facts
+      locked_facts <- vapply(rec@facts, \(fct) fct@locked, FUN.VALUE = logical(1))
+      
+      if(sum(locked_facts) > 0)
+        warning(paste("The following facts are locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object:",
+                      toString(which(locked_facts)))) 
     }
   }
 

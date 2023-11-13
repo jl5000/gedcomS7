@@ -21,6 +21,11 @@ you will need to define an @indi_phrase.}
 
 \item{indi_phrase}{Textual information that cannot be expressed in the @indi_xref.}
 
+\item{relation_is}{The nature of the association. This must be a value from \code{val_roles()}.
+If a value of "OTHER" is used, a @relation_phrase must be given.}
+
+\item{relation_phrase}{Textual information that cannot be expressed in the relation.}
+
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,

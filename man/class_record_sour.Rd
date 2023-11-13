@@ -34,6 +34,15 @@ class_record_sour(
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
+\item{confidential}{A logical value indicating whether the associated record/fact should be
+treated as confidential. This allows them to be excluded on export.}
+
+\item{locked}{A logical value indicating whether the associated record/fact should be
+treated as read-only.}
+
+\item{private}{A logical value indicating whether the associated record/fact should be
+treated as private. This allows them to be excluded on export.}
+
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
@@ -69,6 +78,10 @@ provided then only the fact types themselves can be recorded (and not associated
 This option is easier if associated information is not required. For example, a parish register of
 births, deaths, and marriages would be "BIRT, DEAT, MARR". The \code{val_fact_types()} function gives a
 list of possible fact types.}
+
+\item{agency}{The organization, institution, corporation, person, or other entity that
+has responsibility for the associated fact. Examples are an employer of a person of an
+associated occupation, or an educational establishment that has awarded a scholastic award.}
 
 \item{originator}{The person, agency, or entity who created the record. For a published work,
 this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished

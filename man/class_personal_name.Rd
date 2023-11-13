@@ -16,6 +16,8 @@ class_personal_name(
 )
 }
 \arguments{
+\item{name_pieces}{A \code{class_name_pieces} object defining the pieces of the full name.}
+
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if

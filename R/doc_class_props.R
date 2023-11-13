@@ -54,8 +54,9 @@
 #' "2" = Secondary evidence, data officially recorded sometime after event
 #' "3" = Direct and primary evidence used, or by dominance of the evidence
 #' @param indi_phrase Textual information that cannot be expressed in the @indi_xref.
-#' @param relation_is
-#' @param relation_phrase
+#' @param relation_is The nature of the association. This must be a value from `val_roles()`.
+#' If a value of "OTHER" is used, a @relation_phrase must be given.
+#' @param relation_phrase Textual information that cannot be expressed in the relation.
 #' @param place_name
 #' @param place_form
 #' @param place_translations

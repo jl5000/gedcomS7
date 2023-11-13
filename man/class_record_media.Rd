@@ -25,6 +25,15 @@ class_record_media(
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
+\item{confidential}{A logical value indicating whether the associated record/fact should be
+treated as confidential. This allows them to be excluded on export.}
+
+\item{locked}{A logical value indicating whether the associated record/fact should be
+treated as read-only.}
+
+\item{private}{A logical value indicating whether the associated record/fact should be
+treated as private. This allows them to be excluded on export.}
+
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 

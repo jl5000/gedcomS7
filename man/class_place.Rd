@@ -18,6 +18,13 @@ class_place(
 \arguments{
 \item{language}{A character string of language tags as defined in BCP 47.}
 
+\item{lat_long}{The latitude and longitude of the place, separated by a space.
+The latitude coordinate is the direction North or South from the equator in degrees and
+fraction of degrees. The longitude coordinate is in degrees and fraction of degrees East
+or West of the zero or base meridian coordinate.
+For example: 18 degrees, 9 minutes, and 3.4 seconds North, 168 degrees, 9 minutes, and
+3.4 seconds East would be formatted as "N18.150944 E168.150944".}
+
 \item{ext_ids}{A named character vector of identifiers maintained by an external authority.
 The names must be given as a URI. See the GEDCOM specification for more information.}
 

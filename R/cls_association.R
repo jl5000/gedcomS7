@@ -11,6 +11,8 @@ NULL
 #' expect_snapshot_value(class_association(relation_is = "FATH")@as_ged, "json2")
 #' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
 #'              regexp = "@relation_is has an invalid value")
+#' expect_error(class_association(indi_phrase = "someone", relation_is = "OTHER"),
+#'              regexp = "A @relation_phrase must be given")
 #' expect_snapshot_value(class_association(indi_phrase = "someone",
 #'                                         relation_is = "FATH")@as_ged, "json2")
 #' expect_snapshot_value(class_association(indi_xref = "@SME@", indi_phrase = "someone",
@@ -71,7 +73,11 @@ class_association <- S7::new_class(
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
-  )
+  ),
+  validator = function(self){
+    if(self@relation_is == "OTHER" && length(self@relation_phrase) == 0)
+      "A @relation_phrase must be given if @relation_is is 'OTHER'"
+  }
 )
 
 

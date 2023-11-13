@@ -21,7 +21,13 @@ class_gedcom_source(
 )
 }
 \arguments{
-\item{phone_numbers}{}
+\item{phone_numbers}{A character vector of phone numbers.}
+
+\item{emails}{A character vector of email addresses.}
+
+\item{faxes}{A character vector of fax numbers.}
+
+\item{web_pages}{A character vector of web page URLs.}
 }
 \value{
 An S7 object representing a GEDCOM HEAD.SOUR.
