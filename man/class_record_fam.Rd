@@ -73,6 +73,10 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{class_change_date} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
+\item{facts}{TODO}
+
+\item{non_events}{TODO}
+
 \item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
@@ -81,6 +85,8 @@ in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
 \item{associations}{Associated individuals. This can either be a \code{class_association} object or a list of them.}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
+
+\item{spouse_sealings}{TODO}
 }
 \value{
 An S7 object representing a GEDCOM FAMILY_RECORD.

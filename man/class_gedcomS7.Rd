@@ -67,7 +67,12 @@ This happens when the record is pushed to the gedcom object.}
 
 \item{subm, indi, fam, sour, repo, media, note}{TODO}
 
-\item{xref_prefixes}{TODO}
+\item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
+which will precede the number given to identify new records (of which there are 7 types).
+This vector must be of a particular length with specific names. Default value:
+c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
+The order that these records appear in the vector will also dictate the order in which records
+will appear in the exported file.}
 }
 \value{
 An S7 object representing a GEDCOM file.

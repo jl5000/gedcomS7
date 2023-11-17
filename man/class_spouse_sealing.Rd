@@ -20,7 +20,17 @@ class_spouse_sealing(
 \item{date}{The date given either as a formatted GEDCOM string, or a
 \code{class_date_value} object.}
 
+\item{temple_name}{TODO}
+
 \item{place}{see territory}
+
+\item{ord_state}{TODO}
+
+\item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
+\code{class_date_exact} object.}
+
+\item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
+\code{class_time} object.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 

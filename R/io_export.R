@@ -9,6 +9,7 @@
 #' @param filepath The full filepath to write to.
 #' @param inc_confid Whether to include records that are marked as confidential.
 #' @param inc_private Whether to include records that are marked as private.
+#' @param inc_living Whether to include individual records for suspected living people.
 #'
 #' @return The filepath (invisibly).
 #' @export
@@ -77,7 +78,6 @@ remove_sensitive_sections <- function(lines, restriction){
 #'
 #' @param x A gedcom object.
 #' @param max_age The maximum age to assume for a living person (if a date of birth is given).
-#' @param guess Whether to guess the age of individuals if no death event or date of birth is given and possibly retain them, or be cautious and remove them anyway (the default).
 #'
 #' @return A gedcom object cleansed of information on living individuals.
 #' @export

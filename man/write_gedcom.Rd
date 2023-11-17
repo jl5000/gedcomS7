@@ -20,6 +20,8 @@ write_gedcom(
 \item{inc_confid}{Whether to include records that are marked as confidential.}
 
 \item{inc_private}{Whether to include records that are marked as private.}
+
+\item{inc_living}{Whether to include individual records for suspected living people.}
 }
 \value{
 The filepath (invisibly).

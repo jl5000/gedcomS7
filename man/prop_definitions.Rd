@@ -266,28 +266,43 @@ This option is easier if associated information is not required.}
 
 \item{default_place_form}{TODO}
 
+\item{facts}{TODO}
+
+\item{non_events}{TODO}
+
+\item{spouse_sealings}{TODO}
+
+\item{ordinances}{TODO}
+
+\item{ord_type}{TODO}
+
+\item{temple_name}{TODO}
+
+\item{ord_state}{TODO}
+
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you will need to define an @indi_phrase.}
+you should define an @indi_phrase.}
 
 \item{fam_xref}{The cross-reference identifier of a family record.}
 
 \item{sour_xref}{The cross-reference identifier of a source record. If the source
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you will need to describe the source in @where.}
+you should describe the source in @where.}
 
 \item{repo_xref}{The cross-reference identifier of a repository record. If the repository
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you will need to describe the repository in @notes.}
+you should describe the repository in @notes.}
 
 \item{media_xref}{The cross-reference identifier of a multimedia record.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{data_note_xrefs}{TODO}
+\item{data_note_xrefs}{A character vector of note record cross-reference identifiers relevant
+to the source data.}
 
 \item{subm_xref}{The cross-reference identifier of a submitter record.}
 
@@ -323,7 +338,10 @@ or a character vector of notes. If a character vector is provided then only the 
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{data_notes}{TODO}
+\item{data_notes}{Associated notes about the source data. This can either be a \code{class_note}
+object, a list of them, or a character vector of notes. If a character vector is provided
+then only the notes themselves can be recorded (and not associated information).
+This option is easier if associated information is not required.}
 
 \item{citations}{Associated sources. This can either be a \code{class_citation} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
@@ -394,6 +412,12 @@ Creating an object with no parameters sets the date to today.}
 \item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
 \code{class_time} object.}
 
+\item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
+\code{class_date_exact} object.}
+
+\item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
+\code{class_time} object.}
+
 \item{update_change_dates}{Whether to automatically update change dates when updating records.
 This happens when the record is pushed to the gedcom object.}
 
@@ -402,7 +426,12 @@ This happens when the record is pushed to the gedcom object.}
 
 \item{subm, indi, fam, sour, repo, media, note}{TODO}
 
-\item{xref_prefixes}{TODO}
+\item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
+which will precede the number given to identify new records (of which there are 7 types).
+This vector must be of a particular length with specific names. Default value:
+c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
+The order that these records appear in the vector will also dictate the order in which records
+will appear in the exported file.}
 }
 \description{
 Define all properties used in S7 classes.

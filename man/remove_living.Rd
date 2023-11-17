@@ -10,8 +10,6 @@ remove_living(x, max_age = 100)
 \item{x}{A gedcom object.}
 
 \item{max_age}{The maximum age to assume for a living person (if a date of birth is given).}
-
-\item{guess}{Whether to guess the age of individuals if no death event or date of birth is given and possibly retain them, or be cautious and remove them anyway (the default).}
 }
 \value{
 A gedcom object cleansed of information on living individuals.

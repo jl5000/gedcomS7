@@ -168,24 +168,31 @@
 #' @param default_language TODO
 #' @param default_place_form TODO
 #' 
-#' 
+#' @param facts TODO
+#' @param non_events TODO
+#' @param spouse_sealings TODO
+#' @param ordinances TODO
+#' @param ord_type TODO
+#' @param temple_name TODO
+#' @param ord_state TODO
 #' 
 #' 
 #' @param xref The cross-reference identifier for this record. You should not edit this at all
 #' as maintenance of these is done automatically.
 #' @param indi_xref The cross-reference identifier of an individual record. If the individual
 #' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-#' you will need to define an @indi_phrase.
+#' you should define an @indi_phrase.
 #' @param fam_xref The cross-reference identifier of a family record.
 #' @param sour_xref The cross-reference identifier of a source record. If the source
 #' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-#' you will need to describe the source in @where.
+#' you should describe the source in @where.
 #' @param repo_xref The cross-reference identifier of a repository record. If the repository
 #' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-#' you will need to describe the repository in @notes.
+#' you should describe the repository in @notes.
 #' @param media_xref The cross-reference identifier of a multimedia record.
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
-#' @param data_note_xrefs TODO
+#' @param data_note_xrefs A character vector of note record cross-reference identifiers relevant
+#' to the source data.
 #' @param subm_xref The cross-reference identifier of a submitter record.
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
 #' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of the member's individual records.
@@ -213,7 +220,10 @@
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param data_notes TODO
+#' @param data_notes Associated notes about the source data. This can either be a `class_note` 
+#' object, a list of them, or a character vector of notes. If a character vector is provided 
+#' then only the notes themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required.
 #' @param citations Associated sources. This can either be a `class_citation` object, a list of them,
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
@@ -260,11 +270,20 @@
 #' `class_date_exact` object.
 #' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
 #' `class_time` object.
+#' @param state_date The ordinance date given either as a formatted GEDCOM string, or a
+#' `class_date_exact` object.
+#' @param state_time The ordinance time given either as a formatted GEDCOM string, or a
+#' `class_time` object.
 #' 
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
 #' This happens when the record is pushed to the gedcom object.
 #' @param subm,indi,fam,sour,repo,media,note TODO
-#' @param xref_prefixes TODO
+#' @param xref_prefixes A named vector containing any alphanumeric string (up to 6 characters long) 
+#' which will precede the number given to identify new records (of which there are 7 types). 
+#' This vector must be of a particular length with specific names. Default value:
+#' c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
+#' The order that these records appear in the vector will also dictate the order in which records 
+#' will appear in the exported file.
 NULL

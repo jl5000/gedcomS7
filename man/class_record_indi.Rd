@@ -82,6 +82,12 @@ Creating an object with no parameters sets the date to today.}
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default),}
 
+\item{facts}{TODO}
+
+\item{non_events}{TODO}
+
+\item{ordinances}{TODO}
+
 \item{fam_links_chil}{TODO}
 
 \item{fam_links_spou}{TODO}

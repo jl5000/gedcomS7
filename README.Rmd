@@ -21,11 +21,10 @@ knitr::opts_chunk$set(
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and many of the other packages in the `gedcompendium`. The key changes are:
 
 * The package is designed to work with GEDCOM 7.1, rather than 5.5.5.
-* The package has minimal dependencies; currently only two.
+* The package has minimal dependencies; currently only one: [`S7`](https://rconsortium.github.io/S7/).
 * GEDCOM files are stored as S7 objects rather than dataframes.
 * The package contains all functionality to create, edit, and interrogate GEDCOM files.
 
-> This package is still in development. Be wary of editing your file with it for the time being.
 
 ## Installation
 
@@ -103,8 +102,6 @@ luke <- class_record_indi(
   pers_names = "Luke /Skywalker/"
 )
 ```
-
-An individual can have many names, which are created using `class_personal_name()` and `class_name_info()` and must be stored in a list:
 
 
 ## The push/pull paradigm

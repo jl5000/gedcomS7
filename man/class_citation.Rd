@@ -22,7 +22,7 @@ class_citation(
 \arguments{
 \item{sour_xref}{The cross-reference identifier of a source record. If the source
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you will need to describe the source in @where.}
+you should describe the source in @where.}
 
 \item{where}{A specific location within the information referenced. For a published work, this could
 include the volume of a multi-volume work and the page number or numbers. For a

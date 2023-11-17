@@ -14,7 +14,7 @@ class_repository_citation(
 \arguments{
 \item{repo_xref}{The cross-reference identifier of a repository record. If the repository
 does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you will need to describe the repository in @notes.}
+you should describe the repository in @notes.}
 
 \item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

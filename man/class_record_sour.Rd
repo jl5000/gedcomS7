@@ -83,9 +83,13 @@ list of possible fact types.}
 has responsibility for the associated fact. Examples are an employer of a person of an
 associated occupation, or an educational establishment that has awarded a scholastic award.}
 
-\item{data_note_xrefs}{TODO}
+\item{data_note_xrefs}{A character vector of note record cross-reference identifiers relevant
+to the source data.}
 
-\item{data_notes}{TODO}
+\item{data_notes}{Associated notes about the source data. This can either be a \code{class_note}
+object, a list of them, or a character vector of notes. If a character vector is provided
+then only the notes themselves can be recorded (and not associated information).
+This option is easier if associated information is not required.}
 
 \item{originator}{The person, agency, or entity who created the record. For a published work,
 this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished
