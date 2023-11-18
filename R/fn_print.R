@@ -1,6 +1,6 @@
 
 to_console <- function(label, val, exdent){
-  if(length(val) == 0) return()
+  if(length(val) == 0) val <- "<Undefined>"
   cat(strwrap(val, 
               initial = sprintf(paste0("%-", exdent, "s"), label), 
               prefix = "", 
@@ -16,15 +16,27 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
   
   cat("GEDCOM file summary:")
   cat(eol, eol)
-  # to_console("Submitter:", x@subm@name, exdent)
-  # to_console("Language:", x@default_language, exdent)
+  to_console("GEDCOM version:", x@gedcom_version, exdent)
+  to_console("Creation Date:", x@creation_date, exdent)
+  to_console("Default Language:", x@default_language, exdent)
+  if(length(x@subm_xref) == 0){
+    subm <- x@subm_xref
+  } else {
+    subm <- find_ged_values(x@subm[[x@subm_xref]], "NAME")
+  }
+  to_console("Submitter:", subm, exdent)
   cat(eol)
   to_console("Copyright:", x@gedcom_copyright, exdent)
   cat(eol)
-  # to_console("Source system:", x@source@product_id, exdent)
-  # to_console("Source system version:", x@source@product_version, exdent)
-  # to_console("Product name:", x@source@product_name, exdent)
-  # to_console("Product source:", x@source@business_name, exdent)
+  
+  if(length(x@source) == 0){
+    to_console("Source system:", x@source, exdent)
+  } else {
+    to_console("Source system:", x@source@product_id, exdent)
+    to_console("Product name:", x@source@product_name, exdent)
+    to_console("Source system version:", x@source@product_version, exdent)
+  }
+ 
   cat(eol)
   to_console("Submitters:", length(x@subm), exdent)
   to_console("Individuals:", length(x@indi), exdent)
@@ -37,6 +49,6 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
 }
 
 
-# S7::method(print, class_record) <- function(x, ...){
-#   x@as_ged
-# }
+S7::method(print, class_record) <- function(x, ...){
+  str(x)
+}
