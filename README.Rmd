@@ -73,7 +73,7 @@ Since we have no existing records in our gedcom object, the next xrefs of each t
 ged@next_xref
 ```
 
-Note: xrefs are not supposed to be exposed to the typical user...
+Note: xrefs are not supposed to be exposed to the typical user since they can change when being imported into a new system. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console. If a `shiny` app is created, then xrefs can be hidden from the user.
 
 You can also use the `add_creation_dates` and `update_change_dates` properties to add or update the date a record was created/edited (they don't by default as it can bloat files considerably).
 

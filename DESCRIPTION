@@ -19,7 +19,8 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     roxytest,
-    uuid
+    uuid,
+    rmarkdown
 Config/testthat/edition: 3
 Collate: 
     'doc_class_props.R'

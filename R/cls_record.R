@@ -7,8 +7,8 @@ NULL
 #' @return An S7 object containing common elements of a GEDCOM record.
 #' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
 #' @tests
-#' ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
-#' ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+#' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+#' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' 
 #' for(rec_type in names(ged_parsed@xref_prefixes)){
 #'   xrefs <- ged_parsed@xrefs[[rec_type]]

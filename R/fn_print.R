@@ -17,7 +17,7 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
   cat("GEDCOM file summary:")
   cat(eol, eol)
   to_console("GEDCOM version:", x@gedcom_version, exdent)
-  to_console("Creation Date:", x@creation_date, exdent)
+  to_console("Creation Date:", obj_to_val(x@creation_date), exdent)
   to_console("Default Language:", x@default_language, exdent)
   if(length(x@subm_xref) == 0){
     subm <- x@subm_xref
@@ -50,5 +50,5 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
 
 
 S7::method(print, class_record) <- function(x, ...){
-  str(x)
+  str(x, max.level = 1)
 }

@@ -1,0 +1,156 @@
+---
+title: "Referencing records"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Referencing records}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Cross references
+
+All GEDCOM records are given unique identifiers known as xrefs (cross-references) to allow other records to link to them. These are alphanumeric strings surrounded by '@' symbols. The `tidyged` package creates these xrefs automatically:
+
+```{r}
+library(tidyged)
+
+simpsons <- gedcom(subm("Me")) |> 
+  add_indi(sex = "M") |> 
+  add_indi_names(name_pieces(given = "Homer", surname = "Simpson")) |> 
+  add_indi(sex = "F") |> 
+  add_indi_names(name_pieces(given = "Marge", surname = "Simpson")) |> 
+  add_indi(sex = "F") |> 
+  add_indi_names(name_pieces(given = "Lisa", surname = "Simpson")) |> 
+  add_indi(sex = "M") |>  
+  add_indi_names(name_pieces(given = "Bart", surname = "Simpson")) |> 
+  add_note("This is a note")
+
+dplyr::filter(simpsons, tag %in% c("INDI", "NOTE")) |> 
+  knitr::kable()
+```
+
+Note the unique xrefs in the record column.
+
+## Activation
+
+In the above example a series of records are created (which will be explained in more detail in the proceeding articles). After each record is created, the name(s) of the individual are defined without actually explicitly referencing the Individual record. This is because they are acting on the *active record*. A record becomes active when it is created or when it is explicitly activated.
+
+We can query the active record using the `active_record()` function:
+
+```{r}
+active_record(simpsons)
+```
+
+Since the last record to be created was the Note record, it is the active record. The active record is stored as an attribute of the tibble.
+
+We can use activation to add to existing records. If we want to activate another record, we can activate it using the `activate_*()` family of functions together with its xref:
+
+```{r}
+simpsons |> 
+  activate_indi("@I2@") |> 
+  active_record()
+```
+
+## Finding cross reference identifiers
+
+There are many other functions in the `gedcompendium` that take record xrefs as input parameters and it can be tedious to have to manually look these up. The `tidyged` package offers a number of helper functions to locate specific xrefs using pattern matching:
+
+```{r}
+find_indi_name(simpsons, "Bart")
+find_indi_name_all(simpsons, "Simpson")
+```
+
+These helper functions begin with `find_*` and act as wrappers to the more general function `find_xref()`. It's straightforward to write your own wrapper if you're familiar with the tags used in the GEDCOM specification.
+
+In the activation example, we would activate Marge's record with:
+
+```{r}
+simpsons |> 
+  activate_indi(find_indi_name(simpsons, "Marge")) |> 
+  active_record()
+```
+
+Note that the full name does not need to be given, since the term is partially matched. As long as it is detected in the name of the individual it will be found.
+
+In this use case, if no match or more than one match is found, it will result in an error:
+
+```{r, error = TRUE}
+simpsons |> 
+  activate_indi(find_indi_name(simpsons, "Simpon")) |> 
+  active_record()
+```
+
+```{r, error = TRUE}
+simpsons |> 
+  activate_indi(find_indi_name(simpsons, "Simpson")) |> 
+  active_record()
+```
+
+## Removing records
+
+When removing entire records, you don't have to necessarily rely on activating them first. The same referencing techniques above can be used to remove records immediately:
+
+```{r}
+simpsons |> 
+  remove_indi(find_indi_name(simpsons, "Homer")) |> 
+  df_indi() |> 
+  knitr::kable()
+```
+
+
+## Automating the creation of Individuals and Family Groups
+
+In all the examples you've seen so far the approach has been to build up the tree one record at a time. There are a number of helper functions that allow you to shortcut this laborious exercise. These functions can create multiple records at once, including Family Group records, where you can go back and add more detail. The functions are:
+
+* `add_parents()`
+* `add_siblings()`
+* `add_spouse()`
+* `add_children()`
+
+They all require the xref of an Individual record (or one to be activated), except for `add_children()`, which requires the xref of a Family Group record. These functions do not change the active record. 
+
+Because of this, you cannot use `add_children()` in a single pipeline with the other functions.
+
+The feedback from these functions gives you the necessary xrefs to then add more detail.
+
+To illustrate, we can build up two families starting with a spouse:
+
+```{r}
+from_spou <- gedcom(subm("Me")) |>
+  add_indi(sex = "M") |>
+  add_parents() |>
+  add_siblings(sexes = "MMFF") |>
+  add_spouse(sex = "F") 
+```
+
+The initial individual (@I1@) gets added as a child to a family (@F1@) with two parents (@I2@ and @I3@) and 4 siblings (@I4@ to @I7@). Finally, he is given a spouse (@I8@) in his own family (@F2@).
+
+Now we have the xref of his family, we can add his two daughters:
+
+```{r}
+with_chil <- from_spou |>
+  add_children(xref = "@F2@", sexes = "FF")
+```
+Now we have the records, we can use all of these xrefs to add details like names and facts.
+
+The `tidyged.utils` package contains the function `add_ancestors()` to create Individual and Family Group records for entire generations of ancestors.
+
+## A note about unique record identifiers
+
+Record identifiers have been a topic of much discussion in the GEDCOM user community. Even though xref identifiers will be imported unchanged in the `tidyged` package, some systems do create their own xref identifiers on import. So you cannot assume they will survive between systems. However, they should always be internally consistent.
+
+A couple of other mechanisms exist for providing unique identifiers to records:
+
+* An automated record identifier (RIN) can be used by a system to automatically assign a unique identifier. Since the most obvious way of generating this would be to base it on the xref, it would introduce unnecessary duplication and file bloat and so the `tidyged` package does not use this, nor expose it to a user;
+* A user-defined reference number (REFN) and type can be defined by a user to uniquely identify a record. These are entirely optional, do not necessarily have to be unique, and a single record could have several defined. They are however a possible way of creating an enduring identifier between systems. Helper functions exist to locate xrefs using this number (`find_*_refn()`).
+
+For these reasons, neither of these mechanisms are considered to be a better alternative way of selecting records.
+
+<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/individual_records.html">Next article: Individual records ></a></p>

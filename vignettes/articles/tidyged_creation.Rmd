@@ -1,0 +1,90 @@
+---
+title: "Creation of tidyged objects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creation of tidyged objects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Creating new objects
+
+The easiest way to create a `tidyged` object is to import an existing GEDCOM file. This functionality is provided by the [`tidyged.io`](https://github.com/jl5000/tidyged.io) package.
+
+A minimal `tidyged` object can be created using an empty `gedcom()` call:
+
+```{r}
+library(tidyged)
+
+gedcom() |> 
+  knitr::kable()
+```
+
+A `tidyged` object actually comes pre-populated with quite a lot of information (more so than a minimal GEDCOM file). Information about the `tidyged` package (as the system/product creating the file) is given in the appropriate places, as well as a default language (English), and submitter details taken from your computer username.
+
+### Submitter
+
+You can use different information for many values using the parameters of the `gedcom()` function. The first argument of the function is a `subm()` object giving details of the submitter:
+
+```{r}
+submitter <- subm(name = "The name of the submitter",
+                  subm_address = address(local_address_lines = "123 Penny Lane Drive",
+                                         city = "Orlando",
+                                         state = "Florida",
+                                         postal_code = "32836",
+                                         country = "United States of America",
+                                         phone_number = "123-456-789",
+                                         email = "email@domain.com",
+                                         fax = "00000",
+                                         web_page = "http://www.whousesfaxanymore.com"),
+                  subm_notes = "The information given above is dummy data")
+
+gedcom(submitter) |> 
+  knitr::kable()
+```
+
+### Other header parameters
+
+The remaining arguments of the `gedcom()` function give further information about the file and the information held within it:
+
+```{r}
+gedcom(submitter_details = subm(),
+       gedcom_description = "Maternal ancestors of Jamie",
+       gedcom_copyright = "No copyright",
+       source_data_name = "Some CD I found in the basement",
+       source_data_date = date_exact(2009, 5, 12),
+       source_data_copyright = "No data copyright",
+       receiving_system = "tidyged",
+       language = "English") |> 
+  knitr::kable()
+```
+
+Note that:
+
+* The `gedcom_description` parameter should describe the type of genealogical data contained in the file;
+* The date associated with the source data must be given as a `date_exact()` object to ensure it is formatted correctly (see `vignette("dates")` for more information on dates);
+* The `receiving_system` should be left to its default value, unless you are specifically intending on passing it to a different system.
+
+## Subsetting an existing object
+
+You can also create a new `tidyged` object by subsetting an existing object. See the `tidyged.utils` package.
+
+The `split_gedcom()` function from the `tidyged.utils` package subsets a tidyged object. This will retain the header and submitter information from the original object. 
+
+```{r}
+unique(sample555$record)
+
+unique(tidyged.utils::split_gedcom(sample555, c("@I1@", "@I2@"))$record)
+```
+
+This is especially powerful when paired with the `get_descendants()` function (see `vignette("maintenance_functions")`), where you can create a separate object for an entire branch.
+
+
+<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/cross_references.html">Next article: Referencing records ></a></p>

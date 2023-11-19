@@ -1,0 +1,129 @@
+---
+title: "Identifying relations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Identifying relations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+We identify relations to an individual using the family of `get_*()` functions.
+
+We illustrate their functionality using the family below consisting of three generations: A pair of parents who has a single child (named 'Main Person'). This person forms two separate family groups with two spouses, each resulting in two children.
+
+```{r}
+library(tidyged)
+
+three_gen <- gedcom(subm("Me")) |> 
+  add_indi(qn = "Parent 1") |> 
+  add_indi(qn = "Parent 2") |> 
+  add_indi(qn = "Main Person") |> 
+  add_indi(qn = "Spouse 1") |> 
+  add_indi(qn = "Spouse 2") |>
+  add_indi(qn = "Child 1") |> 
+  add_indi(qn = "Child 2") |> 
+  add_indi(qn = "Child 3") |> 
+  add_indi(qn = "Child 4")
+
+p1_xref <- find_indi_name(three_gen, "Parent 1")
+p2_xref <- find_indi_name(three_gen, "Parent 2")
+main_xref <- find_indi_name(three_gen, "Main")
+s1_xref <- find_indi_name(three_gen, "Spouse 1")
+s2_xref <- find_indi_name(three_gen, "Spouse 2")
+c12_xref <- find_indi_name_all(three_gen, "Child 1|Child 2")
+c34_xref <- find_indi_name_all(three_gen, "Child 3|Child 4")
+
+three_gen <- three_gen |>
+  add_famg(p1_xref, p2_xref, children = main_xref) |> 
+  add_famg(main_xref, s1_xref, children = c12_xref) |>
+  add_famg(main_xref, s2_xref, children = c34_xref)
+
+df_famg(three_gen) |> 
+  knitr::kable()
+```
+
+## Immediate relations
+
+The examples below illustrate the functions.
+
+```{r}
+get_indi_partners(three_gen, main_xref) |> describe_records(gedcom = three_gen)
+get_indi_parents(three_gen, main_xref) |> describe_records(gedcom = three_gen)
+get_indi_children(three_gen, main_xref) |> describe_records(gedcom = three_gen)
+get_indi_siblings(three_gen, find_indi_name(three_gen, "Child 1")) |> describe_records(gedcom = three_gen)
+get_indi_siblings(three_gen, find_indi_name(three_gen, "Child 1"), inc_half_sibs = TRUE, return_name = TRUE)
+get_families_as_child(three_gen, main_xref) |> describe_records(gedcom = three_gen)
+get_families_as_partner(three_gen, main_xref) |> describe_records(gedcom = three_gen)
+get_famg_partners(three_gen, "@F1@") |> describe_records(gedcom = three_gen)
+get_famg_children(three_gen, "@F2@", return_name = TRUE)
+```
+
+Many functions include a `birth_only` parameter which allows you to focus on purely biological relationships and/or a `return_name` parameter which allows you to return individual's names instead.
+
+## Branches
+
+One of the more sophisticated features of `tidyged` is the ability to manipulate entire branches of your tree. 
+
+### Descendants
+
+We use the `get_descendants()` function below to identify the descendants of Main Person. By default it will exclude the individual, all spouses, and all associated family groups:
+
+```{r}
+get_descendants(three_gen, main_xref)
+```
+
+We can use the `describe_records()` function to see descriptions:
+
+```{r}
+get_descendants(three_gen, main_xref) |>
+  describe_records(gedcom = three_gen)
+```
+
+Setting `inc_part = TRUE` will include all partners and their descendants, and all descendants' partners:
+
+```{r}
+get_descendants(three_gen, main_xref, inc_part = TRUE) |>
+  describe_records(gedcom = three_gen)
+```
+
+Setting `inc_indi = TRUE` will include the individual:
+
+```{r}
+get_descendants(three_gen, main_xref, inc_indi = TRUE) |>
+  describe_records(gedcom = three_gen)
+```
+
+Setting `inc_famg = TRUE` will include the individual's families where they are a partner, and all descendants' families:
+
+```{r}
+get_descendants(three_gen, main_xref, inc_famg = TRUE) |>
+  describe_records(gedcom = three_gen)
+```
+
+If we want to remove the individual and their partners, all descendants and their partners, and all families, we can remove them with `remove_records()`:
+
+```{r}
+get_descendants(three_gen, main_xref, inc_part = TRUE, inc_indi = TRUE, inc_famg = TRUE) |>
+  remove_records(gedcom = three_gen) |> 
+  df_famg() |> 
+  knitr::kable()
+```
+
+This combination can result in the removal of a vast amount of data. It will tell the user precisely what it is removing. Be sure the function has done what you expect before accepting the results. It is recommended that you use this function with extreme caution if you think a descendant (or their spouse) may be connected to an individual on another branch of your tree.
+
+This function will, by default, remove any dead references to records that have not been included in the subsetting.
+
+### Ancestors
+
+We can deal with ancestors in a similar way using the `get_ancestors()` function.
+
+

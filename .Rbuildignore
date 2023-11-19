@@ -5,3 +5,4 @@
 ^\.github$
 ^utils_census
 ^gh_workflows
+^vignettes/articles$

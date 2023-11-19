@@ -1,0 +1,65 @@
+---
+title: "Source records"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Source records}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+*WORK IN PROGRESS*
+
+## Introduction
+
+Source records are one of the most important types of record in a GEDCOM file. They provide evidence for the assertions (facts) made in a file, and require careful management.
+
+A Source record can be created with the `add_sour()` function.
+
+```{r}
+library(tidyged)
+
+birth_source <- gedcom() |> 
+  add_sour(events_recorded = "BIRT, MARR, DEAT",
+           date_period_covered = date_period(date_calendar(1900), date_calendar(2000)),
+           jurisdiction = "England and Wales",
+           originator = "General Register Office",
+           title = "Birth Certificate for Joe Bloggs (1956)",
+           publication_detail = "something",
+           source_text = "This is what is written on the certificate")
+```
+
+## Linking back to repositories
+
+```{r}
+birth_repo <- birth_source |> 
+  add_repo("General Register Office",
+           repo_address = address(city = "Southport", state = "Merseyside"))
+
+sour_xref <- find_sour_titl(birth_repo, "Birth Certificate for Joe Bloggs")
+repo_xref <- find_repo_name(birth_repo, "General Register Office")
+
+birth_repo |>
+  activate_sour(sour_xref) |> 
+  add_sour_repo_citation(repo_xref)
+```
+
+## Citing source records
+
+## Citation styles
+
+The point to recognise is that users should NOT be exclusively 'splitters' or 'lumpers'.
+That choice depends on the Source Citation characteristics.
+GRO BMD Index records lend themselves to being Method 2 'lumper' Sources.
+BMD Certificates are usually better suited to being Method 1 'splitter' Sources as they often have associated Media images, Text From Source transcripts, and multiple Citations.
+So most users adopt a hybrid approach
+
+https://fhug.org.uk/kb/kb-article/citing-sources-method-1-and-method-2/
+
+<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/multimedia_records.html">Next article: Multimedia records ></a></p>

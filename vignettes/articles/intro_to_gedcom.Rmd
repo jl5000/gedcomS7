@@ -1,0 +1,41 @@
+---
+title: "Introduction to GEDCOM"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## What is GEDCOM?
+
+Genealogical Data Communication (GEDCOM) is a specification for storing and exchanging genealogical data. It was created by The Church of Jesus Christ of Latter-day Saints in 1984, and has become the de-facto standard used worldwide. The current version is 7.0 and is the version supported by `gedcomS7`.
+
+## What does a GEDCOM file look like?
+
+A GEDCOM file is a plain text file (with extension .ged), which contains *records*. These records contain information on:
+
+* Families
+* Individuals
+* Multimedia
+* Sources
+* Repositories
+* Notes
+* Submitters
+
+There are also special records that appear once and only once in a file; a header (at the beginning) and a trailer (at the end).
+
+A sample file looks like this:
+
+```{r}
+sample_file <- readLines("https://gedcom.io/testfiles/gedcom70/minimal70.ged")
+sample_file
+```
+
+Each record is a nested structure containing one or more lines where the number at the beginning of the line indicates the level in the hierarchy. New records begin at level 0. In the above file, the submitter record begins at line `r which(sample_file == "0 @U1@ SUBM")`.
+
+The [GEDCOM 7.0 specification](https://gedcom.io/specifications/FamilySearchGEDCOMv7.html) is substantial, describing the strict rules around the specific set of tags and hierarchical structures allowed for each record type, and this is what the `gedcomS7` package is designed to automate.
+
+<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/implementation.html">Next article: Implementation ></a></p>

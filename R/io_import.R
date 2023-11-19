@@ -110,7 +110,7 @@ parse_records <- function(records_lst){
   x <- parse_gedcom_header(records_lst[[1]])
   records_lst <- records_lst[-1]
   
-  subset_recs <- function(rec_lst, rec_type){
+  subset_recs <- \(rec_lst, rec_type){
     recs <- Filter(\(x) grepl(sprintf("^0 %s %s", reg_xref(FALSE), rec_type), x[1]), rec_lst)
     names(recs) <- vapply(recs, \(rec) parse_line_xref(rec[1]), FUN.VALUE = character(1))
     recs
@@ -128,5 +128,4 @@ parse_records <- function(records_lst){
   
   x
 }
-
 
