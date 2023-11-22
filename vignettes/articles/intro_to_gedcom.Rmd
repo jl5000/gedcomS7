@@ -25,17 +25,23 @@ A GEDCOM file is a plain text file (with extension .ged), which contains *record
 * Notes
 * Submitters
 
-There are also special records that appear once and only once in a file; a header (at the beginning) and a trailer (at the end).
+There are also two special records that appear at the beginning and end of a file; a header and trailer.
 
 A sample file looks like this:
 
 ```{r}
-sample_file <- readLines("https://gedcom.io/testfiles/gedcom70/minimal70.ged")
+sample_file <- readLines("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 sample_file
 ```
 
-Each record is a nested structure containing one or more lines where the number at the beginning of the line indicates the level in the hierarchy. New records begin at level 0. In the above file, the submitter record begins at line `r which(sample_file == "0 @U1@ SUBM")`.
+Each record is a nested structure containing one or more lines. Lines in a GEDCOM file can have a number of components:
 
-The [GEDCOM 7.0 specification](https://gedcom.io/specifications/FamilySearchGEDCOMv7.html) is substantial, describing the strict rules around the specific set of tags and hierarchical structures allowed for each record type, and this is what the `gedcomS7` package is designed to automate.
+* **Level**: The level in the hierarchical structure. This appears for every line. New records begin at level 0;
+* **Cross-reference identifier**: A string (which looks like @XYZ@) that signals the beginning of a new record (apart from header and trailer);
+* **Tag**: A short string given immediately after the level or cross-reference identifier that indicates the type of information being provided on the line. These are controlled values. User-defined tags have been allowed in other GEDCOM programs, but they are discouraged here;
+* **Line value**: The value associated with the tag. For example, on line 3, the version of the GEDCOM specification that the file adheres to is 7.0. The line value can also be a **cross-reference pointer**, which links to another record in the file (which looks like @XYZ@). In the above example, the Family Group record beginning on line `r which(sample_file == "0 @F1@ FAM")` references other Individual records who are members of the family;
 
-<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/implementation.html">Next article: Implementation ></a></p>
+There will not be any lines that have all of these components. For example, the first line of records do not contain a line value.
+
+The [GEDCOM 7.0 specification](https://gedcom.io/specifications/FamilySearchGEDCOMv7.html) is substantial, describing the strict rules around the specific set of tags and hierarchical structures allowed for each record type. You shouldn't need to know any of the above to use the package, it is designed to automate the construction of these files.
+

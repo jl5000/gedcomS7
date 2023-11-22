@@ -9,6 +9,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r setup}
+library(gedcomS7)
+```
 
 ## Why gedcomS7?
 
@@ -20,39 +23,38 @@ I toyed with the idea of using an off-the-shelf open source product like [GRAMPS
 
 I also considered using data structures more suited to this type of data, such as JSON or graphs (using the `igraph` or `data.tree` package). However, I discovered it would be quite difficult representing some of the structures in the GEDCOM specification to my satisfaction.
 
-My preference was for an Object Orientated approach, but none of the OOP solutions in R quite fit the bill.
+My preference was for an Object Orientated approach, which is what many other applications use, but none of the OOP solutions in R quite fit the bill.
 
-My first serious attempt at doing this resulted in `tidyged` and the other packages of the `gedcompendium`. This adopted a `tidyverse` approach and whilst it did work it was dependency-heavy and required a lot of processing under the hood.
+My first serious attempt at doing this resulted in `tidyged` and the other packages of the `gedcompendium`. This adopted a dataframe and `tidyverse` approach and whilst it did work it was dependency-heavy and required a lot of processing under the hood.
 
 The release of `S7` presented an ideal opportunity to revisit creating an OOP-based GEDCOM package in R. Initial testing had promising results and so I continued building out the rest of the package, using the updated GEDCOM 7.0 specification.
 
 ## The gedcomS7 object
 
-The `tidyged` object is a tibble representation of a GEDCOM file. Before we see how this is structured, let's see an example of a GEDCOM file:
+The main GEDCOM object is an S7 representation of a GEDCOM file:
 
 ```{r}
-readLines(system.file("extdata", "555SAMPLE.GED", package = "tidyged.io"))
+ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
+
+str(ged)
 ```
 
-Lines in a GEDCOM file can have a number of components:
-
-* **Level**: The level in the hierarchical structure. This appears for every line;
-* **Cross-reference identifier**: A string (which looks like @XYZ@) that signals the beginning of a new record (apart from header and trailer);
-* **Tag**: A short string given immediately after the level or cross-reference identifier that indicates the type of information being provided on the line. These are controlled values. User-defined tags have been allowed in other GEDCOM programs, but they are discouraged here;
-* **Cross-reference pointer**: This links to another record in the file (which looks like @XYZ@). In the above example, the Family Group record beginning on line `r which(readLines(system.file("extdata", "555SAMPLE.GED", package = "tidyged.io")) == "0 @F1@ FAM")` references other Individual records who are members of the family;
-* **Line value**: The value associated with the tag. For example, on line 6, the CHARacter encoding for the file is given as UTF-8.
-
-There will not be any lines that have all of these components. For example, the first line of records do not contain a line value. Also, a line will never have a cross-reference pointer and a line value defined. For this reason, the `tidyged` object treats cross-reference pointers as just another line value.
-
-The `tidyged` representation of the above GEDCOM file is given below, using a sample dataset built into the package:
+Properties of the GEDCOM object can be accessed and modified using the `@` operator, e.g.
 
 ```{r}
-knitr::kable(tidyged::sample555)
+ged@default_language
+ged@default_language <- "en"
 ```
 
-The cross-reference identifier is given in the record column. Event though these aren't given for the header and trailer records they are assigned as "HD" and "TR" respectively in the `tidyged` object.
+The properties of the main GEDCOM object are either:
 
-GEDCOM files can be imported and exported using the `tidyged.io` package. Many GEDCOM processors modify the data on import, perhaps ignoring custom tags. This package reads the file as-is, and the only modification of the file is in line with that recommended in the GEDCOM 5.5.5 specification, specifically; replacing double '@' symbols with single ones, merging CONC/CONT lines, and ensuring appropriate capitalisation of certain values. In general, the package sticks rigidly to the GEDCOM specification and does not use custom tags. There is a real issue with other desktop applications creating their own flavours of file and diverging from the specification; `tidyged` does not and will never do this.
+* Properties of the header (metadata about the file as a whole);
+* Lists of records of each type;
+* 'Helper' properties that give important summaries;
+* Properties that allow the user the control how the GEDCOM object behaves.
+
+
+Many GEDCOM processors modify the data on import, perhaps ignoring custom tags. This package reads the file as-is, and the only modification of the file is in line with that recommended in the GEDCOM 5.5.5 specification, specifically; replacing double '@' symbols with single ones, merging CONC/CONT lines, and ensuring appropriate capitalisation of certain values. In general, the package sticks rigidly to the GEDCOM specification and does not use custom tags. There is a real issue with other desktop applications creating their own flavours of file and diverging from the specification; `tidyged` does not and will never do this.
 
 If you want to modify single values in a GEDCOM or do a simple Find/Replace, then this is straightforward to achieve with a simple text editor.
 
