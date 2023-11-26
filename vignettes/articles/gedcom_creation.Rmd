@@ -1,0 +1,77 @@
+---
+title: "Creation of GEDCOM objects"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(gedcomS7)
+```
+
+## Creating new objects
+
+The easiest way to create a GEDCOM object is to import an existing GEDCOM file. When you print a GEDCOM object to the console it provides a brief summary of the file. The example below imports the smallest legal GEDCOM file:
+
+```{r}
+ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/minimal70.ged")
+
+ged
+```
+
+A GEDCOM object can also be created using the `new_gedcom()` function:
+
+```{r}
+ged_new <- new_gedcom()
+
+ged_new
+```
+
+A minimal GEDCOM object created by `gedcomS7` comes pre-populated with some additional information (more so than a minimal GEDCOM file). Information about the `gedcomS7` package (as the system/product creating the file) is given in the appropriate places, creation date, as well as a default language (English). The default language can be changed in the `new_gedcom()` function. This must be a character string of language tags as defined in [BCP 47](https://www.rfc-editor.org/info/bcp47) (as must any other language parameter in the package).
+
+Once you have a GEDCOM object in R, you can write it to a valid GEDCOM file using `write_gedcom()`. The filepath must end with file extension .ged.
+
+## GEDCOM object properties
+
+The properties of a GEDCOM object are:
+
+```{r}
+str(ged)
+```
+
+The properties of the main GEDCOM object are either:
+
+* Lists of records of each type (`@subm`, `@indi`, `@fam`, `@sour`, `@repo`, `@media`, and `@note`);
+* Those that summarise and control the cross-reference identifiers (xrefs) given to records (`@xrefs`, `@xref_prefixes`, and `@next_xref`);
+* Those that allow the user the control whether creation/change dates are added to records as they are pushed to the GEDCOM object (`@update_change_dates` and `@add_creation_dates`);
+* Those that show you what the GEDCOM file representation looks like (`@as_ged`) and the representation of the header (`@hd_as_ged`);
+* Properties of the header (metadata about the file as a whole).
+
+Some of these properties are also read-only, which means they are calculated from other properties and cannot be directly set. These are given by ...?
+
+## Cross-reference identifiers
+
+
+
+You can influence how the gedcom object is modified as you add and edit records within it. 
+
+The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
+
+```{r}
+ged@xref_prefixes
+```
+
+The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
+
+Since we have no existing records in our gedcom object, the next xrefs of each type will be:
+
+```{r}
+ged@next_xref
+```
+
+Note: xrefs are not supposed to be exposed to the typical user since they can change when being imported into a new system. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console. If a `shiny` app is created, then xrefs can be hidden from the user.
+

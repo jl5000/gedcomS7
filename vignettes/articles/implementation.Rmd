@@ -17,7 +17,7 @@ library(gedcomS7)
 
 One of the main characteristics I wanted for this package was to hide the complexity of the GEDCOM specification, and try to automate genealogical tasks that are time consuming to do manually.
 
-I spent a significant amount of time before writing any code considering my options for how the data would be stored under the hood. In one blog I considered storing genealogical data in a relational table format as it is easier to deal with, but discounted it very quickly as it is not well suited to nested data (list columns are not ideal for this application).
+I spent a significant amount of time before writing any code considering my options for how the data would be stored under the hood. In one blog I considered storing genealogical data in a relational table format as it is easier to deal with, but discounted it very quickly as it is not well suited to nested data (and list columns are not easy to deal with).
 
 I toyed with the idea of using an off-the-shelf open source product like [GRAMPS](https://gramps-project.org) but I found it awkward to use and wanted something where I was in complete control, taking full advantage of the strengths of R.
 
@@ -48,7 +48,7 @@ ged@default_language <- "en"
 
 This ease of modification of specific properties of a GEDCOM object wasn't possible with the `tidyged` package.
 
-Properties which don't have values are either empty vectors, empty lists, or NULL (depending on the property). Some of these properties are also read-only, such as `@next_xref` and `@as_ged`. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how records are stored is important.
+Properties which don't have values are either empty vectors, empty lists, or NULL (depending on the property). Some of these properties are also read-only (derived from other properties), such as `@next_xref` and `@as_ged`. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how records are stored is important.
 
 ## The Push/Pull paradigm
 

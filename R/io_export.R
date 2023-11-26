@@ -39,7 +39,7 @@ write_gedcom <- function(gedcom,
   if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
   if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
   
-  # Moved to as_ged property
+  # Moved to as_ged property - in order to make the test work
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
   
   writeLines(lines, con)
