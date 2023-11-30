@@ -16,13 +16,20 @@ class_place(
 )
 }
 \arguments{
-\item{place_name}{TODO}
+\item{place_name}{A comma-separated string of region names, ordered from smallest to
+largest. The specific meaning of each element is given by the @place_form, or in the
+\verb{@default_place_form} of the gedcom object if there is no @place_form defined. Elements
+should be left blank if they are unknown, do not apply to the location, or are too
+specific for the region in question. For example "Baltimore, , Maryland, USA".}
 
-\item{place_form}{TODO}
+\item{place_form}{A comma-separated string of jurisdictional titles, which has the same
+number of elements as @place_form. For example "City, County, State, Country".}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 
-\item{place_translations}{TODO}
+\item{place_translations}{A named character vector of translations of the place name.
+The vector values must follow the same form as the @place_name and the vector names
+must be a language value as defined by @language.}
 
 \item{lat_long}{The latitude and longitude of the place, separated by a space.
 The latitude coordinate is the direction North or South from the equator in degrees and

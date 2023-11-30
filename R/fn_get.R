@@ -341,7 +341,7 @@ get_unused_recs <- function(x){
   
   ged <- x@as_ged
   
-  xrefs <- unlist(x@xrefs)
+  xrefs <- unlist(x@c_xrefs)
   vals <- parse_line_value(ged)
   xref_vals <- vals[grep(reg_xref(TRUE), vals)]
 

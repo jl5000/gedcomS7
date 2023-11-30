@@ -59,7 +59,7 @@
 #' @param relation_phrase Textual information that cannot be expressed in the relation.
 #' @param place_name A comma-separated string of region names, ordered from smallest to 
 #' largest. The specific meaning of each element is given by the @place_form, or in the 
-#' @default_place_form of the gedcom object if there is no @place_form defined. Elements 
+#' `@default_place_form` of the gedcom object if there is no @place_form defined. Elements 
 #' should be left blank if they are unknown, do not apply to the location, or are too 
 #' specific for the region in question. For example "Baltimore, , Maryland, USA".
 #' @param place_form A comma-separated string of jurisdictional titles, which has the same 

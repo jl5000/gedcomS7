@@ -85,7 +85,7 @@ remove_living <- function(x,
                           max_age = 100) {
   
   remove <- NULL
-  for(xref in x@xrefs[["indi"]]) {
+  for(xref in x@c_xrefs[["indi"]]) {
     if(is_alive(x, xref, max_age))
       remove <- c(remove, xref)
   }

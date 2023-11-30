@@ -261,7 +261,7 @@ class_gedcomS7 <- S7::new_class(
                                      }),
     
     # List of xrefs for each record type
-    xrefs = S7::new_property(S7::class_list,
+    c_xrefs = S7::new_property(S7::class_list,
                              getter = function(self){
                                rec_types <- names(self@xref_prefixes)
                                rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
@@ -271,7 +271,7 @@ class_gedcomS7 <- S7::new_class(
     next_xref = S7::new_property(S7::class_character,
                                  getter = function(self){
                                    idx <- integer(7L)
-                                   existing_xrefs <- unname(unlist(self@xrefs))
+                                   existing_xrefs <- unname(unlist(self@c_xrefs))
                                    for(i in seq_along(idx)){
                                      ref <- 1
                                      while(paste0("@", self@xref_prefixes[i], ref, "@") %in% existing_xrefs){

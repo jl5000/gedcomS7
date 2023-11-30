@@ -7,13 +7,13 @@ is_media_rec <- function(record) S7::S7_inherits(record, class_record_media)
 is_note_rec <- function(record) S7::S7_inherits(record, class_record_note)
 is_subm_rec <- function(record) S7::S7_inherits(record, class_record_subm)
 
-is_indi_xref <- function(x, xref) xref %in% x@xrefs[["indi"]]
-is_fam_xref <- function(x, xref) xref %in% x@xrefs[["fam"]]
-is_sour_xref <- function(x, xref) xref %in% x@xrefs[["sour"]]
-is_repo_xref <- function(x, xref) xref %in% x@xrefs[["repo"]]
-is_media_xref <- function(x, xref) xref %in% x@xrefs[["media"]]
-is_note_xref <- function(x, xref) xref %in% x@xrefs[["note"]]
-is_subm_xref <- function(x, xref) xref %in% x@xrefs[["subm"]]
+is_indi_xref <- function(x, xref) xref %in% x@c_xrefs[["indi"]]
+is_fam_xref <- function(x, xref) xref %in% x@c_xrefs[["fam"]]
+is_sour_xref <- function(x, xref) xref %in% x@c_xrefs[["sour"]]
+is_repo_xref <- function(x, xref) xref %in% x@c_xrefs[["repo"]]
+is_media_xref <- function(x, xref) xref %in% x@c_xrefs[["media"]]
+is_note_xref <- function(x, xref) xref %in% x@c_xrefs[["note"]]
+is_subm_xref <- function(x, xref) xref %in% x@c_xrefs[["subm"]]
 
 get_record_type <- function(record){
   

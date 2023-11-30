@@ -12,7 +12,7 @@ NULL
 #' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' 
 #' for(rec_type in names(ged_parsed@xref_prefixes)){
-#'   xrefs <- ged_parsed@xrefs[[rec_type]]
+#'   xrefs <- ged_parsed@c_xrefs[[rec_type]]
 #'   
 #'   for(xref in xrefs){
 #'     rec_raw <- S7::prop(ged_parsed, rec_type)[[xref]]

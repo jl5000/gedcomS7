@@ -10,7 +10,7 @@
 #' @export
 pull_record <- function(x, xref){
   
-  if(!xref %in% unlist(x@xrefs))
+  if(!xref %in% unlist(x@c_xrefs))
     stop("The xref is not in the GEDCOM object")
   
   rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
@@ -111,7 +111,7 @@ refresh_fam_links <- function(gedcom, record){
     remove_void_xrefs()
   
   for(indi in c(spou_xref, chil_xrefs)){
-    if(!indi %in% gedcom@xrefs[["indi"]]){
+    if(!indi %in% gedcom@c_xrefs[["indi"]]){
       stop("There is no individual with xref ", indi)
     }
   }
@@ -140,7 +140,7 @@ refresh_fam_links <- function(gedcom, record){
   }
   
   # Ensure no one else has the family link
-  for(indi in gedcom@xrefs[["indi"]]){
+  for(indi in gedcom@c_xrefs[["indi"]]){
     if(indi %in% c(spou_xref, chil_xrefs)) next
     
     rec <- gedcom@indi[[indi]]
@@ -166,7 +166,7 @@ refresh_indi_links <- function(gedcom, record){
   # Ensure record@xref is properly reflected in family record membership
   fam_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
   for(fam in fam_lnks){
-    if(!fam %in% gedcom@xrefs[["fam"]]){
+    if(!fam %in% gedcom@c_xrefs[["fam"]]){
       stop("There is no family with xref ", fam)
     }
   }
@@ -218,7 +218,7 @@ refresh_indi_links <- function(gedcom, record){
   } 
   
   # Ensure this individual (record@xref) appears in no other fam records
-  for(fam in gedcom@xrefs[["fam"]]){
+  for(fam in gedcom@c_xrefs[["fam"]]){
     
     if(fam %in% fam_lnks) next
     
