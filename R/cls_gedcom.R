@@ -217,6 +217,7 @@ class_gedcom_header <- S7::new_class(
 #' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
 #' cls_record_repo.R cls_record_sour.R cls_record_subm.R
 #' @tests
+#' skip_if_offline(host = "gedcom.io")
 #' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 

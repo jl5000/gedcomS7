@@ -7,6 +7,7 @@ NULL
 #' @return An S7 object containing common elements of a GEDCOM record.
 #' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
 #' @tests
+#' skip_if_offline(host = "gedcom.io")
 #' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' 

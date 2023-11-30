@@ -2,9 +2,10 @@
 
 # File R/cls_record.R: @tests
 
-test_that("Function class_record() @ L25", {
-  ged_raw <- readLines(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
-  ged_parsed <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+test_that("Function class_record() @ L26", {
+  skip_if_offline(host = "gedcom.io")
+  ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+  ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
   
   for(rec_type in names(ged_parsed@xref_prefixes)){
     xrefs <- ged_parsed@xrefs[[rec_type]]
