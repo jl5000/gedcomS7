@@ -20,7 +20,7 @@ NULL
 #'     rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), parse_line_tag(rec_raw))]
 #'     rec_parsed <- suppressWarnings(pull_record(ged_parsed, xref))
 #'     
-#'     expect_equal(rec_parsed@as_ged, rec_raw)
+#'     expect_equal(rec_parsed@c_as_ged, rec_raw)
 #'   }
 #' }
 class_record <- S7::new_class(
@@ -86,19 +86,20 @@ class_record <- S7::new_class(
                                  chk_input_size(value, 0, 1)
                                }),
     
-    restrictions = S7::new_property(S7::class_character,
+    c_restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){
                                       restrictions_to_resn(self@confidential, self@locked, self@private)
                                     }),
     
-    ids = S7::new_property(S7::class_character,
-                           getter = function(self){
-                             c(
-                               named_vec_to_ged(self@user_ids, "REFN", "TYPE"),
-                               sprintf("0 UID %s", self@unique_ids),
-                               named_vec_to_ged(self@ext_ids, "EXID", "TYPE")
-                             )
-                           })
+    c_ids_as_ged = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        c(
+          named_vec_to_ged(self@user_ids, "REFN", "TYPE"),
+          sprintf("0 UID %s", self@unique_ids),
+          named_vec_to_ged(self@ext_ids, "EXID", "TYPE")
+        )
+      })
   )
 )
 

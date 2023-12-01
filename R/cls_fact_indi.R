@@ -49,17 +49,17 @@ class_fact_indi <- S7::new_class(
 #' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent_phrase = "both of them"), 
 #'              regexp = "@adop_parent_phrase requires a @adop_parent")
 #' expect_error(class_event_indi("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
-#' expect_snapshot_value(class_event_indi("BIRT", fact_val = "Y")@as_ged, "json2")
+#' expect_snapshot_value(class_event_indi("BIRT", fact_val = "Y")@c_as_ged, "json2")
 #' expect_error(class_event_indi("DEAT", age = "73"), regexp = "@age is in an invalid format")
-#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y")@as_ged, "json2")
-#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age_phrase = "old")@as_ged, "json2")
+#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y")@c_as_ged, "json2")
+#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age_phrase = "old")@c_as_ged, "json2")
 #' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age = "73y 4m",
-#'                                       age_phrase = "old")@as_ged, "json2")
+#'                                       age_phrase = "old")@c_as_ged, "json2")
 #' expect_snapshot_value(class_event_indi("ADOP", fact_val = "Y",
 #'                                        fact_desc = "More info on adoption",
 #'                                        fam_xref = "@123@",
 #'                                        adop_parent = "WIFE",
-#'                                        adop_parent_phrase = "Gloria")@as_ged, "json2")
+#'                                        adop_parent_phrase = "Gloria")@c_as_ged, "json2")
 class_event_indi <- S7::new_class(
   "class_event_indi",
   package = "gedcomS7",
@@ -84,7 +84,7 @@ class_event_indi <- S7::new_class(
                                             chk_input_size(value, 0, 1, 1)
                                           }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         age <- self@age
@@ -153,14 +153,14 @@ class_event_indi <- S7::new_class(
 #'                                  notes = "another note",
 #'                                  note_xrefs = "@N45@",
 #'                                  citations = "@S67@",
-#'                                  unique_ids = "7ddf39aa-42a8-4995-94eb-4392bcc00d28")@as_ged, 
+#'                                  unique_ids = "7ddf39aa-42a8-4995-94eb-4392bcc00d28")@c_as_ged, 
 #'                        "json2")
 class_attr_indi <- S7::new_class(
   "class_attr_indi",
   package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character, 
       getter = function(self){
         age <- self@age

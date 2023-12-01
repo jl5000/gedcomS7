@@ -10,10 +10,10 @@ test_that("Function class_event_fam() @ L82", {
   expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
                regexp = "A @fact_val is required for this fact")       
   expect_error(class_event_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
-  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@as_ged, "json2")
-  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@as_ged, "json2")
+  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@c_as_ged, "json2")
+  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
   expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", husb_age = "73y 4m",
-                                        wife_age = "60y")@as_ged, "json2")
+                                        wife_age = "60y")@c_as_ged, "json2")
 })
 
 

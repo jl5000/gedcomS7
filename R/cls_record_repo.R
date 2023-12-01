@@ -37,12 +37,12 @@ class_record_repo <- S7::new_class(
                                    chk_input_size(value, min_val = 1)
                                  }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s REPO", self@xref),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@c_restrictions),
           sprintf("1 NAME %s", self@repo_name),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
           sprintf("1 PHON %s", self@phone_numbers),
@@ -51,7 +51,7 @@ class_record_repo <- S7::new_class(
           sprintf("1 WWW %s", self@web_pages),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
-          self@ids |> increase_level(by = 1),
+          self@c_ids_as_ged |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )

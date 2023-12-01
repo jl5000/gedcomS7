@@ -13,6 +13,21 @@
 #'
 #' @return The filepath (invisibly).
 #' @export
+#' @tests
+#' skip_if_offline(host = "gedcom.io")
+#' 
+#' ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+#' ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
+#'                        note = "N", sour = "S", subm = "U")
+#'                                
+#' expect_error(write_gedcom(ged, "my_family.txt"), 
+#'              regexp = "Output is not being saved as a GEDCOM file")
+#' 
+#' expect_identical(
+#'   ged@c_as_ged,
+#'   read_gedcom(write_gedcom(ged, "maximal.ged"))@c_as_ged
+#' )
+#' file.remove("maximal.ged")
 write_gedcom <- function(gedcom, 
                          filepath = file.choose(),
                          inc_confid = TRUE,
@@ -34,12 +49,12 @@ write_gedcom <- function(gedcom,
   
   if(!inc_living) gedcom <- remove_living(gedcom)
   
-  lines <- gedcom@as_ged
+  lines <- gedcom@c_as_ged
   
   if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
   if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
   
-  # Moved to as_ged property - in order to make the test work
+  # Moved to c_as_ged property - in order to make the test work
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
   
   writeLines(lines, con)
@@ -140,7 +155,7 @@ is_alive <- function(x, xref, max_age = 100){
 #' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
 #' expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
 date_diff <- function(date1,
-                      date2 = date_exact_current()@as_val,
+                      date2 = date_exact_current()@c_as_val,
                       minimise = TRUE) {
   
   date1 <- parse_gedcom_date(date1, minimise = !minimise)

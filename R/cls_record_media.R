@@ -20,7 +20,7 @@
 #'                                        medium = "ELECTRONIC",
 #'                                        medium_phrase = "My CD of things",
 #'                                        media_alt = c("audio/ogg" = "media/derived.oga",
-#'                                                      "text/vtt" = "media/transcript.vtt"))@as_ged,
+#'                                                      "text/vtt" = "media/transcript.vtt"))@c_as_ged,
 #'                        "json2")
 class_media_file <- S7::new_class(
   "class_media_file",
@@ -60,7 +60,7 @@ class_media_file <- S7::new_class(
                                    )
                                  }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -99,7 +99,7 @@ class_media_file <- S7::new_class(
 #'            
 #' expect_snapshot_value(class_record_media("@M548@", files = fls,
 #'                                          locked = TRUE,
-#'                                          notes = "Very loud")@as_ged, "json2")            
+#'                                          notes = "Very loud")@c_as_ged, "json2")            
 class_record_media <- S7::new_class(
   "class_record_media", 
   package = "gedcomS7",
@@ -113,14 +113,14 @@ class_record_media <- S7::new_class(
                                )
                              }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s OBJE", self@xref),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@c_restrictions),
           obj_to_ged(self@files) |> increase_level(by = 1),
-          self@ids |> increase_level(by = 1),
+          self@c_ids_as_ged |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),

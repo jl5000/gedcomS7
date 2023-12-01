@@ -3,9 +3,9 @@
 # File R/cls_record_sour.R: @tests
 
 test_that("Function class_repository_citation() @ L67", {
-  expect_snapshot_value(class_repository_citation()@as_ged, "json2")
+  expect_snapshot_value(class_repository_citation()@c_as_ged, "json2")
   expect_snapshot_value(class_repository_citation(notes = "Local library",
-                                                  call_numbers = c("ABC","123"))@as_ged, "json2")
+                                                  call_numbers = c("ABC","123"))@c_as_ged, "json2")
 })
 
 
@@ -15,12 +15,12 @@ test_that("Function class_facts_recorded() @ L137", {
   expect_error(class_facts_recorded("BIRT,DEAT"), regexp = "@fact_types is in an invalid format")
   expect_error(class_facts_recorded("BIRT, DEAT", date_period = "2006"), 
                                     regexp = "@date_period is in an invalid format")
-  expect_snapshot_value(class_facts_recorded("BIRT")@as_ged, "json2")
+  expect_snapshot_value(class_facts_recorded("BIRT")@c_as_ged, "json2")
   expect_snapshot_value(class_facts_recorded("BIRT, DEAT",
-                                             date_period = "FROM 2007 TO 2010")@as_ged, "json2")
+                                             date_period = "FROM 2007 TO 2010")@c_as_ged, "json2")
   expect_snapshot_value(class_facts_recorded("BIRT, DEAT",
                                              date_period = "FROM 2007 TO 2010",
                                              date_phrase = "sometime",
-                                             territory = "somewhere")@as_ged, "json2")
+                                             territory = "somewhere")@c_as_ged, "json2")
 })
 

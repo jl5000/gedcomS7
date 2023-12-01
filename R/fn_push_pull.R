@@ -80,14 +80,14 @@ push_record <- function(gedcom, record){
   rec_type <- get_record_type(record)
   
   if(record@xref == "@ORPHAN@"){
-    record@xref <- unname(gedcom@next_xref[rec_type])
+    record@xref <- unname(gedcom@c_next_xref[rec_type])
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }
   
   # Don't do this yet
   #if(rec_type %in% c("indi","fam")) record <- order_facts(record)
     
-  S7::prop(gedcom, rec_type)[[record@xref]] <- record@as_ged
+  S7::prop(gedcom, rec_type)[[record@xref]] <- record@c_as_ged
   
   if(rec_type == "indi"){
     gedcom <- refresh_indi_links(gedcom, record)
@@ -164,7 +164,7 @@ refresh_indi_links <- function(gedcom, record){
   
   # Go through each family link
   # Ensure record@xref is properly reflected in family record membership
-  fam_lnks <- find_ged_values(record@as_ged, "FAMS|FAMC")
+  fam_lnks <- find_ged_values(record@c_as_ged, "FAMS|FAMC")
   for(fam in fam_lnks){
     if(!fam %in% gedcom@c_xrefs[["fam"]]){
       stop("There is no family with xref ", fam)

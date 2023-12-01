@@ -2,7 +2,7 @@
 #' Convert an input into a vector of GEDCOM lines
 #'
 #' @param obj Either an atomic vector, S7 class object, or list.
-#' Any S7 class objects must have an `as_ged()` method.
+#' Any S7 class objects must have an `c_as_ged()` method.
 #' @param tag If the obj contains any atomic elements, then this
 #' will specify what tag they are recorded against.
 #'
@@ -20,7 +20,7 @@ obj_to_ged <- function(obj, tag = NULL){
       
     } else if("S7_object" %in% class(obj)){
       
-      return(obj@as_ged)
+      return(obj@c_as_ged)
       
     } else if(is.list(obj)){
       
@@ -52,7 +52,7 @@ named_vec_to_ged <- function(vec, tag1, tag2){
 
 obj_to_val <- function(obj){
   if("S7_object" %in% class(obj)){
-    val <- obj@as_val
+    val <- obj@c_as_val
   } else {
     val <- obj # character/NULL
   }

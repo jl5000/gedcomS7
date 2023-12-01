@@ -11,7 +11,7 @@
 #' @tests
 #' expect_snapshot_value(class_record_note("@N4@",
 #'                                         text = "The note goes something like this",
-#'                                         language = "en")@as_ged, "json2")
+#'                                         language = "en")@c_as_ged, "json2")
 class_record_note <- S7::new_class(
   "class_record_note", 
   package = "gedcomS7",
@@ -40,17 +40,17 @@ class_record_note <- S7::new_class(
                                       chk_input_S7classes(value, class_translation_txt)
                                     }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_data.frame,
       getter = function(self){
         c(
           sprintf("0 %s SNOTE %s", self@xref, self@text),
-          sprintf("1 RESN %s", self@restrictions), # coming soon
+          sprintf("1 RESN %s", self@c_restrictions), # coming soon
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
           obj_to_ged(self@translations) |> increase_level(by = 1),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
-          self@ids |> increase_level(by = 1),
+          self@c_ids_as_ged |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )

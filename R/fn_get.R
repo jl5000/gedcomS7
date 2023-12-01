@@ -339,7 +339,7 @@ get_supporting_recs <- function(x,
 #' @export
 get_unused_recs <- function(x){
   
-  ged <- x@as_ged
+  ged <- x@c_as_ged
   
   xrefs <- unlist(x@c_xrefs)
   vals <- parse_line_value(ged)

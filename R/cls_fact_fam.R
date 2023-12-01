@@ -34,7 +34,7 @@ class_fact_fam <- S7::new_class(
                                          chk_input_size(value, 0, 1, 1)
                                        }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         husb_age <- self@husb_age
@@ -75,10 +75,10 @@ class_fact_fam <- S7::new_class(
 #' expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
 #'              regexp = "A @fact_val is required for this fact")       
 #' expect_error(class_event_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
-#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@as_ged, "json2")
-#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@as_ged, "json2")
+#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@c_as_ged, "json2")
+#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
 #' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", husb_age = "73y 4m",
-#'                                       wife_age = "60y")@as_ged, "json2")    
+#'                                       wife_age = "60y")@c_as_ged, "json2")    
 class_event_fam <- S7::new_class(
   "class_event_fam",
   package = "gedcomS7",

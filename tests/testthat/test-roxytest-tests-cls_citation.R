@@ -3,7 +3,7 @@
 # File R/cls_citation.R: @tests
 
 test_that("Function class_citation() @ L43", {
-  expect_snapshot_value(class_citation()@as_ged, "json2")
+  expect_snapshot_value(class_citation()@c_as_ged, "json2")
   expect_error(class_citation("@1@",
                               fact_phrase = "phrase"),
                regexp = "@fact_phrase requires a @fact_type")
@@ -34,6 +34,6 @@ test_that("Function class_citation() @ L43", {
                                        media_links = class_media_link("@34E@"),
                                        note_xrefs = c("@WER@",
                                                      "@4334@"),
-                                       notes = c("these are","some notes"))@as_ged, "json2")
+                                       notes = c("these are","some notes"))@c_as_ged, "json2")
 })
 

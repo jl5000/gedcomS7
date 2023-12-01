@@ -5,21 +5,21 @@
 test_that("Function class_address() @ L28", {
   expect_error(class_address(), "@full has too few elements")
   expect_error(class_address(""), "@full has too few characters")
-  expect_snapshot_value(class_address("street\ncity\nstate")@as_ged, "json2")
+  expect_snapshot_value(class_address("street\ncity\nstate")@c_as_ged, "json2")
   expect_snapshot_value(class_address("street\ncity\nstate",
-                                      city = "this city")@as_ged, "json2")
+                                      city = "this city")@c_as_ged, "json2")
   expect_snapshot_value(class_address("street\ncity\nstate",
-                                      state = "this state")@as_ged, "json2")
+                                      state = "this state")@c_as_ged, "json2")
   expect_snapshot_value(class_address("street\ncity\nstate",
-                                      country = "this country")@as_ged, "json2")
+                                      country = "this country")@c_as_ged, "json2")
   expect_snapshot_value(class_address("street\ncity\nstate",
                                       city = "this city",
                                       state = "this state",
-                                      country = "this country")@as_ged, "json2")
+                                      country = "this country")@c_as_ged, "json2")
   expect_snapshot_value(class_address("street\ncity\nstate",
                                       city = "this city",
                                       state = "this state",
                                       country = "this country",
-                                      postal_code = "81309")@as_ged, "json2")
+                                      postal_code = "81309")@c_as_ged, "json2")
 })
 

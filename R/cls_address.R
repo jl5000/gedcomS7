@@ -9,22 +9,22 @@ NULL
 #' @tests
 #' expect_error(class_address(), "@full has too few elements")
 #' expect_error(class_address(""), "@full has too few characters")
-#' expect_snapshot_value(class_address("street\ncity\nstate")@as_ged, "json2")
+#' expect_snapshot_value(class_address("street\ncity\nstate")@c_as_ged, "json2")
 #' expect_snapshot_value(class_address("street\ncity\nstate",
-#'                                     city = "this city")@as_ged, "json2")
+#'                                     city = "this city")@c_as_ged, "json2")
 #' expect_snapshot_value(class_address("street\ncity\nstate",
-#'                                     state = "this state")@as_ged, "json2")
+#'                                     state = "this state")@c_as_ged, "json2")
 #' expect_snapshot_value(class_address("street\ncity\nstate",
-#'                                     country = "this country")@as_ged, "json2")
+#'                                     country = "this country")@c_as_ged, "json2")
 #' expect_snapshot_value(class_address("street\ncity\nstate",
 #'                                     city = "this city",
 #'                                     state = "this state",
-#'                                     country = "this country")@as_ged, "json2")
+#'                                     country = "this country")@c_as_ged, "json2")
 #' expect_snapshot_value(class_address("street\ncity\nstate",
 #'                                     city = "this city",
 #'                                     state = "this state",
 #'                                     country = "this country",
-#'                                     postal_code = "81309")@as_ged, "json2")
+#'                                     postal_code = "81309")@c_as_ged, "json2")
 class_address <- S7::new_class(
   "class_address",
   package = "gedcomS7",
@@ -50,22 +50,22 @@ class_address <- S7::new_class(
                                  chk_input_size(value, 0, 1, 1)
                                }),
     adr1 = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1, 1)
-                               }),
+                            validator = function(value){
+                              chk_input_size(value, 0, 1, 1)
+                            }),
     adr2 = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1, 1)
-                               }),
+                            validator = function(value){
+                              chk_input_size(value, 0, 1, 1)
+                            }),
     adr3 = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1, 1)
-                               }),
+                            validator = function(value){
+                              chk_input_size(value, 0, 1, 1)
+                            }),
     
-    as_val = S7::new_property(S7::class_character, 
+    c_as_val = S7::new_property(S7::class_character, 
                               getter = function(self) self@full),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

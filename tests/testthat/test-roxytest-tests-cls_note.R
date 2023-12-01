@@ -5,26 +5,26 @@
 test_that("Function class_note() @ L43", {
   expect_error(class_note(), regexp = "@text has too few elements")
   expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
-  expect_snapshot_value(class_note("test")@as_ged, "json2")
-  expect_snapshot_value(class_note("test", language = "en")@as_ged, "json2")
+  expect_snapshot_value(class_note("test")@c_as_ged, "json2")
+  expect_snapshot_value(class_note("test", language = "en")@c_as_ged, "json2")
   expect_snapshot_value(class_note("test", 
                                    language = "en",
                                    translations = class_translation_txt("test",
-                                                                    language = "en"))@as_ged, "json2")
+                                                                    language = "en"))@c_as_ged, "json2")
   expect_snapshot_value(class_note("test", 
                                    language = "en",
                                    translations = list(class_translation_txt("test",
                                                                     language = "en"),
                                                    class_translation_txt("test2",
-                                                                    language = "en")))@as_ged, "json2")
+                                                                    language = "en")))@c_as_ged, "json2")
   expect_snapshot_value(class_note("test", 
                                    citations = class_citation("@S1@", 
                                                               notes = class_note("note text 2", 
-                                                                                 citations = class_citation("@S4@"))))@as_ged, 
+                                                                                 citations = class_citation("@S4@"))))@c_as_ged, 
                        "json2")
   expect_error(class_note("test", 
                           language = "en",
-                          translations = class_address("street"))@as_ged,
+                          translations = class_address("street"))@c_as_ged,
                regexp = "@translations must be <list> or <gedcomS7::class_translation_txt>")
   expect_error(class_note("test", 
                           language = "en",

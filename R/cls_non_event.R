@@ -17,7 +17,7 @@ NULL
 #'                                       date_period = class_date_period("16 JUN 1980","1994"),
 #'                                       date_phrase = "While parents alive",
 #'                                       notes = "Note 1",
-#'                                       citations = "@S98@")@as_ged, "json2")
+#'                                       citations = "@S98@")@c_as_ged, "json2")
 class_non_event <- S7::new_class(
   "class_non_event",
   package = "gedcomS7",
@@ -53,7 +53,7 @@ class_non_event <- S7::new_class(
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

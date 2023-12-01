@@ -8,7 +8,7 @@ NULL
 #' @export
 #' @include cls_date.R cls_translation.R cls_media_link.R cls_note.R
 #' @tests
-#' expect_snapshot_value(class_citation()@as_ged, "json2")
+#' expect_snapshot_value(class_citation()@c_as_ged, "json2")
 #' expect_error(class_citation("@1@",
 #'                             fact_phrase = "phrase"),
 #'              regexp = "@fact_phrase requires a @fact_type")
@@ -39,7 +39,7 @@ NULL
 #'                                      media_links = class_media_link("@34E@"),
 #'                                      note_xrefs = c("@WER@",
 #'                                                    "@4334@"),
-#'                                      notes = c("these are","some notes"))@as_ged, "json2")
+#'                                      notes = c("these are","some notes"))@c_as_ged, "json2")
 class_citation <- S7::new_class(
   "class_citation",
   package = "gedcomS7",
@@ -108,7 +108,7 @@ class_citation <- S7::new_class(
                                chk_input_S7classes(value, class_note, ".+")
                              }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

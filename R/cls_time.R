@@ -12,12 +12,12 @@ NULL
 #' expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
 #' expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction requires @second")
 #' expect_error(class_time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
-#' expect_equal(class_time(hour = 10, minute = 59)@as_val, "10:59Z")
-#' expect_equal(class_time(5, 6)@as_val, "05:06Z")
-#' expect_equal(class_time(5, 59, 19)@as_val, "05:59:19Z")
-#' expect_equal(class_time(0, 0, 0, 6)@as_val, "00:00:00.6Z")
-#' expect_equal(class_time(8, 14, 43, 6543)@as_val, "08:14:43.6543Z")
-#' expect_equal(class_time(14, 28, utc = FALSE)@as_val, "14:28")
+#' expect_equal(class_time(hour = 10, minute = 59)@c_as_val, "10:59Z")
+#' expect_equal(class_time(5, 6)@c_as_val, "05:06Z")
+#' expect_equal(class_time(5, 59, 19)@c_as_val, "05:59:19Z")
+#' expect_equal(class_time(0, 0, 0, 6)@c_as_val, "00:00:00.6Z")
+#' expect_equal(class_time(8, 14, 43, 6543)@c_as_val, "08:14:43.6543Z")
+#' expect_equal(class_time(14, 28, utc = FALSE)@c_as_val, "14:28")
 class_time <- S7::new_class(
   "class_time",
   package = "gedcomS7",
@@ -52,7 +52,7 @@ class_time <- S7::new_class(
                              chk_input_size(value, 1, 1)
                            }),
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         tim <- sprintf("%02d:%02d", self@hour, self@minute)

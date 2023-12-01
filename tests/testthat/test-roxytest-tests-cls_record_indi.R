@@ -9,15 +9,15 @@ test_that("Function class_record_indi() @ L25", {
                class_event_indi("BIRT", date = "2006", place = "Colorado, USA"),
                class_event_indi("DEAT", date = "18 JUN 2020", place = "London, UK"),
                class_event_indi("DEAT", date = "2021", place = "UK"))
-  expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@primary_name, "Joe /Bloggs/")
-  expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
+  expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@c_primary_name, "Joe /Bloggs/")
+  expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@c_all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
   birt_deat <- class_record_indi(xref = "@I1@", facts = fcts)
-  expect_equal(birt_deat@birth_date, "2005")
-  expect_equal(birt_deat@birth_place, "USA")
-  expect_equal(birt_deat@death_date, "18 JUN 2020")
-  expect_equal(birt_deat@death_place, "London, UK")
+  expect_equal(birt_deat@c_birth_date, "2005")
+  expect_equal(birt_deat@c_birth_place, "USA")
+  expect_equal(birt_deat@c_death_date, "18 JUN 2020")
+  expect_equal(birt_deat@c_death_place, "London, UK")
   expect_snapshot_value(class_record_indi("@I4@", sex = "M", facts = fcts, pers_names = nms,
                                           fam_links_chil = "@F132@", 
-                                          fam_links_spou = "@F67@")@as_ged, "json2")
+                                          fam_links_spou = "@F67@")@c_as_ged, "json2")
 })
 

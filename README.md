@@ -103,7 +103,7 @@ Since we have no existing records in our gedcom object, the next xrefs
 of each type will be:
 
 ``` r
-ged@next_xref
+ged@c_next_xref
 #>   subm   indi    fam   sour   repo  media   note 
 #> "@U1@" "@I1@" "@F1@" "@S1@" "@R1@" "@M1@" "@N1@"
 ```

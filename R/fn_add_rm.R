@@ -25,7 +25,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
   
   # Create new family record if necessary
   if(length(famc_xref) == 0){
-    famc_xref <- x@next_xref[["fam"]]
+    famc_xref <- x@c_next_xref[["fam"]]
     
     famc_rec <- class_record_fam(
       chil_xrefs = xref
@@ -96,7 +96,7 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
   famc_xref <- get_fam_as_child(x, xref, "BIRTH")
   
   if(length(famc_xref) == 0){
-    famc_xref <- x@next_xref[["fam"]]
+    famc_xref <- x@c_next_xref[["fam"]]
     
     famc_rec <- class_record_fam(
       chil_xrefs = xref
@@ -179,7 +179,7 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
 add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
   check_indi_rec(x, xref)
   
-  spou_xref <- x@next_xref[["indi"]]
+  spou_xref <- x@c_next_xref[["indi"]]
   
   spou_rec <- class_record_indi(
     sex = sex

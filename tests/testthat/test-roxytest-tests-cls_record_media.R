@@ -17,7 +17,7 @@ test_that("Function class_media_file() @ L25", {
                                          medium = "ELECTRONIC",
                                          medium_phrase = "My CD of things",
                                          media_alt = c("audio/ogg" = "media/derived.oga",
-                                                       "text/vtt" = "media/transcript.vtt"))@as_ged,
+                                                       "text/vtt" = "media/transcript.vtt"))@c_as_ged,
                          "json2")
 })
 
@@ -36,6 +36,6 @@ test_that("Function class_record_media() @ L103", {
              
   expect_snapshot_value(class_record_media("@M548@", files = fls,
                                            locked = TRUE,
-                                           notes = "Very loud")@as_ged, "json2")
+                                           notes = "Very loud")@c_as_ged, "json2")
 })
 

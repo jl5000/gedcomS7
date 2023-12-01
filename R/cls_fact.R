@@ -114,18 +114,18 @@ class_fact <- S7::new_class(
                                     chk_input_pattern(value, reg_uuid(TRUE))
                                   }),
     
-    restrictions = S7::new_property(S7::class_character,
+    c_restrictions = S7::new_property(S7::class_character,
                                     getter = function(self){
                                       restrictions_to_resn(self@confidential, self@locked, self@private)
                                     }),
     
-    fact_date = S7::new_property(
+    c_fact_date = S7::new_property(
       S7::class_character,
       getter = function(self){
         obj_to_val(self@date)
       }),
     
-    fact_location = S7::new_property(
+    c_fact_location = S7::new_property(
       S7::class_character,
       getter = function(self){
         want_addr <- self@fact_type %in% c("RESI","CENS","PROP")
@@ -173,7 +173,7 @@ class_fact <- S7::new_class(
           sprintf("1 AGNC %s", self@agency),
           sprintf("1 RELI %s", self@relig_affil),
           sprintf("1 CAUS %s", self@cause),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@c_restrictions),
           obj_to_ged(self@date_sort, "SDATE") |> increase_level(by = 1),
           obj_to_ged(self@associations) |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),

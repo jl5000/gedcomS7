@@ -46,9 +46,9 @@ str(ged)
 The properties of the main GEDCOM object are either:
 
 * Lists of records of each type (`@subm`, `@indi`, `@fam`, `@sour`, `@repo`, `@media`, and `@note`);
-* Those that summarise and control the cross-reference identifiers (xrefs) given to records (`@c_xrefs`, `@xref_prefixes`, and `@next_xref`);
+* Those that summarise and control the cross-reference identifiers (xrefs) given to records (`@c_xrefs`, `@xref_prefixes`, and `@c_next_xref`);
 * Those that allow the user the control whether creation/change dates are added to records as they are pushed to the GEDCOM object (`@update_change_dates` and `@add_creation_dates`);
-* Those that show you what the GEDCOM file representation looks like (`@as_ged`) and the representation of the header (`@hd_as_ged`);
+* Those that show you what the GEDCOM file representation looks like (`@c_as_ged`) and the representation of the header (`@c_hd_as_ged`);
 * Properties of the header (metadata about the file as a whole).
 
 Some of these properties are also read-only, which means they are calculated from other properties and cannot be directly set. These are given by ...?
@@ -70,7 +70,7 @@ The order that these records appear in the vector will also dictate the order in
 Since we have no existing records in our gedcom object, the next xrefs of each type will be:
 
 ```{r}
-ged@next_xref
+ged@c_next_xref
 ```
 
 Note: xrefs are not supposed to be exposed to the typical user since they can change when being imported into a new system. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console. If a `shiny` app is created, then xrefs can be hidden from the user.

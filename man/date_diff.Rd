@@ -4,7 +4,7 @@
 \alias{date_diff}
 \title{Determine the number of years between two dates}
 \usage{
-date_diff(date1, date2 = date_exact_current()@as_val, minimise = TRUE)
+date_diff(date1, date2 = date_exact_current()@c_as_val, minimise = TRUE)
 }
 \arguments{
 \item{date1}{A GEDCOM date string.}

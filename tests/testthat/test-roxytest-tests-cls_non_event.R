@@ -12,6 +12,6 @@ test_that("Function class_non_event() @ L21", {
                                         date_period = class_date_period("16 JUN 1980","1994"),
                                         date_phrase = "While parents alive",
                                         notes = "Note 1",
-                                        citations = "@S98@")@as_ged, "json2")
+                                        citations = "@S98@")@c_as_ged, "json2")
 })
 

@@ -48,7 +48,7 @@ ged@default_language <- "en"
 
 This ease of modification of specific properties of a GEDCOM object wasn't possible with the `tidyged` package.
 
-Properties which don't have values are either empty vectors, empty lists, or NULL (depending on the property). Some of these properties are also read-only (derived from other properties), such as `@next_xref` and `@as_ged`. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how records are stored is important.
+Properties which don't have values are either empty vectors, empty lists, or NULL (depending on the property). Some of these properties are also read-only (derived from other properties), such as `@c_next_xref` and `@c_as_ged`. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how records are stored is important.
 
 ## The Push/Pull paradigm
 

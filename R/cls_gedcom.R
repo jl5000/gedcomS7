@@ -69,7 +69,7 @@ class_gedcom_source <- S7::new_class(
                                         chk_input_size(value, 0, 1, 1)
                                       }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -181,7 +181,7 @@ class_gedcom_header <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     
-    hd_as_ged = S7::new_property(
+    c_hd_as_ged = S7::new_property(
       S7::class_character, 
       getter = function(self){
         c(
@@ -222,7 +222,7 @@ class_gedcom_header <- S7::new_class(
 #' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 #' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                                note = "N", sour = "S", subm = "U")
-#' ged_raw2 <- ged_parsed@as_ged
+#' ged_raw2 <- ged_parsed@c_as_ged
 #' 
 #' expect_equal(ged_raw, ged_raw2)
 class_gedcomS7 <- S7::new_class(
@@ -262,33 +262,33 @@ class_gedcomS7 <- S7::new_class(
     
     # List of xrefs for each record type
     c_xrefs = S7::new_property(S7::class_list,
-                             getter = function(self){
-                               rec_types <- names(self@xref_prefixes)
-                               rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
-                               stats::setNames(rec_xrefs, rec_types)
-                             }),
+                               getter = function(self){
+                                 rec_types <- names(self@xref_prefixes)
+                                 rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
+                                 stats::setNames(rec_xrefs, rec_types)
+                               }),
     
-    next_xref = S7::new_property(S7::class_character,
-                                 getter = function(self){
-                                   idx <- integer(7L)
-                                   existing_xrefs <- unname(unlist(self@c_xrefs))
-                                   for(i in seq_along(idx)){
-                                     ref <- 1
-                                     while(paste0("@", self@xref_prefixes[i], ref, "@") %in% existing_xrefs){
-                                       ref <- ref + 1
+    c_next_xref = S7::new_property(S7::class_character,
+                                   getter = function(self){
+                                     idx <- integer(7L)
+                                     existing_xrefs <- unname(unlist(self@c_xrefs))
+                                     for(i in seq_along(idx)){
+                                       ref <- 1
+                                       while(paste0("@", self@xref_prefixes[i], ref, "@") %in% existing_xrefs){
+                                         ref <- ref + 1
+                                       }
+                                       idx[i] <- ref
                                      }
-                                     idx[i] <- ref
-                                   }
-                                   
-                                   paste0("@", self@xref_prefixes, idx, "@") |>
-                                     stats::setNames(names(self@xref_prefixes))
-                                 }),
+                                     
+                                     paste0("@", self@xref_prefixes, idx, "@") |>
+                                       stats::setNames(names(self@xref_prefixes))
+                                   }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character, 
       getter = function(self){
         
-        hd <- self@hd_as_ged
+        hd <- self@c_hd_as_ged
         tr <- "0 TRLR"
         
         c(

@@ -25,7 +25,7 @@ val_uk_census_dates <- function(){
 add_census <- function(x, year, addr, xrefs_ages, roles, sour){
   
   year <- as.character(year)
-  sour_xref <- x@next_xref["sour"]
+  sour_xref <- x@c_next_xref["sour"]
   x <- push_record(x, sour)
   
   for(i in seq_along(xrefs_ages)){
@@ -50,12 +50,12 @@ add_census <- function(x, year, addr, xrefs_ages, roles, sour){
     #is there already a census event with this year?
     existing <- overwrite <- FALSE
     for(i in seq_along(indi_rec@facts)){
-      if(indi_rec@facts[[i]]@fact_type == "CENS" && indi_rec@facts[[i]]@date@as_val == year){
+      if(indi_rec@facts[[i]]@fact_type == "CENS" && indi_rec@facts[[i]]@date@c_as_val == year){
         existing <- TRUE
         message("Current:")
-        message(paste(indi_rec@facts[[i]]@as_ged, collapse = "\n"))
+        message(paste(indi_rec@facts[[i]]@c_as_ged, collapse = "\n"))
         message("New:")
-        message(paste(cens@as_ged, collapse = "\n"))
+        message(paste(cens@c_as_ged, collapse = "\n"))
         overwrite <- utils::menu(c("Yes", "No"), title="Overwrite?")
         overwrite <- overwrite == 1L
         if(overwrite){

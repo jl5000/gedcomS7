@@ -8,7 +8,7 @@ test_that("Function class_gedcomS7() @ L228", {
   ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
   ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
                                  note = "N", sour = "S", subm = "U")
-  ged_raw2 <- ged_parsed@as_ged
+  ged_raw2 <- ged_parsed@c_as_ged
   
   expect_equal(ged_raw, ged_raw2)
 })

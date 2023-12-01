@@ -14,14 +14,14 @@
 #'                                        husb_xref = "@I8@", wife_xref = "@I9@",
 #'                                        chil_xrefs = c("@I98@", Eldest = "@I67@"),
 #'                                        locked = TRUE,
-#'                                        citations = c("@S34@","@S65@"))@as_ged, "json2")
+#'                                        citations = c("@S34@","@S65@"))@c_as_ged, "json2")
 #' expect_error(class_record_fam("REF"), regexp = "@xref is in an invalid format")
 #' expect_error(class_record_fam("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
 #' expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
 #' expect_snapshot_value(class_record_fam("@1@",
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = stats::setNames(letters, LETTERS)[1:5],
-#'                                    user_ids = month.abb[1:6])@ids, "json2")
+#'                                    user_ids = month.abb[1:6])@c_ids_as_ged, "json2")
 class_record_fam <- S7::new_class(
   "class_record_fam", 
   package = "gedcomS7",
@@ -66,30 +66,30 @@ class_record_fam <- S7::new_class(
                                       chk_input_S7classes(value, class_spouse_sealing)
                                     }),
     
-    marriage_date = S7::new_property(
+    c_marriage_date = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "MARR") return(fact@fact_date)
+          if(fact@fact_type == "MARR") return(fact@c_fact_date)
         }
         character()
       }),
     
-    marriage_place = S7::new_property(
+    c_marriage_place = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "MARR") return(fact@fact_location)
+          if(fact@fact_type == "MARR") return(fact@c_fact_location)
         }
         character()
       }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s FAM", self@xref),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@c_restrictions),
           obj_to_ged(self@facts) |> increase_level(by = 1),
           obj_to_ged(self@non_events) |> increase_level(by = 1),
           named_vec_to_ged(self@husb_xref, "HUSB", "PHRASE") |> increase_level(by = 1),
@@ -98,7 +98,7 @@ class_record_fam <- S7::new_class(
           obj_to_ged(self@associations) |> increase_level(by = 1),
           sprintf("1 SUBM %s", self@subm_xrefs),
           obj_to_ged(self@spouse_sealings) |> increase_level(by = 1),
-          self@ids |> increase_level(by = 1),
+          self@c_ids_as_ged |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),

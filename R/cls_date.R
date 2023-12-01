@@ -15,8 +15,8 @@ class_date <- S7::new_class("class_date", abstract = TRUE)
 #' expect_error(class_date_exact(2001, 5), regexp = "@day has too few")
 #' expect_error(class_date_exact(2001, 5, 32), regexp = "@day has a value which is too high")
 #' expect_error(class_date_exact(2001, 2, 29), regexp = "Invalid date")
-#' expect_equal(class_date_exact(2001, 5, 2)@as_val, "2 MAY 2001")
-#' expect_equal(class_date_exact(28, 7, 12)@as_val, "12 JUL 28")
+#' expect_equal(class_date_exact(2001, 5, 2)@c_as_val, "2 MAY 2001")
+#' expect_equal(class_date_exact(28, 7, 12)@c_as_val, "12 JUL 28")
 #' expect_equal(class_date_exact(28, 7, 12)@as_date, as.Date("28-07-12"))
 class_date_exact <- S7::new_class(
   "class_date_exact", 
@@ -45,7 +45,7 @@ class_date_exact <- S7::new_class(
                              )
                            }),
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         paste(self@day, toupper(month.abb[self@month]), self@year)
@@ -91,11 +91,11 @@ date_exact_current <- function(){
 #' expect_error(class_date_greg(2010, 13, 3), regexp = "@month has a value which is too high")
 #' expect_error(class_date_greg(2010, 1, 32), regexp = "@day has a value which is too high")
 #' expect_error(class_date_greg(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
-#' expect_equal(class_date_greg(2001, 5, 12)@as_val, "12 MAY 2001")
-#' expect_equal(class_date_greg(2004, 2, 29)@as_val, "29 FEB 2004")
-#' expect_equal(class_date_greg(2004, 8)@as_val, "AUG 2004")
-#' expect_equal(class_date_greg(2012)@as_val, "2012")
-#' expect_equal(class_date_greg(193, bce = TRUE)@as_val, "193 BCE")
+#' expect_equal(class_date_greg(2001, 5, 12)@c_as_val, "12 MAY 2001")
+#' expect_equal(class_date_greg(2004, 2, 29)@c_as_val, "29 FEB 2004")
+#' expect_equal(class_date_greg(2004, 8)@c_as_val, "AUG 2004")
+#' expect_equal(class_date_greg(2012)@c_as_val, "2012")
+#' expect_equal(class_date_greg(193, bce = TRUE)@c_as_val, "193 BCE")
 class_date_greg <- S7::new_class(
   "class_date_greg", 
   package = "gedcomS7",
@@ -127,7 +127,7 @@ class_date_greg <- S7::new_class(
                              chk_input_size(value, 1, 1)
                            }),
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         val <- ""
@@ -156,11 +156,11 @@ class_date_greg <- S7::new_class(
 #' @export
 #' @tests
 #' expect_error(class_date_approx("hello"), regexp = "@date_greg is in an invalid format")
-#' expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@as_val, 
+#' expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@c_as_val, 
 #'                               "CAL 12 MAY 2001")
-#' expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@as_val, 
+#' expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@c_as_val, 
 #'                               "ABT 29 FEB 2004")
-#' expect_equal(class_date_approx(class_date_greg(2004, 8), est = TRUE)@as_val, 
+#' expect_equal(class_date_approx(class_date_greg(2004, 8), est = TRUE)@c_as_val, 
 #'                                "EST AUG 2004")
 class_date_approx <- S7::new_class(
   "class_date_approx", 
@@ -187,7 +187,7 @@ class_date_approx <- S7::new_class(
                              chk_input_size(value, 1, 1)
                            }),
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         if(self@calc) {
@@ -209,24 +209,24 @@ class_date_approx <- S7::new_class(
 #' @return An S7 object representing a GEDCOM Date Period.
 #' @export
 #' @tests
-#' expect_equal(class_date_period()@as_val, "")
+#' expect_equal(class_date_period()@c_as_val, "")
 #' expect_error(class_date_period(""), regexp = "@start_date is in an invalid format")
 #' expect_error(class_date_period(end_date = ""), regexp = "@end_date is in an invalid format")
-#' expect_equal(class_date_period("2 JUL 1989")@as_val, "FROM 2 JUL 1989")
-#' expect_equal(class_date_period(end_date = "2 JUL 1989")@as_val, "TO 2 JUL 1989")
+#' expect_equal(class_date_period("2 JUL 1989")@c_as_val, "FROM 2 JUL 1989")
+#' expect_equal(class_date_period(end_date = "2 JUL 1989")@c_as_val, "TO 2 JUL 1989")
 #' expect_equal(
 #'   class_date_period(
 #'     start_date = class_date_greg(1995, 6, 1)
-#'   )@as_val, "FROM 1 JUN 1995")
+#'   )@c_as_val, "FROM 1 JUN 1995")
 #' expect_equal(
 #'   class_date_period(
 #'     end_date = class_date_greg(1995, 6, 1)
-#'   )@as_val, "TO 1 JUN 1995")
+#'   )@c_as_val, "TO 1 JUN 1995")
 #' expect_equal(
 #'   class_date_period(
 #'     start_date = class_date_greg(1990, 6, 1),
 #'     end_date = class_date_greg(1995, 3)
-#'   )@as_val, "FROM 1 JUN 1990 TO MAR 1995")
+#'   )@c_as_val, "FROM 1 JUN 1990 TO MAR 1995")
 #' expect_error(
 #'   class_date_period(
 #'     start_date = class_date_greg(1995, 6, 1),
@@ -267,7 +267,7 @@ class_date_period <- S7::new_class(
                                   )
                                 }),
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
@@ -297,21 +297,21 @@ class_date_period <- S7::new_class(
 #' expect_error(class_date_range(), regexp = "has too few elements")
 #' expect_error(class_date_range(""), regexp = "@start_date is in an invalid format")
 #' expect_error(class_date_range(end_date = ""), regexp = "@end_date is in an invalid format")
-#' expect_equal(class_date_range("2 JUL 1989")@as_val, "AFT 2 JUL 1989")
-#' expect_equal(class_date_range(end_date = "2 JUL 1989")@as_val, "BEF 2 JUL 1989")
+#' expect_equal(class_date_range("2 JUL 1989")@c_as_val, "AFT 2 JUL 1989")
+#' expect_equal(class_date_range(end_date = "2 JUL 1989")@c_as_val, "BEF 2 JUL 1989")
 #' expect_equal(
 #'   class_date_range(
 #'     start_date = class_date_greg(1995, 6, 1)
-#'   )@as_val, "AFT 1 JUN 1995")
+#'   )@c_as_val, "AFT 1 JUN 1995")
 #' expect_equal(
 #'   class_date_range(
 #'     end_date = class_date_greg(1995, 6, 1)
-#'   )@as_val, "BEF 1 JUN 1995")
+#'   )@c_as_val, "BEF 1 JUN 1995")
 #' expect_equal(
 #'   class_date_range(
 #'     start_date = class_date_greg(1990, 6, 1),
 #'     end_date = class_date_greg(1995, 3)
-#'   )@as_val, "BET 1 JUN 1990 AND MAR 1995")
+#'   )@c_as_val, "BET 1 JUN 1990 AND MAR 1995")
 #' expect_error(
 #'   class_date_range(
 #'    start_date = class_date_greg(1995, 6, 1),
@@ -338,7 +338,7 @@ class_date_range <- S7::new_class(
   parent = class_date_period,
   properties = list(
     
-    as_val = S7::new_property(
+    c_as_val = S7::new_property(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
@@ -369,9 +369,9 @@ class_date_range <- S7::new_class(
 #' expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
 #' expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
 #'              regexp = "A date period should not have a time defined")
-#' expect_equal(class_date_value(class_date_greg(2005, 1, 5))@as_val, "5 JAN 2005")
-#' expect_snapshot_value(class_date_value("AFT 1990", date_phrase = "Maybe 1992")@as_ged, "json2")
-#' expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@as_ged, "json2")
+#' expect_equal(class_date_value(class_date_greg(2005, 1, 5))@c_as_val, "5 JAN 2005")
+#' expect_snapshot_value(class_date_value("AFT 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
+#' expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
 class_date_value <- S7::new_class(
   "class_date_value",
   package = "gedcomS7",
@@ -397,10 +397,10 @@ class_date_value <- S7::new_class(
                               )
                             }),
     
-    as_val = S7::new_property(S7::class_character, 
+    c_as_val = S7::new_property(S7::class_character, 
                               getter = function(self) obj_to_val(self@date)),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -433,8 +433,8 @@ class_date_value <- S7::new_class(
 #' expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
 #' expect_error(class_date_sort(class_date_period(end_date = "1980")), 
 #'              regexp = "@date must be <character> or <gedcomS7::class_date_greg>")
-#' expect_equal(class_date_sort(class_date_greg(2005, 1, 5))@as_val, "5 JAN 2005")
-#' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@as_ged, "json2")
+#' expect_equal(class_date_sort(class_date_greg(2005, 1, 5))@c_as_val, "5 JAN 2005")
+#' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 class_date_sort <- S7::new_class(
   "class_date_sort",
   package = "gedcomS7",
@@ -445,7 +445,7 @@ class_date_sort <- S7::new_class(
                               chk_input_pattern(value, reg_date_gregorian())
                             }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

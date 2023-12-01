@@ -5,19 +5,19 @@
 test_that("Function class_place() @ L27", {
   expect_error(class_place(), regexp = "@place_name has too few elements")
   expect_error(class_place(""), regexp = "@place_name has too few characters")
-  expect_snapshot_value(class_place("here")@as_ged, "json2")
+  expect_snapshot_value(class_place("here")@c_as_ged, "json2")
   expect_error(class_place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
-  expect_snapshot_value(class_place("here", lat_long = "N12 E56")@as_ged, "json2")
+  expect_snapshot_value(class_place("here", lat_long = "N12 E56")@c_as_ged, "json2")
   expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
-  expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@as_ged, "json2")
+  expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@c_as_ged, "json2")
   expect_snapshot_value(class_place("here", 
                                     place_translations = c(nl = "hier", da = "her"),
-                                    lat_long = "N12 E56")@as_ged, "json2")
+                                    lat_long = "N12 E56")@c_as_ged, "json2")
   expect_snapshot_value(class_place("here", 
                                     language = "en",
                                     place_translations = c(nl = "hier", da = "her"),
                                     lat_long = "N12 E56",
                                     note_xrefs = c("@N1@","@N562@"),
-                                    notes = "Thing 1")@as_ged, "json2")
+                                    notes = "Thing 1")@c_as_ged, "json2")
 })
 

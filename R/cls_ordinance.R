@@ -71,7 +71,7 @@ class_ordinance <- S7::new_class(
                                   )
                                 }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -164,7 +164,7 @@ class_spouse_sealing <- S7::new_class(
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

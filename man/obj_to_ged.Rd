@@ -8,7 +8,7 @@ obj_to_ged(obj, tag = NULL)
 }
 \arguments{
 \item{obj}{Either an atomic vector, S7 class object, or list.
-Any S7 class objects must have an \code{as_ged()} method.}
+Any S7 class objects must have an \code{c_as_ged()} method.}
 
 \item{tag}{If the obj contains any atomic elements, then this
 will specify what tag they are recorded against.}

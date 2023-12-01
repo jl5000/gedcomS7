@@ -25,7 +25,7 @@ desc_indi_full <- function(x, xref){
   check_indi_rec(x, xref)
   
   indi <- pull_record(x, xref)
-  indi_name <- indi@primary_name
+  indi_name <- indi@c_primary_name
   indi_sex <- indi@sex
   if(length(indi_sex) == 0 || !indi_sex %in% c("M","F")){
     pron_sub <- "They"
@@ -41,11 +41,11 @@ desc_indi_full <- function(x, xref){
     indi_name <- pron_sub
   }
   
-  indi_dob <- indi@birth_date
-  indi_pob <- indi@birth_place
+  indi_dob <- indi@c_birth_date
+  indi_pob <- indi@c_birth_place
   indi_alive <- is_alive(x, xref)
-  indi_dod <- indi@death_date
-  indi_pod <- indi@death_place
+  indi_dod <- indi@c_death_date
+  indi_pod <- indi@c_death_place
   
   fath_xref <- get_indi_fathers(x, xref, "BIRTH")
   if(length(fath_xref) > 1) fath_xref <- fath_xref[1]
@@ -53,18 +53,18 @@ desc_indi_full <- function(x, xref){
   if(length(moth_xref) > 1) moth_xref <- moth_xref[1]
   
   fath <- pull_record(x, fath_xref)
-  fath_dob <- fath@birth_date
-  fath_pob <- fath@birth_place
+  fath_dob <- fath@c_birth_date
+  fath_pob <- fath@c_birth_place
   fath_alive <- is_alive(x, fath_xref)
-  fath_dod <- fath@death_date
-  fath_pod <- fath@death_place
+  fath_dod <- fath@c_death_date
+  fath_pod <- fath@c_death_place
   
   moth <- pull_record(x, moth_xref)
-  moth_dob <- moth@birth_date
-  moth_pob <- moth@birth_place
+  moth_dob <- moth@c_birth_date
+  moth_pob <- moth@c_birth_place
   moth_alive <- is_alive(x, moth_xref)
-  moth_dod <- moth@death_date
-  moth_pod <- moth@death_place
+  moth_dod <- moth@c_death_date
+  moth_pod <- moth@c_death_place
   
   out <- sprintf("When %s was born", tolower(indi_name))
   if(length(indi_dob) == 1) out <- paste(out, "in", indi_dob)

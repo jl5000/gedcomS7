@@ -5,6 +5,6 @@
 test_that("Function class_record_note() @ L15", {
   expect_snapshot_value(class_record_note("@N4@",
                                           text = "The note goes something like this",
-                                          language = "en")@as_ged, "json2")
+                                          language = "en")@c_as_ged, "json2")
 })
 

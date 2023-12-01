@@ -8,19 +8,19 @@ NULL
 #' @export
 #' @include cls_note.R cls_citation.R
 #' @tests
-#' expect_snapshot_value(class_association(relation_is = "FATH")@as_ged, "json2")
+#' expect_snapshot_value(class_association(relation_is = "FATH")@c_as_ged, "json2")
 #' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
 #'              regexp = "@relation_is has an invalid value")
 #' expect_error(class_association(indi_phrase = "someone", relation_is = "OTHER"),
 #'              regexp = "A @relation_phrase must be given")
 #' expect_snapshot_value(class_association(indi_phrase = "someone",
-#'                                         relation_is = "FATH")@as_ged, "json2")
+#'                                         relation_is = "FATH")@c_as_ged, "json2")
 #' expect_snapshot_value(class_association(indi_xref = "@SME@", indi_phrase = "someone",
 #'                                         relation_is = "FATH", relation_phrase = "step-father",
 #'                                         note_xrefs = c("@352@","@564@"),
 #'                                         notes = "This is a note",
 #'                                         citations = class_citation("@S45@",
-#'                                                                    where = "Page 2"))@as_ged, "json2") 
+#'                                                                    where = "Page 2"))@c_as_ged, "json2") 
 class_association <- S7::new_class(
   "class_association",
   package = "gedcomS7",
@@ -60,7 +60,7 @@ class_association <- S7::new_class(
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

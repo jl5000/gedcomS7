@@ -9,9 +9,9 @@ NULL
 #' @include cls_note.R
 #' @tests
 #' expect_error(class_spouse_family_link(), regexp = "@fam_xref has too few elements")
-#' expect_snapshot_value(class_spouse_family_link("@F123@")@as_ged, "json2")
+#' expect_snapshot_value(class_spouse_family_link("@F123@")@c_as_ged, "json2")
 #' expect_snapshot_value(class_spouse_family_link("@F2@", 
-#'                                                notes = list(class_note("test")))@as_ged, "json2")
+#'                                                notes = list(class_note("test")))@c_as_ged, "json2")
 class_spouse_family_link <- S7::new_class(
   "class_spouse_family_link",
   package = "gedcomS7",
@@ -32,7 +32,7 @@ class_spouse_family_link <- S7::new_class(
                                chk_input_S7classes(value, class_note, ".+")
                              }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -64,7 +64,7 @@ class_spouse_family_link <- S7::new_class(
 #'                                                pedigree_phrase = "By people",
 #'                                                confidence = "CHALLENGED",
 #'                                                confidence_phrase = "By someone",
-#'                                                note_xrefs = c("@242@","@GJFJ@"))@as_ged, "json2")
+#'                                                note_xrefs = c("@242@","@GJFJ@"))@c_as_ged, "json2")
 class_child_family_link <- S7::new_class(
   "class_child_family_link", 
   package = "gedcomS7",
@@ -93,7 +93,7 @@ class_child_family_link <- S7::new_class(
                                            chk_input_size(value, 0, 1, 1)
                                          }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

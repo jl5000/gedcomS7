@@ -149,8 +149,8 @@ df_indi_facts <- function(x, xref){
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
     desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
-    date = vapply(fcts, \(fct) chronify(fct@fact_date), FUN.VALUE = character(1)),
-    place = vapply(fcts, \(fct) chronify(fct@fact_location), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@c_fact_date), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@c_fact_location), FUN.VALUE = character(1)),
     age = vapply(fcts, \(fct) chronify(fct@age), FUN.VALUE = character(1))
   )
   
@@ -178,8 +178,8 @@ df_fam_facts <- function(x, xref){
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
     desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
-    date = vapply(fcts, \(fct) chronify(fct@fact_date), FUN.VALUE = character(1)),
-    place = vapply(fcts, \(fct) chronify(fct@fact_location), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@c_fact_date), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@c_fact_location), FUN.VALUE = character(1)),
     husb_age = vapply(fcts, \(fct) chronify(fct@husb_age), FUN.VALUE = character(1)),
     wife_age = vapply(fcts, \(fct) chronify(fct@wife_age), FUN.VALUE = character(1))
   )

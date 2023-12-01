@@ -12,16 +12,16 @@
 #'              class_event_indi("BIRT", date = "2006", place = "Colorado, USA"),
 #'              class_event_indi("DEAT", date = "18 JUN 2020", place = "London, UK"),
 #'              class_event_indi("DEAT", date = "2021", place = "UK"))
-#' expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@primary_name, "Joe /Bloggs/")
-#' expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
+#' expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@c_primary_name, "Joe /Bloggs/")
+#' expect_equal(class_record_indi(xref = "@I1@", pers_names = nms)@c_all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
 #' birt_deat <- class_record_indi(xref = "@I1@", facts = fcts)
-#' expect_equal(birt_deat@birth_date, "2005")
-#' expect_equal(birt_deat@birth_place, "USA")
-#' expect_equal(birt_deat@death_date, "18 JUN 2020")
-#' expect_equal(birt_deat@death_place, "London, UK")
+#' expect_equal(birt_deat@c_birth_date, "2005")
+#' expect_equal(birt_deat@c_birth_place, "USA")
+#' expect_equal(birt_deat@c_death_date, "18 JUN 2020")
+#' expect_equal(birt_deat@c_death_place, "London, UK")
 #' expect_snapshot_value(class_record_indi("@I4@", sex = "M", facts = fcts, pers_names = nms,
 #'                                         fam_links_chil = "@F132@", 
-#'                                         fam_links_spou = "@F67@")@as_ged, "json2")
+#'                                         fam_links_spou = "@F67@")@c_as_ged, "json2")
 class_record_indi <- S7::new_class(
   "class_record_indi", 
   package = "gedcomS7",
@@ -79,7 +79,7 @@ class_record_indi <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     
-    primary_name = S7::new_property(
+    c_primary_name = S7::new_property(
       S7::class_character,
       getter = function(self){
         if(length(self@pers_names) == 0){
@@ -89,7 +89,7 @@ class_record_indi <- S7::new_class(
         }
       }),
     
-    all_names = S7::new_property(
+    c_all_names = S7::new_property(
       S7::class_character,
       getter = function(self){
         vapply(as.iterable(self@pers_names), \(nm){
@@ -97,59 +97,59 @@ class_record_indi <- S7::new_class(
         }, FUN.VALUE = character(1), USE.NAMES = FALSE)
       }),
     
-    desc_short = S7::new_property(
+    c_desc_short = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(length(self@primary_name) == 0){
+        if(length(self@c_primary_name) == 0){
           name <- "Unnamed individual"
         } else {
-          name <- self@primary_name
+          name <- self@c_primary_name
         }
         paste0("Individual ", self@xref, ", ", name)
       }),
     
-    birth_date = S7::new_property(
+    c_birth_date = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "BIRT") return(fact@fact_date)
+          if(fact@fact_type == "BIRT") return(fact@c_fact_date)
         }
         character()
       }),
     
-    birth_place = S7::new_property(
+    c_birth_place = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "BIRT") return(fact@fact_location)
+          if(fact@fact_type == "BIRT") return(fact@c_fact_location)
         }
         character()
       }),
     
-    death_date = S7::new_property(
+    c_death_date = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "DEAT") return(fact@fact_date)
+          if(fact@fact_type == "DEAT") return(fact@c_fact_date)
         }
         character()
       }),
     
-    death_place = S7::new_property(
+    c_death_place = S7::new_property(
       S7::class_character,
       getter = function(self){
         for(fact in as.iterable(self@facts)){
-          if(fact@fact_type == "DEAT") return(fact@fact_location)
+          if(fact@fact_type == "DEAT") return(fact@c_fact_location)
         }
         character()
       }),
     
-    as_ged = S7::new_property(
+    c_as_ged = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s INDI", self@xref),
-          sprintf("1 RESN %s", self@restrictions),
+          sprintf("1 RESN %s", self@c_restrictions),
           obj_to_ged(self@pers_names, "NAME") |> increase_level(by = 1),
           sprintf("1 SEX %s", self@sex),
           obj_to_ged(self@facts) |> increase_level(by = 1),
@@ -162,7 +162,7 @@ class_record_indi <- S7::new_class(
           named_vec_to_ged(self@alia_xrefs, "ALIA", "PHRASE") |> increase_level(by = 1),
           sprintf("1 ANCI %s", self@anci_xrefs),
           sprintf("1 DESI %s", self@desi_xrefs),
-          self@ids |> increase_level(by = 1),
+          self@c_ids_as_ged |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
