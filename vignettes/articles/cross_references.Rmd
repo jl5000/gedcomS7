@@ -38,71 +38,34 @@ dplyr::filter(simpsons, tag %in% c("INDI", "NOTE")) |>
 
 Note the unique xrefs in the record column.
 
-## Activation
 
-In the above example a series of records are created (which will be explained in more detail in the proceeding articles). After each record is created, the name(s) of the individual are defined without actually explicitly referencing the Individual record. This is because they are acting on the *active record*. A record becomes active when it is created or when it is explicitly activated.
+The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
 
-We can query the active record using the `active_record()` function:
-
-```{r}
-active_record(simpsons)
-```
-
-Since the last record to be created was the Note record, it is the active record. The active record is stored as an attribute of the tibble.
-
-We can use activation to add to existing records. If we want to activate another record, we can activate it using the `activate_*()` family of functions together with its xref:
+We'll import a different GEDCOM file which has some records in it:
 
 ```{r}
-simpsons |> 
-  activate_indi("@I2@") |> 
-  active_record()
+ged_max <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+
+ged_max@xref_prefixes
 ```
 
-## Finding cross reference identifiers
+The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
 
-There are many other functions in the `gedcompendium` that take record xrefs as input parameters and it can be tedious to have to manually look these up. The `tidyged` package offers a number of helper functions to locate specific xrefs using pattern matching:
+The `@c_xrefs` property gives a list of record xrefs in the GEDCOM object, split by records type:
 
 ```{r}
-find_indi_name(simpsons, "Bart")
-find_indi_name_all(simpsons, "Simpson")
+ged_max@c_xrefs
 ```
 
-These helper functions begin with `find_*` and act as wrappers to the more general function `find_xref()`. It's straightforward to write your own wrapper if you're familiar with the tags used in the GEDCOM specification.
-
-In the activation example, we would activate Marge's record with:
+The next xrefs of each type will therefore be:
 
 ```{r}
-simpsons |> 
-  activate_indi(find_indi_name(simpsons, "Marge")) |> 
-  active_record()
+ged_max@c_next_xref
 ```
 
-Note that the full name does not need to be given, since the term is partially matched. As long as it is detected in the name of the individual it will be found.
 
-In this use case, if no match or more than one match is found, it will result in an error:
 
-```{r, error = TRUE}
-simpsons |> 
-  activate_indi(find_indi_name(simpsons, "Simpon")) |> 
-  active_record()
-```
 
-```{r, error = TRUE}
-simpsons |> 
-  activate_indi(find_indi_name(simpsons, "Simpson")) |> 
-  active_record()
-```
-
-## Removing records
-
-When removing entire records, you don't have to necessarily rely on activating them first. The same referencing techniques above can be used to remove records immediately:
-
-```{r}
-simpsons |> 
-  remove_indi(find_indi_name(simpsons, "Homer")) |> 
-  df_indi() |> 
-  knitr::kable()
-```
 
 
 ## Automating the creation of Individuals and Family Groups
@@ -144,13 +107,6 @@ The `tidyged.utils` package contains the function `add_ancestors()` to create In
 
 ## A note about unique record identifiers
 
-Record identifiers have been a topic of much discussion in the GEDCOM user community. Even though xref identifiers will be imported unchanged in the `tidyged` package, some systems do create their own xref identifiers on import. So you cannot assume they will survive between systems. However, they should always be internally consistent.
+Record identifiers have been a topic of much discussion in the GEDCOM user community. Even though xref identifiers will be imported unchanged in the `gedcomS7` package, some systems do create their own xref identifiers on import. So you cannot assume they will survive between systems. However, they should always be internally consistent.
 
-A couple of other mechanisms exist for providing unique identifiers to records:
-
-* An automated record identifier (RIN) can be used by a system to automatically assign a unique identifier. Since the most obvious way of generating this would be to base it on the xref, it would introduce unnecessary duplication and file bloat and so the `tidyged` package does not use this, nor expose it to a user;
-* A user-defined reference number (REFN) and type can be defined by a user to uniquely identify a record. These are entirely optional, do not necessarily have to be unique, and a single record could have several defined. They are however a possible way of creating an enduring identifier between systems. Helper functions exist to locate xrefs using this number (`find_*_refn()`).
-
-For these reasons, neither of these mechanisms are considered to be a better alternative way of selecting records.
-
-<p style="text-align: right;"><a href="https://jl5000.github.io/tidyged/articles/individual_records.html">Next article: Individual records ></a></p>
+For this reason xref identifiers are not supposed to be exposed to the typical user. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console (and the `S7` package does not allow you to hide property values). If a `shiny` app is created, then xrefs will be hidden from the user.

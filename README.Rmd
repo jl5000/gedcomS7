@@ -46,7 +46,7 @@ The intent is to allow the user to import GEDCOM files or create them from scrat
 ```{r example}
 library(gedcomS7)
 
-ged <- read_gedcom(system.file("extdata", "maximal70.ged", package = "gedcomS7"))
+ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 ged
 
 ged <- new_gedcom()

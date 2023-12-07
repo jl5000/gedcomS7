@@ -51,27 +51,6 @@ The properties of the main GEDCOM object are either:
 * Those that show you what the GEDCOM file representation looks like (`@c_as_ged`) and the representation of the header (`@c_hd_as_ged`);
 * Properties of the header (metadata about the file as a whole).
 
-Some of these properties are also read-only, which means they are calculated from other properties and cannot be directly set. These are given by ...?
+Some of these properties are also read-only, which means they are calculated from other properties and cannot be directly set. These are given by the prefix `c_`.
 
-## Cross-reference identifiers
-
-
-
-You can influence how the gedcom object is modified as you add and edit records within it. 
-
-The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
-
-```{r}
-ged@xref_prefixes
-```
-
-The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
-
-Since we have no existing records in our gedcom object, the next xrefs of each type will be:
-
-```{r}
-ged@c_next_xref
-```
-
-Note: xrefs are not supposed to be exposed to the typical user since they can change when being imported into a new system. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console. If a `shiny` app is created, then xrefs can be hidden from the user.
 
