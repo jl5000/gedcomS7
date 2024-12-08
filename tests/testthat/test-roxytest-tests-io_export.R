@@ -12,13 +12,9 @@ test_that("Function write_gedcom() @ L31", {
   expect_error(write_gedcom(ged, "my_family.txt"), 
                regexp = "Output is not being saved as a GEDCOM file")
   
-  roundtrip_ged <- read_gedcom(write_gedcom(ged, "maximal.ged"))
-  roundtrip_ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                                   note = "N", sour = "S", subm = "U")
-  
   expect_identical(
     ged@c_as_ged,
-    roundtrip_ged@c_as_ged
+    read_gedcom(write_gedcom(ged, "maximal.ged"))@c_as_ged
   )
   file.remove("maximal.ged")
 })

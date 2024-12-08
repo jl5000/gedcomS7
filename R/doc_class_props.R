@@ -77,13 +77,21 @@
 #' of events that were recorded in a particular source. Each event type is separated by a
 #' comma and space. For example, a parish register of births, deaths, and marriages
 #' would be BIRT, DEAT, MARR. 
-#' @param territory TODO
+#' @param territory The territory associated with the events covered. This can either be a 
+#' `class_place` object or a character string (a comma-separated string of region names, 
+#' ordered from smallest to largest). If a character string is provided then only the 
+#' region names can be recorded (and not associated information). This option is easier if 
+#' associated information is not required. 
 #' @param pedigree TODO
 #' @param pedigree_phrase TODO
 #' @param confidence TODO
 #' @param confidence_phrase TODO
-#' @param call_numbers TODO
-#' @param call_number TODO
+#' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
+#' This can either be a `class_source_call_number` object, a list of them,
+#' or a character vector of call numbers. If a character vector is provided then only the 
+#' call numbers themselves can be recorded (and not associated medium). This option is easier if 
+#' associated information is not required. 
+#' @param call_number The call number.
 #' @param location TODO
 #' @param medium TODO
 #' @param medium_phrase TODO
@@ -286,7 +294,8 @@
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
 #' This happens when the record is pushed to the gedcom object.
-#' @param subm,indi,fam,sour,repo,media,note TODO
+#' @param subm,indi,fam,sour,repo,media,note A named list containing character vector representations
+#' of GEDCOM records. Do not edit these parameters directly.
 #' @param xref_prefixes A named vector containing any alphanumeric string (up to 6 characters long) 
 #' which will precede the number given to identify new records (of which there are 7 types). 
 #' This vector must be of a particular length with specific names. Default value:
