@@ -5,26 +5,26 @@
 \title{Create a submitter record object}
 \usage{
 class_record_subm(
-  xref = class_missing,
-  confidential = class_missing,
-  locked = class_missing,
-  private = class_missing,
-  user_ids = class_missing,
-  unique_ids = class_missing,
-  ext_ids = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing,
-  media_links = class_missing,
-  created = class_missing,
-  updated = class_missing,
-  subm_name = class_missing,
-  address = class_missing,
-  phone_numbers = class_missing,
-  emails = class_missing,
-  faxes = class_missing,
-  web_pages = class_missing,
-  languages = class_missing
+  xref = "@ORPHAN@",
+  confidential = FALSE,
+  locked = FALSE,
+  private = FALSE,
+  user_ids = character(0),
+  unique_ids = character(0),
+  ext_ids = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  citations = list(),
+  media_links = list(),
+  created = NULL,
+  updated = NULL,
+  subm_name = character(0),
+  address = character(0),
+  phone_numbers = character(0),
+  emails = character(0),
+  faxes = character(0),
+  web_pages = character(0),
+  languages = character(0)
 )
 }
 \arguments{

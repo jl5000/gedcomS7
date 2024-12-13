@@ -5,27 +5,27 @@
 \title{Create a family record object}
 \usage{
 class_record_fam(
-  xref = class_missing,
-  confidential = class_missing,
-  locked = class_missing,
-  private = class_missing,
-  user_ids = class_missing,
-  unique_ids = class_missing,
-  ext_ids = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing,
-  media_links = class_missing,
-  created = class_missing,
-  updated = class_missing,
-  facts = class_missing,
-  non_events = class_missing,
-  husb_xref = class_missing,
-  wife_xref = class_missing,
-  chil_xrefs = class_missing,
-  associations = class_missing,
-  subm_xrefs = class_missing,
-  spouse_sealings = class_missing
+  xref = "@ORPHAN@",
+  confidential = FALSE,
+  locked = FALSE,
+  private = FALSE,
+  user_ids = character(0),
+  unique_ids = character(0),
+  ext_ids = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  citations = list(),
+  media_links = list(),
+  created = NULL,
+  updated = NULL,
+  facts = list(),
+  non_events = list(),
+  husb_xref = character(0),
+  wife_xref = character(0),
+  chil_xrefs = character(0),
+  associations = list(),
+  subm_xrefs = character(0),
+  spouse_sealings = list()
 )
 }
 \arguments{

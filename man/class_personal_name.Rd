@@ -5,14 +5,14 @@
 \title{Create a personal name object}
 \usage{
 class_personal_name(
-  pers_name = class_missing,
-  name_type = class_missing,
-  type_phrase = class_missing,
-  name_pieces = class_missing,
-  name_translations = class_missing,
-  notes = class_missing,
-  note_xrefs = class_missing,
-  citations = class_missing
+  pers_name = character(0),
+  name_type = character(0),
+  type_phrase = character(0),
+  name_pieces = NULL,
+  name_translations = list(),
+  notes = list(),
+  note_xrefs = character(0),
+  citations = list()
 )
 }
 \arguments{

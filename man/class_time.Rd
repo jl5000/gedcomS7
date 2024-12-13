@@ -5,11 +5,11 @@
 \title{Create a time object}
 \usage{
 class_time(
-  hour = class_missing,
-  minute = class_missing,
-  second = class_missing,
-  fraction = class_missing,
-  utc = class_missing
+  hour = integer(0),
+  minute = integer(0),
+  second = integer(0),
+  fraction = integer(0),
+  utc = TRUE
 )
 }
 \arguments{

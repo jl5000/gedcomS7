@@ -5,12 +5,12 @@
 \title{Create a non-event object}
 \usage{
 class_non_event(
-  event_type = class_missing,
-  date_period = class_missing,
-  date_phrase = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing
+  event_type = character(0),
+  date_period = character(0),
+  date_phrase = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  citations = list()
 )
 }
 \arguments{

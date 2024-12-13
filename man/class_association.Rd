@@ -5,13 +5,13 @@
 \title{Create an association object}
 \usage{
 class_association(
-  indi_xref = class_missing,
-  indi_phrase = class_missing,
-  relation_is = class_missing,
-  relation_phrase = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing
+  indi_xref = "@VOID@",
+  indi_phrase = character(0),
+  relation_is = character(0),
+  relation_phrase = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  citations = list()
 )
 }
 \arguments{

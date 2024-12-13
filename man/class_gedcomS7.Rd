@@ -5,28 +5,29 @@
 \title{Create a GEDCOM object}
 \usage{
 class_gedcomS7(
-  gedcom_version = class_missing,
-  ext_tags = class_missing,
-  source = class_missing,
-  destination = class_missing,
-  creation_date = class_missing,
-  creation_time = class_missing,
-  subm_xref = class_missing,
-  gedcom_copyright = class_missing,
-  default_language = class_missing,
-  default_place_form = class_missing,
-  notes = class_missing,
-  note_xrefs = class_missing,
-  update_change_dates = class_missing,
-  add_creation_dates = class_missing,
-  subm = class_missing,
-  indi = class_missing,
-  fam = class_missing,
-  sour = class_missing,
-  repo = class_missing,
-  media = class_missing,
-  note = class_missing,
-  xref_prefixes = class_missing
+  gedcom_version = character(0),
+  ext_tags = character(0),
+  source = NULL,
+  destination = character(0),
+  creation_date = <object>,
+  creation_time = character(0),
+  subm_xref = character(0),
+  gedcom_copyright = character(0),
+  default_language = character(0),
+  default_place_form = character(0),
+  notes = list(),
+  note_xrefs = character(0),
+  update_change_dates = FALSE,
+  add_creation_dates = FALSE,
+  subm = list(),
+  indi = list(),
+  fam = list(),
+  sour = list(),
+  repo = list(),
+  media = list(),
+  note = list(),
+  xref_prefixes = c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media =
+    "M", note = "N")
 )
 }
 \arguments{
@@ -65,7 +66,8 @@ This happens when the record is pushed to the gedcom object.}
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
 
-\item{subm, indi, fam, sour, repo, media, note}{TODO}
+\item{subm, indi, fam, sour, repo, media, note}{A named list containing character vector representations
+of GEDCOM records. Do not edit these parameters directly.}
 
 \item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
 which will precede the number given to identify new records (of which there are 7 types).

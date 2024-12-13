@@ -5,10 +5,10 @@
 \title{Create a repository citation object}
 \usage{
 class_repository_citation(
-  repo_xref = class_missing,
-  notes = class_missing,
-  note_xrefs = class_missing,
-  call_numbers = class_missing
+  repo_xref = "@VOID@",
+  notes = list(),
+  note_xrefs = character(0),
+  call_numbers = list()
 )
 }
 \arguments{
@@ -23,7 +23,11 @@ associated information is not required.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{call_numbers}{TODO}
+\item{call_numbers}{Call number(s) used to file and retrieve items from the repository.
+This can either be a \code{class_source_call_number} object, a list of them,
+or a character vector of call numbers. If a character vector is provided then only the
+call numbers themselves can be recorded (and not associated medium). This option is easier if
+associated information is not required.}
 }
 \value{
 An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.

@@ -5,17 +5,17 @@
 \title{Create an individual ordinance object}
 \usage{
 class_ordinance(
-  ord_type = class_missing,
-  date = class_missing,
-  temple_name = class_missing,
-  place = class_missing,
-  ord_state = class_missing,
-  state_date = class_missing,
-  state_time = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  citations = class_missing,
-  fam_xref = class_missing
+  ord_type = character(0),
+  date = character(0),
+  temple_name = character(0),
+  place = character(0),
+  ord_state = character(0),
+  state_date = character(0),
+  state_time = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  citations = list(),
+  fam_xref = character(0)
 )
 }
 \arguments{

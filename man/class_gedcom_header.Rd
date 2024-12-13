@@ -5,18 +5,18 @@
 \title{Create a GEDCOM header object}
 \usage{
 class_gedcom_header(
-  gedcom_version = class_missing,
-  ext_tags = class_missing,
-  source = class_missing,
-  destination = class_missing,
-  creation_date = class_missing,
-  creation_time = class_missing,
-  subm_xref = class_missing,
-  gedcom_copyright = class_missing,
-  default_language = class_missing,
-  default_place_form = class_missing,
-  notes = class_missing,
-  note_xrefs = class_missing
+  gedcom_version = character(0),
+  ext_tags = character(0),
+  source = NULL,
+  destination = character(0),
+  creation_date = <object>,
+  creation_time = character(0),
+  subm_xref = character(0),
+  gedcom_copyright = character(0),
+  default_language = character(0),
+  default_place_form = character(0),
+  notes = list(),
+  note_xrefs = character(0)
 )
 }
 \arguments{

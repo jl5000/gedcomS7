@@ -106,7 +106,11 @@ of events that were recorded in a particular source. Each event type is separate
 comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
 
-\item{territory}{TODO}
+\item{territory}{The territory associated with the events covered. This can either be a
+\code{class_place} object or a character string (a comma-separated string of region names,
+ordered from smallest to largest). If a character string is provided then only the
+region names can be recorded (and not associated information). This option is easier if
+associated information is not required.}
 
 \item{pedigree}{TODO}
 
@@ -116,9 +120,13 @@ would be BIRT, DEAT, MARR.}
 
 \item{confidence_phrase}{TODO}
 
-\item{call_numbers}{TODO}
+\item{call_numbers}{Call number(s) used to file and retrieve items from the repository.
+This can either be a \code{class_source_call_number} object, a list of them,
+or a character vector of call numbers. If a character vector is provided then only the
+call numbers themselves can be recorded (and not associated medium). This option is easier if
+associated information is not required.}
 
-\item{call_number}{TODO}
+\item{call_number}{The call number.}
 
 \item{location}{TODO}
 
@@ -431,7 +439,8 @@ This happens when the record is pushed to the gedcom object.}
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
 
-\item{subm, indi, fam, sour, repo, media, note}{TODO}
+\item{subm, indi, fam, sour, repo, media, note}{A named list containing character vector representations
+of GEDCOM records. Do not edit these parameters directly.}
 
 \item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
 which will precede the number given to identify new records (of which there are 7 types).

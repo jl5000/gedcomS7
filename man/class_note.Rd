@@ -5,11 +5,11 @@
 \title{Create a note structure object}
 \usage{
 class_note(
-  text = class_missing,
-  language = class_missing,
-  media_type = class_missing,
-  translations = class_missing,
-  citations = class_missing
+  text = character(0),
+  language = character(0),
+  media_type = character(0),
+  translations = list(),
+  citations = list()
 )
 }
 \arguments{

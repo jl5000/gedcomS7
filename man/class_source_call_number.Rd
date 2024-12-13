@@ -5,13 +5,13 @@
 \title{Create a source call number object}
 \usage{
 class_source_call_number(
-  call_number = class_missing,
-  medium = class_missing,
-  medium_phrase = class_missing
+  call_number = character(0),
+  medium = character(0),
+  medium_phrase = character(0)
 )
 }
 \arguments{
-\item{call_number}{TODO}
+\item{call_number}{The call number.}
 
 \item{medium}{TODO}
 

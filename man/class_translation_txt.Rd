@@ -5,9 +5,9 @@
 \title{Create a text translation object}
 \usage{
 class_translation_txt(
-  text = class_missing,
-  language = class_missing,
-  media_type = class_missing
+  text = character(0),
+  language = character(0),
+  media_type = character(0)
 )
 }
 \arguments{

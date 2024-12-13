@@ -5,12 +5,12 @@
 \title{Create a name pieces object}
 \usage{
 class_name_pieces(
-  prefix = class_missing,
-  given = class_missing,
-  nickname = class_missing,
-  surname_prefix = class_missing,
-  surname = class_missing,
-  suffix = class_missing
+  prefix = character(0),
+  given = character(0),
+  nickname = character(0),
+  surname_prefix = character(0),
+  surname = character(0),
+  suffix = character(0)
 )
 }
 \arguments{

@@ -5,13 +5,13 @@
 \title{Create a family link (as child) object}
 \usage{
 class_child_family_link(
-  fam_xref = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing,
-  pedigree = class_missing,
-  pedigree_phrase = class_missing,
-  confidence = class_missing,
-  confidence_phrase = class_missing
+  fam_xref = character(0),
+  note_xrefs = character(0),
+  notes = list(),
+  pedigree = character(0),
+  pedigree_phrase = character(0),
+  confidence = character(0),
+  confidence_phrase = character(0)
 )
 }
 \arguments{

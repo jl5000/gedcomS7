@@ -5,10 +5,10 @@
 \title{Create a change date object}
 \usage{
 class_change_date(
-  date_exact = class_missing,
-  time = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing
+  date_exact = <object>,
+  time = character(0),
+  note_xrefs = character(0),
+  notes = list()
 )
 }
 \arguments{

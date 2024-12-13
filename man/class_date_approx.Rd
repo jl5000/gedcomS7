@@ -5,10 +5,10 @@
 \title{Create a GEDCOM Approximate Date object}
 \usage{
 class_date_approx(
-  date_greg = class_missing,
-  about = class_missing,
-  calc = class_missing,
-  est = class_missing
+  date_greg = character(0),
+  about = TRUE,
+  calc = FALSE,
+  est = FALSE
 )
 }
 \arguments{

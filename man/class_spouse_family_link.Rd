@@ -5,9 +5,9 @@
 \title{Create a family link (as spouse) object}
 \usage{
 class_spouse_family_link(
-  fam_xref = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing
+  fam_xref = character(0),
+  note_xrefs = character(0),
+  notes = list()
 )
 }
 \arguments{

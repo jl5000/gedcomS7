@@ -1,6 +1,3 @@
-#' @include utils_at.R
-NULL
-
 
 #' Delete a structure from GEDCOM lines
 #'

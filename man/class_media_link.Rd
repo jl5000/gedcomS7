@@ -5,12 +5,12 @@
 \title{Create a multimedia link object}
 \usage{
 class_media_link(
-  media_xref = class_missing,
-  title = class_missing,
-  top = class_missing,
-  left = class_missing,
-  height = class_missing,
-  width = class_missing
+  media_xref = "@VOID@",
+  title = character(0),
+  top = integer(0),
+  left = integer(0),
+  height = integer(0),
+  width = integer(0)
 )
 }
 \arguments{

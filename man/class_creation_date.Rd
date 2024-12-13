@@ -4,7 +4,7 @@
 \alias{class_creation_date}
 \title{Create a creation date object}
 \usage{
-class_creation_date(date_exact = class_missing, time = class_missing)
+class_creation_date(date_exact = <object>, time = character(0))
 }
 \arguments{
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a

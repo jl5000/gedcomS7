@@ -4,11 +4,7 @@
 \alias{class_date_exact}
 \title{Create a GEDCOM Exact Date object}
 \usage{
-class_date_exact(
-  year = class_missing,
-  month = class_missing,
-  day = class_missing
-)
+class_date_exact(year = integer(0), month = integer(0), day = integer(0))
 }
 \arguments{
 \item{year}{The year given as an integer (greater than 0).}

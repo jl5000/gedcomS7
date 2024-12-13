@@ -5,10 +5,10 @@
 \title{Create a GEDCOM Gregorian Date object}
 \usage{
 class_date_greg(
-  year = class_missing,
-  month = class_missing,
-  day = class_missing,
-  bce = class_missing
+  year = integer(0),
+  month = integer(0),
+  day = integer(0),
+  bce = FALSE
 )
 }
 \arguments{

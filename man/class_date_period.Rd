@@ -4,7 +4,7 @@
 \alias{class_date_period}
 \title{Create a GEDCOM Date Period object}
 \usage{
-class_date_period(start_date = class_missing, end_date = class_missing)
+class_date_period(start_date = character(0), end_date = character(0))
 }
 \arguments{
 \item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a

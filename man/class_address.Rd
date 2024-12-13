@@ -5,14 +5,14 @@
 \title{Create an address object}
 \usage{
 class_address(
-  full = class_missing,
-  city = class_missing,
-  state = class_missing,
-  postal_code = class_missing,
-  country = class_missing,
-  adr1 = class_missing,
-  adr2 = class_missing,
-  adr3 = class_missing
+  full = character(0),
+  city = character(0),
+  state = character(0),
+  postal_code = character(0),
+  country = character(0),
+  adr1 = character(0),
+  adr2 = character(0),
+  adr3 = character(0)
 )
 }
 \arguments{

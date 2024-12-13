@@ -5,18 +5,18 @@
 \title{Create a source citation object}
 \usage{
 class_citation(
-  sour_xref = class_missing,
-  where = class_missing,
-  date = class_missing,
-  source_text = class_missing,
-  fact_type = class_missing,
-  fact_phrase = class_missing,
-  role = class_missing,
-  role_phrase = class_missing,
-  certainty = class_missing,
-  media_links = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing
+  sour_xref = "@VOID@",
+  where = character(0),
+  date = character(0),
+  source_text = list(),
+  fact_type = character(0),
+  fact_phrase = character(0),
+  role = character(0),
+  role_phrase = character(0),
+  certainty = character(0),
+  media_links = list(),
+  note_xrefs = character(0),
+  notes = list()
 )
 }
 \arguments{

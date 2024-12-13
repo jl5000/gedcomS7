@@ -5,12 +5,12 @@
 \title{Create a media file object}
 \usage{
 class_media_file(
-  location = class_missing,
-  title = class_missing,
-  media_type = class_missing,
-  medium = class_missing,
-  medium_phrase = class_missing,
-  media_alt = class_missing
+  location = character(0),
+  title = character(0),
+  media_type = character(0),
+  medium = character(0),
+  medium_phrase = character(0),
+  media_alt = character(0)
 )
 }
 \arguments{

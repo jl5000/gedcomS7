@@ -5,9 +5,9 @@
 \title{Create a GEDCOM Date Value object}
 \usage{
 class_date_value(
-  date = class_missing,
-  date_phrase = class_missing,
-  time = class_missing
+  date = character(0),
+  date_phrase = character(0),
+  time = character(0)
 )
 }
 \arguments{

@@ -5,10 +5,10 @@
 \title{Create an object recording facts covered in a source record}
 \usage{
 class_facts_recorded(
-  fact_types = class_missing,
-  date_period = class_missing,
-  date_phrase = class_missing,
-  territory = class_missing
+  fact_types = character(0),
+  date_period = character(0),
+  date_phrase = character(0),
+  territory = character(0)
 )
 }
 \arguments{
@@ -22,7 +22,11 @@ would be BIRT, DEAT, MARR.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
-\item{territory}{TODO}
+\item{territory}{The territory associated with the events covered. This can either be a
+\code{class_place} object or a character string (a comma-separated string of region names,
+ordered from smallest to largest). If a character string is provided then only the
+region names can be recorded (and not associated information). This option is easier if
+associated information is not required.}
 }
 \value{
 An S7 object representing a GEDCOM SOUR.EVEN structure.

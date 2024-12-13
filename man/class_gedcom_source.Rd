@@ -5,19 +5,19 @@
 \title{Create a GEDCOM source object}
 \usage{
 class_gedcom_source(
-  product_id = class_missing,
-  product_name = class_missing,
-  product_version = class_missing,
-  business_name = class_missing,
-  business_address = class_missing,
-  phone_numbers = class_missing,
-  emails = class_missing,
-  faxes = class_missing,
-  web_pages = class_missing,
-  data_name = class_missing,
-  data_pubdate = class_missing,
-  data_pubtime = class_missing,
-  data_copyright = class_missing
+  product_id = character(0),
+  product_name = character(0),
+  product_version = character(0),
+  business_name = character(0),
+  business_address = character(0),
+  phone_numbers = character(0),
+  emails = character(0),
+  faxes = character(0),
+  web_pages = character(0),
+  data_name = character(0),
+  data_pubdate = character(0),
+  data_pubtime = character(0),
+  data_copyright = character(0)
 )
 }
 \arguments{

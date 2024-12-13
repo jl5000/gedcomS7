@@ -5,9 +5,9 @@
 \title{Create a name translation object}
 \usage{
 class_personal_name_tran(
-  pers_name = class_missing,
-  language = class_missing,
-  name_pieces = class_missing
+  pers_name = character(0),
+  language = character(0),
+  name_pieces = NULL
 )
 }
 \arguments{

@@ -5,14 +5,14 @@
 \title{Create a place structure object}
 \usage{
 class_place(
-  place_name = class_missing,
-  place_form = class_missing,
-  language = class_missing,
-  place_translations = class_missing,
-  lat_long = class_missing,
-  ext_ids = class_missing,
-  note_xrefs = class_missing,
-  notes = class_missing
+  place_name = character(0),
+  place_form = character(0),
+  language = character(0),
+  place_translations = character(0),
+  lat_long = character(0),
+  ext_ids = character(0),
+  note_xrefs = character(0),
+  notes = list()
 )
 }
 \arguments{
