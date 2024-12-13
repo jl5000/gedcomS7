@@ -213,44 +213,6 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
   push_record(x, fams_rec)
 }
 
-#' Add ancestor records for an individual
-#' 
-#' This function adds placeholder Individual records for ancestors going back a specific
-#' number of generations.
-#' 
-#' @details This function may also create Family records and will 
-#' not modify existing ancestors.
-#'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record to add ancestors for.
-#' @param num_gen The number of generations to create ancestors for.
-#' @param inc_sex Whether to populate the sex of the ancestors. This will ensure
-#' that there is one male and one female parent. Otherwise the sex will be
-#' assigned as "U" (undetermined).
-#'
-#' @return A gedcom object with additional ancestor records.
-#' @export
-add_ancestors <- function(x, xref, num_gen, inc_sex = TRUE){
-  check_indi_rec(x, xref)
-  
-  xrefs_par <- xref
-  for(gen in seq_len(num_gen)){
-    
-    for(xref_par in xrefs_par){
-      x <- add_parents(x, xref_par, inc_sex)
-    }
-    
-    xrefs_par <- lapply(xrefs_par, get_indi_parents,
-                        x = x,
-                        pedigrees = "BIRTH") |>
-      unlist()
-  }
-  
-  x
-}
-
-
-
 
 
 #' Remove records from a GEDCOM object
