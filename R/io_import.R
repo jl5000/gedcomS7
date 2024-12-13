@@ -49,7 +49,7 @@ validate_lines <- function(lines){
     stop("The file does not end with a TRLR record")
   
   # UIDs should only appear once
-  uid_rows <- grep("^1 UID ", lines)
+  uid_rows <- grep("^\\d UID ", lines)
   if(length(uid_rows) > 0){
     vals <- parse_line_value(lines)
     uids <- vals[uid_rows]

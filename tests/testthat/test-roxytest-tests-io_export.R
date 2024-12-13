@@ -2,7 +2,7 @@
 
 # File R/io_export.R: @tests
 
-test_that("Function write_gedcom() @ L31", {
+test_that("Function write_gedcom() @ L36", {
   skip_if_offline(host = "gedcom.io")
   
   ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
@@ -11,16 +11,21 @@ test_that("Function write_gedcom() @ L31", {
                                  
   expect_error(write_gedcom(ged, "my_family.txt"), 
                regexp = "Output is not being saved as a GEDCOM file")
+               
+  roundtrip1 <- write_gedcom(ged, "maximal.ged")
+  roundtrip2 <- read_gedcom("maximal.ged")
+  roundtrip2@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
+                         note = "N", sour = "S", subm = "U")
   
   expect_identical(
     ged@c_as_ged,
-    read_gedcom(write_gedcom(ged, "maximal.ged"))@c_as_ged
+    roundtrip2@c_as_ged
   )
   file.remove("maximal.ged")
 })
 
 
-test_that("Function date_diff() @ L157", {
+test_that("Function date_diff() @ L162", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
@@ -31,7 +36,7 @@ test_that("Function date_diff() @ L157", {
 })
 
 
-test_that("Function split_gedcom_values() @ L240", {
+test_that("Function split_gedcom_values() @ L245", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

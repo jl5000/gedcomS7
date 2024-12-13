@@ -22,10 +22,15 @@
 #'                                
 #' expect_error(write_gedcom(ged, "my_family.txt"), 
 #'              regexp = "Output is not being saved as a GEDCOM file")
+#'              
+#' roundtrip1 <- write_gedcom(ged, "maximal.ged")
+#' roundtrip2 <- read_gedcom("maximal.ged")
+#' roundtrip2@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
+#'                        note = "N", sour = "S", subm = "U")
 #' 
 #' expect_identical(
 #'   ged@c_as_ged,
-#'   read_gedcom(write_gedcom(ged, "maximal.ged"))@c_as_ged
+#'   roundtrip2@c_as_ged
 #' )
 #' file.remove("maximal.ged")
 write_gedcom <- function(gedcom, 
