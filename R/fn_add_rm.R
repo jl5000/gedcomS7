@@ -73,96 +73,6 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
   x
 }
 
-#' Create siblings for an Individual
-#' 
-#' @details This function may also create a Family record and will 
-#' not modify existing siblings.
-#'
-#' @param x A gedcom object.
-#' @param xref The xref of an Individual record.
-#' @param sexes A character string giving the sexes of each sibling. For example,
-#' "FFM" to add two sisters and one brother.
-#' @param sib_names A character vector of sibling's names. If provided, it must be
-#' the same length as the number of sexes. If you don't want to provide a name for a
-#' sibling, set the name to "". Surnames must be enclosed in forward slashes.
-#'
-#' @return A gedcom object with additional sibling records.
-#' @export
-add_siblings <- function(x, xref, sexes, sib_names = NULL){
-  check_indi_rec(x, xref)
-  if(!is.null(sib_names) && nchar(sexes) != length(sib_names))
-    stop("If sibling names are given, the length of sib_names must be equal to the number of sexes given.")
-  
-  famc_xref <- get_fam_as_child(x, xref, "BIRTH")
-  
-  if(length(famc_xref) == 0){
-    famc_xref <- x@c_next_xref[["fam"]]
-    
-    famc_rec <- class_record_fam(
-      chil_xrefs = xref
-    )
-    
-    x <- push_record(x, famc_rec)
-  }
-  
-  sexes_vec <- unlist(strsplit(sexes, split = NULL))
-  
-  for(i in seq_along(sexes_vec)){
-    if(!sexes_vec[i] %in% val_sexes()){
-      warning("Skipping sibling with unknown sex: ", sexes_vec[i])
-      next
-    }
-    
-    sib_rec <- class_record_indi(
-      sex = sexes_vec[i],
-      fam_links_chil = famc_xref
-    )
-    if(!is.null(sib_names) && sib_names[i] != "") sib_rec@pers_names <- sib_names[i]
-    
-    x <- push_record(x, sib_rec)
-  }
-  
-  x
-}
-
-#' Create multiple children for a Family
-#'
-#' @param x A gedcom object.
-#' @param xref The xref of a Family record.
-#' @param sexes A character string giving the sexes of each child. For example,
-#' "FFM" to add two daughters and one son.
-#' @param chil_names A character vector of children's names. If provided, it must be
-#' the same length as the number of sexes. If you don't want to provide a name for a
-#' child, set the name to "". Surnames must be enclosed in forward slashes.
-#'
-#' @return A gedcom object with additional child records.
-#' @export
-add_children <- function(x, xref, sexes, chil_names = NULL){
-  check_fam_rec(x, xref)
-  if(!is.null(chil_names) && nchar(sexes) != length(chil_names))
-    stop("If child names are given, the length of chil_names must be equal to the number of sexes given.")
-  
-  sexes_vec <- unlist(strsplit(sexes, split = NULL))
-  
-  for(i in seq_along(sexes_vec)){
-    if(!sexes_vec[i] %in% val_sexes()){
-      warning("Skipping child with unknown sex: ", sexes_vec[i])
-      next
-    }
-    
-    chil_rec <- class_record_indi(
-      sex = sexes_vec[i],
-      fam_links_chil = xref
-    )
-    if(!is.null(chil_names) && chil_names[i] != "") chil_rec@pers_names <- chil_names[i]
-
-    x <- push_record(x, chil_rec)
-  }
-  
-  x
-}
-
-
 
 #' Add a spouse for an individual
 #' 
@@ -215,13 +125,90 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
 
 
 
+#' Create siblings for an Individual
+#' 
+#' @details This function may also create a Family record and will 
+#' not modify existing siblings.
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of an Individual record.
+#' @param sexes A character string giving the sexes of each sibling. For example,
+#' "FFM" to add two sisters and one brother.
+#' @param sib_names A character vector of sibling's names. If provided, it must be
+#' the same length as the number of sexes. If you don't want to provide a name for a
+#' sibling, set the name to "". Surnames must be enclosed in forward slashes.
+#'
+#' @return A gedcom object with additional sibling records.
+#' @export
+add_siblings <- function(x, xref, sexes, sib_names = NULL){
+  check_indi_rec(x, xref)
+  if(!is.null(sib_names) && nchar(sexes) != length(sib_names))
+    stop("If sibling names are given, the length of sib_names must be equal to the number of sexes given.")
+  
+  famc_xref <- get_fam_as_child(x, xref, "BIRTH")
+  
+  if(length(famc_xref) == 0){
+    famc_xref <- x@c_next_xref[["fam"]]
+    
+    famc_rec <- class_record_fam(
+      chil_xrefs = xref
+    )
+    
+    x <- push_record(x, famc_rec)
+  }
+  
+  add_children(x, famc_xref, sexes, sib_names)
+}
+
+#' Create multiple children for a Family
+#'
+#' @param x A gedcom object.
+#' @param xref The xref of a Family record.
+#' @param sexes A character string giving the sexes of each child. For example,
+#' "FFM" to add two daughters and one son.
+#' @param chil_names A character vector of children's names. If provided, it must be
+#' the same length as the number of sexes. If you don't want to provide a name for a
+#' child, set the name to "". Surnames must be enclosed in forward slashes.
+#'
+#' @return A gedcom object with additional child records.
+#' @export
+add_children <- function(x, xref, sexes, chil_names = NULL){
+  check_fam_rec(x, xref)
+  if(!is.null(chil_names) && nchar(sexes) != length(chil_names))
+    stop("If child names are given, the length of chil_names must be equal to the number of sexes given.")
+  
+  sexes_vec <- unlist(strsplit(sexes, split = NULL))
+  
+  for(i in seq_along(sexes_vec)){
+    if(!sexes_vec[i] %in% val_sexes()){
+      warning("Skipping person with unknown sex: ", sexes_vec[i])
+      next
+    }
+    
+    chil_rec <- class_record_indi(
+      sex = sexes_vec[i],
+      fam_links_chil = xref
+    )
+    if(!is.null(chil_names) && chil_names[i] != ""){
+      chil_rec@pers_names <- chil_names[i]
+    }
+
+    x <- push_record(x, chil_rec)
+  }
+  
+  x
+}
+
+
+
+
 #' Remove records from a GEDCOM object
 #'
 #' @param x A gedcom object.
 #' @param xrefs A character vector of xrefs to remove.
 #'
 #' @return The gedcom object with the records removed. Pointers to the record will
-#' be replaced with @VOID@.
+#' be replaced with void pointers.
 #' @export
 rm_records <- function(x, xrefs){
   xrefs <- unique(xrefs)

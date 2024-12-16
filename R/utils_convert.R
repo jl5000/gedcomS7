@@ -9,29 +9,21 @@
 #' @return A vector of GEDCOM lines.
 obj_to_ged <- function(obj, tag = NULL){
   
-  if(length(obj) == 0) {
-    
-    return(character())
-    
-  } else {
-    if(is.atomic(obj)){
-      if(is.null(tag)) stop("Object contains atomic elements - a tag is required")
-      return(sprintf("0 %s %s", tag, obj))
-      
-    } else if("S7_object" %in% class(obj)){
-      
-      return(obj@c_as_ged)
-      
-    } else if(is.list(obj)){
-      
-      out = character()
-      for(input in obj){
-        out <- c(out, obj_to_ged(input, tag))
-      }
-      return(out)
-    }
-    
+  if(is.atomic(obj) && is.null(tag))
+    stop("Object contains atomic elements - a tag is required")
+  
+  if(is.atomic(obj)) return(sprintf("0 %s %s", tag, obj))
+  
+  if("S7_object" %in% class(obj)) return(obj@c_as_ged)
+  
+  if(length(obj) == 0) return(character())
+  
+  out = character()
+  for(input in obj){
+    out <- c(out, obj_to_ged(input, tag))
   }
+  
+  out
 }
 
 
