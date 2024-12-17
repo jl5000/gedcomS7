@@ -1,5 +1,3 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a note structure object
 #' 
@@ -8,7 +6,6 @@ NULL
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
-#' @include cls_translation.R cls_citation.R
 #' @export
 #' @tests
 #' expect_error(class_note(), regexp = "@text has too few elements")
@@ -33,7 +30,7 @@ NULL
 #' expect_error(class_note("test", 
 #'                         language = "en",
 #'                         translations = class_address("street"))@c_as_ged,
-#'              regexp = "@translations must be <list> or <gedcomS7::class_translation_txt>")
+#'              regexp = "@translations must be <list> or ")
 #' expect_error(class_note("test", 
 #'                         language = "en",
 #'                         translations = list(class_translation_txt("test",
@@ -62,7 +59,8 @@ class_note <- S7::new_class(
                                       chk_input_choice(value, c("text/plain","text/html"))
                                     )
                                   }),
-    translations = S7::new_property(S7::class_list | class_translation_txt,
+    translations = S7::new_property(S7::class_list | 
+                                      S7::new_S3_class("gedcomS7::class_translation_txt"),
                                     validator = function(value){
                                       chk_input_S7classes(value, class_translation_txt)
                                     }),

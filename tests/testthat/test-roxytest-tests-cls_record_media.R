@@ -22,7 +22,7 @@ test_that("Function class_media_file() @ L25", {
 })
 
 
-test_that("Function class_record_media() @ L103", {
+test_that("Function class_record_media() @ L102", {
   fls <- list(class_media_file(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",

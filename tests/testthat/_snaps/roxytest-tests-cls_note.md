@@ -1,4 +1,4 @@
-# Function class_note() @ L43
+# Function class_note() @ L40
 
     {
       "type": "character",

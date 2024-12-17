@@ -59,7 +59,6 @@ parse_call_numbers <- function(lines, location){
 #' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
 #' @export
-#' @include cls_note.R
 #' @tests
 #' expect_snapshot_value(class_repository_citation()@c_as_ged, "json2")
 #' expect_snapshot_value(class_repository_citation(notes = "Local library",
@@ -75,7 +74,9 @@ class_repository_citation <- S7::new_class(
                                      chk_input_pattern(value, reg_xref(TRUE))
                                    )
                                  }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
@@ -83,7 +84,9 @@ class_repository_citation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    call_numbers = S7::new_property(S7::class_list | class_source_call_number | S7::class_character,
+    call_numbers = S7::new_property(S7::class_list | 
+                                      S7::new_S3_class("gedcomS7::class_source_call_number") | 
+                                      S7::class_character,
                                     validator = function(value){
                                       chk_input_S7classes(value, class_source_call_number, ".+")
                                     }),
@@ -120,7 +123,6 @@ parse_repo_citations <- function(rec_lines){
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM SOUR.EVEN structure.
 #' @export
-#' @include cls_date.R cls_place.R
 #' @tests
 #' expect_error(class_facts_recorded("birth"), regexp = "@fact_types is in an invalid format")
 #' expect_error(class_facts_recorded("BIRT "), regexp = "@fact_types is in an invalid format")
@@ -147,7 +149,8 @@ class_facts_recorded <- S7::new_class(
                                                                        paste(val_fact_types(), collapse = "|")))
                                     )
                                   }),
-    date_period = S7::new_property(S7::class_character | class_date_period,
+    date_period = S7::new_property(S7::class_character | 
+                                     S7::new_S3_class("gedcomS7::class_date_period"),
                                    validator = function(value){
                                      c(
                                        chk_input_size(value, 0, 1),
@@ -158,7 +161,8 @@ class_facts_recorded <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    territory = S7::new_property(S7::class_character | class_place,
+    territory = S7::new_property(S7::class_character | 
+                                   S7::new_S3_class("gedcomS7::class_place"),
                                  validator = function(value){
                                    chk_input_size(value, 0, 1, 1)
                                  }),
@@ -198,13 +202,14 @@ parse_events_recorded <- function(rec_lines){
 #' @param citations Not used.
 #' @return An S7 object representing a GEDCOM SOURCE_RECORD.
 #' @export
-#' @include cls_record.R cls_translation.R
 class_record_sour <- S7::new_class(
   "class_record_sour", 
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    facts_recorded = S7::new_property(S7::class_list | class_facts_recorded | S7::class_character,
+    facts_recorded = S7::new_property(S7::class_list | 
+                                        S7::new_S3_class("gedcomS7::class_facts_recorded") | 
+                                        S7::class_character,
                                       validator = function(value){
                                         chk_input_S7classes(value, class_facts_recorded,
                                                             sprintf("^(%s)(, (%s))*$", 
@@ -219,7 +224,9 @@ class_record_sour <- S7::new_class(
                                        validator = function(value){
                                          chk_input_pattern(value, reg_xref(TRUE))
                                        }),
-    data_notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    data_notes = S7::new_property(S7::class_list | 
+                                    S7::new_S3_class("gedcomS7::class_note") | 
+                                    S7::class_character,
                                   validator = function(value){
                                     chk_input_S7classes(value, class_note, ".+")
                                   }),
@@ -240,11 +247,15 @@ class_record_sour <- S7::new_class(
                                            chk_input_size(value, 0, 1, 1)
                                          }),
     # NOTE I've made the cardinality of this {0,M} to match source citation
-    source_text = S7::new_property(S7::class_list | class_translation_txt | S7::class_character,
+    source_text = S7::new_property(S7::class_list | 
+                                     S7::new_S3_class("gedcomS7::class_translation_txt") | 
+                                     S7::class_character,
                                    validator = function(value){
                                      chk_input_S7classes(value, class_translation_txt, ".+")
                                    }),
-    repo_citations = S7::new_property(S7::class_list | class_repository_citation | S7::class_character,
+    repo_citations = S7::new_property(S7::class_list | 
+                                        S7::new_S3_class("gedcomS7::class_repository_citation") | 
+                                        S7::class_character,
                                       validator = function(value){
                                         chk_input_S7classes(value, class_repository_citation, reg_xref(TRUE))
                                       }),

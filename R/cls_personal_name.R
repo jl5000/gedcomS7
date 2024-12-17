@@ -1,6 +1,3 @@
-#' @include cls_validators.R
-NULL
-
 
 #' Create a name pieces object
 #' 
@@ -86,7 +83,7 @@ class_personal_name_tran <- S7::new_class(
                                     #TODO: language option
                                   )
                                 }),
-    name_pieces = S7::new_property(NULL | class_name_pieces,
+    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_name_pieces"),
                                    validator = function(value){
                                      chk_input_size(value, 0, 1)
                                    }),
@@ -110,7 +107,6 @@ class_personal_name_tran <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.
 #' @export
-#' @include cls_note.R cls_citation.R
 #' @tests
 #' expect_error(class_personal_name("Joe /Bloggs/", name_type = "birth"),
 #'              regexp = "@name_type has an invalid value")
@@ -144,15 +140,18 @@ class_personal_name <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    name_pieces = S7::new_property(NULL | class_name_pieces,
+    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_name_pieces"),
                                    validator = function(value){
                                      chk_input_size(value, 0, 1)
                                    }),
-    name_translations = S7::new_property(S7::class_list | class_personal_name_tran,
+    name_translations = S7::new_property(S7::class_list | 
+                                           S7::new_S3_class("gedcomS7::class_personal_name_tran"),
                                          validator = function(value){
                                            chk_input_S7classes(value, class_personal_name_tran)
                                          }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),

@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a source citation object
 #' 
 #' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
-#' @include cls_date.R cls_translation.R cls_media_link.R cls_note.R
 #' @tests
 #' expect_snapshot_value(class_citation()@c_as_ged, "json2")
 #' expect_error(class_citation("@1@",
@@ -55,14 +52,17 @@ class_citation <- S7::new_class(
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
                              }),
-    date = S7::new_property(S7::class_character | class_date_value,
+    date = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::class_date_value"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
                                 chk_input_pattern(value, reg_date_value())
                               )
                             }),
-    source_text = S7::new_property(S7::class_list | class_translation_txt | S7::class_character,
+    source_text = S7::new_property(S7::class_list | 
+                                     S7::new_S3_class("gedcomS7::class_translation_txt") | 
+                                     S7::class_character,
                                    validator = function(value){
                                      chk_input_S7classes(value, class_translation_txt, ".+")
                                    }),
@@ -95,7 +95,9 @@ class_citation <- S7::new_class(
                                      chk_input_choice(value, val_certainty())
                                    )
                                  }),
-    media_links = S7::new_property(S7::class_list | class_media_link | S7::class_character,
+    media_links = S7::new_property(S7::class_list | 
+                                     S7::new_S3_class("gedcomS7::class_media_link") | 
+                                     S7::class_character,
                                    validator = function(value){
                                      chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
                                    }),
@@ -103,7 +105,9 @@ class_citation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),

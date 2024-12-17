@@ -4,7 +4,6 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
-#' @include cls_record.R cls_personal_name.R cls_fact_indi.R cls_non_event.R cls_association.R cls_ordinance.R
 #' @tests
 #' nms <- list(class_personal_name("Joe /Bloggs/"),
 #'             class_personal_name("Joseph /Bloggs/"))
@@ -27,7 +26,9 @@ class_record_indi <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    pers_names = S7::new_property(S7::class_list | class_personal_name | S7::class_character,
+    pers_names = S7::new_property(S7::class_list | 
+                                    S7::new_S3_class("gedcomS7::class_personal_name") | 
+                                    S7::class_character,
                                   validator = function(value){
                                     chk_input_S7classes(value, class_personal_name, ".+")
                                   }),
@@ -38,23 +39,30 @@ class_record_indi <- S7::new_class(
                                chk_input_choice(value, val_sexes())
                              )
                            }),
-    facts = S7::new_property(S7::class_list | class_fact_indi,
+    facts = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_fact_indi"),
                              validator = function(value){
                                chk_input_S7classes(value, class_fact_indi)
                              }),
-    non_events = S7::new_property(S7::class_list | class_non_event,
+    non_events = S7::new_property(S7::class_list | 
+                                    S7::new_S3_class("gedcomS7::class_non_event"),
                                   validator = function(value){
                                     chk_input_S7classes(value, class_non_event)
                                   }),
-    ordinances = S7::new_property(S7::class_list | class_ordinance,
+    ordinances = S7::new_property(S7::class_list | 
+                                    S7::new_S3_class("gedcomS7::class_ordinance"),
                                   validator = function(value){
                                     chk_input_S7classes(value, class_ordinance)
                                   }),
-    fam_links_chil = S7::new_property(S7::class_list | class_child_family_link | S7::class_character,
+    fam_links_chil = S7::new_property(S7::class_list | 
+                                        S7::new_S3_class("gedcomS7::class_child_family_link") | 
+                                        S7::class_character,
                                       validator = function(value){
                                         chk_input_S7classes(value, class_child_family_link, reg_xref(TRUE))
                                       }),
-    fam_links_spou = S7::new_property(S7::class_list | class_spouse_family_link | S7::class_character,
+    fam_links_spou = S7::new_property(S7::class_list | 
+                                        S7::new_S3_class("gedcomS7::class_spouse_family_link") | 
+                                        S7::class_character,
                                       validator = function(value){
                                         chk_input_S7classes(value, class_spouse_family_link, reg_xref(TRUE))
                                       }),
@@ -62,7 +70,8 @@ class_record_indi <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    associations = S7::new_property(S7::class_list | class_association,
+    associations = S7::new_property(S7::class_list | 
+                                      S7::new_S3_class("gedcomS7::class_association"),
                                     validator = function(value){
                                       chk_input_S7classes(value, class_association)
                                     }),

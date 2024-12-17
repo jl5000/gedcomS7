@@ -7,7 +7,6 @@
 #' @param media_links Not used.
 #' @return An S7 object representing a GEDCOM SHARED_NOTE_RECORD.
 #' @export
-#' @include cls_record.R cls_translation.R
 #' @tests
 #' expect_snapshot_value(class_record_note("@N4@",
 #'                                         text = "The note goes something like this",
@@ -35,7 +34,8 @@ class_record_note <- S7::new_class(
                                     #TODO: language option
                                   )
                                 }),
-    translations = S7::new_property(S7::class_list | class_translation_txt,
+    translations = S7::new_property(S7::class_list | 
+                                      S7::new_S3_class("gedcomS7::class_translation_txt"),
                                     validator = function(value){
                                       chk_input_S7classes(value, class_translation_txt)
                                     }),

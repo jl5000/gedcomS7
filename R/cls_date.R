@@ -1,5 +1,3 @@
-#' @include cls_validators.R
-NULL
 
 class_date <- S7::new_class("class_date", abstract = TRUE)
 
@@ -167,7 +165,8 @@ class_date_approx <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date_greg = S7::new_property(S7::class_character | class_date_greg,
+    date_greg = S7::new_property(S7::class_character | 
+                                   S7::new_S3_class("gedcomS7::class_date_greg"),
                                  validator = function(value){
                                    c(
                                      chk_input_size(value, 1, 1),
@@ -252,14 +251,16 @@ class_date_period <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    start_date = S7::new_property(S7::class_character | class_date_greg,
+    start_date = S7::new_property(S7::class_character |
+                                    S7::new_S3_class("gedcomS7::class_date_greg"),
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 0, 1),
                                       chk_input_pattern(value, reg_date_gregorian())
                                     )
                                   }),
-    end_date = S7::new_property(S7::class_character | class_date_greg,
+    end_date = S7::new_property(S7::class_character |
+                                  S7::new_S3_class("gedcomS7::class_date_greg"),
                                 validator = function(value){
                                   c(
                                     chk_input_size(value, 0, 1),
@@ -364,7 +365,6 @@ class_date_range <- S7::new_class(
 #' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM Date Value.
 #' @export
-#' @include cls_time.R
 #' @tests
 #' expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
 #' expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
@@ -377,8 +377,11 @@ class_date_value <- S7::new_class(
   package = "gedcomS7",
   parent = class_date,
   properties = list(
-    date = S7::new_property(S7::class_character | class_date_greg | class_date_period |
-                              class_date_range | class_date_approx,
+    date = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::class_date_greg") | 
+                              S7::new_S3_class("gedcomS7::class_date_period") |
+                              S7::new_S3_class("gedcomS7::class_date_range") | 
+                              S7::new_S3_class("gedcomS7::class_date_approx"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 1, 1),
@@ -389,7 +392,8 @@ class_date_value <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    time = S7::new_property(S7::class_character | class_time,
+    time = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::class_time"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -427,12 +431,11 @@ class_date_value <- S7::new_class(
 #' 
 #' @return An S7 object representing a GEDCOM Sorting Date.
 #' @export
-#' @include cls_time.R
 #' @tests
 #' expect_error(class_date_sort(""), regexp = "@date is in an invalid format")
 #' expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
 #' expect_error(class_date_sort(class_date_period(end_date = "1980")), 
-#'              regexp = "@date must be <character> or <gedcomS7::class_date_greg>")
+#'              regexp = "@date must be <character> or ")
 #' expect_equal(class_date_sort(class_date_greg(2005, 1, 5))@c_as_val, "5 JAN 2005")
 #' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 class_date_sort <- S7::new_class(
@@ -440,7 +443,8 @@ class_date_sort <- S7::new_class(
   package = "gedcomS7",
   parent = class_date_value,
   properties = list(
-    date = S7::new_property(S7::class_character | class_date_greg,
+    date = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::class_date_greg"),
                             validator = function(value){
                               chk_input_pattern(value, reg_date_gregorian())
                             }),

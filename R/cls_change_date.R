@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a creation date object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM CREATION_DATE.
 #' @export
-#' @include cls_date.R cls_time.R 
 #' @tests
 #' expect_error(class_creation_date(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
 #' expect_error(class_creation_date(time = "123:34:45"), regexp = "@time is in an invalid format.")
@@ -17,15 +14,21 @@ class_creation_date <- S7::new_class(
   "class_creation_date",
   package = "gedcomS7",
   properties = list(
-    date_exact = S7::new_property(S7::class_character | class_date_exact, 
-                                  default = date_exact_current(),
+    date_exact = S7::new_property(S7::class_character | 
+                                    S7::new_S3_class("gedcomS7::class_date_exact"), 
+                                  # This is a hack used only here
+                                  # date_exact_current() can't be used because it
+                                  # gets read in after this
+                                  default = paste(as.integer(format(Sys.Date(), "%d")), 
+                                                  toupper(format(Sys.Date(), "%b %Y"))),
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 1, 1),
                                       chk_input_pattern(value, reg_date_exact())
                                     )
                                   }),
-    time = S7::new_property(S7::class_character | class_time,
+    time = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::class_time"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -50,7 +53,6 @@ class_creation_date <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM CHANGE_DATE.
 #' @export
-#' @include cls_date.R cls_time.R cls_note.R 
 #' @tests
 #' expect_snapshot_value(class_change_date(date = "1 JAN 2005",
 #'                                         note_xrefs = "@23@",
@@ -64,7 +66,9 @@ class_change_date <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),

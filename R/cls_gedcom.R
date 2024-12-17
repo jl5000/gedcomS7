@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a GEDCOM source object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM HEAD.SOUR.
 #' @export
-#' @include cls_address.R cls_date.R cls_time.R
 class_gedcom_source <- S7::new_class(
   "class_gedcom_source",
   properties = list(
@@ -26,7 +23,8 @@ class_gedcom_source <- S7::new_class(
                                      validator = function(value){
                                        chk_input_size(value, 0, 1, 1)
                                      }),
-    business_address = S7::new_property(S7::class_character | class_address,
+    business_address = S7::new_property(S7::class_character | 
+                                          S7::new_S3_class("gedcomS7::class_address"),
                                         validator = function(value){
                                           chk_input_size(value, 0, 1, 1)
                                         }),
@@ -50,14 +48,16 @@ class_gedcom_source <- S7::new_class(
                                  validator = function(value){
                                    chk_input_size(value, 0, 1, 1)
                                  }),
-    data_pubdate = S7::new_property(S7::class_character | class_date_exact,
+    data_pubdate = S7::new_property(S7::class_character | 
+                                      S7::new_S3_class("gedcomS7::class_date_exact"),
                                     validator = function(value){
                                       c(
                                         chk_input_size(value, 0, 1),
                                         chk_input_pattern(value, reg_date_exact())
                                       )
                                     }),
-    data_pubtime = S7::new_property(S7::class_character | class_time,
+    data_pubtime = S7::new_property(S7::class_character | 
+                                      S7::new_S3_class("gedcomS7::class_time"),
                                     validator = function(value){
                                       c(
                                         chk_input_size(value, 0, 1),
@@ -127,7 +127,7 @@ class_gedcom_header <- S7::new_class(
                                 validator = function(value){
                                   #chk_input_size(value, 0, 0), # extension tags not supported
                                 }),
-    source = S7::new_property(NULL | class_gedcom_source,
+    source = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_gedcom_source"),
                               validator = function(value){
                                 chk_input_size(value, 0, 1)
                               }),
@@ -135,7 +135,8 @@ class_gedcom_header <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    creation_date = S7::new_property(S7::class_character | class_date_exact,
+    creation_date = S7::new_property(S7::class_character | 
+                                       S7::new_S3_class("gedcomS7::class_date_exact"),
                                      default = date_exact_current(),
                                      validator = function(value){
                                        c(
@@ -143,7 +144,8 @@ class_gedcom_header <- S7::new_class(
                                          chk_input_pattern(value, reg_date_exact())
                                        )
                                      }),
-    creation_time = S7::new_property(S7::class_character | class_time,
+    creation_time = S7::new_property(S7::class_character | 
+                                       S7::new_S3_class("gedcomS7::class_time"),
                                      validator = function(value){
                                        c(
                                          chk_input_size(value, 0, 1),
@@ -172,7 +174,9 @@ class_gedcom_header <- S7::new_class(
                                           validator = function(value){
                                             chk_input_size(value, 0, 1, 1)
                                           }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
@@ -214,8 +218,6 @@ class_gedcom_header <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM file.
 #' @export
-#' @include cls_record_fam.R cls_record_indi.R cls_record_media.R cls_record_note.R 
-#' cls_record_repo.R cls_record_sour.R cls_record_subm.R
 #' @tests
 #' skip_if_offline(host = "gedcom.io")
 #' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")

@@ -4,7 +4,6 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
-#' @include cls_record.R cls_fact_fam.R cls_non_event.R cls_association.R cls_ordinance.R
 #' @tests
 #' fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
 #'                            date = "22 AUG 1907", place = "Church"))
@@ -27,11 +26,13 @@ class_record_fam <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    facts = S7::new_property(S7::class_list | class_fact_fam,
+    facts = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_fact_fam"),
                              validator = function(value){
                                chk_input_S7classes(value, class_fact_fam)
                              }),
-    non_events = S7::new_property(S7::class_list | class_non_event,
+    non_events = S7::new_property(S7::class_list | 
+                                    S7::new_S3_class("gedcomS7::class_non_event"),
                                   validator = function(value){
                                     chk_input_S7classes(value, class_non_event)
                                   }),
@@ -53,7 +54,8 @@ class_record_fam <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    associations = S7::new_property(S7::class_list | class_association,
+    associations = S7::new_property(S7::class_list | 
+                                      S7::new_S3_class("gedcomS7::class_association"),
                                     validator = function(value){
                                       chk_input_S7classes(value, class_association)
                                     }),
@@ -61,7 +63,8 @@ class_record_fam <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    spouse_sealings = S7::new_property(S7::class_list | class_spouse_sealing,
+    spouse_sealings = S7::new_property(S7::class_list | 
+                                         S7::new_S3_class("gedcomS7::class_spouse_sealing"),
                                     validator = function(value){
                                       chk_input_S7classes(value, class_spouse_sealing)
                                     }),

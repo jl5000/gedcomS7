@@ -2,7 +2,7 @@
 
 # File R/cls_personal_name.R: @tests
 
-test_that("Function class_name_pieces() @ L17", {
+test_that("Function class_name_pieces() @ L14", {
   expect_snapshot_value(class_name_pieces(prefix = "Mr",
                                           given = "Joe",
                                           nickname = c("J","Jock"),
@@ -12,7 +12,7 @@ test_that("Function class_name_pieces() @ L17", {
 })
 
 
-test_that("Function class_personal_name_tran() @ L74", {
+test_that("Function class_personal_name_tran() @ L71", {
   expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
                                                  language = "en")@c_as_ged, "json2")
   expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
@@ -21,7 +21,7 @@ test_that("Function class_personal_name_tran() @ L74", {
 })
 
 
-test_that("Function class_personal_name() @ L128", {
+test_that("Function class_personal_name() @ L124", {
   expect_error(class_personal_name("Joe /Bloggs/", name_type = "birth"),
                regexp = "@name_type has an invalid value")
   expect_error(class_personal_name("Joe /Bloggs/", type_phrase = "After 2012"),

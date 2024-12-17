@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a family link (as spouse) object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM family link as a spouse.
 #' @export
-#' @include cls_note.R
 #' @tests
 #' expect_error(class_spouse_family_link(), regexp = "@fam_xref has too few elements")
 #' expect_snapshot_value(class_spouse_family_link("@F123@")@c_as_ged, "json2")
@@ -27,7 +24,9 @@ class_spouse_family_link <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
@@ -49,7 +48,6 @@ class_spouse_family_link <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM family link as a child.
 #' @export
-#' @include cls_note.R
 #' @tests
 #' expect_error(class_child_family_link("@F123@", pedigree = "father"), 
 #'                                      regexp = "@pedigree has an invalid value")

@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a non-event object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM NON_EVENT_STRUCTURE.
 #' @export
-#' @include cls_date.R cls_note.R cls_citation.R
 #' @tests
 #' expect_error(class_non_event("death"), regexp = "@event_type has an invalid value")
 #' expect_error(class_non_event("DEAT", date_phrase = "Before the olympics"), 
@@ -29,7 +26,8 @@ class_non_event <- S7::new_class(
                                       chk_input_choice(value, val_event_types(FALSE))
                                     )
                                   }),
-    date_period = S7::new_property(S7::class_character | class_date_period,
+    date_period = S7::new_property(S7::class_character | 
+                                     S7::new_S3_class("gedcomS7::class_date_period"),
                                    validator = function(value){
                                      c(
                                        chk_input_size(value, 0, 1),
@@ -44,11 +42,15 @@ class_non_event <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
-    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+    citations = S7::new_property(S7::class_list | 
+                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::class_character,
                                  validator = function(value){
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),

@@ -84,7 +84,6 @@ class_media_file <- S7::new_class(
 #' @param media_links Not used.
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_RECORD.
 #' @export
-#' @include cls_record.R
 #' @tests
 #' fls <- list(class_media_file(location = "media/original.mp3",
 #'                                        title = "My audio",
@@ -105,7 +104,8 @@ class_record_media <- S7::new_class(
   package = "gedcomS7",
   parent = class_record,
   properties = list(
-    files = S7::new_property(S7::class_list | class_media_file,
+    files = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_media_file"),
                              validator = function(value){
                                c(
                                  chk_input_size(value, 1),

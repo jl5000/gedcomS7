@@ -2,7 +2,7 @@
 
 # File R/cls_change_date.R: @tests
 
-test_that("Function class_creation_date() @ L16", {
+test_that("Function class_creation_date() @ L14", {
   expect_error(class_creation_date(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
   expect_error(class_creation_date(time = "123:34:45"), regexp = "@time is in an invalid format.")
   expect_snapshot_value(class_creation_date(date_exact = "1 JAN 2005")@c_as_ged, "json2")

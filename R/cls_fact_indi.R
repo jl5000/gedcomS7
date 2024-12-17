@@ -1,11 +1,8 @@
-#' @include cls_validators.R
-NULL
 
 #' Create an individual fact object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_DETAIL (plus a bit more).
-#' @include cls_fact.R
 class_fact_indi <- S7::new_class(
   "class_fact_indi", 
   parent = class_fact,

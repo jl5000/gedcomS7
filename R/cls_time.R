@@ -1,5 +1,3 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a time object
 #' 

@@ -2,7 +2,7 @@
 
 # File R/cls_non_event.R: @tests
 
-test_that("Function class_non_event() @ L21", {
+test_that("Function class_non_event() @ L18", {
   expect_error(class_non_event("death"), regexp = "@event_type has an invalid value")
   expect_error(class_non_event("DEAT", date_phrase = "Before the olympics"), 
                regexp = "@date_phrase requires a @date_period")

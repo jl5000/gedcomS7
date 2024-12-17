@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create an association object
 #' 
 #' @inheritParams prop_definitions
 #' @return An S7 object representing a GEDCOM ASSOCIATION_STRUCTURE.
 #' @export
-#' @include cls_note.R cls_citation.R
 #' @tests
 #' expect_snapshot_value(class_association(relation_is = "FATH")@c_as_ged, "json2")
 #' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
@@ -51,11 +48,15 @@ class_association <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
-    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+    citations = S7::new_property(S7::class_list | 
+                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::class_character,
                                  validator = function(value){
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),

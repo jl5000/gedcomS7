@@ -1,4 +1,4 @@
-# Function class_translation_txt() @ L15
+# Function class_translation_txt() @ L13
 
     {
       "type": "character",

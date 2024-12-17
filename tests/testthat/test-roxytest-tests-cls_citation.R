@@ -2,7 +2,7 @@
 
 # File R/cls_citation.R: @tests
 
-test_that("Function class_citation() @ L43", {
+test_that("Function class_citation() @ L40", {
   expect_snapshot_value(class_citation()@c_as_ged, "json2")
   expect_error(class_citation("@1@",
                               fact_phrase = "phrase"),

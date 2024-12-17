@@ -2,7 +2,7 @@
 
 # File R/cls_address.R: @tests
 
-test_that("Function class_address() @ L28", {
+test_that("Function class_address() @ L26", {
   expect_error(class_address(), "@full has too few elements")
   expect_error(class_address(""), "@full has too few characters")
   expect_snapshot_value(class_address("street\ncity\nstate")@c_as_ged, "json2")

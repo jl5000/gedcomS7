@@ -1,5 +1,3 @@
-#' @include cls_validators.R
-NULL
 
 # Used in SNOTE record, SOUR record, NOTE structure, and SOURCE_CITATION
 #' Create a text translation object

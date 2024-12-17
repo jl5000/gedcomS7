@@ -2,7 +2,7 @@
 
 # File R/cls_place.R: @tests
 
-test_that("Function class_place() @ L27", {
+test_that("Function class_place() @ L24", {
   expect_error(class_place(), regexp = "@place_name has too few elements")
   expect_error(class_place(""), regexp = "@place_name has too few characters")
   expect_snapshot_value(class_place("here")@c_as_ged, "json2")

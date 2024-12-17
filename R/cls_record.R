@@ -1,11 +1,8 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a base record object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object containing common elements of a GEDCOM record.
-#' @include cls_note.R cls_citation.R cls_media_link.R cls_change_date.R
 #' @tests
 #' skip_if_offline(host = "gedcom.io")
 #' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
@@ -65,23 +62,29 @@ class_record <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),
-    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+    citations = S7::new_property(S7::class_list | 
+                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::class_character,
                                  validator = function(value){
                                    chk_input_S7classes(value, class_citation, reg_xref(TRUE))
                                  }),
-    media_links = S7::new_property(S7::class_list | class_media_link | S7::class_character,
+    media_links = S7::new_property(S7::class_list | 
+                                     S7::new_S3_class("gedcomS7::class_media_link") | 
+                                     S7::class_character,
                                    validator = function(value){
                                      chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
                                    }),
-    created = S7::new_property(NULL | class_creation_date,
+    created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_creation_date"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1)
                                }),
-    updated = S7::new_property(NULL | class_change_date,
+    updated = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_change_date"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1)
                                }),

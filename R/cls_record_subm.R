@@ -5,7 +5,6 @@
 #' @param citations Not used.
 #' @return An S7 object representing a GEDCOM SUBMITTER_RECORD.
 #' @export
-#' @include cls_record.R cls_address.R
 class_record_subm <- S7::new_class(
   "class_record_subm", 
   package = "gedcomS7",
@@ -15,7 +14,8 @@ class_record_subm <- S7::new_class(
                                  validator = function(value){
                                    chk_input_size(value, 1, 1, 1)
                                  }),
-    address = S7::new_property(S7::class_character | class_address,
+    address = S7::new_property(S7::class_character | 
+                                 S7::new_S3_class("gedcomS7::class_address"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1, 1)
                                }),

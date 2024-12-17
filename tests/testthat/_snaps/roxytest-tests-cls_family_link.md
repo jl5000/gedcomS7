@@ -1,4 +1,4 @@
-# Function class_spouse_family_link() @ L15
+# Function class_spouse_family_link() @ L12
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 FAMS @F2@", "1 NOTE test"]
     }
 
-# Function class_child_family_link() @ L68
+# Function class_child_family_link() @ L66
 
     {
       "type": "character",

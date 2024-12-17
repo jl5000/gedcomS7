@@ -1,12 +1,9 @@
-#' @include cls_validators.R
-NULL
 
 #' Create a place structure object
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM PLACE_STRUCTURE.
 #' @export
-#' @include cls_note.R
 #' @tests
 #' expect_error(class_place(), regexp = "@place_name has too few elements")
 #' expect_error(class_place(""), regexp = "@place_name has too few characters")
@@ -68,7 +65,9 @@ class_place <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | class_note | S7::class_character,
+    notes = S7::new_property(S7::class_list | 
+                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::class_character,
                              validator = function(value){
                                chk_input_S7classes(value, class_note, ".+")
                              }),

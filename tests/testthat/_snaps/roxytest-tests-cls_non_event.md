@@ -1,4 +1,4 @@
-# Function class_non_event() @ L21
+# Function class_non_event() @ L18
 
     {
       "type": "character",
