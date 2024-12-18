@@ -2,8 +2,8 @@
 
 # File R/cls_personal_name.R: @tests
 
-test_that("Function class_name_pieces() @ L14", {
-  expect_snapshot_value(class_name_pieces(prefix = "Mr",
+test_that("Function PersonalNamePieces() @ L14", {
+  expect_snapshot_value(PersonalNamePieces(prefix = "Mr",
                                           given = "Joe",
                                           nickname = c("J","Jock"),
                                           surname_prefix = "Mc",
@@ -12,25 +12,25 @@ test_that("Function class_name_pieces() @ L14", {
 })
 
 
-test_that("Function class_personal_name_tran() @ L71", {
-  expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
+test_that("Function PersonalNameTran() @ L70", {
+  expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
                                                  language = "en")@c_as_ged, "json2")
-  expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
+  expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
                                                  language = "en",
-                                                 name_pieces = class_name_pieces(nickname = "JJ"))@c_as_ged, "json2")
+                                                 name_pieces = PersonalNamePieces(nickname = "JJ"))@c_as_ged, "json2")
 })
 
 
-test_that("Function class_personal_name() @ L124", {
-  expect_error(class_personal_name("Joe /Bloggs/", name_type = "birth"),
+test_that("Function PersonalName() @ L122", {
+  expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),
                regexp = "@name_type has an invalid value")
-  expect_error(class_personal_name("Joe /Bloggs/", type_phrase = "After 2012"),
+  expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),
                regexp = "@type_phrase requires a @name_type")
-  expect_snapshot_value(class_personal_name("Joe /Bloggs/",
+  expect_snapshot_value(PersonalName("Joe /Bloggs/",
                                             name_type = "OTHER",
                                             type_phrase = "Circus",
-                                            name_pieces = class_name_pieces(nickname = "JJ"),
-                                            name_translations = class_personal_name_tran("Joey /Bloggoni/",
+                                            name_pieces = PersonalNamePieces(nickname = "JJ"),
+                                            name_translations = PersonalNameTran("Joey /Bloggoni/",
                                                                                          language = "it"),
                                             notes = "This is a note",
                                             note_xrefs = c("@IUY@","@733@"),

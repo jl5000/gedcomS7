@@ -20,8 +20,8 @@
 #'     expect_equal(rec_parsed@c_as_ged, rec_raw)
 #'   }
 #' }
-class_record <- S7::new_class(
-  "class_record", 
+Record <- S7::new_class(
+  "Record", 
   abstract = TRUE,
   properties = list(
     xref = S7::new_property(S7::class_character, default = "@ORPHAN@",
@@ -63,28 +63,28 @@ class_record <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     media_links = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::class_media_link") | 
+                                     S7::new_S3_class("gedcomS7::MediaLink") | 
                                      S7::class_character,
                                    validator = function(value){
-                                     chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
+                                     chk_input_S7classes(value, MediaLink, reg_xref(TRUE))
                                    }),
-    created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_creation_date"),
+    created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1)
                                }),
-    updated = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_change_date"),
+    updated = S7::new_property(NULL | S7::new_S3_class("gedcomS7::ChangeDate"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1)
                                }),

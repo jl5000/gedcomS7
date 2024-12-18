@@ -67,13 +67,13 @@ push_record <- function(gedcom, record){
       record@updated@date_exact <- date_exact_current()
       record@updated@time <- character()
     } else {
-      record@updated <- class_change_date()
+      record@updated <- ChangeDate()
     }
   }
   
   if(gedcom@add_creation_dates){
     if(length(record@created) == 0 && record@xref == "@ORPHAN@"){
-      record@created <- class_creation_date()
+      record@created <- CreationDate()
     }
   }
   

@@ -1,4 +1,4 @@
-# Function class_creation_date() @ L14
+# Function CreationDate() @ L13
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 CREA", "1 DATE 1 JAN 2005", "2 TIME 11:04:56"]
     }
 
-# Function class_change_date() @ L58
+# Function ChangeDate() @ L59
 
     {
       "type": "character",

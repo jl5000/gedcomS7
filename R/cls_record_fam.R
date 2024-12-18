@@ -5,25 +5,25 @@
 #' @return An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
 #' @tests
-#' fct <- list(class_event_fam("MARR", husb_age = "22y", wife_age = "28y 6m",
+#' fct <- list(FamilyEvent("MARR", husb_age = "22y", wife_age = "28y 6m",
 #'                            date = "22 AUG 1907", place = "Church"))
-#' nevent <- list(class_non_event("DIV"))
-#' expect_snapshot_value(class_record_fam(xref = "@F2@",
+#' nevent <- list(NonEvent("DIV"))
+#' expect_snapshot_value(FamilyRecord(xref = "@F2@",
 #'                                        facts = fct, non_events = nevent,
 #'                                        husb_xref = "@I8@", wife_xref = "@I9@",
 #'                                        chil_xrefs = c("@I98@", Eldest = "@I67@"),
 #'                                        locked = TRUE,
 #'                                        citations = c("@S34@","@S65@"))@c_as_ged, "json2")
-#' expect_error(class_record_fam("REF"), regexp = "@xref is in an invalid format")
-#' expect_error(class_record_fam("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
-#' expect_error(class_record_fam("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
-#' expect_snapshot_value(class_record_fam("@1@",
+#' expect_error(FamilyRecord("REF"), regexp = "@xref is in an invalid format")
+#' expect_error(FamilyRecord("@1@", unique_ids = letters), regexp = "@unique_ids is in an invalid format")
+#' expect_error(FamilyRecord("@1@", ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
+#' expect_snapshot_value(FamilyRecord("@1@",
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = stats::setNames(letters, LETTERS)[1:5],
 #'                                    user_ids = month.abb[1:6])@c_ids_as_ged, "json2")
-class_record_fam <- S7::new_class(
-  "class_record_fam", 
-  parent = class_record,
+FamilyRecord <- S7::new_class(
+  "FamilyRecord", 
+  parent = Record,
   properties = list(
     facts = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::class_fact_fam"),
@@ -31,9 +31,9 @@ class_record_fam <- S7::new_class(
                                chk_input_S7classes(value, class_fact_fam)
                              }),
     non_events = S7::new_property(S7::class_list | 
-                                    S7::new_S3_class("gedcomS7::class_non_event"),
+                                    S7::new_S3_class("gedcomS7::NonEvent"),
                                   validator = function(value){
-                                    chk_input_S7classes(value, class_non_event)
+                                    chk_input_S7classes(value, NonEvent)
                                   }),
     husb_xref = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -54,18 +54,18 @@ class_record_fam <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     associations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::class_association"),
+                                      S7::new_S3_class("gedcomS7::Association"),
                                     validator = function(value){
-                                      chk_input_S7classes(value, class_association)
+                                      chk_input_S7classes(value, Association)
                                     }),
     subm_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     spouse_sealings = S7::new_property(S7::class_list | 
-                                         S7::new_S3_class("gedcomS7::class_spouse_sealing"),
+                                         S7::new_S3_class("gedcomS7::SpouseSealing"),
                                     validator = function(value){
-                                      chk_input_S7classes(value, class_spouse_sealing)
+                                      chk_input_S7classes(value, SpouseSealing)
                                     }),
     
     c_marriage_date = S7::new_property(
@@ -115,7 +115,7 @@ class_record_fam <- S7::new_class(
 
 parse_record_fam <- function(rec_lines){
   
-  rec <- class_record_fam(
+  rec <- FamilyRecord(
     xref = parse_line_xref(rec_lines[1]),
     facts = parse_facts_fam(rec_lines),
     non_events = parse_non_events(rec_lines),

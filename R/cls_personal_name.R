@@ -5,14 +5,14 @@
 #' @return An S7 object representing a GEDCOM PERSONAL_NAME_PIECES.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_name_pieces(prefix = "Mr",
+#' expect_snapshot_value(PersonalNamePieces(prefix = "Mr",
 #'                                         given = "Joe",
 #'                                         nickname = c("J","Jock"),
 #'                                         surname_prefix = "Mc",
 #'                                         surname = "Bloggs",
 #'                                         suffix = "Jr")@c_as_ged, "json2")
-class_name_pieces <- S7::new_class(
-  "class_name_pieces",
+PersonalNamePieces <- S7::new_class(
+  "PersonalNamePieces",
   properties = list(
     prefix = S7::new_property(S7::class_character,
                               validator = function(value){
@@ -62,13 +62,13 @@ class_name_pieces <- S7::new_class(
 #' @return An S7 object representing a GEDCOM personal name translation substructure.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
+#' expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
 #'                                                language = "en")@c_as_ged, "json2")
-#' expect_snapshot_value(class_personal_name_tran("Joe /Bloggs/",
+#' expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
 #'                                                language = "en",
-#'                                                name_pieces = class_name_pieces(nickname = "JJ"))@c_as_ged, "json2")
-class_personal_name_tran <- S7::new_class(
-  "class_personal_name_tran",
+#'                                                name_pieces = PersonalNamePieces(nickname = "JJ"))@c_as_ged, "json2")
+PersonalNameTran <- S7::new_class(
+  "PersonalNameTran",
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -81,7 +81,7 @@ class_personal_name_tran <- S7::new_class(
                                     #TODO: language option
                                   )
                                 }),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_name_pieces"),
+    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
                                    validator = function(value){
                                      chk_input_size(value, 0, 1)
                                    }),
@@ -106,21 +106,21 @@ class_personal_name_tran <- S7::new_class(
 #' @return An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_personal_name("Joe /Bloggs/", name_type = "birth"),
+#' expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),
 #'              regexp = "@name_type has an invalid value")
-#' expect_error(class_personal_name("Joe /Bloggs/", type_phrase = "After 2012"),
+#' expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),
 #'              regexp = "@type_phrase requires a @name_type")
-#' expect_snapshot_value(class_personal_name("Joe /Bloggs/",
+#' expect_snapshot_value(PersonalName("Joe /Bloggs/",
 #'                                           name_type = "OTHER",
 #'                                           type_phrase = "Circus",
-#'                                           name_pieces = class_name_pieces(nickname = "JJ"),
-#'                                           name_translations = class_personal_name_tran("Joey /Bloggoni/",
+#'                                           name_pieces = PersonalNamePieces(nickname = "JJ"),
+#'                                           name_translations = PersonalNameTran("Joey /Bloggoni/",
 #'                                                                                        language = "it"),
 #'                                           notes = "This is a note",
 #'                                           note_xrefs = c("@IUY@","@733@"),
 #'                                           citations = c("@S1@","@S3@","@S7@"))@c_as_ged, "json2")
-class_personal_name <- S7::new_class(
-  "class_personal_name",
+PersonalName <- S7::new_class(
+  "PersonalName",
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -137,28 +137,28 @@ class_personal_name <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_name_pieces"),
+    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
                                    validator = function(value){
                                      chk_input_size(value, 0, 1)
                                    }),
     name_translations = S7::new_property(S7::class_list | 
-                                           S7::new_S3_class("gedcomS7::class_personal_name_tran"),
+                                           S7::new_S3_class("gedcomS7::PersonalNameTran"),
                                          validator = function(value){
-                                           chk_input_S7classes(value, class_personal_name_tran)
+                                           chk_input_S7classes(value, PersonalNameTran)
                                          }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    citations = S7::new_property(S7::class_list | class_citation | S7::class_character,
+    citations = S7::new_property(S7::class_list | SourceCitation | S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     
     c_as_val = S7::new_property(S7::class_character, 
@@ -186,7 +186,7 @@ class_personal_name <- S7::new_class(
 )
 
 parse_name_pieces <- function(lines, location = NULL){
-  class_name_pieces(
+  PersonalNamePieces(
     prefix = find_ged_values(lines, c(location, "NPFX")),
     given = find_ged_values(lines, c(location, "GIVN")),
     nickname = find_ged_values(lines, c(location, "NICK")),
@@ -201,7 +201,7 @@ parse_personal_name_tran <- function(lines, location = NULL){
   if(length(tran_lst) == 0) return(list())
   
   lapply(tran_lst, \(x){
-    class_personal_name_tran(
+    PersonalNameTran(
       pers_name = find_ged_values(x, "TRAN"),
       language = find_ged_values(x, c("TRAN","LANG")),
       name_pieces = parse_name_pieces(x, "TRAN")
@@ -216,7 +216,7 @@ parse_personal_names <- function(rec_lines){
   if(length(name_lst) == 0) return(list())
   
   lapply(name_lst, \(x){
-    class_personal_name(
+    PersonalName(
       pers_name = find_ged_values(x, "NAME"),
       name_type = find_ged_values(x, c("NAME","TYPE")),
       type_phrase = find_ged_values(x, c("NAME","TYPE","PHRASE")),

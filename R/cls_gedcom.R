@@ -4,8 +4,8 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM HEAD.SOUR.
 #' @export
-class_gedcom_source <- S7::new_class(
-  "class_gedcom_source",
+GedcomSource <- S7::new_class(
+  "GedcomSource",
   properties = list(
     product_id = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -24,7 +24,7 @@ class_gedcom_source <- S7::new_class(
                                        chk_input_size(value, 0, 1, 1)
                                      }),
     business_address = S7::new_property(S7::class_character | 
-                                          S7::new_S3_class("gedcomS7::class_address"),
+                                          S7::new_S3_class("gedcomS7::Address"),
                                         validator = function(value){
                                           chk_input_size(value, 0, 1, 1)
                                         }),
@@ -49,7 +49,7 @@ class_gedcom_source <- S7::new_class(
                                    chk_input_size(value, 0, 1, 1)
                                  }),
     data_pubdate = S7::new_property(S7::class_character | 
-                                      S7::new_S3_class("gedcomS7::class_date_exact"),
+                                      S7::new_S3_class("gedcomS7::DateExact"),
                                     validator = function(value){
                                       c(
                                         chk_input_size(value, 0, 1),
@@ -57,7 +57,7 @@ class_gedcom_source <- S7::new_class(
                                       )
                                     }),
     data_pubtime = S7::new_property(S7::class_character | 
-                                      S7::new_S3_class("gedcomS7::class_time"),
+                                      S7::new_S3_class("gedcomS7::Time"),
                                     validator = function(value){
                                       c(
                                         chk_input_size(value, 0, 1),
@@ -112,8 +112,8 @@ class_gedcom_source <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM HEADER.
 #' @export
-class_gedcom_header <- S7::new_class(
-  "class_gedcom_header",
+GedcomHeader <- S7::new_class(
+  "GedcomHeader",
   abstract = TRUE,
   properties = list(
     gedcom_version = S7::new_property(S7::class_character,
@@ -127,7 +127,7 @@ class_gedcom_header <- S7::new_class(
                                 validator = function(value){
                                   #chk_input_size(value, 0, 0), # extension tags not supported
                                 }),
-    source = S7::new_property(NULL | S7::new_S3_class("gedcomS7::class_gedcom_source"),
+    source = S7::new_property(NULL | S7::new_S3_class("gedcomS7::GedcomSource"),
                               validator = function(value){
                                 chk_input_size(value, 0, 1)
                               }),
@@ -136,7 +136,7 @@ class_gedcom_header <- S7::new_class(
                                      chk_input_size(value, 0, 1, 1)
                                    }),
     creation_date = S7::new_property(S7::class_character | 
-                                       S7::new_S3_class("gedcomS7::class_date_exact"),
+                                       S7::new_S3_class("gedcomS7::DateExact"),
                                      default = date_exact_current(),
                                      validator = function(value){
                                        c(
@@ -145,7 +145,7 @@ class_gedcom_header <- S7::new_class(
                                        )
                                      }),
     creation_time = S7::new_property(S7::class_character | 
-                                       S7::new_S3_class("gedcomS7::class_time"),
+                                       S7::new_S3_class("gedcomS7::Time"),
                                      validator = function(value){
                                        c(
                                          chk_input_size(value, 0, 1),
@@ -175,10 +175,10 @@ class_gedcom_header <- S7::new_class(
                                             chk_input_size(value, 0, 1, 1)
                                           }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -227,9 +227,9 @@ class_gedcom_header <- S7::new_class(
 #' ged_raw2 <- ged_parsed@c_as_ged
 #' 
 #' expect_equal(ged_raw, ged_raw2)
-class_gedcomS7 <- S7::new_class(
-  "class_gedcomS7",
-  parent = class_gedcom_header,
+GedcomS7 <- S7::new_class(
+  "GedcomS7",
+  parent = GedcomHeader,
   properties = list(
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE,
                                            validator = function(value){
@@ -320,12 +320,12 @@ class_gedcomS7 <- S7::new_class(
 #' @export
 new_gedcom <- function(my_language = "en"){
   
-  sour <- class_gedcom_source(product_id = "https://github.com/jl5000/gedcomS7",
+  sour <- GedcomSource(product_id = "https://github.com/jl5000/gedcomS7",
                               product_name = "The 'gedcomS7' package for the R language",
                               business_name = "Jamie Lendrum",
                               emails = "jalendrum@gmail.com")
   
-  class_gedcomS7(gedcom_version = "7.0",
+  GedcomS7(gedcom_version = "7.0",
                  source = sour,
                  creation_date = date_exact_current(),
                  default_language = my_language)
@@ -338,7 +338,7 @@ parse_gedcom_header <- function(hd_lines){
   
   if(length(product_id) == 1){
     
-    sour <- class_gedcom_source(
+    sour <- GedcomSource(
       product_id = product_id,
       product_name = find_ged_values(hd_lines, c("HEAD","SOUR","NAME")),
       product_version = find_ged_values(hd_lines, c("HEAD","SOUR","VERS")),
@@ -355,7 +355,7 @@ parse_gedcom_header <- function(hd_lines){
     )
   }
   
-  class_gedcomS7(
+  GedcomS7(
     gedcom_version = find_ged_values(hd_lines, c("HEAD","GEDC","VERS")),
     ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
     source = sour,

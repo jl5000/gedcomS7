@@ -12,16 +12,16 @@
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_media_link()@c_as_ged, "json2")
-#' expect_error(class_media_link("@O4"), regexp = "@media_xref is in an invalid format")
-#' expect_snapshot_value(class_media_link("@1@")@c_as_ged, "json2")
-#' expect_snapshot_value(class_media_link("@1@", 
+#' expect_snapshot_value(MediaLink()@c_as_ged, "json2")
+#' expect_error(MediaLink("@O4"), regexp = "@media_xref is in an invalid format")
+#' expect_snapshot_value(MediaLink("@1@")@c_as_ged, "json2")
+#' expect_snapshot_value(MediaLink("@1@", 
 #'                                        title = "new title")@c_as_ged, "json2")
-#' expect_snapshot_value(class_media_link("@1@", 
+#' expect_snapshot_value(MediaLink("@1@", 
 #'                                        title = "new title",
 #'                                        top = 5, left = 200)@c_as_ged, "json2")
-class_media_link <- S7::new_class(
-  "class_media_link",
+MediaLink <- S7::new_class(
+  "MediaLink",
   properties = list(
     media_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                   validator = function(value){
@@ -85,7 +85,7 @@ parse_media_links <- function(lines, location = NULL){
   if(length(media_lst) == 0) return(list())
   
   lapply(media_lst, \(x){
-    class_media_link(
+    MediaLink(
       media_xref = find_ged_values(x, "OBJE"),
       top = find_ged_values(x, c("OBJE","CROP","TOP")) |> as.numeric(),
       left = find_ged_values(x, c("OBJE","CROP","LEFT")) |> as.numeric(),

@@ -8,37 +8,37 @@
 #' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_note(), regexp = "@text has too few elements")
-#' expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
-#' expect_snapshot_value(class_note("test")@c_as_ged, "json2")
-#' expect_snapshot_value(class_note("test", language = "en")@c_as_ged, "json2")
-#' expect_snapshot_value(class_note("test", 
+#' expect_error(Note(), regexp = "@text has too few elements")
+#' expect_error(Note(letters[1:2]), regexp = "@text has too many elements")
+#' expect_snapshot_value(Note("test")@c_as_ged, "json2")
+#' expect_snapshot_value(Note("test", language = "en")@c_as_ged, "json2")
+#' expect_snapshot_value(Note("test", 
 #'                                  language = "en",
-#'                                  translations = class_translation_txt("test",
+#'                                  translations = TranslationText("test",
 #'                                                                   language = "en"))@c_as_ged, "json2")
-#' expect_snapshot_value(class_note("test", 
+#' expect_snapshot_value(Note("test", 
 #'                                  language = "en",
-#'                                  translations = list(class_translation_txt("test",
+#'                                  translations = list(TranslationText("test",
 #'                                                                   language = "en"),
-#'                                                  class_translation_txt("test2",
+#'                                                  TranslationText("test2",
 #'                                                                   language = "en")))@c_as_ged, "json2")
-#' expect_snapshot_value(class_note("test", 
-#'                                  citations = class_citation("@S1@", 
-#'                                                             notes = class_note("note text 2", 
-#'                                                                                citations = class_citation("@S4@"))))@c_as_ged, 
+#' expect_snapshot_value(Note("test", 
+#'                                  citations = SourceCitation("@S1@", 
+#'                                                             notes = Note("note text 2", 
+#'                                                                                citations = SourceCitation("@S4@"))))@c_as_ged, 
 #'                      "json2")
-#' expect_error(class_note("test", 
+#' expect_error(Note("test", 
 #'                         language = "en",
-#'                         translations = class_address("street"))@c_as_ged,
+#'                         translations = Address("street"))@c_as_ged,
 #'              regexp = "@translations must be <list> or ")
-#' expect_error(class_note("test", 
+#' expect_error(Note("test", 
 #'                         language = "en",
-#'                         translations = list(class_translation_txt("test",
+#'                         translations = list(TranslationText("test",
 #'                                                               language = "en"),
-#'                                         class_address("street"))),
-#'              regexp = "@translations contains an invalid object not of class_translation_txt")
-class_note <- S7::new_class(
-  "class_note",
+#'                                         Address("street"))),
+#'              regexp = "@translations contains an invalid object not of TranslationText")
+Note <- S7::new_class(
+  "Note",
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){
@@ -59,16 +59,16 @@ class_note <- S7::new_class(
                                     )
                                   }),
     translations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::class_translation_txt"),
+                                      S7::new_S3_class("gedcomS7::TranslationText"),
                                     validator = function(value){
-                                      chk_input_S7classes(value, class_translation_txt)
+                                      chk_input_S7classes(value, TranslationText)
                                     }),
     # Using S3 because of recursion
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
 
     
@@ -92,7 +92,7 @@ parse_notes <- function(lines, location = NULL){
   if(length(note_lst) == 0) return(list())
   
   lapply(note_lst, \(x){
-    class_note(
+    Note(
       text = find_ged_values(x, "NOTE"),
       language = find_ged_values(x, c("NOTE","LANG")),
       media_type = find_ged_values(x, c("NOTE","MIME")),

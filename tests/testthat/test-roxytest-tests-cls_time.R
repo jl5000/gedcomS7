@@ -2,17 +2,17 @@
 
 # File R/cls_time.R: @tests
 
-test_that("Function class_time() @ L19", {
-  expect_error(class_time(), regexp = "@hour has too few elements.*@minute has too few elements")
-  expect_error(class_time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
-  expect_error(class_time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
-  expect_error(class_time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction requires @second")
-  expect_error(class_time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
-  expect_equal(class_time(hour = 10, minute = 59)@c_as_val, "10:59Z")
-  expect_equal(class_time(5, 6)@c_as_val, "05:06Z")
-  expect_equal(class_time(5, 59, 19)@c_as_val, "05:59:19Z")
-  expect_equal(class_time(0, 0, 0, 6)@c_as_val, "00:00:00.6Z")
-  expect_equal(class_time(8, 14, 43, 6543)@c_as_val, "08:14:43.6543Z")
-  expect_equal(class_time(14, 28, utc = FALSE)@c_as_val, "14:28")
+test_that("Function Time() @ L19", {
+  expect_error(Time(), regexp = "@hour has too few elements.*@minute has too few elements")
+  expect_error(Time(hour = 30), regexp = "@hour has a value which is too high.*@minute has too few elements")
+  expect_error(Time(hour = 20, minute = 60), regexp = "@minute has a value which is too high.")
+  expect_error(Time(hour = 10, minute = 10, fraction = 123), regexp = "@fraction requires @second")
+  expect_error(Time(hour = 10, minute = 2, utc = logical()), regexp = "@utc has too few elements")
+  expect_equal(Time(hour = 10, minute = 59)@c_as_val, "10:59Z")
+  expect_equal(Time(5, 6)@c_as_val, "05:06Z")
+  expect_equal(Time(5, 59, 19)@c_as_val, "05:59:19Z")
+  expect_equal(Time(0, 0, 0, 6)@c_as_val, "00:00:00.6Z")
+  expect_equal(Time(8, 14, 43, 6543)@c_as_val, "08:14:43.6543Z")
+  expect_equal(Time(14, 28, utc = FALSE)@c_as_val, "14:28")
 })
 

@@ -1,4 +1,4 @@
-# Function class_place() @ L24
+# Function Place() @ L24
 
     {
       "type": "character",

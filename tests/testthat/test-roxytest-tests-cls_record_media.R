@@ -2,16 +2,16 @@
 
 # File R/cls_record_media.R: @tests
 
-test_that("Function class_media_file() @ L25", {
-  expect_error(class_media_file(location = "media/original.mp3",
+test_that("Function MediaFile() @ L25", {
+  expect_error(MediaFile(location = "media/original.mp3",
                                 media_type = "audio/mp3",
                                 medium = "CD"),
                regexp = "@medium has an invalid value")
-  expect_error(class_media_file(location = "media/original.mp3",
+  expect_error(MediaFile(location = "media/original.mp3",
                                 media_type = "audio/mp3",
                                 medium_phrase = "My CD of things"),
                regexp = "@medium_phrase requires a @medium")
-  expect_snapshot_value(class_media_file(location = "media/original.mp3",
+  expect_snapshot_value(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",
                                          medium = "ELECTRONIC",
@@ -22,19 +22,19 @@ test_that("Function class_media_file() @ L25", {
 })
 
 
-test_that("Function class_record_media() @ L102", {
-  fls <- list(class_media_file(location = "media/original.mp3",
+test_that("Function MediaRecord() @ L101", {
+  fls <- list(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",
                                          medium = "ELECTRONIC",
                                          medium_phrase = "My CD of things",
                                          media_alt = c("audio/ogg" = "media/derived.oga",
                                                        "text/vtt" = "media/transcript.vtt")),
-              class_media_file(location = "media/speech.mp3",
+              MediaFile(location = "media/speech.mp3",
                                media_type = "audio/mp3")
              )
              
-  expect_snapshot_value(class_record_media("@M548@", files = fls,
+  expect_snapshot_value(MediaRecord("@M548@", files = fls,
                                            locked = TRUE,
                                            notes = "Very loud")@c_as_ged, "json2")
 })

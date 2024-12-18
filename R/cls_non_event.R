@@ -5,18 +5,18 @@
 #' @return An S7 object representing a GEDCOM NON_EVENT_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_non_event("death"), regexp = "@event_type has an invalid value")
-#' expect_error(class_non_event("DEAT", date_phrase = "Before the olympics"), 
+#' expect_error(NonEvent("death"), regexp = "@event_type has an invalid value")
+#' expect_error(NonEvent("DEAT", date_phrase = "Before the olympics"), 
 #'              regexp = "@date_phrase requires a @date_period")
-#' expect_error(class_non_event("DEAT", date_period = "JAN 1984"), 
+#' expect_error(NonEvent("DEAT", date_period = "JAN 1984"), 
 #'              regexp = "@date_period is in an invalid format")
-#' expect_snapshot_value(class_non_event("IMMI", 
-#'                                       date_period = class_date_period("16 JUN 1980","1994"),
+#' expect_snapshot_value(NonEvent("IMMI", 
+#'                                       date_period = DatePeriod("16 JUN 1980","1994"),
 #'                                       date_phrase = "While parents alive",
 #'                                       notes = "Note 1",
 #'                                       citations = "@S98@")@c_as_ged, "json2")
-class_non_event <- S7::new_class(
-  "class_non_event",
+NonEvent <- S7::new_class(
+  "NonEvent",
   properties = list(
     event_type = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -26,7 +26,7 @@ class_non_event <- S7::new_class(
                                     )
                                   }),
     date_period = S7::new_property(S7::class_character | 
-                                     S7::new_S3_class("gedcomS7::class_date_period"),
+                                     S7::new_S3_class("gedcomS7::DatePeriod"),
                                    validator = function(value){
                                      c(
                                        chk_input_size(value, 0, 1),
@@ -42,16 +42,16 @@ class_non_event <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     
     c_as_ged = S7::new_property(
@@ -77,7 +77,7 @@ parse_non_events <- function(rec_lines){
   if(length(none_lst) == 0) return(list())
   
   lapply(none_lst, \(x){
-    class_non_event(
+    NonEvent(
       event_type = find_ged_values(x, "NO"),
       date_period = find_ged_values(x, c("NO","DATE")),
       date_phrase = find_ged_values(x, c("NO","DATE","PHRASE")),

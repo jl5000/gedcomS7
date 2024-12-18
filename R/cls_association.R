@@ -5,21 +5,21 @@
 #' @return An S7 object representing a GEDCOM ASSOCIATION_STRUCTURE.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_association(relation_is = "FATH")@c_as_ged, "json2")
-#' expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
+#' expect_snapshot_value(Association(relation_is = "FATH")@c_as_ged, "json2")
+#' expect_error(Association(indi_phrase = "someone", relation_is = "CHILD"),
 #'              regexp = "@relation_is has an invalid value")
-#' expect_error(class_association(indi_phrase = "someone", relation_is = "OTHER"),
+#' expect_error(Association(indi_phrase = "someone", relation_is = "OTHER"),
 #'              regexp = "A @relation_phrase must be given")
-#' expect_snapshot_value(class_association(indi_phrase = "someone",
+#' expect_snapshot_value(Association(indi_phrase = "someone",
 #'                                         relation_is = "FATH")@c_as_ged, "json2")
-#' expect_snapshot_value(class_association(indi_xref = "@SME@", indi_phrase = "someone",
+#' expect_snapshot_value(Association(indi_xref = "@SME@", indi_phrase = "someone",
 #'                                         relation_is = "FATH", relation_phrase = "step-father",
 #'                                         note_xrefs = c("@352@","@564@"),
 #'                                         notes = "This is a note",
-#'                                         citations = class_citation("@S45@",
+#'                                         citations = SourceCitation("@S45@",
 #'                                                                    where = "Page 2"))@c_as_ged, "json2") 
-class_association <- S7::new_class(
-  "class_association",
+Association <- S7::new_class(
+  "Association",
   properties = list(
     indi_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){
@@ -48,16 +48,16 @@ class_association <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     
     c_as_ged = S7::new_property(
@@ -86,7 +86,7 @@ parse_associations <- function(rec_lines, location = NULL){
   if(length(asso_lst) == 0) return(list())
   
   lapply(asso_lst, \(x){
-    class_association(
+    Association(
       indi_xref = find_ged_values(x, "ASSO"),
       indi_phrase = find_ged_values(x, c("ASSO","PHRASE")),
       relation_is = find_ged_values(x, c("ASSO","ROLE")),

@@ -2,14 +2,14 @@
 
 # File R/cls_non_event.R: @tests
 
-test_that("Function class_non_event() @ L18", {
-  expect_error(class_non_event("death"), regexp = "@event_type has an invalid value")
-  expect_error(class_non_event("DEAT", date_phrase = "Before the olympics"), 
+test_that("Function NonEvent() @ L18", {
+  expect_error(NonEvent("death"), regexp = "@event_type has an invalid value")
+  expect_error(NonEvent("DEAT", date_phrase = "Before the olympics"), 
                regexp = "@date_phrase requires a @date_period")
-  expect_error(class_non_event("DEAT", date_period = "JAN 1984"), 
+  expect_error(NonEvent("DEAT", date_period = "JAN 1984"), 
                regexp = "@date_period is in an invalid format")
-  expect_snapshot_value(class_non_event("IMMI", 
-                                        date_period = class_date_period("16 JUN 1980","1994"),
+  expect_snapshot_value(NonEvent("IMMI", 
+                                        date_period = DatePeriod("16 JUN 1980","1994"),
                                         date_phrase = "While parents alive",
                                         notes = "Note 1",
                                         citations = "@S98@")@c_as_ged, "json2")

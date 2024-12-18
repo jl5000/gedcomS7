@@ -1,4 +1,4 @@
-# Function class_record_fam() @ L24
+# Function FamilyRecord() @ L24
 
     {
       "type": "character",

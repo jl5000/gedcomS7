@@ -5,16 +5,16 @@
 #' @param citations Not used.
 #' @return An S7 object representing a GEDCOM SUBMITTER_RECORD.
 #' @export
-class_record_subm <- S7::new_class(
-  "class_record_subm", 
-  parent = class_record,
+SubmitterRecord <- S7::new_class(
+  "SubmitterRecord", 
+  parent = Record,
   properties = list(
     subm_name = S7::new_property(S7::class_character,
                                  validator = function(value){
                                    chk_input_size(value, 1, 1, 1)
                                  }),
     address = S7::new_property(S7::class_character | 
-                                 S7::new_S3_class("gedcomS7::class_address"),
+                                 S7::new_S3_class("gedcomS7::Address"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1, 1)
                                }),
@@ -69,7 +69,7 @@ class_record_subm <- S7::new_class(
 
 parse_record_subm <- function(rec_lines){
   
-  rec <- class_record_subm(
+  rec <- SubmitterRecord(
     xref = parse_line_xref(rec_lines[1]),
     subm_name = find_ged_values(rec_lines, "NAME"),
     address = parse_address(rec_lines),

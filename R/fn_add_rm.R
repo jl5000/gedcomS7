@@ -27,7 +27,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
   if(length(famc_xref) == 0){
     famc_xref <- x@c_next_xref[["fam"]]
     
-    famc_rec <- class_record_fam(
+    famc_rec <- FamilyRecord(
       chil_xrefs = xref
     )
     
@@ -49,7 +49,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
   # Add father
   if(length(fath_xref) == 0){
     
-    par_rec <- class_record_indi(
+    par_rec <- IndividualRecord(
       fam_links_spou = famc_xref
     )
     if(inc_sex) par_rec@sex <- "M"
@@ -61,7 +61,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
   # Add mother
   if(length(moth_xref) == 0){
     
-    par_rec <- class_record_indi(
+    par_rec <- IndividualRecord(
       fam_links_spou = famc_xref
     )
     if(inc_sex) par_rec@sex <- "F"
@@ -91,7 +91,7 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
   
   spou_xref <- x@c_next_xref[["indi"]]
   
-  spou_rec <- class_record_indi(
+  spou_rec <- IndividualRecord(
     sex = sex
   )
   if(!is.null(spou_name)) spou_rec@pers_names <- spou_name
@@ -115,7 +115,7 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
     }
   }
   
-  fams_rec <- class_record_fam(
+  fams_rec <- FamilyRecord(
     husb_xref = husb_xref,
     wife_xref = wife_xref
   )
@@ -136,7 +136,10 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
 #' "FFM" to add two sisters and one brother.
 #' @param sib_names A character vector of sibling's names. If provided, it must be
 #' the same length as the number of sexes. If you don't want to provide a name for a
-#' sibling, set the name to "". Surnames must be enclosed in forward slashes.
+#' sibling, set the name to "". 
+#' 
+#' Surnames must be enclosed in forward slashes. If all names you supply do not
+#' contain forward slashes then surnames will be taken from the father (or mother).
 #'
 #' @return A gedcom object with additional sibling records.
 #' @export
@@ -150,7 +153,7 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
   if(length(famc_xref) == 0){
     famc_xref <- x@c_next_xref[["fam"]]
     
-    famc_rec <- class_record_fam(
+    famc_rec <- FamilyRecord(
       chil_xrefs = xref
     )
     
@@ -168,7 +171,10 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
 #' "FFM" to add two daughters and one son.
 #' @param chil_names A character vector of children's names. If provided, it must be
 #' the same length as the number of sexes. If you don't want to provide a name for a
-#' child, set the name to "". Surnames must be enclosed in forward slashes.
+#' child, set the name to "". 
+#' 
+#' Surnames must be enclosed in forward slashes. If all names you supply do not
+#' contain forward slashes then surnames will be taken from the father (or mother).
 #'
 #' @return A gedcom object with additional child records.
 #' @export
@@ -176,6 +182,23 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
   check_fam_rec(x, xref)
   if(!is.null(chil_names) && nchar(sexes) != length(chil_names))
     stop("If child names are given, the length of chil_names must be equal to the number of sexes given.")
+  
+  # Add surnames from parent if no surnames given
+  if(!is.null(chil_names) && !any(grepl("/", chil_names))){
+    fath_xref <- find_ged_values(x@fam[[xref]], "HUSB")
+    moth_xref <- find_ged_values(x@fam[[xref]], "WIFE")
+    par_xref <- c(fath_xref, moth_xref)
+    if(length(par_xref > 0)){
+      par_xref <- par_xref[1] # father or mother
+      par_name <- find_ged_values(x@indi[[par_xref]], "NAME")
+      family_name <- sub("^.*/(.*)/.*$", "\\1", par_name)
+      if(family_name != par_name){
+        chil_names[chil_names != ""] <- sprintf("%s /%s/", 
+                                                chil_names[chil_names != ""], 
+                                                family_name)
+      }
+    }
+  }
   
   sexes_vec <- unlist(strsplit(sexes, split = NULL))
   
@@ -185,7 +208,7 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
       next
     }
     
-    chil_rec <- class_record_indi(
+    chil_rec <- IndividualRecord(
       sex = sexes_vec[i],
       fam_links_chil = xref
     )

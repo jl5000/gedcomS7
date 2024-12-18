@@ -2,26 +2,26 @@
 
 # File R/cls_fact_fam.R: @tests
 
-test_that("Function class_event_fam() @ L79", {
-  expect_error(class_event_fam("marr", fact_val = "Y"), 
+test_that("Function FamilyEvent() @ L79", {
+  expect_error(FamilyEvent("marr", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
-  expect_error(class_event_fam("MARR", fact_val = "Yes"), 
+  expect_error(FamilyEvent("MARR", fact_val = "Yes"), 
                regexp = "Only a @fact_val of 'Y' is permitted for this event")
-  expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
+  expect_error(FamilyEvent("EVEN", fact_desc = "Fact desc"), 
                regexp = "A @fact_val is required for this fact")       
-  expect_error(class_event_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
-  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@c_as_ged, "json2")
-  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
-  expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", husb_age = "73y 4m",
+  expect_error(FamilyEvent("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
+  expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y")@c_as_ged, "json2")
+  expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
+  expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y", husb_age = "73y 4m",
                                         wife_age = "60y")@c_as_ged, "json2")
 })
 
 
-test_that("Function class_attr_fam() @ L100", {
-  expect_error(class_attr_fam("residence", fact_val = "Earth"), 
+test_that("Function FamilyAttribute() @ L99", {
+  expect_error(FamilyAttribute("residence", fact_val = "Earth"), 
                regexp = "This is not a valid @fact_type for this attribute")
-  expect_error(class_attr_fam("RESI", fact_val = ""), 
+  expect_error(FamilyAttribute("RESI", fact_val = ""), 
                regexp = "@fact_val has too few characters")   
-  expect_error(class_attr_fam("FACT"), regexp = "A @fact_val is required for this fact")
+  expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")
 })
 

@@ -2,8 +2,8 @@
 
 # File R/cls_record_note.R: @tests
 
-test_that("Function class_record_note() @ L14", {
-  expect_snapshot_value(class_record_note("@N4@",
+test_that("Function NoteRecord() @ L14", {
+  expect_snapshot_value(NoteRecord("@N4@",
                                           text = "The note goes something like this",
                                           language = "en")@c_as_ged, "json2")
 })

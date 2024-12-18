@@ -8,12 +8,12 @@
 #' @return An S7 object representing a GEDCOM SHARED_NOTE_RECORD.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_record_note("@N4@",
+#' expect_snapshot_value(NoteRecord("@N4@",
 #'                                         text = "The note goes something like this",
 #'                                         language = "en")@c_as_ged, "json2")
-class_record_note <- S7::new_class(
-  "class_record_note", 
-  parent = class_record,
+NoteRecord <- S7::new_class(
+  "NoteRecord", 
+  parent = Record,
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){
@@ -34,9 +34,9 @@ class_record_note <- S7::new_class(
                                   )
                                 }),
     translations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::class_translation_txt"),
+                                      S7::new_S3_class("gedcomS7::TranslationText"),
                                     validator = function(value){
-                                      chk_input_S7classes(value, class_translation_txt)
+                                      chk_input_S7classes(value, TranslationText)
                                     }),
     
     c_as_ged = S7::new_property(
@@ -69,7 +69,7 @@ class_record_note <- S7::new_class(
 
 parse_record_note <- function(rec_lines){
   
-  rec <- class_record_note(
+  rec <- NoteRecord(
     xref = parse_line_xref(rec_lines[1]),
     text = parse_line_value(rec_lines[1]),
     media_type = find_ged_values(rec_lines, "MIME"),

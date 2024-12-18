@@ -2,18 +2,18 @@
 
 # File R/cls_place.R: @tests
 
-test_that("Function class_place() @ L24", {
-  expect_error(class_place(), regexp = "@place_name has too few elements")
-  expect_error(class_place(""), regexp = "@place_name has too few characters")
-  expect_snapshot_value(class_place("here")@c_as_ged, "json2")
-  expect_error(class_place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
-  expect_snapshot_value(class_place("here", lat_long = "N12 E56")@c_as_ged, "json2")
-  expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
-  expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@c_as_ged, "json2")
-  expect_snapshot_value(class_place("here", 
+test_that("Function Place() @ L24", {
+  expect_error(Place(), regexp = "@place_name has too few elements")
+  expect_error(Place(""), regexp = "@place_name has too few characters")
+  expect_snapshot_value(Place("here")@c_as_ged, "json2")
+  expect_error(Place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
+  expect_snapshot_value(Place("here", lat_long = "N12 E56")@c_as_ged, "json2")
+  expect_error(Place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
+  expect_snapshot_value(Place("here", place_translations = c(nl = "hier", da = "her"))@c_as_ged, "json2")
+  expect_snapshot_value(Place("here", 
                                     place_translations = c(nl = "hier", da = "her"),
                                     lat_long = "N12 E56")@c_as_ged, "json2")
-  expect_snapshot_value(class_place("here", 
+  expect_snapshot_value(Place("here", 
                                     language = "en",
                                     place_translations = c(nl = "hier", da = "her"),
                                     lat_long = "N12 E56",

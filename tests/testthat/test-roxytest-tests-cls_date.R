@@ -2,150 +2,150 @@
 
 # File R/cls_date.R: @tests
 
-test_that("Function class_date_exact() @ L19", {
-  expect_error(class_date_exact(), regexp = "@year has too few.*@month has too few.*@day has too few")
-  expect_error(class_date_exact(2001), regexp = "@month has too few.*@day has too few")
-  expect_error(class_date_exact(2001, 5), regexp = "@day has too few")
-  expect_error(class_date_exact(2001, 5, 32), regexp = "@day has a value which is too high")
-  expect_error(class_date_exact(2001, 2, 29), regexp = "Invalid date")
-  expect_equal(class_date_exact(2001, 5, 2)@c_as_val, "2 MAY 2001")
-  expect_equal(class_date_exact(28, 7, 12)@c_as_val, "12 JUL 28")
-  expect_equal(class_date_exact(28, 7, 12)@as_date, as.Date("28-07-12"))
+test_that("Function DateExact() @ L19", {
+  expect_error(DateExact(), regexp = "@year has too few.*@month has too few.*@day has too few")
+  expect_error(DateExact(2001), regexp = "@month has too few.*@day has too few")
+  expect_error(DateExact(2001, 5), regexp = "@day has too few")
+  expect_error(DateExact(2001, 5, 32), regexp = "@day has a value which is too high")
+  expect_error(DateExact(2001, 2, 29), regexp = "Invalid date")
+  expect_equal(DateExact(2001, 5, 2)@c_as_val, "2 MAY 2001")
+  expect_equal(DateExact(28, 7, 12)@c_as_val, "12 JUL 28")
+  expect_equal(DateExact(28, 7, 12)@as_date, as.Date("28-07-12"))
 })
 
 
-test_that("Function date_exact_current() @ L72", {
+test_that("Function date_exact_current() @ L71", {
   expect_equal(date_exact_current()@as_date, Sys.Date())
 })
 
 
-test_that("Function class_date_greg() @ L97", {
-  expect_error(class_date_greg(), regexp = "@year has too few elements")
-  expect_error(class_date_greg(2001, day = 15), regexp = "Day is defined without a month")
-  expect_error(class_date_greg(day = 5), regexp = "@year has too few elements")
-  expect_error(class_date_greg(month = 10), regexp = "@year has too few elements")
-  expect_error(class_date_greg(2010, 13, 3), regexp = "@month has a value which is too high")
-  expect_error(class_date_greg(2010, 1, 32), regexp = "@day has a value which is too high")
-  expect_error(class_date_greg(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
-  expect_equal(class_date_greg(2001, 5, 12)@c_as_val, "12 MAY 2001")
-  expect_equal(class_date_greg(2004, 2, 29)@c_as_val, "29 FEB 2004")
-  expect_equal(class_date_greg(2004, 8)@c_as_val, "AUG 2004")
-  expect_equal(class_date_greg(2012)@c_as_val, "2012")
-  expect_equal(class_date_greg(193, bce = TRUE)@c_as_val, "193 BCE")
+test_that("Function DateGregorian() @ L96", {
+  expect_error(DateGregorian(), regexp = "@year has too few elements")
+  expect_error(DateGregorian(2001, day = 15), regexp = "Day is defined without a month")
+  expect_error(DateGregorian(day = 5), regexp = "@year has too few elements")
+  expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
+  expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
+  expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
+  expect_error(DateGregorian(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
+  expect_equal(DateGregorian(2001, 5, 12)@c_as_val, "12 MAY 2001")
+  expect_equal(DateGregorian(2004, 2, 29)@c_as_val, "29 FEB 2004")
+  expect_equal(DateGregorian(2004, 8)@c_as_val, "AUG 2004")
+  expect_equal(DateGregorian(2012)@c_as_val, "2012")
+  expect_equal(DateGregorian(193, bce = TRUE)@c_as_val, "193 BCE")
 })
 
 
-test_that("Function class_date_approx() @ L163", {
-  expect_error(class_date_approx("hello"), regexp = "@date_greg is in an invalid format")
-  expect_equal(class_date_approx(class_date_greg(2001, 5, 12), calc = TRUE)@c_as_val, 
+test_that("Function DateApprox() @ L161", {
+  expect_error(DateApprox("hello"), regexp = "@date_greg is in an invalid format")
+  expect_equal(DateApprox(DateGregorian(2001, 5, 12), calc = TRUE)@c_as_val, 
                                 "CAL 12 MAY 2001")
-  expect_equal(class_date_approx(class_date_greg(2004, 2, 29), about = TRUE)@c_as_val, 
+  expect_equal(DateApprox(DateGregorian(2004, 2, 29), about = TRUE)@c_as_val, 
                                 "ABT 29 FEB 2004")
-  expect_equal(class_date_approx(class_date_greg(2004, 8), est = TRUE)@c_as_val, 
+  expect_equal(DateApprox(DateGregorian(2004, 8), est = TRUE)@c_as_val, 
                                  "EST AUG 2004")
 })
 
 
-test_that("Function class_date_period() @ L249", {
-  expect_equal(class_date_period()@c_as_val, "")
-  expect_error(class_date_period(""), regexp = "@start_date is in an invalid format")
-  expect_error(class_date_period(end_date = ""), regexp = "@end_date is in an invalid format")
-  expect_equal(class_date_period("2 JUL 1989")@c_as_val, "FROM 2 JUL 1989")
-  expect_equal(class_date_period(end_date = "2 JUL 1989")@c_as_val, "TO 2 JUL 1989")
+test_that("Function DatePeriod() @ L246", {
+  expect_equal(DatePeriod()@c_as_val, "")
+  expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
+  expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
+  expect_equal(DatePeriod("2 JUL 1989")@c_as_val, "FROM 2 JUL 1989")
+  expect_equal(DatePeriod(end_date = "2 JUL 1989")@c_as_val, "TO 2 JUL 1989")
   expect_equal(
-    class_date_period(
-      start_date = class_date_greg(1995, 6, 1)
+    DatePeriod(
+      start_date = DateGregorian(1995, 6, 1)
     )@c_as_val, "FROM 1 JUN 1995")
   expect_equal(
-    class_date_period(
-      end_date = class_date_greg(1995, 6, 1)
+    DatePeriod(
+      end_date = DateGregorian(1995, 6, 1)
     )@c_as_val, "TO 1 JUN 1995")
   expect_equal(
-    class_date_period(
-      start_date = class_date_greg(1990, 6, 1),
-      end_date = class_date_greg(1995, 3)
+    DatePeriod(
+      start_date = DateGregorian(1990, 6, 1),
+      end_date = DateGregorian(1995, 3)
     )@c_as_val, "FROM 1 JUN 1990 TO MAR 1995")
   expect_error(
-    class_date_period(
-      start_date = class_date_greg(1995, 6, 1),
-      end_date = class_date_greg(1995, 6, 1)
+    DatePeriod(
+      start_date = DateGregorian(1995, 6, 1),
+      end_date = DateGregorian(1995, 6, 1)
     ), regexp = "Start date is the same as end date")
   expect_error(
-    class_date_period(
-      start_date = class_date_greg(2005, 6, 1),
-      end_date = class_date_greg(1995, 6, 1)
+    DatePeriod(
+      start_date = DateGregorian(2005, 6, 1),
+      end_date = DateGregorian(1995, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
-    class_date_period(
-      start_date = class_date_greg(2005, 8, 1),
-      end_date = class_date_greg(2005, 6, 1)
+    DatePeriod(
+      start_date = DateGregorian(2005, 8, 1),
+      end_date = DateGregorian(2005, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
-    class_date_period(
-      start_date = class_date_greg(2005, 8, 10),
-      end_date = class_date_greg(2005, 8, 1)
+    DatePeriod(
+      start_date = DateGregorian(2005, 8, 10),
+      end_date = DateGregorian(2005, 8, 1)
     ), regexp = "Start date comes after end date")
 })
 
 
-test_that("Function class_date_range() @ L336", {
-  expect_error(class_date_range(), regexp = "has too few elements")
-  expect_error(class_date_range(""), regexp = "@start_date is in an invalid format")
-  expect_error(class_date_range(end_date = ""), regexp = "@end_date is in an invalid format")
-  expect_equal(class_date_range("2 JUL 1989")@c_as_val, "AFT 2 JUL 1989")
-  expect_equal(class_date_range(end_date = "2 JUL 1989")@c_as_val, "BEF 2 JUL 1989")
+test_that("Function DateRange() @ L332", {
+  expect_error(DateRange(), regexp = "has too few elements")
+  expect_error(DateRange(""), regexp = "@start_date is in an invalid format")
+  expect_error(DateRange(end_date = ""), regexp = "@end_date is in an invalid format")
+  expect_equal(DateRange("2 JUL 1989")@c_as_val, "AFT 2 JUL 1989")
+  expect_equal(DateRange(end_date = "2 JUL 1989")@c_as_val, "BEF 2 JUL 1989")
   expect_equal(
-    class_date_range(
-      start_date = class_date_greg(1995, 6, 1)
+    DateRange(
+      start_date = DateGregorian(1995, 6, 1)
     )@c_as_val, "AFT 1 JUN 1995")
   expect_equal(
-    class_date_range(
-      end_date = class_date_greg(1995, 6, 1)
+    DateRange(
+      end_date = DateGregorian(1995, 6, 1)
     )@c_as_val, "BEF 1 JUN 1995")
   expect_equal(
-    class_date_range(
-      start_date = class_date_greg(1990, 6, 1),
-      end_date = class_date_greg(1995, 3)
+    DateRange(
+      start_date = DateGregorian(1990, 6, 1),
+      end_date = DateGregorian(1995, 3)
     )@c_as_val, "BET 1 JUN 1990 AND MAR 1995")
   expect_error(
-    class_date_range(
-     start_date = class_date_greg(1995, 6, 1),
-      end_date = class_date_greg(1995, 6, 1)
+    DateRange(
+     start_date = DateGregorian(1995, 6, 1),
+      end_date = DateGregorian(1995, 6, 1)
     ), regexp = "Start date is the same as end date")
   expect_error(
-    class_date_range(
-      start_date = class_date_greg(2005, 6, 1),
-      end_date = class_date_greg(1995, 6, 1)
+    DateRange(
+      start_date = DateGregorian(2005, 6, 1),
+      end_date = DateGregorian(1995, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
-    class_date_range(
-      start_date = class_date_greg(2005, 8, 1),
-      end_date = class_date_greg(2005, 6, 1)
+    DateRange(
+      start_date = DateGregorian(2005, 8, 1),
+      end_date = DateGregorian(2005, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
-    class_date_range(
-      start_date = class_date_greg(2005, 8, 10),
-      end_date = class_date_greg(2005, 8, 1)
+    DateRange(
+      start_date = DateGregorian(2005, 8, 10),
+      end_date = DateGregorian(2005, 8, 1)
     ), regexp = "Start date comes after end date")
 })
 
 
-test_that("Function class_date_value() @ L375", {
-  expect_error(class_date_value("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
-  expect_error(class_date_value(class_date_period(end_date = "1980"), time = class_time(3,45,54,6765)), 
+test_that("Function DateValue() @ L370", {
+  expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
+  expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
                regexp = "A date period should not have a time defined")
-  expect_equal(class_date_value(class_date_greg(2005, 1, 5))@c_as_val, "5 JAN 2005")
-  expect_snapshot_value(class_date_value("AFT 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
-  expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
+  expect_equal(DateValue(DateGregorian(2005, 1, 5))@c_as_val, "5 JAN 2005")
+  expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
+  expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
 })
 
 
-test_that("Function class_date_sort() @ L441", {
-  expect_error(class_date_sort(""), regexp = "@date is in an invalid format")
-  expect_error(class_date_sort("FROM 2016"), regexp = "@date is in an invalid format")
-  expect_error(class_date_sort(class_date_period(end_date = "1980")), 
+test_that("Function DateSorting() @ L435", {
+  expect_error(DateSorting(""), regexp = "@date is in an invalid format")
+  expect_error(DateSorting("FROM 2016"), regexp = "@date is in an invalid format")
+  expect_error(DateSorting(DatePeriod(end_date = "1980")), 
                regexp = "@date must be <character> or ")
-  expect_equal(class_date_sort(class_date_greg(2005, 1, 5))@c_as_val, "5 JAN 2005")
-  expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
+  expect_equal(DateSorting(DateGregorian(2005, 1, 5))@c_as_val, "5 JAN 2005")
+  expect_snapshot_value(DateSorting("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 })
 

@@ -1,4 +1,4 @@
-# Function class_citation() @ L40
+# Function SourceCitation() @ L40
 
     {
       "type": "character",

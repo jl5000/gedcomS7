@@ -1,4 +1,4 @@
-# Function class_event_indi() @ L60
+# Function IndividualEvent() @ L60
 
     {
       "type": "character",
@@ -38,7 +38,7 @@
       "value": ["0 ADOP Y", "1 TYPE More info on adoption", "1 FAMC @123@", "2 ADOP WIFE", "3 PHRASE Gloria"]
     }
 
-# Function class_attr_indi() @ L155
+# Function IndividualAttribute() @ L154
 
     {
       "type": "character",

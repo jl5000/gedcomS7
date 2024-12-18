@@ -1,4 +1,4 @@
-# Function class_record_note() @ L14
+# Function NoteRecord() @ L14
 
     {
       "type": "character",

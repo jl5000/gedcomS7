@@ -9,7 +9,7 @@ to_console <- function(label, val, exdent){
 }
 
 
-S7::method(print, class_gedcomS7) <- function(x, ...){
+S7::method(print, GedcomS7) <- function(x, ...){
   
   eol <- "\n"
   exdent <- 24 # nchar("Source system version:") + 2 = 24
@@ -49,6 +49,6 @@ S7::method(print, class_gedcomS7) <- function(x, ...){
 }
 
 
-S7::method(print, class_record) <- function(x, ...){
+S7::method(print, Record) <- function(x, ...){
   str(x, max.level = 1)
 }

@@ -29,36 +29,36 @@ class_fact_indi <- S7::new_class(
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_event_indi("birth", fact_val = "Y"), 
+#' expect_error(IndividualEvent("birth", fact_val = "Y"), 
 #'              regexp = "This is not a valid @fact_type for this event")
-#' expect_error(class_event_indi("BIRT", fact_val = "Yes"), 
+#' expect_error(IndividualEvent("BIRT", fact_val = "Yes"), 
 #'              regexp = "Only a @fact_val of 'Y' is permitted for this event")
-#' expect_error(class_event_indi("DEAT", fact_val = "Y", fam_xref = "@12@"), 
+#' expect_error(IndividualEvent("DEAT", fact_val = "Y", fam_xref = "@12@"), 
 #'              regexp = "Only adoption, birth, and christening events can have a @fam_xref")
-#' expect_error(class_event_indi("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
+#' expect_error(IndividualEvent("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
 #'              regexp = "Only adoption events can have a @adop_parent or @adop_parent_phrase")
-#' expect_error(class_event_indi("EVEN", fact_desc = "Fact desc"), 
+#' expect_error(IndividualEvent("EVEN", fact_desc = "Fact desc"), 
 #'              regexp = "A @fact_val is required for this fact")
-#' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
+#' expect_error(IndividualEvent("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
 #'              regexp = "@adop_parent has an invalid value")
-#' expect_error(class_event_indi("ADOP", fact_val = "Y", adop_parent = "BOTH"), 
+#' expect_error(IndividualEvent("ADOP", fact_val = "Y", adop_parent = "BOTH"), 
 #'              regexp = "@adop_parent requires a @fam_xref")
-#' expect_error(class_event_indi("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent_phrase = "both of them"), 
+#' expect_error(IndividualEvent("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent_phrase = "both of them"), 
 #'              regexp = "@adop_parent_phrase requires a @adop_parent")
-#' expect_error(class_event_indi("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
-#' expect_snapshot_value(class_event_indi("BIRT", fact_val = "Y")@c_as_ged, "json2")
-#' expect_error(class_event_indi("DEAT", age = "73"), regexp = "@age is in an invalid format")
-#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y")@c_as_ged, "json2")
-#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age_phrase = "old")@c_as_ged, "json2")
-#' expect_snapshot_value(class_event_indi("DEAT", fact_val = "Y", age = "73y 4m",
+#' expect_error(IndividualEvent("BIRT", unique_ids = "ABC"), regexp = "@unique_ids is in an invalid format")
+#' expect_snapshot_value(IndividualEvent("BIRT", fact_val = "Y")@c_as_ged, "json2")
+#' expect_error(IndividualEvent("DEAT", age = "73"), regexp = "@age is in an invalid format")
+#' expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y")@c_as_ged, "json2")
+#' expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y", age_phrase = "old")@c_as_ged, "json2")
+#' expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y", age = "73y 4m",
 #'                                       age_phrase = "old")@c_as_ged, "json2")
-#' expect_snapshot_value(class_event_indi("ADOP", fact_val = "Y",
+#' expect_snapshot_value(IndividualEvent("ADOP", fact_val = "Y",
 #'                                        fact_desc = "More info on adoption",
 #'                                        fam_xref = "@123@",
 #'                                        adop_parent = "WIFE",
 #'                                        adop_parent_phrase = "Gloria")@c_as_ged, "json2")
-class_event_indi <- S7::new_class(
-  "class_event_indi",
+IndividualEvent <- S7::new_class(
+  "IndividualEvent",
   parent = class_fact_indi,
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
@@ -127,16 +127,16 @@ class_event_indi <- S7::new_class(
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_attr_indi("descr", fact_val = "Tall"), 
+#' expect_error(IndividualAttribute("descr", fact_val = "Tall"), 
 #'              regexp = "This is not a valid @fact_type for this attribute")
-#' expect_error(class_attr_indi("DSCR"), 
+#' expect_error(IndividualAttribute("DSCR"), 
 #'              regexp = "A @fact_val is required for this fact")
-#' expect_error(class_attr_indi("NCHI", fact_val = "2.4"), 
+#' expect_error(IndividualAttribute("NCHI", fact_val = "2.4"), 
 #'              regexp = "Number of children/marriages must be a whole number")
-#' expect_snapshot_value(class_attr_indi("FACT", "Diabetes",
+#' expect_snapshot_value(IndividualAttribute("FACT", "Diabetes",
 #'                                  fact_desc = "Medical condition",
 #'                                  date = "26 JUN 2001",
-#'                                  place = class_place("here",
+#'                                  place = Place("here",
 #'                                                      notes = "place note"),
 #'                                  address = "street, town, city, country",
 #'                                  phone_numbers = "123455",
@@ -145,14 +145,14 @@ class_event_indi <- S7::new_class(
 #'                                  cause = "Chocolate",
 #'                                  locked = TRUE,
 #'                                  date_sort = "2008",
-#'                                  associations = class_association("@I45@", relation_is = "GODP"),
+#'                                  associations = Association("@I45@", relation_is = "GODP"),
 #'                                  notes = "another note",
 #'                                  note_xrefs = "@N45@",
 #'                                  citations = "@S67@",
 #'                                  unique_ids = "7ddf39aa-42a8-4995-94eb-4392bcc00d28")@c_as_ged, 
 #'                        "json2")
-class_attr_indi <- S7::new_class(
-  "class_attr_indi",
+IndividualAttribute <- S7::new_class(
+  "IndividualAttribute",
   parent = class_fact_indi,
   properties = list(
     c_as_ged = S7::new_property(
@@ -195,13 +195,13 @@ parse_facts_indi <- function(rec_lines){
     tag <- parse_line_tag(x[1])
     
     if(tag %in% val_individual_attribute_types(TRUE)){
-      fact <- class_attr_indi(
+      fact <- IndividualAttribute(
         fact_type = tag,
         fact_val = find_ged_values(x, tag),
         fact_desc = find_ged_values(x, c(tag, "TYPE"))
       )
     } else {
-      fact <- class_event_indi(
+      fact <- IndividualEvent(
         fact_type = tag,
         fact_val = find_ged_values(x, tag),
         fact_desc = find_ged_values(x, c(tag, "TYPE")),
@@ -222,6 +222,6 @@ parse_facts_indi <- function(rec_lines){
 }
 
 # DOESN'T WORK
-# class_indi_birth <- S7::new_class("class_indi_birth", parent = class_event_indi,
+# class_indi_birth <- S7::new_class("class_indi_birth", parent = IndividualEvent,
 #   properties = list(fact_type = S7::new_property(S7::class_character, getter = function(self) "BIRT"))
 # )

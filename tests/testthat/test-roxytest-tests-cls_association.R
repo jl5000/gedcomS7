@@ -2,19 +2,19 @@
 
 # File R/cls_association.R: @tests
 
-test_that("Function class_association() @ L21", {
-  expect_snapshot_value(class_association(relation_is = "FATH")@c_as_ged, "json2")
-  expect_error(class_association(indi_phrase = "someone", relation_is = "CHILD"),
+test_that("Function Association() @ L21", {
+  expect_snapshot_value(Association(relation_is = "FATH")@c_as_ged, "json2")
+  expect_error(Association(indi_phrase = "someone", relation_is = "CHILD"),
                regexp = "@relation_is has an invalid value")
-  expect_error(class_association(indi_phrase = "someone", relation_is = "OTHER"),
+  expect_error(Association(indi_phrase = "someone", relation_is = "OTHER"),
                regexp = "A @relation_phrase must be given")
-  expect_snapshot_value(class_association(indi_phrase = "someone",
+  expect_snapshot_value(Association(indi_phrase = "someone",
                                           relation_is = "FATH")@c_as_ged, "json2")
-  expect_snapshot_value(class_association(indi_xref = "@SME@", indi_phrase = "someone",
+  expect_snapshot_value(Association(indi_xref = "@SME@", indi_phrase = "someone",
                                           relation_is = "FATH", relation_phrase = "step-father",
                                           note_xrefs = c("@352@","@564@"),
                                           notes = "This is a note",
-                                          citations = class_citation("@S45@",
+                                          citations = SourceCitation("@S45@",
                                                                      where = "Page 2"))@c_as_ged, "json2")
 })
 

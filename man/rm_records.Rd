@@ -13,7 +13,7 @@ rm_records(x, xrefs)
 }
 \value{
 The gedcom object with the records removed. Pointers to the record will
-be replaced with @VOID@.
+be replaced with void pointers.
 }
 \description{
 Remove records from a GEDCOM object

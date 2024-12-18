@@ -65,19 +65,19 @@ class_fact_fam <- S7::new_class(
 #' @return An S7 object representing a GEDCOM FAMILY_EVENT_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_event_fam("marr", fact_val = "Y"), 
+#' expect_error(FamilyEvent("marr", fact_val = "Y"), 
 #'              regexp = "This is not a valid @fact_type for this event")
-#' expect_error(class_event_fam("MARR", fact_val = "Yes"), 
+#' expect_error(FamilyEvent("MARR", fact_val = "Yes"), 
 #'              regexp = "Only a @fact_val of 'Y' is permitted for this event")
-#' expect_error(class_event_fam("EVEN", fact_desc = "Fact desc"), 
+#' expect_error(FamilyEvent("EVEN", fact_desc = "Fact desc"), 
 #'              regexp = "A @fact_val is required for this fact")       
-#' expect_error(class_event_fam("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
-#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y")@c_as_ged, "json2")
-#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
-#' expect_snapshot_value(class_event_fam("DIV", fact_val = "Y", husb_age = "73y 4m",
+#' expect_error(FamilyEvent("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
+#' expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y")@c_as_ged, "json2")
+#' expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y", wife_age_phrase = "old")@c_as_ged, "json2")
+#' expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y", husb_age = "73y 4m",
 #'                                       wife_age = "60y")@c_as_ged, "json2")    
-class_event_fam <- S7::new_class(
-  "class_event_fam",
+FamilyEvent <- S7::new_class(
+  "FamilyEvent",
   parent = class_fact_fam,
   validator = function(self){
     if(!self@fact_type %in% val_family_event_types(TRUE))
@@ -91,13 +91,13 @@ class_event_fam <- S7::new_class(
 #' @return An S7 object representing a GEDCOM FAMILY_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_attr_fam("residence", fact_val = "Earth"), 
+#' expect_error(FamilyAttribute("residence", fact_val = "Earth"), 
 #'              regexp = "This is not a valid @fact_type for this attribute")
-#' expect_error(class_attr_fam("RESI", fact_val = ""), 
+#' expect_error(FamilyAttribute("RESI", fact_val = ""), 
 #'              regexp = "@fact_val has too few characters")   
-#' expect_error(class_attr_fam("FACT"), regexp = "A @fact_val is required for this fact")   
-class_attr_fam <- S7::new_class(
-  "class_attr_fam",
+#' expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")   
+FamilyAttribute <- S7::new_class(
+  "FamilyAttribute",
   parent = class_fact_fam,
   validator = function(self){
     if(!self@fact_type %in% val_family_attribute_types(TRUE))
@@ -116,13 +116,13 @@ parse_facts_fam <- function(rec_lines){
     tag <- parse_line_tag(x[1])
     
     if(tag %in% val_family_attribute_types(TRUE)){
-      fact <- class_attr_fam(
+      fact <- FamilyAttribute(
         fact_type = tag,
         fact_val = find_ged_values(x, tag),
         fact_desc = find_ged_values(x, c(tag, "TYPE"))
       )
     } else {
-      fact <- class_event_fam(
+      fact <- FamilyEvent(
         fact_type = tag,
         fact_val = find_ged_values(x, tag),
         fact_desc = find_ged_values(x, c(tag, "TYPE"))

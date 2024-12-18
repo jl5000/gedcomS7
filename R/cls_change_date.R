@@ -5,16 +5,16 @@
 #' @return An S7 object representing a GEDCOM CREATION_DATE.
 #' @export
 #' @tests
-#' expect_error(class_creation_date(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
-#' expect_error(class_creation_date(time = "123:34:45"), regexp = "@time is in an invalid format.")
-#' expect_snapshot_value(class_creation_date(date_exact = "1 JAN 2005")@c_as_ged, "json2")
-#' expect_snapshot_value(class_creation_date(date_exact = "1 JAN 2005",
+#' expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
+#' expect_error(CreationDate(time = "123:34:45"), regexp = "@time is in an invalid format.")
+#' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005")@c_as_ged, "json2")
+#' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005",
 #'                                           time = "11:04:56")@c_as_ged, "json2")
-class_creation_date <- S7::new_class(
-  "class_creation_date",
+CreationDate <- S7::new_class(
+  "CreationDate",
   properties = list(
     date_exact = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::class_date_exact"), 
+                                    S7::new_S3_class("gedcomS7::DateExact"), 
                                   # This is a hack used only here
                                   # date_exact_current() can't be used because it
                                   # gets read in after this
@@ -27,7 +27,7 @@ class_creation_date <- S7::new_class(
                                     )
                                   }),
     time = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::class_time"),
+                              S7::new_S3_class("gedcomS7::Time"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -53,22 +53,22 @@ class_creation_date <- S7::new_class(
 #' @return An S7 object representing a GEDCOM CHANGE_DATE.
 #' @export
 #' @tests
-#' expect_snapshot_value(class_change_date(date = "1 JAN 2005",
+#' expect_snapshot_value(ChangeDate(date = "1 JAN 2005",
 #'                                         note_xrefs = "@23@",
 #'                                         notes = c("note 1", "note 2"))@c_as_ged, "json2")
-class_change_date <- S7::new_class(
-  "class_change_date", 
-  parent = class_creation_date,
+ChangeDate <- S7::new_class(
+  "ChangeDate", 
+  parent = CreationDate,
   properties = list(
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     
     c_as_ged = S7::new_property(
@@ -90,7 +90,7 @@ parse_creation_date <- function(rec_lines){
   crea_date <- find_ged_values(rec_lines, c("CREA","DATE"))
   if(length(crea_date) == 0) return(NULL)
   
-  class_creation_date(
+  CreationDate(
     date_exact = toupper(crea_date),
     time = find_ged_values(rec_lines, c("CREA","DATE","TIME"))
   )
@@ -100,7 +100,7 @@ parse_change_date <- function(rec_lines){
   change_date <- find_ged_values(rec_lines, c("CHAN","DATE"))
   if(length(change_date) == 0) return(NULL)
   
-  class_change_date(
+  ChangeDate(
     date_exact = toupper(change_date),
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
     notes = parse_notes(rec_lines, "CHAN"),

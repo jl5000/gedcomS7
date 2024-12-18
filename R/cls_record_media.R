@@ -6,15 +6,15 @@
 #' @return An S7 object representing a GEDCOM multimedia file substructure.
 #' @export
 #' @tests
-#' expect_error(class_media_file(location = "media/original.mp3",
+#' expect_error(MediaFile(location = "media/original.mp3",
 #'                               media_type = "audio/mp3",
 #'                               medium = "CD"),
 #'              regexp = "@medium has an invalid value")
-#' expect_error(class_media_file(location = "media/original.mp3",
+#' expect_error(MediaFile(location = "media/original.mp3",
 #'                               media_type = "audio/mp3",
 #'                               medium_phrase = "My CD of things"),
 #'              regexp = "@medium_phrase requires a @medium")
-#' expect_snapshot_value(class_media_file(location = "media/original.mp3",
+#' expect_snapshot_value(MediaFile(location = "media/original.mp3",
 #'                                        title = "My audio",
 #'                                        media_type = "audio/mp3",
 #'                                        medium = "ELECTRONIC",
@@ -22,8 +22,8 @@
 #'                                        media_alt = c("audio/ogg" = "media/derived.oga",
 #'                                                      "text/vtt" = "media/transcript.vtt"))@c_as_ged,
 #'                        "json2")
-class_media_file <- S7::new_class(
-  "class_media_file",
+MediaFile <- S7::new_class(
+  "MediaFile",
   properties = list(
     location = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -84,30 +84,30 @@ class_media_file <- S7::new_class(
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_RECORD.
 #' @export
 #' @tests
-#' fls <- list(class_media_file(location = "media/original.mp3",
+#' fls <- list(MediaFile(location = "media/original.mp3",
 #'                                        title = "My audio",
 #'                                        media_type = "audio/mp3",
 #'                                        medium = "ELECTRONIC",
 #'                                        medium_phrase = "My CD of things",
 #'                                        media_alt = c("audio/ogg" = "media/derived.oga",
 #'                                                      "text/vtt" = "media/transcript.vtt")),
-#'             class_media_file(location = "media/speech.mp3",
+#'             MediaFile(location = "media/speech.mp3",
 #'                              media_type = "audio/mp3")
 #'            )
 #'            
-#' expect_snapshot_value(class_record_media("@M548@", files = fls,
+#' expect_snapshot_value(MediaRecord("@M548@", files = fls,
 #'                                          locked = TRUE,
 #'                                          notes = "Very loud")@c_as_ged, "json2")            
-class_record_media <- S7::new_class(
-  "class_record_media", 
-  parent = class_record,
+MediaRecord <- S7::new_class(
+  "MediaRecord", 
+  parent = Record,
   properties = list(
     files = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_media_file"),
+                               S7::new_S3_class("gedcomS7::MediaFile"),
                              validator = function(value){
                                c(
                                  chk_input_size(value, 1),
-                                 chk_input_S7classes(value, class_media_file)
+                                 chk_input_S7classes(value, MediaFile)
                                )
                              }),
     
@@ -138,7 +138,7 @@ parse_media_files <- function(rec_lines){
   if(length(file_lst) == 0) return(list())
   
   lapply(file_lst, \(x){
-    class_media_file(
+    MediaFile(
       location = find_ged_values(x, "FILE"),
       title = find_ged_values(x, c("FILE","TITL")),
       media_type = find_ged_values(x, c("FILE","FORM")),
@@ -152,7 +152,7 @@ parse_media_files <- function(rec_lines){
 
 parse_record_media <- function(rec_lines){
   
-  rec <- class_record_media(
+  rec <- MediaRecord(
     xref = parse_line_xref(rec_lines[1]),
     files = parse_media_files(rec_lines)
   )

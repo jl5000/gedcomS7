@@ -5,12 +5,12 @@
 #' @return An S7 object representing a GEDCOM family link as a spouse.
 #' @export
 #' @tests
-#' expect_error(class_spouse_family_link(), regexp = "@fam_xref has too few elements")
-#' expect_snapshot_value(class_spouse_family_link("@F123@")@c_as_ged, "json2")
-#' expect_snapshot_value(class_spouse_family_link("@F2@", 
-#'                                                notes = list(class_note("test")))@c_as_ged, "json2")
-class_spouse_family_link <- S7::new_class(
-  "class_spouse_family_link",
+#' expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
+#' expect_snapshot_value(FamilyLinkSpouse("@F123@")@c_as_ged, "json2")
+#' expect_snapshot_value(FamilyLinkSpouse("@F2@", 
+#'                                                notes = list(Note("test")))@c_as_ged, "json2")
+FamilyLinkSpouse <- S7::new_class(
+  "FamilyLinkSpouse",
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -24,10 +24,10 @@ class_spouse_family_link <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     
     c_as_ged = S7::new_property(
@@ -48,23 +48,23 @@ class_spouse_family_link <- S7::new_class(
 #' @return An S7 object representing a GEDCOM family link as a child.
 #' @export
 #' @tests
-#' expect_error(class_child_family_link("@F123@", pedigree = "father"), 
+#' expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
 #'                                      regexp = "@pedigree has an invalid value")
-#' expect_error(class_child_family_link("@F123@", pedigree = "OTHER"), 
+#' expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 
 #'                                      regexp = "An OTHER pedigree requires explanation in @pedigree_phrase")
-#' expect_error(class_child_family_link("@F123@", confidence = "LOW"), 
+#' expect_error(FamilyLinkChild("@F123@", confidence = "LOW"), 
 #'                                      regexp = "@confidence has an invalid value")  
-#' expect_error(class_child_family_link("@F123@", confidence_phrase = "Don't know"), 
+#' expect_error(FamilyLinkChild("@F123@", confidence_phrase = "Don't know"), 
 #'                                      regexp = "@confidence_phrase requires a @confidence")                                  
-#' expect_snapshot_value(class_child_family_link("@F2@", 
+#' expect_snapshot_value(FamilyLinkChild("@F2@", 
 #'                                                pedigree = "ADOPTED",
 #'                                                pedigree_phrase = "By people",
 #'                                                confidence = "CHALLENGED",
 #'                                                confidence_phrase = "By someone",
 #'                                                note_xrefs = c("@242@","@GJFJ@"))@c_as_ged, "json2")
-class_child_family_link <- S7::new_class(
-  "class_child_family_link", 
-  parent = class_spouse_family_link,
+FamilyLinkChild <- S7::new_class(
+  "FamilyLinkChild", 
+  parent = FamilyLinkSpouse,
   properties = list(
     pedigree = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -123,7 +123,7 @@ parse_family_links <- function(rec_lines, as_spouse = TRUE){
   lapply(link_lst, \(x){
 
     if(tag == "FAMC"){
-      lnk <- class_child_family_link(
+      lnk <- FamilyLinkChild(
         fam_xref = find_ged_values(x, tag),
         pedigree = find_ged_values(x, c(tag,"PEDI")),
         pedigree_phrase = find_ged_values(x, c(tag,"PEDI","PHRASE")),
@@ -131,7 +131,7 @@ parse_family_links <- function(rec_lines, as_spouse = TRUE){
         confidence_phrase = find_ged_values(x, c(tag,"STAT","PHRASE"))
       )
     } else {
-      lnk <- class_spouse_family_link(
+      lnk <- FamilyLinkSpouse(
         fam_xref = find_ged_values(x, tag)
       )
     }

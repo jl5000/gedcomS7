@@ -1,4 +1,4 @@
-# Function class_event_fam() @ L79
+# Function FamilyEvent() @ L79
 
     {
       "type": "character",

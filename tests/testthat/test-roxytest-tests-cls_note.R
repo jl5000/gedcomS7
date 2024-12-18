@@ -2,35 +2,35 @@
 
 # File R/cls_note.R: @tests
 
-test_that("Function class_note() @ L40", {
-  expect_error(class_note(), regexp = "@text has too few elements")
-  expect_error(class_note(letters[1:2]), regexp = "@text has too many elements")
-  expect_snapshot_value(class_note("test")@c_as_ged, "json2")
-  expect_snapshot_value(class_note("test", language = "en")@c_as_ged, "json2")
-  expect_snapshot_value(class_note("test", 
+test_that("Function Note() @ L40", {
+  expect_error(Note(), regexp = "@text has too few elements")
+  expect_error(Note(letters[1:2]), regexp = "@text has too many elements")
+  expect_snapshot_value(Note("test")@c_as_ged, "json2")
+  expect_snapshot_value(Note("test", language = "en")@c_as_ged, "json2")
+  expect_snapshot_value(Note("test", 
                                    language = "en",
-                                   translations = class_translation_txt("test",
+                                   translations = TranslationText("test",
                                                                     language = "en"))@c_as_ged, "json2")
-  expect_snapshot_value(class_note("test", 
+  expect_snapshot_value(Note("test", 
                                    language = "en",
-                                   translations = list(class_translation_txt("test",
+                                   translations = list(TranslationText("test",
                                                                     language = "en"),
-                                                   class_translation_txt("test2",
+                                                   TranslationText("test2",
                                                                     language = "en")))@c_as_ged, "json2")
-  expect_snapshot_value(class_note("test", 
-                                   citations = class_citation("@S1@", 
-                                                              notes = class_note("note text 2", 
-                                                                                 citations = class_citation("@S4@"))))@c_as_ged, 
+  expect_snapshot_value(Note("test", 
+                                   citations = SourceCitation("@S1@", 
+                                                              notes = Note("note text 2", 
+                                                                                 citations = SourceCitation("@S4@"))))@c_as_ged, 
                        "json2")
-  expect_error(class_note("test", 
+  expect_error(Note("test", 
                           language = "en",
-                          translations = class_address("street"))@c_as_ged,
+                          translations = Address("street"))@c_as_ged,
                regexp = "@translations must be <list> or ")
-  expect_error(class_note("test", 
+  expect_error(Note("test", 
                           language = "en",
-                          translations = list(class_translation_txt("test",
+                          translations = list(TranslationText("test",
                                                                 language = "en"),
-                                          class_address("street"))),
-               regexp = "@translations contains an invalid object not of class_translation_txt")
+                                          Address("street"))),
+               regexp = "@translations contains an invalid object not of TranslationText")
 })
 

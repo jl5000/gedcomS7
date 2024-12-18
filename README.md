@@ -147,14 +147,14 @@ ged
 New records are created using the set of `class_record_*()` functions:
 
 ``` r
-luke <- class_record_indi(
+luke <- IndividualRecord(
   sex = "M",
   pers_names = "Luke /Skywalker/"
 )
 ```
 
 An individual can have many names, which are created using
-`class_personal_name()` and `class_name_info()` and must be stored in a
+`PersonalName()` and `class_name_info()` and must be stored in a
 list:
 
 ## The push/pull paradigm

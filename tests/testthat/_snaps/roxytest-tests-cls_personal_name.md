@@ -1,4 +1,4 @@
-# Function class_name_pieces() @ L14
+# Function PersonalNamePieces() @ L14
 
     {
       "type": "character",
@@ -6,7 +6,7 @@
       "value": ["0 NPFX Mr", "0 GIVN Joe", "0 NICK J", "0 NICK Jock", "0 SPFX Mc", "0 SURN Bloggs", "0 NSFX Jr"]
     }
 
-# Function class_personal_name_tran() @ L71
+# Function PersonalNameTran() @ L70
 
     {
       "type": "character",
@@ -22,7 +22,7 @@
       "value": ["0 TRAN Joe /Bloggs/", "1 LANG en", "1 NICK JJ"]
     }
 
-# Function class_personal_name() @ L124
+# Function PersonalName() @ L122
 
     {
       "type": "character",

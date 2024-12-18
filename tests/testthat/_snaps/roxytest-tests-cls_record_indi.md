@@ -1,4 +1,4 @@
-# Function class_record_indi() @ L24
+# Function IndividualRecord() @ L24
 
     {
       "type": "character",

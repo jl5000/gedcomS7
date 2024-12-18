@@ -26,7 +26,7 @@ by semi-colon and a space. For example:
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
-\item{translations}{A \code{class_translation_txt} object or a list of them.
+\item{translations}{A \code{TranslationText} object or a list of them.
 One for each alternate translation of the text.}
 
 \item{title}{The title of the multimedia record. This will supersede any title given
@@ -53,8 +53,8 @@ It is recommended that the data in this field be formatted comma-separated with 
 value pairs}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{class_translation_txt} object, a list of them, or a character vector of text.
-If any \code{class_translation_txt} objects are provided, then you will be forced to define an
+either be a \code{TranslationText} object, a list of them, or a character vector of text.
+If any \code{TranslationText} objects are provided, then you will be forced to define an
 associated language or media type.}
 
 \item{fact_type}{TODO}
@@ -107,7 +107,7 @@ comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
 
 \item{territory}{The territory associated with the events covered. This can either be a
-\code{class_place} object or a character string (a comma-separated string of region names,
+\code{Place} object or a character string (a comma-separated string of region names,
 ordered from smallest to largest). If a character string is provided then only the
 region names can be recorded (and not associated information). This option is easier if
 associated information is not required.}
@@ -121,7 +121,7 @@ associated information is not required.}
 \item{confidence_phrase}{TODO}
 
 \item{call_numbers}{Call number(s) used to file and retrieve items from the repository.
-This can either be a \code{class_source_call_number} object, a list of them,
+This can either be a \code{SourceCallNumber} object, a list of them,
 or a character vector of call numbers. If a character vector is provided then only the
 call numbers themselves can be recorded (and not associated medium). This option is easier if
 associated information is not required.}
@@ -150,7 +150,7 @@ For example in the name "de la Cruz", this value would be "de la".}
 
 \item{suffix}{Name piece that appears after the given name and surname parts, e.g. Jr.}
 
-\item{name_pieces}{A \code{class_name_pieces} object defining the pieces of the full name.}
+\item{name_pieces}{A \code{PersonalNamePieces} object defining the pieces of the full name.}
 
 \item{pers_name}{TODO}
 
@@ -168,7 +168,7 @@ For example in the name "de la Cruz", this value would be "de la".}
 
 \item{place}{see territory}
 
-\item{address}{The address given either as a \code{class_address} object or as a character string.
+\item{address}{The address given either as a \code{Address} object or as a character string.
 This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
@@ -196,7 +196,7 @@ treated as read-only.}
 \item{private}{A logical value indicating whether the associated record/fact should be
 treated as private. This allows them to be excluded on export.}
 
-\item{associations}{Associated individuals. This can either be a \code{class_association} object or a list of them.}
+\item{associations}{Associated individuals. This can either be a \code{Association} object or a list of them.}
 
 \item{age, husb_age, wife_age}{A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
@@ -219,12 +219,12 @@ in the corresponding phrase parameter.}
 
 \item{fam_links_spou}{TODO}
 
-\item{files}{A \code{class_media_file} object or a list of them. This refers to 1 or more external
+\item{files}{A \code{MediaFile} object or a list of them. This refers to 1 or more external
 digital files. Grouped files should each pertain to the same context.}
 
 \item{repo_name}{The name of the repository.}
 
-\item{facts_recorded}{The facts recorded by the source. This can either be a \code{class_facts_recorded} object,
+\item{facts_recorded}{The facts recorded by the source. This can either be a \code{FactsRecorded} object,
 a list of them, or a character vector of comma-delimited fact types. If a character vector is
 provided then only the fact types themselves can be recorded (and not associated information).
 This option is easier if associated information is not required. For example, a parish register of
@@ -242,7 +242,7 @@ source, this may be an individual, a government agency, church organization, or 
 \item{publication_facts}{When and where the record was created. For published works, this
 includes information such as the city of publication, name of the publisher, and year of publication.}
 
-\item{repo_citations}{Associated repositories. This can either be a \code{class_repository_citation} object,
+\item{repo_citations}{Associated repositories. This can either be a \code{RepositoryCitation} object,
 a list of them, or a character vector of XREFs of repository records. If a character vector is
 provided then only the XREFs themselves can be recorded (and not associated information).
 This option is easier if associated information is not required.}
@@ -343,22 +343,22 @@ be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 \item{ext_ids}{A named character vector of identifiers maintained by an external authority.
 The names must be given as a URI. See the GEDCOM specification for more information.}
 
-\item{media_links}{Associated multimedia. This can either be a \code{class_media_link} object, a list of them,
+\item{media_links}{Associated multimedia. This can either be a \code{MediaLink} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{notes}{Associated notes. This can either be a \code{class_note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{data_notes}{Associated notes about the source data. This can either be a \code{class_note}
+\item{data_notes}{Associated notes about the source data. This can either be a \code{Note}
 object, a list of them, or a character vector of notes. If a character vector is provided
 then only the notes themselves can be recorded (and not associated information).
 This option is easier if associated information is not required.}
 
-\item{citations}{Associated sources. This can either be a \code{class_citation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
@@ -390,48 +390,48 @@ but if TRUE, only the year should be given.}
 \item{est}{Whether the date is near to the date given, and is calculated from other values.}
 
 \item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
+\code{DateGregorian} object.}
 
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
-\code{class_date_exact} object. If not given, it will default to today's date.}
+\code{DateExact} object. If not given, it will default to today's date.}
 
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
-\code{class_date_period} object.}
+\code{DatePeriod} object.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{class_date_value} object.}
+\code{DateValue} object.}
 
 \item{date_sort}{The date given either as a formatted GEDCOM string, or a
-\code{class_date_sort} object.}
+\code{DateSorting} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
 \item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
+\code{DateGregorian} object.}
 
 \item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
-\code{class_date_greg} object.}
+\code{DateGregorian} object.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
-\code{class_time} object.}
+\code{Time} object.}
 
-\item{created}{A \code{class_creation_date} object containing the date the record was created.
+\item{created}{A \code{CreationDate} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
 
-\item{updated}{A \code{class_change_date} object containing the date the record was updated.
+\item{updated}{A \code{ChangeDate} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
 \item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
-\code{class_date_exact} object.}
+\code{DateExact} object.}
 
 \item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
-\code{class_time} object.}
+\code{Time} object.}
 
 \item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
-\code{class_date_exact} object.}
+\code{DateExact} object.}
 
 \item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
-\code{class_time} object.}
+\code{Time} object.}
 
 \item{update_change_dates}{Whether to automatically update change dates when updating records.
 This happens when the record is pushed to the gedcom object.}

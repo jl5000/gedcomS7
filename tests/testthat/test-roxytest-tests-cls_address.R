@@ -2,21 +2,21 @@
 
 # File R/cls_address.R: @tests
 
-test_that("Function class_address() @ L26", {
-  expect_error(class_address(), "@full has too few elements")
-  expect_error(class_address(""), "@full has too few characters")
-  expect_snapshot_value(class_address("street\ncity\nstate")@c_as_ged, "json2")
-  expect_snapshot_value(class_address("street\ncity\nstate",
+test_that("Function Address() @ L26", {
+  expect_error(Address(), "@full has too few elements")
+  expect_error(Address(""), "@full has too few characters")
+  expect_snapshot_value(Address("street\ncity\nstate")@c_as_ged, "json2")
+  expect_snapshot_value(Address("street\ncity\nstate",
                                       city = "this city")@c_as_ged, "json2")
-  expect_snapshot_value(class_address("street\ncity\nstate",
+  expect_snapshot_value(Address("street\ncity\nstate",
                                       state = "this state")@c_as_ged, "json2")
-  expect_snapshot_value(class_address("street\ncity\nstate",
+  expect_snapshot_value(Address("street\ncity\nstate",
                                       country = "this country")@c_as_ged, "json2")
-  expect_snapshot_value(class_address("street\ncity\nstate",
+  expect_snapshot_value(Address("street\ncity\nstate",
                                       city = "this city",
                                       state = "this state",
                                       country = "this country")@c_as_ged, "json2")
-  expect_snapshot_value(class_address("street\ncity\nstate",
+  expect_snapshot_value(Address("street\ncity\nstate",
                                       city = "this city",
                                       state = "this state",
                                       country = "this country",

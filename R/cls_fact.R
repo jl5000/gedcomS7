@@ -23,7 +23,7 @@ class_fact <- S7::new_class(
                                  }),
     
     date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::class_date_value"),
+                              S7::new_S3_class("gedcomS7::DateValue"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -31,12 +31,12 @@ class_fact <- S7::new_class(
                               )
                             }),
     place = S7::new_property(S7::class_character | 
-                               S7::new_S3_class("gedcomS7::class_place"),
+                               S7::new_S3_class("gedcomS7::Place"),
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
                              }),
     address = S7::new_property(S7::class_character | 
-                                 S7::new_S3_class("gedcomS7::class_address"),
+                                 S7::new_S3_class("gedcomS7::Address"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1, 1)
                                }),
@@ -81,7 +81,7 @@ class_fact <- S7::new_class(
                                  chk_input_size(value, 1, 1)
                                }),
     date_sort = S7::new_property(S7::class_character | 
-                                   S7::new_S3_class("gedcomS7::class_date_sort"),
+                                   S7::new_S3_class("gedcomS7::DateSorting"),
                                  validator = function(value){
                                    c(
                                      chk_input_size(value, 0, 1),
@@ -89,31 +89,31 @@ class_fact <- S7::new_class(
                                    )
                                  }),
     associations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::class_association"),
+                                      S7::new_S3_class("gedcomS7::Association"),
                                     validator = function(value){
-                                      chk_input_S7classes(value, class_association)
+                                      chk_input_S7classes(value, Association)
                                     }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     media_links = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::class_media_link") | 
+                                     S7::new_S3_class("gedcomS7::MediaLink") | 
                                      S7::class_character,
                                    validator = function(value){
-                                     chk_input_S7classes(value, class_media_link, reg_xref(TRUE))
+                                     chk_input_S7classes(value, MediaLink, reg_xref(TRUE))
                                    }),
     unique_ids = S7::new_property(S7::class_character,
                                   validator = function(value){

@@ -2,7 +2,7 @@
 
 # File R/"00_validators.R": @tests
 
-test_that("Function chk_input_size() @ L32", {
+test_that("Function chk_input_size() @ L34", {
   expect_equal(chk_input_size(letters, min_len = 27),
                               "has too few elements. The minimum is 27.")
   expect_equal(chk_input_size(1:4, max_len = 3),
@@ -24,7 +24,7 @@ test_that("Function chk_input_size() @ L32", {
 })
 
 
-test_that("Function chk_input_pattern() @ L73", {
+test_that("Function chk_input_pattern() @ L75", {
   expect_equal(chk_input_pattern(letters, "[a-y]"),
                "is in an invalid format: z")
   expect_equal(chk_input_pattern(month.abb, "[A-Z][a-z][abe-z]"),
@@ -34,7 +34,7 @@ test_that("Function chk_input_pattern() @ L73", {
 })
 
 
-test_that("Function chk_input_choice() @ L97", {
+test_that("Function chk_input_choice() @ L99", {
   expect_match(chk_input_choice(month.abb, month.abb[-6]),
                "has an invalid value: Jun")
   expect_match(chk_input_choice(letters, letters[-16]),
@@ -44,7 +44,7 @@ test_that("Function chk_input_choice() @ L97", {
 })
 
 
-test_that("Function chk_input_date_cpts() @ L161", {
+test_that("Function chk_input_date_cpts() @ L163", {
   expect_equal(chk_input_date_cpts(numeric(),1,2),
                "Year must be defined")
   expect_equal(chk_input_date_cpts(2000,1,2, bce = TRUE),
@@ -61,13 +61,13 @@ test_that("Function chk_input_date_cpts() @ L161", {
 })
 
 
-test_that("Function chk_input_dates() @ L194", {
+test_that("Function chk_input_dates() @ L196", {
   expect_null(chk_input_dates(NULL,NULL))
   expect_null(chk_input_dates("2002-09-08",NULL))
 })
 
 
-test_that("Function chk_whole_number() @ L226", {
+test_that("Function chk_whole_number() @ L228", {
   expect_equal(chk_whole_number(1.1),
                "must be a whole number")
   expect_equal(chk_whole_number(4.2),
@@ -77,7 +77,7 @@ test_that("Function chk_whole_number() @ L226", {
 })
 
 
-test_that("Function chk_input_parents() @ L248", {
+test_that("Function chk_input_parents() @ L250", {
   expect_null(chk_input_parents(character(), "@child", character(), "@parent"))
   expect_null(chk_input_parents(character(), "@child", "parent", "@parent"))
   expect_equal(chk_input_parents("child", "@child", character(), "@parent"),

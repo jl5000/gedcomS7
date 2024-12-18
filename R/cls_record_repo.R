@@ -6,16 +6,16 @@
 #' @param media_links Not used.
 #' @return An S7 object representing a GEDCOM REPOSITORY_RECORD.
 #' @export
-class_record_repo <- S7::new_class(
-  "class_record_repo", 
-  parent = class_record,
+RepositoryRecord <- S7::new_class(
+  "RepositoryRecord", 
+  parent = Record,
   properties = list(
     repo_name = S7::new_property(S7::class_character,
                                  validator = function(value){
                                    chk_input_size(value, 1, 1, 1)
                                  }),
     address = S7::new_property(S7::class_character | 
-                                 S7::new_S3_class("gedcomS7::class_address"),
+                                 S7::new_S3_class("gedcomS7::Address"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1, 1)
                                }),
@@ -68,7 +68,7 @@ class_record_repo <- S7::new_class(
 
 parse_record_repo <- function(rec_lines){
   
-  rec <- class_record_repo(
+  rec <- RepositoryRecord(
     xref = parse_line_xref(rec_lines[1]),
     repo_name = find_ged_values(rec_lines, "NAME"),
     address = parse_address(rec_lines),

@@ -1,11 +1,11 @@
 
-is_indi_rec <- function(record) S7::S7_inherits(record, class_record_indi)
-is_fam_rec <- function(record) S7::S7_inherits(record, class_record_fam)
-is_sour_rec <- function(record) S7::S7_inherits(record, class_record_sour)
-is_repo_rec <- function(record) S7::S7_inherits(record, class_record_repo)
-is_media_rec <- function(record) S7::S7_inherits(record, class_record_media)
-is_note_rec <- function(record) S7::S7_inherits(record, class_record_note)
-is_subm_rec <- function(record) S7::S7_inherits(record, class_record_subm)
+is_indi_rec <- function(record) S7::S7_inherits(record, IndividualRecord)
+is_fam_rec <- function(record) S7::S7_inherits(record, FamilyRecord)
+is_sour_rec <- function(record) S7::S7_inherits(record, SourceRecord)
+is_repo_rec <- function(record) S7::S7_inherits(record, RepositoryRecord)
+is_media_rec <- function(record) S7::S7_inherits(record, MediaRecord)
+is_note_rec <- function(record) S7::S7_inherits(record, NoteRecord)
+is_subm_rec <- function(record) S7::S7_inherits(record, SubmitterRecord)
 
 is_indi_xref <- function(x, xref) xref %in% x@c_xrefs[["indi"]]
 is_fam_xref <- function(x, xref) xref %in% x@c_xrefs[["fam"]]
@@ -17,19 +17,19 @@ is_subm_xref <- function(x, xref) xref %in% x@c_xrefs[["subm"]]
 
 get_record_type <- function(record){
   
-  if(S7::S7_inherits(record, class_record_indi)){
+  if(S7::S7_inherits(record, IndividualRecord)){
     "indi"
-  } else if(S7::S7_inherits(record, class_record_fam)){
+  } else if(S7::S7_inherits(record, FamilyRecord)){
     "fam"
-  } else if(S7::S7_inherits(record, class_record_sour)){
+  } else if(S7::S7_inherits(record, SourceRecord)){
     "sour"
-  } else if(S7::S7_inherits(record, class_record_repo)){
+  } else if(S7::S7_inherits(record, RepositoryRecord)){
     "repo"
-  } else if(S7::S7_inherits(record, class_record_media)){
+  } else if(S7::S7_inherits(record, MediaRecord)){
     "media"
-  } else if(S7::S7_inherits(record, class_record_note)){
+  } else if(S7::S7_inherits(record, NoteRecord)){
     "note"
-  } else if(S7::S7_inherits(record, class_record_subm)){
+  } else if(S7::S7_inherits(record, SubmitterRecord)){
     "subm"
   } else {
     stop("Unrecognised record")

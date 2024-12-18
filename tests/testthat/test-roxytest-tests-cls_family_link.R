@@ -2,24 +2,24 @@
 
 # File R/cls_family_link.R: @tests
 
-test_that("Function class_spouse_family_link() @ L12", {
-  expect_error(class_spouse_family_link(), regexp = "@fam_xref has too few elements")
-  expect_snapshot_value(class_spouse_family_link("@F123@")@c_as_ged, "json2")
-  expect_snapshot_value(class_spouse_family_link("@F2@", 
-                                                 notes = list(class_note("test")))@c_as_ged, "json2")
+test_that("Function FamilyLinkSpouse() @ L12", {
+  expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
+  expect_snapshot_value(FamilyLinkSpouse("@F123@")@c_as_ged, "json2")
+  expect_snapshot_value(FamilyLinkSpouse("@F2@", 
+                                                 notes = list(Note("test")))@c_as_ged, "json2")
 })
 
 
-test_that("Function class_child_family_link() @ L66", {
-  expect_error(class_child_family_link("@F123@", pedigree = "father"), 
+test_that("Function FamilyLinkChild() @ L65", {
+  expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
                                        regexp = "@pedigree has an invalid value")
-  expect_error(class_child_family_link("@F123@", pedigree = "OTHER"), 
+  expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 
                                        regexp = "An OTHER pedigree requires explanation in @pedigree_phrase")
-  expect_error(class_child_family_link("@F123@", confidence = "LOW"), 
+  expect_error(FamilyLinkChild("@F123@", confidence = "LOW"), 
                                        regexp = "@confidence has an invalid value")  
-  expect_error(class_child_family_link("@F123@", confidence_phrase = "Don't know"), 
+  expect_error(FamilyLinkChild("@F123@", confidence_phrase = "Don't know"), 
                                        regexp = "@confidence_phrase requires a @confidence")                                  
-  expect_snapshot_value(class_child_family_link("@F2@", 
+  expect_snapshot_value(FamilyLinkChild("@F2@", 
                                                  pedigree = "ADOPTED",
                                                  pedigree_phrase = "By people",
                                                  confidence = "CHALLENGED",

@@ -19,7 +19,7 @@
 #' @param language A character string of language tags as defined in BCP 47.
 #' @param languages A character vector of language tags as defined in BCP 47.
 #' @param media_type The media type as defined in RFC 2045.
-#' @param translations A `class_translation_txt` object or a list of them.
+#' @param translations A `TranslationText` object or a list of them.
 #' One for each alternate translation of the text.
 #' @param title The title of the multimedia record. This will supersede any title given
 #' in the record.
@@ -38,8 +38,8 @@
 #' It is recommended that the data in this field be formatted comma-separated with label:
 #'   value pairs
 #' @param source_text A verbatim copy of any description contained within the source. This can 
-#' either be a `class_translation_txt` object, a list of them, or a character vector of text. 
-#' If any `class_translation_txt` objects are provided, then you will be forced to define an
+#' either be a `TranslationText` object, a list of them, or a character vector of text. 
+#' If any `TranslationText` objects are provided, then you will be forced to define an
 #' associated language or media type.
 #' @param fact_type TODO
 #' @param fact_phrase Textual information that cannot be expressed in the fact type.
@@ -78,7 +78,7 @@
 #' comma and space. For example, a parish register of births, deaths, and marriages
 #' would be BIRT, DEAT, MARR. 
 #' @param territory The territory associated with the events covered. This can either be a 
-#' `class_place` object or a character string (a comma-separated string of region names, 
+#' `Place` object or a character string (a comma-separated string of region names, 
 #' ordered from smallest to largest). If a character string is provided then only the 
 #' region names can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
@@ -87,7 +87,7 @@
 #' @param confidence TODO
 #' @param confidence_phrase TODO
 #' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
-#' This can either be a `class_source_call_number` object, a list of them,
+#' This can either be a `SourceCallNumber` object, a list of them,
 #' or a character vector of call numbers. If a character vector is provided then only the 
 #' call numbers themselves can be recorded (and not associated medium). This option is easier if 
 #' associated information is not required. 
@@ -104,7 +104,7 @@
 #' For example in the name "de la Cruz", this value would be "de la".
 #' @param surname Surname or family name.
 #' @param suffix Name piece that appears after the given name and surname parts, e.g. Jr.
-#' @param name_pieces A `class_name_pieces` object defining the pieces of the full name.
+#' @param name_pieces A `PersonalNamePieces` object defining the pieces of the full name.
 #' @param pers_name TODO
 #' @param name_type TODO
 #' @param type_phrase TODO
@@ -113,7 +113,7 @@
 #' @param fact_val TODO
 #' @param fact_desc TODO
 #' @param place see territory
-#' @param address The address given either as a `class_address` object or as a character string.
+#' @param address The address given either as a `Address` object or as a character string.
 #' This would be as written on a mailing label with new lines separated by \\n.
 #' @param phone_numbers A character vector of phone numbers.
 #' @param emails A character vector of email addresses.
@@ -130,7 +130,7 @@
 #' treated as read-only.
 #' @param private A logical value indicating whether the associated record/fact should be
 #' treated as private. This allows them to be excluded on export.
-#' @param associations Associated individuals. This can either be a `class_association` object or a list of them.
+#' @param associations Associated individuals. This can either be a `Association` object or a list of them.
 #' @param age,husb_age,wife_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
@@ -144,10 +144,10 @@
 #' "U" (undetermined, the default),
 #' @param fam_links_chil TODO
 #' @param fam_links_spou TODO
-#' @param files A `class_media_file` object or a list of them. This refers to 1 or more external 
+#' @param files A `MediaFile` object or a list of them. This refers to 1 or more external 
 #' digital files. Grouped files should each pertain to the same context.
 #' @param repo_name The name of the repository.
-#' @param facts_recorded The facts recorded by the source. This can either be a `class_facts_recorded` object, 
+#' @param facts_recorded The facts recorded by the source. This can either be a `FactsRecorded` object, 
 #' a list of them, or a character vector of comma-delimited fact types. If a character vector is 
 #' provided then only the fact types themselves can be recorded (and not associated information). 
 #' This option is easier if associated information is not required. For example, a parish register of 
@@ -161,7 +161,7 @@
 #' @param short_title A shortened name of the source used for sorting, filing, and retrieving records.
 #' @param publication_facts When and where the record was created. For published works, this 
 #' includes information such as the city of publication, name of the publisher, and year of publication.
-#' @param repo_citations Associated repositories. This can either be a `class_repository_citation` object, 
+#' @param repo_citations Associated repositories. This can either be a `RepositoryCitation` object, 
 #' a list of them, or a character vector of XREFs of repository records. If a character vector is 
 #' provided then only the XREFs themselves can be recorded (and not associated information). 
 #' This option is easier if associated information is not required.
@@ -227,19 +227,19 @@
 #' The names must be given as a URI. See the GEDCOM specification for more information.
 #' 
 #' 
-#' @param media_links Associated multimedia. This can either be a `class_media_link` object, a list of them,
+#' @param media_links Associated multimedia. This can either be a `MediaLink` object, a list of them,
 #' or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param notes Associated notes. This can either be a `class_note` object, a list of them,
+#' @param notes Associated notes. This can either be a `Note` object, a list of them,
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param data_notes Associated notes about the source data. This can either be a `class_note` 
+#' @param data_notes Associated notes about the source data. This can either be a `Note` 
 #' object, a list of them, or a character vector of notes. If a character vector is provided 
 #' then only the notes themselves can be recorded (and not associated information). 
 #' This option is easier if associated information is not required.
-#' @param citations Associated sources. This can either be a `class_citation` object, a list of them,
+#' @param citations Associated sources. This can either be a `SourceCitation` object, a list of them,
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
@@ -261,34 +261,34 @@
 #' @param est Whether the date is near to the date given, and is calculated from other values.
 #' 
 #' @param date_greg A Gregorian date given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
+#' `DateGregorian` object.
 #' @param date_exact An exact date given either as a formatted GEDCOM string, or a
-#' `class_date_exact` object. If not given, it will default to today's date.
+#' `DateExact` object. If not given, it will default to today's date.
 #' @param date_period A date period given either as a formatted GEDCOM string, or a
-#' `class_date_period` object.
+#' `DatePeriod` object.
 #' @param date The date given either as a formatted GEDCOM string, or a
-#' `class_date_value` object.
+#' `DateValue` object.
 #' @param date_sort The date given either as a formatted GEDCOM string, or a
-#' `class_date_sort` object.
+#' `DateSorting` object.
 #' @param date_phrase Textual information that cannot be expressed in the date.
 #' @param start_date The start of the period/range given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
+#' `DateGregorian` object.
 #' @param end_date The end of the period/range given either as a formatted GEDCOM string, or a
-#' `class_date_greg` object.
+#' `DateGregorian` object.
 #' @param time The time given either as a formatted GEDCOM string, or a
-#' `class_time` object.
-#' @param created A `class_creation_date` object containing the date the record was created.
+#' `Time` object.
+#' @param created A `CreationDate` object containing the date the record was created.
 #' Creating an object with no parameters sets the date to today.
-#' @param updated A `class_change_date` object containing the date the record was updated.
+#' @param updated A `ChangeDate` object containing the date the record was updated.
 #' Creating an object with no parameters sets the date to today.
 #' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
-#' `class_date_exact` object.
+#' `DateExact` object.
 #' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
-#' `class_time` object.
+#' `Time` object.
 #' @param state_date The ordinance date given either as a formatted GEDCOM string, or a
-#' `class_date_exact` object.
+#' `DateExact` object.
 #' @param state_time The ordinance time given either as a formatted GEDCOM string, or a
-#' `class_time` object.
+#' `Time` object.
 #' 
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.

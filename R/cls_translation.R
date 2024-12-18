@@ -6,12 +6,12 @@
 #' @return An S7 object representing a GEDCOM text translation substructure.
 #' @export
 #' @tests
-#' expect_error(class_translation_txt(), regexp = "@text has too few elements")
-#' expect_error(class_translation_txt(letters[1:2]), regexp = "@text has too many elements")
-#' expect_error(class_translation_txt("test"), regexp = "A @language or @media_type must be defined")
-#' expect_snapshot_value(class_translation_txt("test", language = "en")@c_as_ged, "json2")
-class_translation_txt <- S7::new_class(
-  "class_translation_txt",
+#' expect_error(TranslationText(), regexp = "@text has too few elements")
+#' expect_error(TranslationText(letters[1:2]), regexp = "@text has too many elements")
+#' expect_error(TranslationText("test"), regexp = "A @language or @media_type must be defined")
+#' expect_snapshot_value(TranslationText("test", language = "en")@c_as_ged, "json2")
+TranslationText <- S7::new_class(
+  "TranslationText",
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){
@@ -55,7 +55,7 @@ parse_translations <- function(lines, location = NULL){
   if(length(tran_lst) == 0) return(list())
   
   lapply(tran_lst, \(x){
-    class_translation_txt(
+    TranslationText(
       text = find_ged_values(x, "TRAN|TEXT"),
       language = find_ged_values(x, c("TRAN|TEXT","LANG")),
       media_type = find_ged_values(x, c("TRAN|TEXT","MIME"))

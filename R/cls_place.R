@@ -5,24 +5,24 @@
 #' @return An S7 object representing a GEDCOM PLACE_STRUCTURE.
 #' @export
 #' @tests
-#' expect_error(class_place(), regexp = "@place_name has too few elements")
-#' expect_error(class_place(""), regexp = "@place_name has too few characters")
-#' expect_snapshot_value(class_place("here")@c_as_ged, "json2")
-#' expect_error(class_place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
-#' expect_snapshot_value(class_place("here", lat_long = "N12 E56")@c_as_ged, "json2")
-#' expect_error(class_place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
-#' expect_snapshot_value(class_place("here", place_translations = c(nl = "hier", da = "her"))@c_as_ged, "json2")
-#' expect_snapshot_value(class_place("here", 
+#' expect_error(Place(), regexp = "@place_name has too few elements")
+#' expect_error(Place(""), regexp = "@place_name has too few characters")
+#' expect_snapshot_value(Place("here")@c_as_ged, "json2")
+#' expect_error(Place("here", lat_long = "123 543"), regexp = "@lat_long is in an invalid format")
+#' expect_snapshot_value(Place("here", lat_long = "N12 E56")@c_as_ged, "json2")
+#' expect_error(Place("here", place_translations = "hier"), regexp = "@place_translations has too few elements")
+#' expect_snapshot_value(Place("here", place_translations = c(nl = "hier", da = "her"))@c_as_ged, "json2")
+#' expect_snapshot_value(Place("here", 
 #'                                   place_translations = c(nl = "hier", da = "her"),
 #'                                   lat_long = "N12 E56")@c_as_ged, "json2")
-#' expect_snapshot_value(class_place("here", 
+#' expect_snapshot_value(Place("here", 
 #'                                   language = "en",
 #'                                   place_translations = c(nl = "hier", da = "her"),
 #'                                   lat_long = "N12 E56",
 #'                                   note_xrefs = c("@N1@","@N562@"),
 #'                                   notes = "Thing 1")@c_as_ged, "json2")
-class_place <- S7::new_class(
-  "class_place",
+Place <- S7::new_class(
+  "Place",
   properties = list(
     place_name = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -65,10 +65,10 @@ class_place <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     
     c_lat = S7::new_property(S7::class_character,
@@ -113,7 +113,7 @@ parse_place <- function(lines, location = NULL){
     find_ged_values(lines, c(location, "PLAC", "MAP", "LONG"))
   )
   
-  class_place(
+  Place(
     place_name = place_name,
     place_form = find_ged_values(lines, c(location, "PLAC","FORM")),
     language = find_ged_values(lines, c(location, "PLAC","LANG")),

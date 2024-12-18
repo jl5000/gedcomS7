@@ -4,8 +4,8 @@
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM LDS_INDIVIDUAL_ORDINANCE.
 #' @export
-class_ordinance <- S7::new_class(
-  "class_ordinance",
+Ordinance <- S7::new_class(
+  "Ordinance",
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -15,7 +15,7 @@ class_ordinance <- S7::new_class(
                                   )
                                 }),
     date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::class_date_value"),
+                              S7::new_S3_class("gedcomS7::DateValue"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -27,7 +27,7 @@ class_ordinance <- S7::new_class(
                                      chk_input_size(value, 0, 1, 1)
                                    }),
     place = S7::new_property(S7::class_character | 
-                               S7::new_S3_class("gedcomS7::class_place"),
+                               S7::new_S3_class("gedcomS7::Place"),
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
                              }),
@@ -36,7 +36,7 @@ class_ordinance <- S7::new_class(
                                    chk_input_size(value, 0, 1)
                                  }),
     state_date = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::class_date_exact"), 
+                                    S7::new_S3_class("gedcomS7::DateExact"), 
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 0, 1),
@@ -44,7 +44,7 @@ class_ordinance <- S7::new_class(
                                     )
                                   }),
     state_time = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::class_time"),
+                                    S7::new_S3_class("gedcomS7::Time"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -56,16 +56,16 @@ class_ordinance <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -117,11 +117,11 @@ class_ordinance <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM LDS_SPOUSE_SEALING.
 #' @export
-class_spouse_sealing <- S7::new_class(
-  "class_spouse_sealing",
+SpouseSealing <- S7::new_class(
+  "SpouseSealing",
   properties = list( 
     date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::class_date_value"),
+                              S7::new_S3_class("gedcomS7::DateValue"),
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -133,7 +133,7 @@ class_spouse_sealing <- S7::new_class(
                                      chk_input_size(value, 0, 1, 1)
                                    }),
     place = S7::new_property(S7::class_character | 
-                               S7::new_S3_class("gedcomS7::class_place"),
+                               S7::new_S3_class("gedcomS7::Place"),
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
                              }),
@@ -143,7 +143,7 @@ class_spouse_sealing <- S7::new_class(
                                    chk_input_choice(value, val_ordinance_states("SLGS"))
                                  }),
     state_date = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::class_date_exact"), 
+                                    S7::new_S3_class("gedcomS7::DateExact"), 
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 0, 1),
@@ -151,7 +151,7 @@ class_spouse_sealing <- S7::new_class(
                                     )
                                   }),
     state_time = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::class_time"),
+                                    S7::new_S3_class("gedcomS7::Time"),
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 0, 1),
@@ -163,16 +163,16 @@ class_spouse_sealing <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_note") | 
+                               S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
                              validator = function(value){
-                               chk_input_S7classes(value, class_note, ".+")
+                               chk_input_S7classes(value, Note, ".+")
                              }),
     citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::class_citation") | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
                                  validator = function(value){
-                                   chk_input_S7classes(value, class_citation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
                                  }),
     
     c_as_ged = S7::new_property(
@@ -212,9 +212,9 @@ parse_ordinances <- function(rec_lines){
     tag <- parse_line_tag(x[1])
     
     if(tag == "SLGS"){
-      ord <- class_spouse_sealing()
+      ord <- SpouseSealing()
     } else {
-      ord <- class_ordinance(
+      ord <- Ordinance(
         ord_type = tag,
         fam_xref = find_ged_values(x, c(tag,"FAMC"))
       )

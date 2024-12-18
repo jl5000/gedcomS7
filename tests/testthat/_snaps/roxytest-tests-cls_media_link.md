@@ -1,4 +1,4 @@
-# Function class_media_link() @ L23
+# Function MediaLink() @ L23
 
     {
       "type": "character",

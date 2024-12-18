@@ -2,27 +2,27 @@
 
 # File R/cls_citation.R: @tests
 
-test_that("Function class_citation() @ L40", {
-  expect_snapshot_value(class_citation()@c_as_ged, "json2")
-  expect_error(class_citation("@1@",
+test_that("Function SourceCitation() @ L40", {
+  expect_snapshot_value(SourceCitation()@c_as_ged, "json2")
+  expect_error(SourceCitation("@1@",
                               fact_phrase = "phrase"),
                regexp = "@fact_phrase requires a @fact_type")
-  expect_error(class_citation("@1@",
+  expect_error(SourceCitation("@1@",
                               role = "HUSB"),
                regexp = "@role requires a @fact_type")
-  expect_error(class_citation("@1@",
+  expect_error(SourceCitation("@1@",
                               fact_type = "BIRT", role_phrase = "phrase"),
                regexp = "@role_phrase requires a @role")
-  expect_error(class_citation("@1@",
+  expect_error(SourceCitation("@1@",
                               certainty = "4"),
                regexp = "@certainty has an invalid value")
-  expect_error(class_citation("@1@",
+  expect_error(SourceCitation("@1@",
                               notes = ""),
                regexp = "@notes is in an invalid format")
-  expect_error(class_citation("@1@",
+  expect_error(SourceCitation("@1@",
                               fact_type = "birth"),
                regexp = "@fact_type has an invalid value")             
-  expect_snapshot_value(class_citation("@1@",
+  expect_snapshot_value(SourceCitation("@1@",
                                        where = "page 2",
                                        date = "2 JUN 2006",
                                        source_text = c("verbatim","text"),
@@ -31,7 +31,7 @@ test_that("Function class_citation() @ L40", {
                                        role = "HUSB",
                                        role_phrase = "phrase",
                                        certainty = "3",
-                                       media_links = class_media_link("@34E@"),
+                                       media_links = MediaLink("@34E@"),
                                        note_xrefs = c("@WER@",
                                                      "@4334@"),
                                        notes = c("these are","some notes"))@c_as_ged, "json2")

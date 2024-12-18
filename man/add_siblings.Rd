@@ -16,7 +16,10 @@ add_siblings(x, xref, sexes, sib_names = NULL)
 
 \item{sib_names}{A character vector of sibling's names. If provided, it must be
 the same length as the number of sexes. If you don't want to provide a name for a
-sibling, set the name to "". Surnames must be enclosed in forward slashes.}
+sibling, set the name to "".
+
+Surnames must be enclosed in forward slashes. If all names you supply do not
+contain forward slashes then surnames will be taken from the father (or mother).}
 }
 \value{
 A gedcom object with additional sibling records.
