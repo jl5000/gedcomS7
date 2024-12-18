@@ -1,4 +1,4 @@
-# Function DateValue() @ L370
+# Function DateValue() @ L388
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 DATE", "1 TIME 02:24", "1 PHRASE Phrase only"]
     }
 
-# Function DateSorting() @ L435
+# Function DateSorting() @ L459
 
     {
       "type": "character",

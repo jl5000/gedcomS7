@@ -3,8 +3,8 @@
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM EVENT_DETAIL (plus a bit more).
-class_fact <- S7::new_class(
-  "class_fact",
+Fact <- S7::new_class(
+  "Fact",
   abstract = TRUE,
   properties = list(
     # Not part of detail, but want them to appear first
@@ -24,6 +24,12 @@ class_fact <- S7::new_class(
     
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateValue"),
+                            getter = function(self) self@date,
+                            setter = function(self, value){
+                              if(is.character(value)) value <- toupper(value)
+                              self@date <- value
+                              self
+                            },
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),

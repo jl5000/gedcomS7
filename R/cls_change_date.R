@@ -7,7 +7,7 @@
 #' @tests
 #' expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
 #' expect_error(CreationDate(time = "123:34:45"), regexp = "@time is in an invalid format.")
-#' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005")@c_as_ged, "json2")
+#' expect_snapshot_value(CreationDate(date_exact = "1 jan 2005")@c_as_ged, "json2")
 #' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005",
 #'                                           time = "11:04:56")@c_as_ged, "json2")
 CreationDate <- S7::new_class(
@@ -20,6 +20,12 @@ CreationDate <- S7::new_class(
                                   # gets read in after this
                                   default = paste(as.integer(format(Sys.Date(), "%d")), 
                                                   toupper(format(Sys.Date(), "%b %Y"))),
+                                  getter = function(self) self@date_exact,
+                                  setter = function(self, value){
+                                    if(is.character(value)) value <- toupper(value)
+                                    self@date_exact <- value
+                                    self
+                                  },
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 1, 1),
@@ -91,7 +97,7 @@ parse_creation_date <- function(rec_lines){
   if(length(crea_date) == 0) return(NULL)
   
   CreationDate(
-    date_exact = toupper(crea_date),
+    date_exact = crea_date,
     time = find_ged_values(rec_lines, c("CREA","DATE","TIME"))
   )
 }
@@ -101,7 +107,7 @@ parse_change_date <- function(rec_lines){
   if(length(change_date) == 0) return(NULL)
   
   ChangeDate(
-    date_exact = toupper(change_date),
+    date_exact = change_date,
     time = find_ged_values(rec_lines, c("CHAN","DATE","TIME")),
     notes = parse_notes(rec_lines, "CHAN"),
     note_xrefs = find_ged_values(rec_lines, c("CHAN","SNOTE"))

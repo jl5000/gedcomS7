@@ -39,9 +39,9 @@ IndividualRecord <- S7::new_class(
                              )
                            }),
     facts = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_fact_indi"),
+                               S7::new_S3_class("gedcomS7::IndividualFact"),
                              validator = function(value){
-                               chk_input_S7classes(value, class_fact_indi)
+                               chk_input_S7classes(value, IndividualFact)
                              }),
     non_events = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::NonEvent"),

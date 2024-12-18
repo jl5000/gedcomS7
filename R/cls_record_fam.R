@@ -26,9 +26,9 @@ FamilyRecord <- S7::new_class(
   parent = Record,
   properties = list(
     facts = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::class_fact_fam"),
+                               S7::new_S3_class("gedcomS7::FamilyFact"),
                              validator = function(value){
-                               chk_input_S7classes(value, class_fact_fam)
+                               chk_input_S7classes(value, FamilyFact)
                              }),
     non_events = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::NonEvent"),

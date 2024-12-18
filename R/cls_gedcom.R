@@ -50,6 +50,12 @@ GedcomSource <- S7::new_class(
                                  }),
     data_pubdate = S7::new_property(S7::class_character | 
                                       S7::new_S3_class("gedcomS7::DateExact"),
+                                    getter = function(self) self@data_pubdate,
+                                    setter = function(self, value){
+                                      if(is.character(value)) value <- toupper(value)
+                                      self@data_pubdate <- value
+                                      self
+                                    },
                                     validator = function(value){
                                       c(
                                         chk_input_size(value, 0, 1),
@@ -138,6 +144,12 @@ GedcomHeader <- S7::new_class(
     creation_date = S7::new_property(S7::class_character | 
                                        S7::new_S3_class("gedcomS7::DateExact"),
                                      default = date_exact_current(),
+                                     getter = function(self) self@creation_date,
+                                     setter = function(self, value){
+                                       if(is.character(value)) value <- toupper(value)
+                                       self@creation_date <- value
+                                       self
+                                     },
                                      validator = function(value){
                                        c(
                                          chk_input_size(value, 0, 1),
@@ -326,9 +338,9 @@ new_gedcom <- function(my_language = "en"){
                               emails = "jalendrum@gmail.com")
   
   GedcomS7(gedcom_version = "7.0",
-                 source = sour,
-                 creation_date = date_exact_current(),
-                 default_language = my_language)
+           source = sour,
+           creation_date = date_exact_current(),
+           default_language = my_language)
 }
 
 parse_gedcom_header <- function(hd_lines){
@@ -349,7 +361,7 @@ parse_gedcom_header <- function(hd_lines){
       faxes = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","FAX")),
       web_pages = find_ged_values(hd_lines, c("HEAD","SOUR","CORP","WWW")),
       data_name = find_ged_values(hd_lines, c("HEAD","SOUR","DATA")),
-      data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")) |> toupper(),
+      data_pubdate = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE")),
       data_pubtime = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","DATE","TIME")),
       data_copyright = find_ged_values(hd_lines, c("HEAD","SOUR","DATA","COPR"))
     )
@@ -360,7 +372,7 @@ parse_gedcom_header <- function(hd_lines){
     ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
     source = sour,
     destination = find_ged_values(hd_lines, c("HEAD","DEST")),
-    creation_date = find_ged_values(hd_lines, c("HEAD","DATE")) |> toupper(),
+    creation_date = find_ged_values(hd_lines, c("HEAD","DATE")),
     creation_time = find_ged_values(hd_lines, c("HEAD","DATE","TIME")),
     subm_xref = find_ged_values(hd_lines, c("HEAD","SUBM")),
     gedcom_copyright = find_ged_values(hd_lines, c("HEAD","COPR")),

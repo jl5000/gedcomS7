@@ -19,12 +19,14 @@ For this reason xref identifiers are not supposed to be exposed to the typical u
 
 ## Summarising and controlling identifiers
 
-The `gedcomS7` package creates xrefs automatically when pushing creating new records. When creating a new record it will be given an xref identifying it as a standalone record that has not yet been pushed to the GEDCOM object:
+The `gedcomS7` package creates xrefs automatically when creating and pushing new records. When creating a new record it will be given an xref identifying it as a standalone record that has not yet been pushed to the GEDCOM object:
 
 ```{r}
 new_person <- IndividualRecord()
 new_person@xref
 ```
+This is a special xref which indicates to the code that this is a new record and not an existing one. It is important you do not change it.
+
 If you then push it to a GEDCOM object, it will assign it a proper xref:
 
 ```{r}

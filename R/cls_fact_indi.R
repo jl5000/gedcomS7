@@ -3,9 +3,9 @@
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_DETAIL (plus a bit more).
-class_fact_indi <- S7::new_class(
-  "class_fact_indi", 
-  parent = class_fact,
+IndividualFact <- S7::new_class(
+  "IndividualFact", 
+  parent = Fact,
   abstract = TRUE,
   properties = list(
     age = S7::new_property(S7::class_character,
@@ -53,13 +53,14 @@ class_fact_indi <- S7::new_class(
 #' expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y", age = "73y 4m",
 #'                                       age_phrase = "old")@c_as_ged, "json2")
 #' expect_snapshot_value(IndividualEvent("ADOP", fact_val = "Y",
+#'                                        date = "jan 1980",
 #'                                        fact_desc = "More info on adoption",
 #'                                        fam_xref = "@123@",
 #'                                        adop_parent = "WIFE",
 #'                                        adop_parent_phrase = "Gloria")@c_as_ged, "json2")
 IndividualEvent <- S7::new_class(
   "IndividualEvent",
-  parent = class_fact_indi,
+  parent = IndividualFact,
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -153,7 +154,7 @@ IndividualEvent <- S7::new_class(
 #'                        "json2")
 IndividualAttribute <- S7::new_class(
   "IndividualAttribute",
-  parent = class_fact_indi,
+  parent = IndividualFact,
   properties = list(
     c_as_ged = S7::new_property(
       S7::class_character, 

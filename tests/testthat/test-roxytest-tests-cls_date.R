@@ -46,12 +46,12 @@ test_that("Function DateApprox() @ L161", {
 })
 
 
-test_that("Function DatePeriod() @ L246", {
+test_that("Function DatePeriod() @ L252", {
   expect_equal(DatePeriod()@c_as_val, "")
   expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
   expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
-  expect_equal(DatePeriod("2 JUL 1989")@c_as_val, "FROM 2 JUL 1989")
-  expect_equal(DatePeriod(end_date = "2 JUL 1989")@c_as_val, "TO 2 JUL 1989")
+  expect_equal(DatePeriod("2 jul 1989")@c_as_val, "FROM 2 JUL 1989")
+  expect_equal(DatePeriod(end_date = "2 Jul 1989")@c_as_val, "TO 2 JUL 1989")
   expect_equal(
     DatePeriod(
       start_date = DateGregorian(1995, 6, 1)
@@ -88,7 +88,7 @@ test_that("Function DatePeriod() @ L246", {
 })
 
 
-test_that("Function DateRange() @ L332", {
+test_that("Function DateRange() @ L350", {
   expect_error(DateRange(), regexp = "has too few elements")
   expect_error(DateRange(""), regexp = "@start_date is in an invalid format")
   expect_error(DateRange(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -130,17 +130,17 @@ test_that("Function DateRange() @ L332", {
 })
 
 
-test_that("Function DateValue() @ L370", {
+test_that("Function DateValue() @ L388", {
   expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
   expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
                regexp = "A date period should not have a time defined")
   expect_equal(DateValue(DateGregorian(2005, 1, 5))@c_as_val, "5 JAN 2005")
-  expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
+  expect_snapshot_value(DateValue("aft 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
   expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
 })
 
 
-test_that("Function DateSorting() @ L435", {
+test_that("Function DateSorting() @ L459", {
   expect_error(DateSorting(""), regexp = "@date is in an invalid format")
   expect_error(DateSorting("FROM 2016"), regexp = "@date is in an invalid format")
   expect_error(DateSorting(DatePeriod(end_date = "1980")), 

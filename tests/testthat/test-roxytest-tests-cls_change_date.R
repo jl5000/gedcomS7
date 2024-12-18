@@ -5,13 +5,13 @@
 test_that("Function CreationDate() @ L13", {
   expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
   expect_error(CreationDate(time = "123:34:45"), regexp = "@time is in an invalid format.")
-  expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005")@c_as_ged, "json2")
+  expect_snapshot_value(CreationDate(date_exact = "1 jan 2005")@c_as_ged, "json2")
   expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005",
                                             time = "11:04:56")@c_as_ged, "json2")
 })
 
 
-test_that("Function ChangeDate() @ L59", {
+test_that("Function ChangeDate() @ L65", {
   expect_snapshot_value(ChangeDate(date = "1 JAN 2005",
                                           note_xrefs = "@23@",
                                           notes = c("note 1", "note 2"))@c_as_ged, "json2")

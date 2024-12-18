@@ -94,7 +94,7 @@ ged
 
 ## New records
 
-New records are created using the set of `class_record_*()` functions:
+New records are created using the set of `*Record()` functions:
 
 ```{r}
 luke <- IndividualRecord(

@@ -3,9 +3,9 @@
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM FAMILY_EVENT_DETAIL (plus a bit more).
-class_fact_fam <- S7::new_class(
-  "class_fact_fam", 
-  parent = class_fact,
+FamilyFact <- S7::new_class(
+  "FamilyFact", 
+  parent = Fact,
   abstract = TRUE,
   properties = list(
     husb_age = S7::new_property(S7::class_character,
@@ -78,7 +78,7 @@ class_fact_fam <- S7::new_class(
 #'                                       wife_age = "60y")@c_as_ged, "json2")    
 FamilyEvent <- S7::new_class(
   "FamilyEvent",
-  parent = class_fact_fam,
+  parent = FamilyFact,
   validator = function(self){
     if(!self@fact_type %in% val_family_event_types(TRUE))
       return("This is not a valid @fact_type for this event.")
@@ -98,7 +98,7 @@ FamilyEvent <- S7::new_class(
 #' expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")   
 FamilyAttribute <- S7::new_class(
   "FamilyAttribute",
-  parent = class_fact_fam,
+  parent = FamilyFact,
   validator = function(self){
     if(!self@fact_type %in% val_family_attribute_types(TRUE))
       return("This is not a valid @fact_type for this attribute.")

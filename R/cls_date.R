@@ -164,6 +164,12 @@ DateApprox <- S7::new_class(
   properties = list(
     date_greg = S7::new_property(S7::class_character | 
                                    S7::new_S3_class("gedcomS7::DateGregorian"),
+                                 getter = function(self) self@date_greg,
+                                 setter = function(self, value){
+                                   if(is.character(value)) value <- toupper(value)
+                                   self@date_greg <- value
+                                   self
+                                 },
                                  validator = function(value){
                                    c(
                                      chk_input_size(value, 1, 1),
@@ -208,8 +214,8 @@ DateApprox <- S7::new_class(
 #' expect_equal(DatePeriod()@c_as_val, "")
 #' expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
 #' expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
-#' expect_equal(DatePeriod("2 JUL 1989")@c_as_val, "FROM 2 JUL 1989")
-#' expect_equal(DatePeriod(end_date = "2 JUL 1989")@c_as_val, "TO 2 JUL 1989")
+#' expect_equal(DatePeriod("2 jul 1989")@c_as_val, "FROM 2 JUL 1989")
+#' expect_equal(DatePeriod(end_date = "2 Jul 1989")@c_as_val, "TO 2 JUL 1989")
 #' expect_equal(
 #'   DatePeriod(
 #'     start_date = DateGregorian(1995, 6, 1)
@@ -249,6 +255,12 @@ DatePeriod <- S7::new_class(
   properties = list(
     start_date = S7::new_property(S7::class_character |
                                     S7::new_S3_class("gedcomS7::DateGregorian"),
+                                  getter = function(self) self@start_date,
+                                  setter = function(self, value){
+                                    if(is.character(value)) value <- toupper(value)
+                                    self@start_date <- value
+                                    self
+                                  },
                                   validator = function(value){
                                     c(
                                       chk_input_size(value, 0, 1),
@@ -257,6 +269,12 @@ DatePeriod <- S7::new_class(
                                   }),
     end_date = S7::new_property(S7::class_character |
                                   S7::new_S3_class("gedcomS7::DateGregorian"),
+                                getter = function(self) self@end_date,
+                                setter = function(self, value){
+                                  if(is.character(value)) value <- toupper(value)
+                                  self@end_date <- value
+                                  self
+                                },
                                 validator = function(value){
                                   c(
                                     chk_input_size(value, 0, 1),
@@ -365,7 +383,7 @@ DateRange <- S7::new_class(
 #' expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
 #'              regexp = "A date period should not have a time defined")
 #' expect_equal(DateValue(DateGregorian(2005, 1, 5))@c_as_val, "5 JAN 2005")
-#' expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
+#' expect_snapshot_value(DateValue("aft 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 #' expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
 DateValue <- S7::new_class(
   "DateValue",
@@ -376,6 +394,12 @@ DateValue <- S7::new_class(
                               S7::new_S3_class("gedcomS7::DatePeriod") |
                               S7::new_S3_class("gedcomS7::DateRange") | 
                               S7::new_S3_class("gedcomS7::DateApprox"),
+                            getter = function(self) self@date,
+                            setter = function(self, value){
+                              if(is.character(value)) value <- toupper(value)
+                              self@date <- value
+                              self
+                            },
                             validator = function(value){
                               c(
                                 chk_input_size(value, 1, 1),
@@ -438,6 +462,12 @@ DateSorting <- S7::new_class(
   properties = list(
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateGregorian"),
+                            # getter = function(self) self@date,
+                            # setter = function(self, value){
+                            #   if(is.character(value)) value <- toupper(value)
+                            #   self@date <- value
+                            #   self
+                            # },
                             validator = function(value){
                               chk_input_pattern(value, reg_date_gregorian())
                             }),
