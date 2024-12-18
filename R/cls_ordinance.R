@@ -6,7 +6,6 @@
 #' @export
 class_ordinance <- S7::new_class(
   "class_ordinance",
-  package = "gedcomS7",
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -120,7 +119,6 @@ class_ordinance <- S7::new_class(
 #' @export
 class_spouse_sealing <- S7::new_class(
   "class_spouse_sealing",
-  package = "gedcomS7",
   properties = list( 
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::class_date_value"),

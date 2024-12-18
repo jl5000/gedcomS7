@@ -78,7 +78,6 @@ class_fact_fam <- S7::new_class(
 #'                                       wife_age = "60y")@c_as_ged, "json2")    
 class_event_fam <- S7::new_class(
   "class_event_fam",
-  package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
     if(!self@fact_type %in% val_family_event_types(TRUE))
@@ -99,7 +98,6 @@ class_event_fam <- S7::new_class(
 #' expect_error(class_attr_fam("FACT"), regexp = "A @fact_val is required for this fact")   
 class_attr_fam <- S7::new_class(
   "class_attr_fam",
-  package = "gedcomS7",
   parent = class_fact_fam,
   validator = function(self){
     if(!self@fact_type %in% val_family_attribute_types(TRUE))

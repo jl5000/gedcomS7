@@ -22,7 +22,6 @@
 #'                                        top = 5, left = 200)@c_as_ged, "json2")
 class_media_link <- S7::new_class(
   "class_media_link",
-  package = "gedcomS7",
   properties = list(
     media_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                   validator = function(value){

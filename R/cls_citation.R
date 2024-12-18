@@ -39,7 +39,6 @@
 #'                                      notes = c("these are","some notes"))@c_as_ged, "json2")
 class_citation <- S7::new_class(
   "class_citation",
-  package = "gedcomS7",
   properties = list(
     sour_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){

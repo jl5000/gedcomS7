@@ -1,3 +1,5 @@
+# This contains all validation functions for classes and therefore must appear
+# before them in filename
 
 #' Validate the size of an input
 #'

@@ -7,7 +7,6 @@
 #' @export
 class_source_call_number <- S7::new_class(
   "class_source_call_number",
-  package = "gedcomS7",
   properties = list(
     call_number = S7::new_property(S7::class_character,
                                     validator = function(value){
@@ -65,7 +64,6 @@ parse_call_numbers <- function(lines, location){
 #'                                                 call_numbers = c("ABC","123"))@c_as_ged, "json2")
 class_repository_citation <- S7::new_class(
   "class_repository_citation",
-  package = "gedcomS7",
   properties = list(
     repo_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){
@@ -138,7 +136,6 @@ parse_repo_citations <- function(rec_lines){
 #'                                            territory = "somewhere")@c_as_ged, "json2")
 class_facts_recorded <- S7::new_class(
   "class_facts_recorded",
-  package = "gedcomS7",
   properties = list(
     fact_types = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -204,7 +201,6 @@ parse_events_recorded <- function(rec_lines){
 #' @export
 class_record_sour <- S7::new_class(
   "class_record_sour", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     facts_recorded = S7::new_property(S7::class_list | 

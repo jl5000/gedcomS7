@@ -18,7 +18,6 @@
 #' expect_equal(class_time(14, 28, utc = FALSE)@c_as_val, "14:28")
 class_time <- S7::new_class(
   "class_time",
-  package = "gedcomS7",
   properties = list(
     hour = S7::new_property(S7::class_numeric,
                             validator = function(value){

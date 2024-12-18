@@ -24,7 +24,6 @@
 #'                        "json2")
 class_media_file <- S7::new_class(
   "class_media_file",
-  package = "gedcomS7",
   properties = list(
     location = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -101,7 +100,6 @@ class_media_file <- S7::new_class(
 #'                                          notes = "Very loud")@c_as_ged, "json2")            
 class_record_media <- S7::new_class(
   "class_record_media", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     files = S7::new_property(S7::class_list | 

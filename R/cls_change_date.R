@@ -12,7 +12,6 @@
 #'                                           time = "11:04:56")@c_as_ged, "json2")
 class_creation_date <- S7::new_class(
   "class_creation_date",
-  package = "gedcomS7",
   properties = list(
     date_exact = S7::new_property(S7::class_character | 
                                     S7::new_S3_class("gedcomS7::class_date_exact"), 
@@ -59,7 +58,6 @@ class_creation_date <- S7::new_class(
 #'                                         notes = c("note 1", "note 2"))@c_as_ged, "json2")
 class_change_date <- S7::new_class(
   "class_change_date", 
-  package = "gedcomS7",
   parent = class_creation_date,
   properties = list(
     note_xrefs = S7::new_property(S7::class_character,

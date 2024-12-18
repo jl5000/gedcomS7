@@ -59,7 +59,6 @@ class_fact_indi <- S7::new_class(
 #'                                        adop_parent_phrase = "Gloria")@c_as_ged, "json2")
 class_event_indi <- S7::new_class(
   "class_event_indi",
-  package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
@@ -154,7 +153,6 @@ class_event_indi <- S7::new_class(
 #'                        "json2")
 class_attr_indi <- S7::new_class(
   "class_attr_indi",
-  package = "gedcomS7",
   parent = class_fact_indi,
   properties = list(
     c_as_ged = S7::new_property(
@@ -224,6 +222,6 @@ parse_facts_indi <- function(rec_lines){
 }
 
 # DOESN'T WORK
-# class_indi_birth <- S7::new_class("class_indi_birth", package = "gedcomS7", parent = class_event_indi,
+# class_indi_birth <- S7::new_class("class_indi_birth", parent = class_event_indi,
 #   properties = list(fact_type = S7::new_property(S7::class_character, getter = function(self) "BIRT"))
 # )

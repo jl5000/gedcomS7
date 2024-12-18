@@ -11,7 +11,6 @@
 #'                                                notes = list(class_note("test")))@c_as_ged, "json2")
 class_spouse_family_link <- S7::new_class(
   "class_spouse_family_link",
-  package = "gedcomS7",
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -65,7 +64,6 @@ class_spouse_family_link <- S7::new_class(
 #'                                                note_xrefs = c("@242@","@GJFJ@"))@c_as_ged, "json2")
 class_child_family_link <- S7::new_class(
   "class_child_family_link", 
-  package = "gedcomS7",
   parent = class_spouse_family_link,
   properties = list(
     pedigree = S7::new_property(S7::class_character,

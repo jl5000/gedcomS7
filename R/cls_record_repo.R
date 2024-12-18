@@ -8,7 +8,6 @@
 #' @export
 class_record_repo <- S7::new_class(
   "class_record_repo", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     repo_name = S7::new_property(S7::class_character,

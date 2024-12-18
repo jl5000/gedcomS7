@@ -23,7 +23,6 @@
 #'                                    user_ids = month.abb[1:6])@c_ids_as_ged, "json2")
 class_record_fam <- S7::new_class(
   "class_record_fam", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     facts = S7::new_property(S7::class_list | 

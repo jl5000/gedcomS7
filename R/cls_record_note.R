@@ -13,7 +13,6 @@
 #'                                         language = "en")@c_as_ged, "json2")
 class_record_note <- S7::new_class(
   "class_record_note", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     text = S7::new_property(S7::class_character,

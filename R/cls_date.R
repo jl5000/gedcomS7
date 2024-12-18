@@ -18,7 +18,6 @@ class_date <- S7::new_class("class_date", abstract = TRUE)
 #' expect_equal(class_date_exact(28, 7, 12)@as_date, as.Date("28-07-12"))
 class_date_exact <- S7::new_class(
   "class_date_exact", 
-  package = "gedcomS7",
   parent = class_date,
   properties = list(
     year = S7::new_property(S7::class_numeric,
@@ -96,7 +95,6 @@ date_exact_current <- function(){
 #' expect_equal(class_date_greg(193, bce = TRUE)@c_as_val, "193 BCE")
 class_date_greg <- S7::new_class(
   "class_date_greg", 
-  package = "gedcomS7",
   parent = class_date,
   properties = list(
     year = S7::new_property(S7::class_numeric,
@@ -162,7 +160,6 @@ class_date_greg <- S7::new_class(
 #'                                "EST AUG 2004")
 class_date_approx <- S7::new_class(
   "class_date_approx", 
-  package = "gedcomS7",
   parent = class_date,
   properties = list(
     date_greg = S7::new_property(S7::class_character | 
@@ -248,7 +245,6 @@ class_date_approx <- S7::new_class(
 #'   ), regexp = "Start date comes after end date")
 class_date_period <- S7::new_class(
   "class_date_period", 
-  package = "gedcomS7",
   parent = class_date,
   properties = list(
     start_date = S7::new_property(S7::class_character |
@@ -335,7 +331,6 @@ class_date_period <- S7::new_class(
 #'   ), regexp = "Start date comes after end date")
 class_date_range <- S7::new_class(
   "class_date_range", 
-  package = "gedcomS7",
   parent = class_date_period,
   properties = list(
     
@@ -374,7 +369,6 @@ class_date_range <- S7::new_class(
 #' expect_snapshot_value(class_date_value("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
 class_date_value <- S7::new_class(
   "class_date_value",
-  package = "gedcomS7",
   parent = class_date,
   properties = list(
     date = S7::new_property(S7::class_character | 
@@ -440,7 +434,6 @@ class_date_value <- S7::new_class(
 #' expect_snapshot_value(class_date_sort("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 class_date_sort <- S7::new_class(
   "class_date_sort",
-  package = "gedcomS7",
   parent = class_date_value,
   properties = list(
     date = S7::new_property(S7::class_character | 

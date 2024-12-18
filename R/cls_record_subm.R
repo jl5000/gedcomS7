@@ -7,7 +7,6 @@
 #' @export
 class_record_subm <- S7::new_class(
   "class_record_subm", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     subm_name = S7::new_property(S7::class_character,

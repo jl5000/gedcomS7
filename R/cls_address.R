@@ -25,7 +25,6 @@
 #'                                     postal_code = "81309")@c_as_ged, "json2")
 class_address <- S7::new_class(
   "class_address",
-  package = "gedcomS7",
   properties = list(
     full = S7::new_property(S7::class_character,
                             validator = function(value){

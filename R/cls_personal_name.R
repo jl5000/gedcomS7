@@ -13,7 +13,6 @@
 #'                                         suffix = "Jr")@c_as_ged, "json2")
 class_name_pieces <- S7::new_class(
   "class_name_pieces",
-  package = "gedcomS7",
   properties = list(
     prefix = S7::new_property(S7::class_character,
                               validator = function(value){
@@ -70,7 +69,6 @@ class_name_pieces <- S7::new_class(
 #'                                                name_pieces = class_name_pieces(nickname = "JJ"))@c_as_ged, "json2")
 class_personal_name_tran <- S7::new_class(
   "class_personal_name_tran",
-  package = "gedcomS7",
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -123,7 +121,6 @@ class_personal_name_tran <- S7::new_class(
 #'                                           citations = c("@S1@","@S3@","@S7@"))@c_as_ged, "json2")
 class_personal_name <- S7::new_class(
   "class_personal_name",
-  package = "gedcomS7",
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  validator = function(value){

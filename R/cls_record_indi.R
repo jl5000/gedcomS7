@@ -23,7 +23,6 @@
 #'                                         fam_links_spou = "@F67@")@c_as_ged, "json2")
 class_record_indi <- S7::new_class(
   "class_record_indi", 
-  package = "gedcomS7",
   parent = class_record,
   properties = list(
     pers_names = S7::new_property(S7::class_list | 

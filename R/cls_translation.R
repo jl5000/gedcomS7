@@ -12,7 +12,6 @@
 #' expect_snapshot_value(class_translation_txt("test", language = "en")@c_as_ged, "json2")
 class_translation_txt <- S7::new_class(
   "class_translation_txt",
-  package = "gedcomS7",
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){

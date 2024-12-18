@@ -23,7 +23,6 @@
 #'                                   notes = "Thing 1")@c_as_ged, "json2")
 class_place <- S7::new_class(
   "class_place",
-  package = "gedcomS7",
   properties = list(
     place_name = S7::new_property(S7::class_character,
                                   validator = function(value){

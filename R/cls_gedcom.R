@@ -230,7 +230,6 @@ class_gedcom_header <- S7::new_class(
 class_gedcomS7 <- S7::new_class(
   "class_gedcomS7",
   parent = class_gedcom_header,
-  package = "gedcomS7",
   properties = list(
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE,
                                            validator = function(value){
