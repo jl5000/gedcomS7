@@ -22,3 +22,4 @@ Suggests:
     uuid,
     rmarkdown
 Config/testthat/edition: 3
+URL: https://jl5000.github.io/gedcomS7/

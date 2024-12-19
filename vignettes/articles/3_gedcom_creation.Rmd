@@ -47,7 +47,7 @@ The properties of the main GEDCOM object are either:
 
 * Lists of records of each type (`@subm`, `@indi`, `@fam`, `@sour`, `@repo`, `@media`, and `@note`);
 * Those that summarise and control the cross-reference identifiers (xrefs) given to records (`@c_xrefs`, `@xref_prefixes`, and `@c_next_xref`);
-* Those that allow the user to control whether creation/change dates are added to records as they are pushed to the GEDCOM object (`@update_change_dates` and `@add_creation_dates`);
+* Those that allow the user to control whether creation/change dates are added to records as they are pushed to the GEDCOM object (`@update_change_dates` and `@add_creation_dates`) - they don't by default as it can bloat files considerably;
 * Those that show you what the GEDCOM file representation looks like (`@c_as_ged`) and the representation of the header (`@c_hd_as_ged`);
 * Properties of the header (metadata about the file as a whole).
 

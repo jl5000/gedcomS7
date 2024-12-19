@@ -1,10 +1,5 @@
 ---
-title: "Individual records"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Individual records}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "Records"
 ---
 
 ```{r, include = FALSE}
@@ -15,6 +10,15 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
+
+New records are created using the set of `*Record()` functions:
+
+```{r}
+luke <- IndividualRecord(
+  sex = "M",
+  pers_names = "Luke /Skywalker/"
+)
+```
 
 Adding individuals to a tidyged object can be achieved with the `add_indi()` function. The sex of the individual can be specified with the `sex` parameter, which is a single letter: M(ale), F(emale), (Interse)X, U(nknown), N(ot recorded). If no sex is specified, a value of "U" is used.
 

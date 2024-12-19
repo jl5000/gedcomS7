@@ -6,3 +6,6 @@
 ^utils_census
 ^gh_workflows
 ^vignettes/articles$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
