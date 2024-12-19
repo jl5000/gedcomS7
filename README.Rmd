@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and many of the other packages in the `gedcompendium`. The key changes are:
 
-* The package is designed to work with GEDCOM 7.1, rather than 5.5.5.
+* The package is designed to work with GEDCOM 7.0, rather than 5.5.5.
 * The package has minimal dependencies; currently only one: [`S7`](https://rconsortium.github.io/S7/).
 * GEDCOM files are stored as S7 objects rather than dataframes.
 * The package contains all functionality to create, edit, and interrogate GEDCOM files.
@@ -37,53 +37,22 @@ remotes::install_github("jl5000/gedcomS7")
 
 ## Key limitations
 
+When importing existing GEDCOM files, you should ensure that they are error free. This package assumes imported GEDCOM files are valid and very few validation checks are carried out. Several GEDCOM validators are available, including an online validator at https://ged-inline.org/.
+      
 The package does not currently support extension tags. If you import a file with these features, the package may behave unpredictably.
 
-## Import / creation
+## Example
 
-The intent is to allow the user to import GEDCOM files or create them from scratch, creating an S7 object representation:
+GEDCOM files can be imported or created from scratch, creating an S7 object representation:
 
 ```{r example}
 library(gedcomS7)
 
 ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
-ged
 
 ged <- new_gedcom()
 ged
 ```
-
-Once you have created or imported your file, you can set various high level options for your file. 
-
-## Options
-
-You can influence how the gedcom object is modified as you add and edit records within it. 
-
-The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
-
-```{r}
-ged@xref_prefixes
-```
-
-The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
-
-Since we have no existing records in our gedcom object, the next xrefs of each type will be:
-
-```{r}
-ged@c_next_xref
-```
-
-Note: xrefs are not supposed to be exposed to the typical user since they can change when being imported into a new system. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console. If a `shiny` app is created, then xrefs can be hidden from the user.
-
-You can also use the `add_creation_dates` and `update_change_dates` properties to add or update the date a record was created/edited (they don't by default as it can bloat files considerably).
-
-```{r}
-ged@add_creation_dates <- TRUE
-ged@update_change_dates <- TRUE
-```
-
-## GEDCOM metadata
-
 The metadata for the gedcom object (ged@...) can be modified.
 
 ```{r}
@@ -91,42 +60,42 @@ ged@notes <- "This file contains my family tree"
 ged@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
 ged
 ```
-
-## New records
-
-New records are created using the set of `*Record()` functions:
+New records can be created and 'pushed' to the GEDCOM object:
 
 ```{r}
-luke <- IndividualRecord(
-  sex = "M",
-  pers_names = "Luke /Skywalker/"
-)
+subm_record <- SubmitterRecord(subm_name = "Jamie Lendrum")
+indi_record <- IndividualRecord(sex = "M",
+                                pers_names = PersonalName("Joe /Bloggs/"))
+sour_record <- SourceRecord(full_title = "Census of England and Wales, 1921")
+
+ged <- ged |> 
+  push_record(subm_record) |> 
+  push_record(indi_record) |> 
+  push_record(sour_record)
 ```
 
-
-## The push/pull paradigm
-
-New record objects are added to an existing gedcom by using `push_record()`:
+Existing records, must be 'pulled' from the object, edited, and then 'pushed' back.
 
 ```{r}
-ged <- push_record(ged, luke)
-ged
+joe_bloggs <- pull_record(ged, "@I1@")
+joe_bloggs@notes <- "He had a dog called Rover"
+ged <- push_record(ged, joe_bloggs)
 ```
 
-Once in the gedcom object, they are stored as raw gedcom data as a character vector:
+The entire GEDCOM representation can be seen with the `@c_as_ged` property:
 
 ```{r}
-ged@indi[[1]]
+ged@c_as_ged
 ```
+The object can be exported to a GEDCOM file:
 
-If you want to edit a record, you must pull it from the GEDCOM object, which will take a copy and parse it into an editable S7 object:
-
-```{r}
-pull_record(ged, "@I1@")
+```{r, eval=FALSE}
+write_gedcom(ged, "my_gedcom.ged")
 ```
 
 ## References
 
+1. The FamilySearch GEDCOM Specification, Prepared by the Family History Department, The Church of Jesus Christ of Latter-day Saints. https://gedcom.io/specifications/FamilySearchGEDCOMv7.html
 
 
 ## Notice
