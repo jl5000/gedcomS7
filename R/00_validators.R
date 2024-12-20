@@ -12,6 +12,7 @@
 #' (depending on input type).
 #'
 #' @return Either a character string giving an error message, or NULL.
+#' @keywords internal
 #' @tests
 #' expect_equal(chk_input_size(letters, min_len = 27),
 #'                             "has too few elements. The minimum is 27.")
@@ -65,6 +66,7 @@ chk_input_size <- function(input,
 #' @param pattern The regex pattern each element must match.
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_equal(chk_input_pattern(letters, "[a-y]"),
 #'              "is in an invalid format: z")
@@ -89,6 +91,7 @@ chk_input_pattern <- function(input, pattern) {
 #' @param choices A vector of valid values.
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_match(chk_input_choice(month.abb, month.abb[-6]),
 #'              "has an invalid value: Jun")
@@ -115,6 +118,7 @@ chk_input_choice <- function(input, choices) {
 #' @param backup_pattern Need to handle List of mixed stuff vs character vector vs list of characters
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 chk_input_S7classes <- function(input, target_class, backup_pattern = NULL){
   
   if("S7_object" %in% class(input)){
@@ -146,6 +150,7 @@ chk_input_S7classes <- function(input, target_class, backup_pattern = NULL){
 #' @param bce Whether the date occurs before the common era.
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_equal(chk_input_date_cpts(numeric(),1,2),
 #'              "Year must be defined")
@@ -190,6 +195,7 @@ chk_input_date_cpts <- function(year, month, day, bce = FALSE){
 #' @param end_date The end date given either as a `DateGregorian` or a GEDCOM date string.
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_null(chk_input_dates(NULL,NULL))
 #' expect_null(chk_input_dates("2002-09-08",NULL))
@@ -218,6 +224,7 @@ chk_input_dates <- function(start_date, end_date){
 #' @inheritParams chk_input_size 
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_equal(chk_whole_number(1.1),
 #'              "must be a whole number")
@@ -241,6 +248,7 @@ chk_whole_number <- function(input){
 #' @param parent_name The name of the parent input used in any error messages.
 #'
 #' @inherit chk_input_size return
+#' @keywords internal
 #' @tests
 #' expect_null(chk_input_parents(character(), "@child", character(), "@parent"))
 #' expect_null(chk_input_parents(character(), "@child", "parent", "@parent"))

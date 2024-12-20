@@ -103,3 +103,4 @@ An S7 object representing a GEDCOM INDIVIDUAL_EVENT_DETAIL (plus a bit more).
 \description{
 Create an individual fact object
 }
+\keyword{internal}

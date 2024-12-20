@@ -15,3 +15,4 @@ A new character vector of gedcom lines.
 \description{
 Combine continuation lines into the parent line
 }
+\keyword{internal}

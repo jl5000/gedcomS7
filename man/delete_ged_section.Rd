@@ -23,3 +23,4 @@ will also be replaced with a VOID pointer.
 \description{
 Delete a structure from GEDCOM lines
 }
+\keyword{internal}

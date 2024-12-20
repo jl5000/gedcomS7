@@ -101,3 +101,4 @@ An S7 object representing a GEDCOM EVENT_DETAIL (plus a bit more).
 \description{
 Create a fact object
 }
+\keyword{internal}

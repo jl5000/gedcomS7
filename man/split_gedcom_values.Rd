@@ -15,3 +15,4 @@ A new character vector of gedcom lines, possibly expanded to include CONT lines.
 \description{
 This function introduces CONT lines for line values that contain line breaks.
 }
+\keyword{internal}

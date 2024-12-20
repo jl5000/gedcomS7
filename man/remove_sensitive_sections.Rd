@@ -17,3 +17,4 @@ A vector of sanitised GEDCOM lines.
 \description{
 Remove gedcom structures marked as sensitive
 }
+\keyword{internal}

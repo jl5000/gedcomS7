@@ -19,3 +19,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate a list to ensure it contains elements of the correct S7 class
 }
+\keyword{internal}

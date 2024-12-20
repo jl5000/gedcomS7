@@ -31,3 +31,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate the size of an input
 }
+\keyword{internal}

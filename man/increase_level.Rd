@@ -17,3 +17,4 @@ The vector of GEDCOM lines with incremented levels.
 \description{
 Increase the level of a vector of GEDCOM lines
 }
+\keyword{internal}

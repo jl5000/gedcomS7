@@ -16,3 +16,4 @@ inappropriate mentions of xrefs are found.
 \description{
 Check gedcom lines for inappropriate mentions of xrefs
 }
+\keyword{internal}

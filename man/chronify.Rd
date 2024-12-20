@@ -16,3 +16,4 @@ zero length input, or takes the value of the first element.
 \description{
 The name comes from 'Chr-one-ify'.
 }
+\keyword{internal}

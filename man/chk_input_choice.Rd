@@ -17,3 +17,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate an input against a set of valid values.
 }
+\keyword{internal}

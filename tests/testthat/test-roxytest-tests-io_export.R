@@ -25,7 +25,7 @@ test_that("Function write_gedcom() @ L36", {
 })
 
 
-test_that("Function date_diff() @ L162", {
+test_that("Function date_diff() @ L164", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
@@ -36,7 +36,7 @@ test_that("Function date_diff() @ L162", {
 })
 
 
-test_that("Function split_gedcom_values() @ L245", {
+test_that("Function split_gedcom_values() @ L250", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

@@ -17,3 +17,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate the regex pattern(s) of a character vector
 }
+\keyword{internal}

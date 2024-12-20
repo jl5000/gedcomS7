@@ -78,6 +78,7 @@ remove_at_escapes <- function(lines){
 #' @param lines A character vector of gedcom lines.
 #'
 #' @return A new character vector of gedcom lines.
+#' @keywords internal
 combine_cont_lines <- function(lines) {
   
   reg_cont <- sprintf("^\\d+ CONT (.*)$")

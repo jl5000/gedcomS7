@@ -17,3 +17,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate a date range/period
 }
+\keyword{internal}

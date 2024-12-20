@@ -10,6 +10,7 @@
 #' @return The character vector of GEDCOM lines without the structure referenced by
 #' the line_no. If the structure is an entire record, then any xref pointers to it
 #' will also be replaced with a VOID pointer.
+#' @keywords internal
 delete_ged_section <- function(lines, line_no, containing_line = TRUE){
   
   lvl <- parse_line_level(lines[line_no])
@@ -92,6 +93,7 @@ find_ged_values <- function(lines,
 #'
 #' @return A character vector of length one. It is either an empty string for a
 #' zero length input, or takes the value of the first element.
+#' @keywords internal
 chronify <- function(x){
   if(length(x) == 0) return("")
   as.character(x)[1]
@@ -103,6 +105,7 @@ chronify <- function(x){
 #' @param by The number of levels to increment.
 #'
 #' @return The vector of GEDCOM lines with incremented levels.
+#' @keywords internal
 increase_level <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   

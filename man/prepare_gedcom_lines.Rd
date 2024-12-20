@@ -15,3 +15,4 @@ A vector of GEDCOM lines ready for export.
 \description{
 Prepare GEDCOM lines for export
 }
+\keyword{internal}

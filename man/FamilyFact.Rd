@@ -105,3 +105,4 @@ An S7 object representing a GEDCOM FAMILY_EVENT_DETAIL (plus a bit more).
 \description{
 Create a family fact object
 }
+\keyword{internal}

@@ -74,6 +74,7 @@ write_gedcom <- function(gedcom,
 #' @param restriction Whether to remove structures marked as "CONFIDENTIAL" or "PRIVACY".
 #'
 #' @return A vector of sanitised GEDCOM lines.
+#' @keywords internal
 remove_sensitive_sections <- function(lines, restriction){
   
   restriction_rows <- function(lines, restriction){
@@ -151,6 +152,7 @@ is_alive <- function(x, xref, max_age = 100){
 #'
 #' @return A numeric value giving the number of years. A numeric value less than zero means no
 #' determination could be made.
+#' @keywords internal
 #' @tests
 #' expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
 #' expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
@@ -176,6 +178,7 @@ date_diff <- function(date1,
 #' @param lines A character vector of gedcom lines.
 #'
 #' @return A vector of GEDCOM lines ready for export.
+#' @keywords internal
 prepare_gedcom_lines <- function(lines){
   
   check_for_xref_mentions(lines)
@@ -190,6 +193,7 @@ prepare_gedcom_lines <- function(lines){
 #'
 #' @return Nothing. If applicable, the function will result in a warning if
 #' inappropriate mentions of xrefs are found.
+#' @keywords internal
 check_for_xref_mentions <- function(lines){
   
   # Check for xrefs mentioned beyond pointers
@@ -228,6 +232,7 @@ add_at_escapes <- function(lines){
 #' @param lines A character vector of gedcom lines.
 #' 
 #' @return A new character vector of gedcom lines, possibly expanded to include CONT lines.
+#' @keywords internal
 #' @tests
 #' test1 <- c(
 #' "0 TEMP",

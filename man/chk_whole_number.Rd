@@ -15,3 +15,4 @@ Either a character string giving an error message, or NULL.
 \description{
 Validate an numeric input to be a whole number
 }
+\keyword{internal}

@@ -3,6 +3,7 @@
 #' 
 #' @inheritParams prop_definitions 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_DETAIL (plus a bit more).
+#' @keywords internal
 IndividualFact <- S7::new_class(
   "IndividualFact", 
   parent = Fact,
