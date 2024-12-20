@@ -2,18 +2,18 @@
 % Please edit documentation in R/fn_get.R
 \name{get_fam_partners}
 \alias{get_fam_partners}
-\title{Identify all partners in a Family Group}
+\title{Identify all partners in a family}
 \usage{
 get_fam_partners(x, xref)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
-\item{xref}{The xref of a Family Group record.}
+\item{xref}{The xref of a Family record.}
 }
 \value{
 A character vector of xrefs.
 }
 \description{
-Identify all partners in a Family Group
+Identify all partners in a family
 }

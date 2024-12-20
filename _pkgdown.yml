@@ -2,41 +2,33 @@ url: https://jl5000.github.io/gedcomS7/
 template:
   bootstrap: 5
 reference:
-- title: "GEDCOM Creation"
-  desc: "Functions for creating, importing, and exporting GEDCOM files"
-  contents:
-  - new_gedcom
-  - read_gedcom
-  - write_gedcom
-- title: "GEDCOM Classes"
-  desc: "Classes to create and edit GEDCOM objects"
+- title: "Classes"
+- subtitle: "GEDCOM Classes"
+  desc: "Classes to create new GEDCOM objects from scratch"
   contents:
   - starts_with("Gedcom")
-- title: "Record Classes"
-  desc: "Classes to create and edit GEDCOM records"
+- subtitle: "Record Classes"
+  desc: "Classes to create new GEDCOM records"
   contents:
   - ends_with("Record")
-  - pull_record
-  - push_record
-- title: "Location Classes"
+- subtitle: "Location Classes"
   desc: "Classes to create and edit location objects"
   contents:
   - Place
   - Address
-- title: "Date/Time Classes"
+- subtitle: "Date/Time Classes"
   desc: "Classes to create and edit Date/Time objects"
   contents: 
   - starts_with("Date")
-  - date_exact_current
   - Time
   - ends_with("Date")
-- title: "Record Link Classes"
+- subtitle: "Record Link Classes"
   desc: "Classes to create linkages to other records"
   contents:
   - matches("Link")
   - matches("Citation")
   - Association
-- title: "Individual/Family Fact Classes"
+- subtitle: "Individual/Family Fact Classes"
   desc: "Classes to create facts about individuals and families"
   contents:
   - starts_with("PersonalName")
@@ -44,7 +36,7 @@ reference:
   - ends_with("Attribute")
   - Ordinance
   - SpouseSealing
-- title: "Other Classes"
+- subtitle: "Other Classes"
   desc: "Classes used to provide supplementary information in records"
   contents:
   - Note
@@ -52,12 +44,22 @@ reference:
   - FactsRecorded
   - SourceCallNumber
   - MediaFile
+- title: "GEDCOM Creation"
+  desc: "Functions for creating, importing, and exporting pre-populated GEDCOM files"
+  contents:
+  - new_gedcom
+  - read_gedcom
+  - write_gedcom
+- title: "Record Editing"
+  desc: "Functions to edit GEDCOM records"
+  contents:
+  - pull_record
+  - push_record
 - title: "Batch Creation/Deletion of Records"
-  desc: "Functions that allow you to create and delete multiple records at once"
+  desc: "Functions that allow you to create records for relatives and delete multiple records at once"
   contents:
   - starts_with("add_")
-  - rm_records
-  - remove_living
+  - starts_with("rm_")
 - title: "Finding Records"
   desc: "Functions that allow you to find xrefs of records that match criteria"
   contents:

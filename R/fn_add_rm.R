@@ -74,7 +74,7 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
 }
 
 
-#' Add a spouse for an individual
+#' Add a spouse record for an individual
 #' 
 #' This creates a record for a spouse and their Family record.
 #'
@@ -125,7 +125,7 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
 
 
 
-#' Create siblings for an Individual
+#' Create sibling records for an individual
 #' 
 #' @details This function may also create a Family record and will 
 #' not modify existing siblings.
@@ -163,7 +163,7 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
   add_children(x, famc_xref, sexes, sib_names)
 }
 
-#' Create multiple children for a Family
+#' Create children records for a family
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of a Family record.

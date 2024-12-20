@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add_rm.R
 \name{add_children}
 \alias{add_children}
-\title{Create multiple children for a Family}
+\title{Create children records for a family}
 \usage{
 add_children(x, xref, sexes, chil_names = NULL)
 }
@@ -25,5 +25,5 @@ contain forward slashes then surnames will be taken from the father (or mother).
 A gedcom object with additional child records.
 }
 \description{
-Create multiple children for a Family
+Create children records for a family
 }

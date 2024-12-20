@@ -12,3 +12,4 @@ An S7 object representing a GEDCOM Exact Date for today.
 \description{
 Create a GEDCOM Exact Date object for today
 }
+\keyword{internal}

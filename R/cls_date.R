@@ -65,7 +65,7 @@ DateExact <- S7::new_class(
 #' Create a GEDCOM Exact Date object for today
 #' 
 #' @return An S7 object representing a GEDCOM Exact Date for today.
-#' @export
+#' @keywords internal
 #' @tests
 #' expect_equal(date_exact_current()@as_date, Sys.Date())
 date_exact_current <- function(){

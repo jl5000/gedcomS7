@@ -17,3 +17,4 @@ The S7 record object with common elements added as properties.
 \description{
 Parse common elements into a record object
 }
+\keyword{internal}

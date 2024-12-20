@@ -36,7 +36,7 @@ test_that("Function date_diff() @ L164", {
 })
 
 
-test_that("Function split_gedcom_values() @ L250", {
+test_that("Function split_gedcom_values() @ L251", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

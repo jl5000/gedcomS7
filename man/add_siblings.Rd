@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add_rm.R
 \name{add_siblings}
 \alias{add_siblings}
-\title{Create siblings for an Individual}
+\title{Create sibling records for an individual}
 \usage{
 add_siblings(x, xref, sexes, sib_names = NULL)
 }
@@ -25,7 +25,7 @@ contain forward slashes then surnames will be taken from the father (or mother).
 A gedcom object with additional sibling records.
 }
 \description{
-Create siblings for an Individual
+Create sibling records for an individual
 }
 \details{
 This function may also create a Family record and will

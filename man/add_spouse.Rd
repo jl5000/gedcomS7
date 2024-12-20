@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add_rm.R
 \name{add_spouse}
 \alias{add_spouse}
-\title{Add a spouse for an individual}
+\title{Add a spouse record for an individual}
 \usage{
 add_spouse(x, xref, sex = "U", spou_name = NULL)
 }

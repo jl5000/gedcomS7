@@ -2,14 +2,14 @@
 % Please edit documentation in R/fn_get.R
 \name{get_fam_children}
 \alias{get_fam_children}
-\title{Identify all children in a Family Group}
+\title{Identify all children in a family}
 \usage{
 get_fam_children(x, xref, pedigrees = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
-\item{xref}{The xref of a Family Group record.}
+\item{xref}{The xref of a Family record.}
 
 \item{pedigrees}{A character vector of allowed family-child linkages.
 By default, NULL means all pedigrees (e.g. inc. ADOPTED).
@@ -20,5 +20,5 @@ If it includes "BIRTH" then this will also pick up non-existent values
 A character vector of xrefs.
 }
 \description{
-Identify all children in a Family Group
+Identify all children in a family
 }

@@ -49,10 +49,10 @@ get_fam_as_spouse <- function(x, xref){
 }
 
 
-#' Identify all partners in a Family Group
+#' Identify all partners in a family
 #'
 #' @inheritParams get_fam_as_child
-#' @param xref The xref of a Family Group record.
+#' @param xref The xref of a Family record.
 #'
 #' @inherit get_fam_as_child return
 #' @export
@@ -64,10 +64,10 @@ get_fam_partners <- function(x, xref){
     remove_void_xrefs()
 }
 
-#' Identify all children in a Family Group
+#' Identify all children in a family
 #'
 #' @inheritParams get_fam_as_child
-#' @param xref The xref of a Family Group record.
+#' @param xref The xref of a Family record.
 #'
 #' @inherit get_fam_as_child return
 #' @export

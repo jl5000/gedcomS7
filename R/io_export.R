@@ -52,7 +52,7 @@ write_gedcom <- function(gedcom,
   con <- file(filepath, encoding = "UTF-8", open = "a")
   on.exit(close(con))
   
-  if(!inc_living) gedcom <- remove_living(gedcom)
+  if(!inc_living) gedcom <- rm_living(gedcom)
   
   lines <- gedcom@c_as_ged
   
@@ -95,15 +95,15 @@ remove_sensitive_sections <- function(lines, restriction){
 }
 
 
-#' Remove living individuals in a gedcom object
+#' Remove living individuals in a GEDCOM object
 #'
 #' @param x A gedcom object.
 #' @param max_age The maximum age to assume for a living person (if a date of birth is given).
 #'
 #' @return A gedcom object cleansed of information on living individuals.
 #' @export
-remove_living <- function(x,
-                          max_age = 100) {
+rm_living <- function(x,
+                      max_age = 100) {
   
   remove <- NULL
   for(xref in x@c_xrefs[["indi"]]) {
@@ -162,10 +162,11 @@ is_alive <- function(x, xref, max_age = 100){
 #' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
 #' expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
 date_diff <- function(date1,
-                      date2 = date_exact_current()@c_as_val,
+                      date2 = NULL,
                       minimise = TRUE) {
   
   date1 <- parse_gedcom_date(date1, minimise = !minimise)
+  date2 <- date2 %||% date_exact_current()@c_as_val
   date2 <- parse_gedcom_date(date2, minimise = minimise)
   
   if(is.na(date1) || is.na(date2)) return(-1)
