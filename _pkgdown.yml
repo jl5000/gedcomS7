@@ -6,8 +6,8 @@ reference:
   desc: "Functions for creating, importing, and exporting GEDCOM files"
   contents:
   - new_gedcom
-  - import_gedcom
-  - export_gedcom
+  - read_gedcom
+  - write_gedcom
 - title: "GEDCOM Classes"
   desc: "Classes to create and edit GEDCOM objects"
   contents:
