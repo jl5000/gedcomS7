@@ -17,7 +17,7 @@ the regular expression accepts patterns where text can come before or after
 the date().}
 }
 \value{
-Either a single regex string or a vector of them
+Either a single regex string or a vector of them.
 }
 \description{
 Construct a regular expression for DATE values
@@ -26,3 +26,4 @@ Construct a regular expression for DATE values
 The DATE (and subsequent DATE_CALENDAR) pattern can potentially handle several
 different calendar types, but this package has only implemented the Gregorian calendar.
 }
+\keyword{internal}

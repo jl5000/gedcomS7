@@ -456,3 +456,4 @@ Define all properties used in S7 classes.
 This empty function serves as a single location where all properties are defined,
 mainly for efficiency and maintainability.
 }
+\keyword{internal}

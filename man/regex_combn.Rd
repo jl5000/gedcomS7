@@ -17,3 +17,4 @@ A vector of all combinations of the concatenation of reg1 and reg2.
 \description{
 Enumerate all combinations of regex patterns
 }
+\keyword{internal}

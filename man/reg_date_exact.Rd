@@ -17,3 +17,4 @@ A regex string
 \description{
 Construct a regular expression for DATE_EXACT values
 }
+\keyword{internal}

@@ -17,3 +17,4 @@ A regular expression pattern for an xref.
 \description{
 Construct a regular expression for an xref
 }
+\keyword{internal}

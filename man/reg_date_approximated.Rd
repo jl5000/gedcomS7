@@ -13,8 +13,9 @@ The vector output is used if the regexes need to be combined with other regexes.
 do not, then they are anchored with ^ and $ and separated with | (OR).}
 }
 \value{
-Either a single regex string or a vector of them
+Either a single regex string or a vector of them.
 }
 \description{
 Construct the regex pattern for DATE_APPROXIMATED values
 }
+\keyword{internal}
