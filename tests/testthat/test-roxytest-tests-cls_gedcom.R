@@ -2,7 +2,7 @@
 
 # File R/cls_gedcom.R: @tests
 
-test_that("Function GedcomS7() @ L242", {
+test_that("Function GedcomS7() @ L270", {
   skip_if_offline(host = "gedcom.io")
   ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
   ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")

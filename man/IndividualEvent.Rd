@@ -100,6 +100,14 @@ associated information is not required.}
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
 
+\item{age}{A character string that indicates the age in years, months, weeks and/or days
+that the individual was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.}
+
+\item{age_phrase}{Free text information that cannot be expressed in the individual's age.}
+
 \item{fam_xref}{The cross-reference identifier of a family record.}
 
 \item{adop_parent}{TODO}

@@ -1,8 +1,4 @@
 
-#' Create a base record object
-#' 
-#' @inheritParams prop_definitions 
-#' @return An S7 object containing common elements of a GEDCOM record.
 #' @tests
 #' skip_if_offline(host = "gedcom.io")
 #' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")

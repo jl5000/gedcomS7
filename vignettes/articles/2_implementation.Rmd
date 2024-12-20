@@ -30,6 +30,8 @@ The release of `S7` presented an ideal opportunity to revisit creating an OOP-ba
 The main GEDCOM object is an S7 representation of a GEDCOM file:
 
 ```{r}
+library(gedcomS7)
+
 ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 
 str(ged)

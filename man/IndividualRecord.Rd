@@ -99,8 +99,11 @@ Creating an object with no parameters sets the date to today.}
 \item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
 whose records also represent this individual. The vector names may provide a description of these records.}
 
-\item{anci_xrefs, desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the ancestors/descendants of this individual.}
+\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the ancestors of this individual.}
+
+\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the descendants of this individual.}
 }
 \value{
 An S7 object representing a GEDCOM INDIVIDUAL_RECORD.

@@ -28,7 +28,11 @@ by semi-colon and a space. For example:
 
 \item{country}{The country component of the address.}
 
-\item{adr1, adr2, adr3}{Deprecated.}
+\item{adr1}{Deprecated.}
+
+\item{adr2}{Deprecated.}
+
+\item{adr3}{Deprecated.}
 }
 \value{
 An S7 object representing a GEDCOM ADDRESS_STRUCTURE.

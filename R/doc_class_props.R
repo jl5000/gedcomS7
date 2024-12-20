@@ -10,7 +10,9 @@
 #' @param full A full address as it would appear on a mailing label, with lines separated
 #' by semi-colon and a space. For example:
 #' "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"
-#' @param adr1,adr2,adr3 Deprecated.
+#' @param adr1 Deprecated.
+#' @param adr2 Deprecated.
+#' @param adr3 Deprecated.
 #' @param city The city component of the address.
 #' @param state The state component of the address.
 #' @param postal_code The postal code component of the address.
@@ -131,12 +133,24 @@
 #' @param private A logical value indicating whether the associated record/fact should be
 #' treated as private. This allows them to be excluded on export.
 #' @param associations Associated individuals. This can either be a `Association` object or a list of them.
-#' @param age,husb_age,wife_age A character string that indicates the age in years, months, weeks and/or days 
+#' @param age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
-#' @param age_phrase,husb_age_phrase,wife_age_phrase Textual information that cannot be expressed in the age.
+#' @param husb_age A character string that indicates the age in years, months, weeks and/or days 
+#' that the husband was at the time of the fact. Any combination of these is permitted. 
+#' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
+#' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
+#' in the corresponding phrase parameter.
+#' @param wife_age A character string that indicates the age in years, months, weeks and/or days 
+#' that the wife was at the time of the fact. Any combination of these is permitted. 
+#' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
+#' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
+#' in the corresponding phrase parameter.
+#' @param age_phrase Free text information that cannot be expressed in the individual's age.
+#' @param husb_age_phrase Free text information that cannot be expressed in the husband's age.
+#' @param wife_age_phrase Free text information that cannot be expressed in the wife's age.
 #' @param adop_parent TODO
 #' @param adop_parent_phrase TODO
 #' @param pers_names TODO
@@ -166,22 +180,6 @@
 #' provided then only the XREFs themselves can be recorded (and not associated information). 
 #' This option is easier if associated information is not required.
 #' @param subm_name The name of the submitter.
-#' @param product_id TODO
-#' @param product_name TODO
-#' @param product_version TODO
-#' @param business_name TODO
-#' @param business_address TODO
-#' @param data_name TODO
-#' @param data_pubdate TODO
-#' @param data_pubtime TODO
-#' @param data_copyright TODO
-#' @param gedcom_version TODO
-#' @param ext_tags TODO
-#' @param source TODO
-#' @param destination TODO
-#' @param gedcom_copyright TODO
-#' @param default_language TODO
-#' @param default_place_form TODO
 #' 
 #' @param facts TODO
 #' @param non_events TODO
@@ -208,16 +206,25 @@
 #' @param note_xrefs A character vector of relevant note record cross-reference identifiers.
 #' @param data_note_xrefs A character vector of note record cross-reference identifiers relevant
 #' to the source data.
-#' @param subm_xref The cross-reference identifier of a submitter record.
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
-#' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of the member's individual records.
+#' @param husb_xref The cross-reference identifier of the husband's individual record.
+#' If the individual does not have a record, then the value "@VOID@" can be used. 
+#' However, you will need to describe the individual by using a named vector (a description can be used
+#' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")
+#' @param wife_xref The cross-reference identifier of the wife's individual record.
+#' If the individual does not have a record, then the value "@VOID@" can be used. 
+#' However, you will need to describe the individual by using a named vector (a description can be used
+#' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")
+#' @param chil_xrefs The cross-reference identifier(s) of the children's individual records.
 #' If the individual does not have a record, then the value "@VOID@" can be used. 
 #' However, you will need to describe the individual by using a named vector (a description can be used
 #' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")
 #' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
 #' whose records also represent this individual. The vector names may provide a description of these records.
-#' @param anci_xrefs,desi_xrefs A character vector of relevant submitter record cross-reference identifiers
-#' who are interested in the ancestors/descendants of this individual.
+#' @param anci_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the ancestors of this individual.
+#' @param desi_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the descendants of this individual.
 #' 
 #' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
 #' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
@@ -281,26 +288,10 @@
 #' Creating an object with no parameters sets the date to today.
 #' @param updated A `ChangeDate` object containing the date the record was updated.
 #' Creating an object with no parameters sets the date to today.
-#' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
-#' `DateExact` object.
-#' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
-#' `Time` object.
 #' @param state_date The ordinance date given either as a formatted GEDCOM string, or a
 #' `DateExact` object.
 #' @param state_time The ordinance time given either as a formatted GEDCOM string, or a
 #' `Time` object.
 #' 
-#' @param update_change_dates Whether to automatically update change dates when updating records.
-#' This happens when the record is pushed to the gedcom object.
-#' @param add_creation_dates Whether to automatically add creation dates when creating records.
-#' This happens when the record is pushed to the gedcom object.
-#' @param subm,indi,fam,sour,repo,media,note A named list containing character vector representations
-#' of GEDCOM records. Do not edit these parameters directly.
-#' @param xref_prefixes A named vector containing any alphanumeric string (up to 6 characters long) 
-#' which will precede the number given to identify new records (of which there are 7 types). 
-#' This vector must be of a particular length with specific names. Default value:
-#' c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
-#' The order that these records appear in the vector will also dictate the order in which records 
-#' will appear in the exported file.
 #' @keywords internal
 NULL

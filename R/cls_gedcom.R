@@ -2,6 +2,15 @@
 #' Create a GEDCOM source object
 #' 
 #' @inheritParams prop_definitions 
+#' @param product_id TODO
+#' @param product_name TODO
+#' @param product_version TODO
+#' @param business_name TODO
+#' @param business_address TODO
+#' @param data_name TODO
+#' @param data_pubdate TODO
+#' @param data_pubtime TODO
+#' @param data_copyright TODO
 #' @return An S7 object representing a GEDCOM HEAD.SOUR.
 #' @export
 GedcomSource <- S7::new_class(
@@ -113,11 +122,6 @@ GedcomSource <- S7::new_class(
   }
 )
 
-#' Create a GEDCOM header object
-#' 
-#' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM HEADER.
-#' @export
 GedcomHeader <- S7::new_class(
   "GedcomHeader",
   abstract = TRUE,
@@ -228,6 +232,30 @@ GedcomHeader <- S7::new_class(
 #' Create a GEDCOM object
 #' 
 #' @inheritParams prop_definitions 
+#' @param gedcom_version TODO
+#' @param ext_tags TODO
+#' @param source TODO
+#' @param destination TODO
+#' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
+#' `DateExact` object.
+#' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
+#' `Time` object.
+#' @param subm_xref The cross-reference identifier of a submitter record.
+#' @param gedcom_copyright TODO
+#' @param default_language TODO
+#' @param default_place_form TODO
+#' @param update_change_dates Whether to automatically update change dates when updating records.
+#' This happens when the record is pushed to the gedcom object.
+#' @param add_creation_dates Whether to automatically add creation dates when creating records.
+#' This happens when the record is pushed to the gedcom object.
+#' @param subm,indi,fam,sour,repo,media,note A named list containing character vector representations
+#' of GEDCOM records. Do not edit these parameters directly.
+#' @param xref_prefixes A named vector containing any alphanumeric string (up to 6 characters long) 
+#' which will precede the number given to identify new records (of which there are 7 types). 
+#' This vector must be of a particular length with specific names. Default value:
+#' c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
+#' The order that these records appear in the vector will also dictate the order in which records 
+#' will appear in the exported file.
 #' @return An S7 object representing a GEDCOM file.
 #' @export
 #' @tests

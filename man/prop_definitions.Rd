@@ -8,7 +8,11 @@
 by semi-colon and a space. For example:
 "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"}
 
-\item{adr1, adr2, adr3}{Deprecated.}
+\item{adr1}{Deprecated.}
+
+\item{adr2}{Deprecated.}
+
+\item{adr3}{Deprecated.}
 
 \item{city}{The city component of the address.}
 
@@ -198,13 +202,29 @@ treated as private. This allows them to be excluded on export.}
 
 \item{associations}{Associated individuals. This can either be a \code{Association} object or a list of them.}
 
-\item{age, husb_age, wife_age}{A character string that indicates the age in years, months, weeks and/or days
+\item{age}{A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
 
-\item{age_phrase, husb_age_phrase, wife_age_phrase}{Textual information that cannot be expressed in the age.}
+\item{husb_age}{A character string that indicates the age in years, months, weeks and/or days
+that the husband was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.}
+
+\item{wife_age}{A character string that indicates the age in years, months, weeks and/or days
+that the wife was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.}
+
+\item{age_phrase}{Free text information that cannot be expressed in the individual's age.}
+
+\item{husb_age_phrase}{Free text information that cannot be expressed in the husband's age.}
+
+\item{wife_age_phrase}{Free text information that cannot be expressed in the wife's age.}
 
 \item{adop_parent}{TODO}
 
@@ -249,38 +269,6 @@ This option is easier if associated information is not required.}
 
 \item{subm_name}{The name of the submitter.}
 
-\item{product_id}{TODO}
-
-\item{product_name}{TODO}
-
-\item{product_version}{TODO}
-
-\item{business_name}{TODO}
-
-\item{business_address}{TODO}
-
-\item{data_name}{TODO}
-
-\item{data_pubdate}{TODO}
-
-\item{data_pubtime}{TODO}
-
-\item{data_copyright}{TODO}
-
-\item{gedcom_version}{TODO}
-
-\item{ext_tags}{TODO}
-
-\item{source}{TODO}
-
-\item{destination}{TODO}
-
-\item{gedcom_copyright}{TODO}
-
-\item{default_language}{TODO}
-
-\item{default_place_form}{TODO}
-
 \item{facts}{TODO}
 
 \item{non_events}{TODO}
@@ -319,11 +307,19 @@ you should describe the repository in @notes.}
 \item{data_note_xrefs}{A character vector of note record cross-reference identifiers relevant
 to the source data.}
 
-\item{subm_xref}{The cross-reference identifier of a submitter record.}
-
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 
-\item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
+\item{husb_xref}{The cross-reference identifier of the husband's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
+
+\item{wife_xref}{The cross-reference identifier of the wife's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
+
+\item{chil_xrefs}{The cross-reference identifier(s) of the children's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
 in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
@@ -331,8 +327,11 @@ in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
 \item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
 whose records also represent this individual. The vector names may provide a description of these records.}
 
-\item{anci_xrefs, desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the ancestors/descendants of this individual.}
+\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the ancestors of this individual.}
+
+\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
+who are interested in the descendants of this individual.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
@@ -421,33 +420,11 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{ChangeDate} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
-\item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
-\code{DateExact} object.}
-
-\item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
-\code{Time} object.}
-
 \item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
 \code{DateExact} object.}
 
 \item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
 \code{Time} object.}
-
-\item{update_change_dates}{Whether to automatically update change dates when updating records.
-This happens when the record is pushed to the gedcom object.}
-
-\item{add_creation_dates}{Whether to automatically add creation dates when creating records.
-This happens when the record is pushed to the gedcom object.}
-
-\item{subm, indi, fam, sour, repo, media, note}{A named list containing character vector representations
-of GEDCOM records. Do not edit these parameters directly.}
-
-\item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
-which will precede the number given to identify new records (of which there are 7 types).
-This vector must be of a particular length with specific names. Default value:
-c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
-The order that these records appear in the vector will also dictate the order in which records
-will appear in the exported file.}
 }
 \description{
 Define all properties used in S7 classes.

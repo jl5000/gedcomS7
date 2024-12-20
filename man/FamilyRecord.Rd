@@ -77,7 +77,17 @@ Creating an object with no parameters sets the date to today.}
 
 \item{non_events}{TODO}
 
-\item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of the member's individual records.
+\item{husb_xref}{The cross-reference identifier of the husband's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
+
+\item{wife_xref}{The cross-reference identifier of the wife's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
+
+\item{chil_xrefs}{The cross-reference identifier(s) of the children's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
 in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}

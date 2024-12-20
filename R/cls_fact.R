@@ -1,9 +1,4 @@
 
-#' Create a fact object
-#' 
-#' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM EVENT_DETAIL (plus a bit more).
-#' @keywords internal
 Fact <- S7::new_class(
   "Fact",
   abstract = TRUE,
