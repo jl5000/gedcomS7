@@ -66,8 +66,6 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jl5000.github.io/gedcomS7/">gedcomS7</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -94,8 +92,10 @@ is created, then xrefs will be hidden from the user.</p>
 creating and pushing new records. When creating a new record it will be
 given an xref identifying it as a standalone record that has not yet
 been pushed to the GEDCOM object:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_person</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/IndividualRecord.html">IndividualRecord</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jl5000.github.io/gedcomS7/">gedcomS7</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">new_person</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/IndividualRecord.html">IndividualRecord</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">new_person</span><span class="op">@</span><span class="va">xref</span></span>
 <span><span class="co">#&gt; [1] "@ORPHAN@"</span></span></code></pre></div>
 <p>This is a special xref which indicates to the code that this is a new
@@ -103,7 +103,7 @@ record and not an existing one. It is important you do not change
 it.</p>
 <p>If you then push it to a GEDCOM object, it will assign it a proper
 xref:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/push_record.html">push_record</a></span><span class="op">(</span><span class="fu"><a href="../reference/new_gedcom.html">new_gedcom</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">new_person</span><span class="op">)</span></span>
 <span><span class="co">#&gt; New Individual record added with xref @I1@</span></span></code></pre></div>
 <p>The property <code>ged@xref_prefixes</code> is a named vector
@@ -113,7 +113,7 @@ types). This vector must be of a particular length with these specific
 names.</p>
 <p>We’ll import a different GEDCOM file which has some records in
 it:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/maximal70.ged"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ged_max</span><span class="op">@</span><span class="va">xref_prefixes</span></span>
@@ -122,8 +122,8 @@ it:</p>
 <p>The order that these records appear in the vector will also dictate
 the order in which records will appear in the exported file.</p>
 <p>The <code>@c_xrefs</code> property gives a list of record xrefs in
-the GEDCOM object, split by records type:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+the GEDCOM object, split by record type:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">c_xrefs</span></span>
 <span><span class="co">#&gt; $subm</span></span>
 <span><span class="co">#&gt; [1] "@U1@" "@U2@"</span></span>
@@ -146,7 +146,7 @@ the GEDCOM object, split by records type:</p>
 <span><span class="co">#&gt; $note</span></span>
 <span><span class="co">#&gt; [1] "@N1@" "@N2@"</span></span></code></pre></div>
 <p>The next xrefs of each type will therefore be:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">c_next_xref</span></span>
 <span><span class="co">#&gt;   subm   indi    fam   sour   repo  media   note </span></span>
 <span><span class="co">#&gt; "@U3@" "@I5@" "@F3@" "@S3@" "@R3@" "@M1@" "@N3@"</span></span></code></pre></div>

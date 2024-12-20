@@ -53,7 +53,15 @@ by semi-colon and a space. For example:
 "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"</p></dd>
 
 
-<dt id="arg-adr-adr-adr-">adr1, adr2, adr3<a class="anchor" aria-label="anchor" href="#arg-adr-adr-adr-"></a></dt>
+<dt id="arg-adr-">adr1<a class="anchor" aria-label="anchor" href="#arg-adr-"></a></dt>
+<dd><p>Deprecated.</p></dd>
+
+
+<dt id="arg-adr-">adr2<a class="anchor" aria-label="anchor" href="#arg-adr-"></a></dt>
+<dd><p>Deprecated.</p></dd>
+
+
+<dt id="arg-adr-">adr3<a class="anchor" aria-label="anchor" href="#arg-adr-"></a></dt>
 <dd><p>Deprecated.</p></dd>
 
 
@@ -381,7 +389,7 @@ treated as private. This allows them to be excluded on export.</p></dd>
 <dd><p>Associated individuals. This can either be a <code>Association</code> object or a list of them.</p></dd>
 
 
-<dt id="arg-age-husb-age-wife-age">age, husb_age, wife_age<a class="anchor" aria-label="anchor" href="#arg-age-husb-age-wife-age"></a></dt>
+<dt id="arg-age">age<a class="anchor" aria-label="anchor" href="#arg-age"></a></dt>
 <dd><p>A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
@@ -389,8 +397,32 @@ Age bounds can also be included, for example; "&lt; 40y". If the age doesn't fit
 in the corresponding phrase parameter.</p></dd>
 
 
-<dt id="arg-age-phrase-husb-age-phrase-wife-age-phrase">age_phrase, husb_age_phrase, wife_age_phrase<a class="anchor" aria-label="anchor" href="#arg-age-phrase-husb-age-phrase-wife-age-phrase"></a></dt>
-<dd><p>Textual information that cannot be expressed in the age.</p></dd>
+<dt id="arg-husb-age">husb_age<a class="anchor" aria-label="anchor" href="#arg-husb-age"></a></dt>
+<dd><p>A character string that indicates the age in years, months, weeks and/or days
+that the husband was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "&lt; 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.</p></dd>
+
+
+<dt id="arg-wife-age">wife_age<a class="anchor" aria-label="anchor" href="#arg-wife-age"></a></dt>
+<dd><p>A character string that indicates the age in years, months, weeks and/or days
+that the wife was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "&lt; 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.</p></dd>
+
+
+<dt id="arg-age-phrase">age_phrase<a class="anchor" aria-label="anchor" href="#arg-age-phrase"></a></dt>
+<dd><p>Free text information that cannot be expressed in the individual's age.</p></dd>
+
+
+<dt id="arg-husb-age-phrase">husb_age_phrase<a class="anchor" aria-label="anchor" href="#arg-husb-age-phrase"></a></dt>
+<dd><p>Free text information that cannot be expressed in the husband's age.</p></dd>
+
+
+<dt id="arg-wife-age-phrase">wife_age_phrase<a class="anchor" aria-label="anchor" href="#arg-wife-age-phrase"></a></dt>
+<dd><p>Free text information that cannot be expressed in the wife's age.</p></dd>
 
 
 <dt id="arg-adop-parent">adop_parent<a class="anchor" aria-label="anchor" href="#arg-adop-parent"></a></dt>
@@ -466,70 +498,6 @@ This option is easier if associated information is not required.</p></dd>
 <dd><p>The name of the submitter.</p></dd>
 
 
-<dt id="arg-product-id">product_id<a class="anchor" aria-label="anchor" href="#arg-product-id"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-product-name">product_name<a class="anchor" aria-label="anchor" href="#arg-product-name"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-product-version">product_version<a class="anchor" aria-label="anchor" href="#arg-product-version"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-business-name">business_name<a class="anchor" aria-label="anchor" href="#arg-business-name"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-business-address">business_address<a class="anchor" aria-label="anchor" href="#arg-business-address"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-data-name">data_name<a class="anchor" aria-label="anchor" href="#arg-data-name"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-data-pubdate">data_pubdate<a class="anchor" aria-label="anchor" href="#arg-data-pubdate"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-data-pubtime">data_pubtime<a class="anchor" aria-label="anchor" href="#arg-data-pubtime"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-data-copyright">data_copyright<a class="anchor" aria-label="anchor" href="#arg-data-copyright"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-gedcom-version">gedcom_version<a class="anchor" aria-label="anchor" href="#arg-gedcom-version"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-ext-tags">ext_tags<a class="anchor" aria-label="anchor" href="#arg-ext-tags"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-source">source<a class="anchor" aria-label="anchor" href="#arg-source"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-destination">destination<a class="anchor" aria-label="anchor" href="#arg-destination"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-gedcom-copyright">gedcom_copyright<a class="anchor" aria-label="anchor" href="#arg-gedcom-copyright"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-default-language">default_language<a class="anchor" aria-label="anchor" href="#arg-default-language"></a></dt>
-<dd><p>TODO</p></dd>
-
-
-<dt id="arg-default-place-form">default_place_form<a class="anchor" aria-label="anchor" href="#arg-default-place-form"></a></dt>
-<dd><p>TODO</p></dd>
-
-
 <dt id="arg-facts">facts<a class="anchor" aria-label="anchor" href="#arg-facts"></a></dt>
 <dd><p>TODO</p></dd>
 
@@ -598,16 +566,26 @@ you should describe the repository in @notes.</p></dd>
 to the source data.</p></dd>
 
 
-<dt id="arg-subm-xref">subm_xref<a class="anchor" aria-label="anchor" href="#arg-subm-xref"></a></dt>
-<dd><p>The cross-reference identifier of a submitter record.</p></dd>
-
-
 <dt id="arg-subm-xrefs">subm_xrefs<a class="anchor" aria-label="anchor" href="#arg-subm-xrefs"></a></dt>
 <dd><p>A character vector of relevant submitter record cross-reference identifiers.</p></dd>
 
 
-<dt id="arg-husb-xref-wife-xref-chil-xrefs">husb_xref, wife_xref, chil_xrefs<a class="anchor" aria-label="anchor" href="#arg-husb-xref-wife-xref-chil-xrefs"></a></dt>
-<dd><p>The cross-reference identifier(s) of the member's individual records.
+<dt id="arg-husb-xref">husb_xref<a class="anchor" aria-label="anchor" href="#arg-husb-xref"></a></dt>
+<dd><p>The cross-reference identifier of the husband's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>
+
+
+<dt id="arg-wife-xref">wife_xref<a class="anchor" aria-label="anchor" href="#arg-wife-xref"></a></dt>
+<dd><p>The cross-reference identifier of the wife's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>
+
+
+<dt id="arg-chil-xrefs">chil_xrefs<a class="anchor" aria-label="anchor" href="#arg-chil-xrefs"></a></dt>
+<dd><p>The cross-reference identifier(s) of the children's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
 in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>
@@ -618,9 +596,14 @@ in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p>
 whose records also represent this individual. The vector names may provide a description of these records.</p></dd>
 
 
-<dt id="arg-anci-xrefs-desi-xrefs">anci_xrefs, desi_xrefs<a class="anchor" aria-label="anchor" href="#arg-anci-xrefs-desi-xrefs"></a></dt>
+<dt id="arg-anci-xrefs">anci_xrefs<a class="anchor" aria-label="anchor" href="#arg-anci-xrefs"></a></dt>
 <dd><p>A character vector of relevant submitter record cross-reference identifiers
-who are interested in the ancestors/descendants of this individual.</p></dd>
+who are interested in the ancestors of this individual.</p></dd>
+
+
+<dt id="arg-desi-xrefs">desi_xrefs<a class="anchor" aria-label="anchor" href="#arg-desi-xrefs"></a></dt>
+<dd><p>A character vector of relevant submitter record cross-reference identifiers
+who are interested in the descendants of this individual.</p></dd>
 
 
 <dt id="arg-unique-ids">unique_ids<a class="anchor" aria-label="anchor" href="#arg-unique-ids"></a></dt>
@@ -770,16 +753,6 @@ Creating an object with no parameters sets the date to today.</p></dd>
 Creating an object with no parameters sets the date to today.</p></dd>
 
 
-<dt id="arg-creation-date">creation_date<a class="anchor" aria-label="anchor" href="#arg-creation-date"></a></dt>
-<dd><p>The creation date of the file given either as a formatted GEDCOM string, or a
-<code>DateExact</code> object.</p></dd>
-
-
-<dt id="arg-creation-time">creation_time<a class="anchor" aria-label="anchor" href="#arg-creation-time"></a></dt>
-<dd><p>The creation time of the file given either as a formatted GEDCOM string, or a
-<code>Time</code> object.</p></dd>
-
-
 <dt id="arg-state-date">state_date<a class="anchor" aria-label="anchor" href="#arg-state-date"></a></dt>
 <dd><p>The ordinance date given either as a formatted GEDCOM string, or a
 <code>DateExact</code> object.</p></dd>
@@ -788,30 +761,6 @@ Creating an object with no parameters sets the date to today.</p></dd>
 <dt id="arg-state-time">state_time<a class="anchor" aria-label="anchor" href="#arg-state-time"></a></dt>
 <dd><p>The ordinance time given either as a formatted GEDCOM string, or a
 <code>Time</code> object.</p></dd>
-
-
-<dt id="arg-update-change-dates">update_change_dates<a class="anchor" aria-label="anchor" href="#arg-update-change-dates"></a></dt>
-<dd><p>Whether to automatically update change dates when updating records.
-This happens when the record is pushed to the gedcom object.</p></dd>
-
-
-<dt id="arg-add-creation-dates">add_creation_dates<a class="anchor" aria-label="anchor" href="#arg-add-creation-dates"></a></dt>
-<dd><p>Whether to automatically add creation dates when creating records.
-This happens when the record is pushed to the gedcom object.</p></dd>
-
-
-<dt id="arg-subm-indi-fam-sour-repo-media-note">subm, indi, fam, sour, repo, media, note<a class="anchor" aria-label="anchor" href="#arg-subm-indi-fam-sour-repo-media-note"></a></dt>
-<dd><p>A named list containing character vector representations
-of GEDCOM records. Do not edit these parameters directly.</p></dd>
-
-
-<dt id="arg-xref-prefixes">xref_prefixes<a class="anchor" aria-label="anchor" href="#arg-xref-prefixes"></a></dt>
-<dd><p>A named vector containing any alphanumeric string (up to 6 characters long)
-which will precede the number given to identify new records (of which there are 7 types).
-This vector must be of a particular length with specific names. Default value:
-c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
-The order that these records appear in the vector will also dictate the order in which records
-will appear in the exported file.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -151,8 +151,22 @@ Creating an object with no parameters sets the date to today.</p></dd>
 <dd><p>TODO</p></dd>
 
 
-<dt id="arg-husb-xref-wife-xref-chil-xrefs">husb_xref, wife_xref, chil_xrefs<a class="anchor" aria-label="anchor" href="#arg-husb-xref-wife-xref-chil-xrefs"></a></dt>
-<dd><p>The cross-reference identifier(s) of the member's individual records.
+<dt id="arg-husb-xref">husb_xref<a class="anchor" aria-label="anchor" href="#arg-husb-xref"></a></dt>
+<dd><p>The cross-reference identifier of the husband's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>
+
+
+<dt id="arg-wife-xref">wife_xref<a class="anchor" aria-label="anchor" href="#arg-wife-xref"></a></dt>
+<dd><p>The cross-reference identifier of the wife's individual record.
+If the individual does not have a record, then the value "@VOID@" can be used.
+However, you will need to describe the individual by using a named vector (a description can be used
+in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>
+
+
+<dt id="arg-chil-xrefs">chil_xrefs<a class="anchor" aria-label="anchor" href="#arg-chil-xrefs"></a></dt>
+<dd><p>The cross-reference identifier(s) of the children's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
 in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")</p></dd>

@@ -37,9 +37,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="gedcom-creation">GEDCOM Creation<a class="anchor" aria-label="anchor" href="#gedcom-creation"></a></h2>
 
-
+      <div class="section-desc"><p>Functions for creating, importing, and exporting GEDCOM files</p></div>
 
 
     </div><div class="section level2">
@@ -49,29 +49,145 @@
 
       <dl><dt>
 
+          <code><a href="new_gedcom.html">new_gedcom()</a></code>
+
+        </dt>
+        <dd>Create a new gedcom object</dd>
+      </dl><dl><dt>
+
+          <code><a href="read_gedcom.html">read_gedcom()</a></code>
+
+        </dt>
+        <dd>Import a GEDCOM file</dd>
+      </dl><dl><dt>
+
+          <code><a href="write_gedcom.html">write_gedcom()</a></code>
+
+        </dt>
+        <dd>Save a gedcom object to disk as a GEDCOM file</dd>
+      </dl></div><div class="section level2">
+      <h2 id="gedcom-classes">GEDCOM Classes<a class="anchor" aria-label="anchor" href="#gedcom-classes"></a></h2>
+
+      <div class="section-desc"><p>Classes to create and edit GEDCOM objects</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="GedcomS7.html">GedcomS7</a></code>
+
+        </dt>
+        <dd>Create a GEDCOM object</dd>
+      </dl><dl><dt>
+
+          <code><a href="GedcomSource.html">GedcomSource()</a></code>
+
+        </dt>
+        <dd>Create a GEDCOM source object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="record-classes">Record Classes<a class="anchor" aria-label="anchor" href="#record-classes"></a></h2>
+
+      <div class="section-desc"><p>Classes to create and edit GEDCOM records</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="FamilyRecord.html">FamilyRecord()</a></code>
+
+        </dt>
+        <dd>Create a family record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="IndividualRecord.html">IndividualRecord()</a></code>
+
+        </dt>
+        <dd>Create an individual record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="MediaRecord.html">MediaRecord()</a></code>
+
+        </dt>
+        <dd>Create a multimedia record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="NoteRecord.html">NoteRecord()</a></code>
+
+        </dt>
+        <dd>Create a shared note record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="RepositoryRecord.html">RepositoryRecord()</a></code>
+
+        </dt>
+        <dd>Create a repository record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="SourceRecord.html">SourceRecord()</a></code>
+
+        </dt>
+        <dd>Create a source record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="SubmitterRecord.html">SubmitterRecord()</a></code>
+
+        </dt>
+        <dd>Create a submitter record object</dd>
+      </dl><dl><dt>
+
+          <code><a href="pull_record.html">pull_record()</a></code>
+
+        </dt>
+        <dd>Pull a record from a GEDCOM object for editing</dd>
+      </dl><dl><dt>
+
+          <code><a href="push_record.html">push_record()</a></code>
+
+        </dt>
+        <dd>Push an edited record back into a GEDCOM object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="location-classes">Location Classes<a class="anchor" aria-label="anchor" href="#location-classes"></a></h2>
+
+      <div class="section-desc"><p>Classes to create and edit location objects</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="Place.html">Place()</a></code>
+
+        </dt>
+        <dd>Create a place structure object</dd>
+      </dl><dl><dt>
+
           <code><a href="Address.html">Address()</a></code>
 
         </dt>
         <dd>Create an address object</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="date-time-classes">Date/Time Classes<a class="anchor" aria-label="anchor" href="#date-time-classes"></a></h2>
 
-          <code><a href="Association.html">Association()</a></code>
+      <div class="section-desc"><p>Classes to create and edit Date/Time objects</p></div>
 
-        </dt>
-        <dd>Create an association object</dd>
-      </dl><dl><dt>
 
-          <code><a href="ChangeDate.html">ChangeDate()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Create a change date object</dd>
-      </dl><dl><dt>
 
-          <code><a href="CreationDate.html">CreationDate()</a></code>
 
-        </dt>
-        <dd>Create a creation date object</dd>
-      </dl><dl><dt>
+
+      <dl><dt>
 
           <code><a href="DateApprox.html">DateApprox()</a></code>
 
@@ -115,35 +231,40 @@
         <dd>Create a GEDCOM Date Value object</dd>
       </dl><dl><dt>
 
-          <code><a href="Fact.html">Fact()</a></code>
+          <code><a href="date_exact_current.html">date_exact_current()</a></code>
 
         </dt>
-        <dd>Create a fact object</dd>
+        <dd>Create a GEDCOM Exact Date object for today</dd>
       </dl><dl><dt>
 
-          <code><a href="FactsRecorded.html">FactsRecorded()</a></code>
+          <code><a href="Time.html">Time()</a></code>
 
         </dt>
-        <dd>Create an object recording facts covered in a source record</dd>
+        <dd>Create a time object</dd>
       </dl><dl><dt>
 
-          <code><a href="FamilyAttribute.html">FamilyAttribute()</a></code>
+          <code><a href="ChangeDate.html">ChangeDate()</a></code>
 
         </dt>
-        <dd>Create a family attribute object</dd>
+        <dd>Create a change date object</dd>
       </dl><dl><dt>
 
-          <code><a href="FamilyEvent.html">FamilyEvent()</a></code>
+          <code><a href="CreationDate.html">CreationDate()</a></code>
 
         </dt>
-        <dd>Create a family event object</dd>
-      </dl><dl><dt>
+        <dd>Create a creation date object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="record-link-classes">Record Link Classes<a class="anchor" aria-label="anchor" href="#record-link-classes"></a></h2>
 
-          <code><a href="FamilyFact.html">FamilyFact()</a></code>
+      <div class="section-desc"><p>Classes to create linkages to other records</p></div>
 
-        </dt>
-        <dd>Create a family fact object</dd>
-      </dl><dl><dt>
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="FamilyLinkChild.html">FamilyLinkChild()</a></code>
 
@@ -157,95 +278,40 @@
         <dd>Create a family link (as spouse) object</dd>
       </dl><dl><dt>
 
-          <code><a href="FamilyRecord.html">FamilyRecord()</a></code>
-
-        </dt>
-        <dd>Create a family record object</dd>
-      </dl><dl><dt>
-
-          <code><a href="GedcomHeader.html">GedcomHeader</a></code>
-
-        </dt>
-        <dd>Create a GEDCOM header object</dd>
-      </dl><dl><dt>
-
-          <code><a href="GedcomS7.html">GedcomS7</a></code>
-
-        </dt>
-        <dd>Create a GEDCOM object</dd>
-      </dl><dl><dt>
-
-          <code><a href="GedcomSource.html">GedcomSource()</a></code>
-
-        </dt>
-        <dd>Create a GEDCOM source object</dd>
-      </dl><dl><dt>
-
-          <code><a href="IndividualAttribute.html">IndividualAttribute()</a></code>
-
-        </dt>
-        <dd>Create an individual attribute object</dd>
-      </dl><dl><dt>
-
-          <code><a href="IndividualEvent.html">IndividualEvent()</a></code>
-
-        </dt>
-        <dd>Create an individual event object</dd>
-      </dl><dl><dt>
-
-          <code><a href="IndividualFact.html">IndividualFact()</a></code>
-
-        </dt>
-        <dd>Create an individual fact object</dd>
-      </dl><dl><dt>
-
-          <code><a href="IndividualRecord.html">IndividualRecord()</a></code>
-
-        </dt>
-        <dd>Create an individual record object</dd>
-      </dl><dl><dt>
-
-          <code><a href="MediaFile.html">MediaFile()</a></code>
-
-        </dt>
-        <dd>Create a media file object</dd>
-      </dl><dl><dt>
-
           <code><a href="MediaLink.html">MediaLink()</a></code>
 
         </dt>
         <dd>Create a multimedia link object</dd>
       </dl><dl><dt>
 
-          <code><a href="MediaRecord.html">MediaRecord()</a></code>
+          <code><a href="RepositoryCitation.html">RepositoryCitation()</a></code>
 
         </dt>
-        <dd>Create a multimedia record object</dd>
+        <dd>Create a repository citation object</dd>
       </dl><dl><dt>
 
-          <code><a href="NonEvent.html">NonEvent()</a></code>
+          <code><a href="SourceCitation.html">SourceCitation()</a></code>
 
         </dt>
-        <dd>Create a non-event object</dd>
+        <dd>Create a source citation object</dd>
       </dl><dl><dt>
 
-          <code><a href="Note.html">Note()</a></code>
+          <code><a href="Association.html">Association()</a></code>
 
         </dt>
-        <dd>Create a note structure object</dd>
-      </dl><dl><dt>
+        <dd>Create an association object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="individual-family-fact-classes">Individual/Family Fact Classes<a class="anchor" aria-label="anchor" href="#individual-family-fact-classes"></a></h2>
 
-          <code><a href="NoteRecord.html">NoteRecord()</a></code>
+      <div class="section-desc"><p>Classes to create facts about individuals and families</p></div>
 
-        </dt>
-        <dd>Create a shared note record object</dd>
-      </dl><dl><dt>
 
-          <code><a href="Ordinance.html">Ordinance()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Create an individual ordinance object</dd>
-      </dl><dl><dt>
+
+
+
+      <dl><dt>
 
           <code><a href="PersonalName.html">PersonalName()</a></code>
 
@@ -265,28 +331,75 @@
         <dd>Create a name translation object</dd>
       </dl><dl><dt>
 
-          <code><a href="Place.html">Place()</a></code>
+          <code><a href="FamilyEvent.html">FamilyEvent()</a></code>
 
         </dt>
-        <dd>Create a place structure object</dd>
+        <dd>Create a family event object</dd>
       </dl><dl><dt>
 
-          <code><a href="Record.html">Record()</a></code>
+          <code><a href="IndividualEvent.html">IndividualEvent()</a></code>
 
         </dt>
-        <dd>Create a base record object</dd>
+        <dd>Create an individual event object</dd>
       </dl><dl><dt>
 
-          <code><a href="RepositoryCitation.html">RepositoryCitation()</a></code>
+          <code><a href="NonEvent.html">NonEvent()</a></code>
 
         </dt>
-        <dd>Create a repository citation object</dd>
+        <dd>Create a non-event object</dd>
       </dl><dl><dt>
 
-          <code><a href="RepositoryRecord.html">RepositoryRecord()</a></code>
+          <code><a href="FamilyAttribute.html">FamilyAttribute()</a></code>
 
         </dt>
-        <dd>Create a repository record object</dd>
+        <dd>Create a family attribute object</dd>
+      </dl><dl><dt>
+
+          <code><a href="IndividualAttribute.html">IndividualAttribute()</a></code>
+
+        </dt>
+        <dd>Create an individual attribute object</dd>
+      </dl><dl><dt>
+
+          <code><a href="Ordinance.html">Ordinance()</a></code>
+
+        </dt>
+        <dd>Create an individual ordinance object</dd>
+      </dl><dl><dt>
+
+          <code><a href="SpouseSealing.html">SpouseSealing()</a></code>
+
+        </dt>
+        <dd>Create a spouse sealing object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="other-classes">Other Classes<a class="anchor" aria-label="anchor" href="#other-classes"></a></h2>
+
+      <div class="section-desc"><p>Classes used to provide supplementary information in records</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="Note.html">Note()</a></code>
+
+        </dt>
+        <dd>Create a note structure object</dd>
+      </dl><dl><dt>
+
+          <code><a href="TranslationText.html">TranslationText()</a></code>
+
+        </dt>
+        <dd>Create a text translation object</dd>
+      </dl><dl><dt>
+
+          <code><a href="FactsRecorded.html">FactsRecorded()</a></code>
+
+        </dt>
+        <dd>Create an object recording facts covered in a source record</dd>
       </dl><dl><dt>
 
           <code><a href="SourceCallNumber.html">SourceCallNumber()</a></code>
@@ -295,41 +408,22 @@
         <dd>Create a source call number object</dd>
       </dl><dl><dt>
 
-          <code><a href="SourceCitation.html">SourceCitation()</a></code>
+          <code><a href="MediaFile.html">MediaFile()</a></code>
 
         </dt>
-        <dd>Create a source citation object</dd>
-      </dl><dl><dt>
+        <dd>Create a media file object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="batch-creation-deletion-of-records">Batch Creation/Deletion of Records<a class="anchor" aria-label="anchor" href="#batch-creation-deletion-of-records"></a></h2>
 
-          <code><a href="SourceRecord.html">SourceRecord()</a></code>
+      <div class="section-desc"><p>Functions that allow you to create and delete multiple records at once</p></div>
 
-        </dt>
-        <dd>Create a source record object</dd>
-      </dl><dl><dt>
 
-          <code><a href="SpouseSealing.html">SpouseSealing()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Create a spouse sealing object</dd>
-      </dl><dl><dt>
 
-          <code><a href="SubmitterRecord.html">SubmitterRecord()</a></code>
 
-        </dt>
-        <dd>Create a submitter record object</dd>
-      </dl><dl><dt>
 
-          <code><a href="Time.html">Time()</a></code>
-
-        </dt>
-        <dd>Create a time object</dd>
-      </dl><dl><dt>
-
-          <code><a href="TranslationText.html">TranslationText()</a></code>
-
-        </dt>
-        <dd>Create a text translation object</dd>
-      </dl><dl><dt>
+      <dl><dt>
 
           <code><a href="add_children.html">add_children()</a></code>
 
@@ -355,107 +449,28 @@
         <dd>Add a spouse for an individual</dd>
       </dl><dl><dt>
 
-          <code><a href="check_for_xref_mentions.html">check_for_xref_mentions()</a></code>
+          <code><a href="rm_records.html">rm_records()</a></code>
 
         </dt>
-        <dd>Check gedcom lines for inappropriate mentions of xrefs</dd>
+        <dd>Remove records from a GEDCOM object</dd>
       </dl><dl><dt>
 
-          <code><a href="chk_input_S7classes.html">chk_input_S7classes()</a></code>
+          <code><a href="remove_living.html">remove_living()</a></code>
 
         </dt>
-        <dd>Validate a list to ensure it contains elements of the correct S7 class</dd>
-      </dl><dl><dt>
+        <dd>Remove living individuals in a gedcom object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="finding-records">Finding Records<a class="anchor" aria-label="anchor" href="#finding-records"></a></h2>
 
-          <code><a href="chk_input_choice.html">chk_input_choice()</a></code>
+      <div class="section-desc"><p>Functions that allow you to find xrefs of records that match criteria</p></div>
 
-        </dt>
-        <dd>Validate an input against a set of valid values.</dd>
-      </dl><dl><dt>
 
-          <code><a href="chk_input_date_cpts.html">chk_input_date_cpts()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Validate a date by its components</dd>
-      </dl><dl><dt>
 
-          <code><a href="chk_input_dates.html">chk_input_dates()</a></code>
 
-        </dt>
-        <dd>Validate a date range/period</dd>
-      </dl><dl><dt>
 
-          <code><a href="chk_input_parents.html">chk_input_parents()</a></code>
-
-        </dt>
-        <dd>Validate the existence of an input's parent value</dd>
-      </dl><dl><dt>
-
-          <code><a href="chk_input_pattern.html">chk_input_pattern()</a></code>
-
-        </dt>
-        <dd>Validate the regex pattern(s) of a character vector</dd>
-      </dl><dl><dt>
-
-          <code><a href="chk_input_size.html">chk_input_size()</a></code>
-
-        </dt>
-        <dd>Validate the size of an input</dd>
-      </dl><dl><dt>
-
-          <code><a href="chk_whole_number.html">chk_whole_number()</a></code>
-
-        </dt>
-        <dd>Validate an numeric input to be a whole number</dd>
-      </dl><dl><dt>
-
-          <code><a href="chronify.html">chronify()</a></code>
-
-        </dt>
-        <dd>Force a vector to be a length 1 character vector</dd>
-      </dl><dl><dt>
-
-          <code><a href="combine_cont_lines.html">combine_cont_lines()</a></code>
-
-        </dt>
-        <dd>Combine continuation lines into the parent line</dd>
-      </dl><dl><dt>
-
-          <code><a href="date_diff.html">date_diff()</a></code>
-
-        </dt>
-        <dd>Determine the number of years between two dates</dd>
-      </dl><dl><dt>
-
-          <code><a href="date_exact_current.html">date_exact_current()</a></code>
-
-        </dt>
-        <dd>Create a GEDCOM Exact Date object for today</dd>
-      </dl><dl><dt>
-
-          <code><a href="delete_ged_section.html">delete_ged_section()</a></code>
-
-        </dt>
-        <dd>Delete a structure from GEDCOM lines</dd>
-      </dl><dl><dt>
-
-          <code><a href="df_fam_facts.html">df_fam_facts()</a></code>
-
-        </dt>
-        <dd>Summarise a family's attributes/events in a dataframe</dd>
-      </dl><dl><dt>
-
-          <code><a href="df_indi.html">df_indi()</a></code> <code><a href="df_indi.html">df_fam()</a></code> <code><a href="df_indi.html">df_sour()</a></code> <code><a href="df_indi.html">df_repo()</a></code> <code><a href="df_indi.html">df_media()</a></code> <code><a href="df_indi.html">df_note()</a></code> <code><a href="df_indi.html">df_subm()</a></code>
-
-        </dt>
-        <dd>Summarise records of a particular type in a dataframe</dd>
-      </dl><dl><dt>
-
-          <code><a href="df_indi_facts.html">df_indi_facts()</a></code>
-
-        </dt>
-        <dd>Summarise an individual's attributes/events in a dataframe</dd>
-      </dl><dl><dt>
+      <dl><dt>
 
           <code><a href="get_ancestors.html">get_ancestors()</a></code>
 
@@ -545,31 +560,47 @@
 
         </dt>
         <dd>Identify unreferenced records</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="summarising-records">Summarising Records<a class="anchor" aria-label="anchor" href="#summarising-records"></a></h2>
 
-          <code><a href="increase_level.html">increase_level()</a></code>
+      <div class="section-desc"><p>Functions that allow you to generate dataframe summaries of record types</p></div>
 
-        </dt>
-        <dd>Increase the level of a vector of GEDCOM lines</dd>
-      </dl><dl><dt>
 
-          <code><a href="lookups.html">val_record_types()</a></code> <code><a href="lookups.html">val_adoptive_parents()</a></code> <code><a href="lookups.html">val_individual_attribute_types()</a></code> <code><a href="lookups.html">val_individual_event_types()</a></code> <code><a href="lookups.html">val_family_event_types()</a></code> <code><a href="lookups.html">val_family_attribute_types()</a></code> <code><a href="lookups.html">val_event_types()</a></code> <code><a href="lookups.html">val_attribute_types()</a></code> <code><a href="lookups.html">val_fact_types()</a></code> <code><a href="lookups.html">val_individual_ordinance_types()</a></code> <code><a href="lookups.html">val_family_ordinance_types()</a></code> <code><a href="lookups.html">val_ordinance_states()</a></code> <code><a href="lookups.html">val_medium_types()</a></code> <code><a href="lookups.html">val_pedigree_types()</a></code> <code><a href="lookups.html">val_certainty()</a></code> <code><a href="lookups.html">val_restriction()</a></code> <code><a href="lookups.html">val_roles()</a></code> <code><a href="lookups.html">val_sexes()</a></code> <code><a href="lookups.html">val_confidence_types()</a></code> <code><a href="lookups.html">val_name_types()</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Lookup values</dd>
-      </dl><dl><dt>
 
-          <code><a href="new_gedcom.html">new_gedcom()</a></code>
 
-        </dt>
-        <dd>Create a new gedcom object</dd>
-      </dl><dl><dt>
 
-          <code><a href="obj_to_ged.html">obj_to_ged()</a></code>
+      <dl><dt>
+
+          <code><a href="df_fam_facts.html">df_fam_facts()</a></code>
 
         </dt>
-        <dd>Convert an input into a vector of GEDCOM lines</dd>
+        <dd>Summarise a family's attributes/events in a dataframe</dd>
       </dl><dl><dt>
+
+          <code><a href="df_indi.html">df_indi()</a></code> <code><a href="df_indi.html">df_fam()</a></code> <code><a href="df_indi.html">df_sour()</a></code> <code><a href="df_indi.html">df_repo()</a></code> <code><a href="df_indi.html">df_media()</a></code> <code><a href="df_indi.html">df_note()</a></code> <code><a href="df_indi.html">df_subm()</a></code>
+
+        </dt>
+        <dd>Summarise records of a particular type in a dataframe</dd>
+      </dl><dl><dt>
+
+          <code><a href="df_indi_facts.html">df_indi_facts()</a></code>
+
+        </dt>
+        <dd>Summarise an individual's attributes/events in a dataframe</dd>
+      </dl></div><div class="section level2">
+      <h2 id="parsing-functions">Parsing Functions<a class="anchor" aria-label="anchor" href="#parsing-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions for parsing GEDCOM dates/ages into R dates/numerics</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="parse_common_record_elements.html">parse_common_record_elements()</a></code>
 
@@ -587,116 +618,26 @@
 
         </dt>
         <dd>Convert a GEDCOM date into a date object</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="controlled-values">Controlled Values<a class="anchor" aria-label="anchor" href="#controlled-values"></a></h2>
 
-          <code><a href="prepare_gedcom_lines.html">prepare_gedcom_lines()</a></code>
+      <div class="section-desc"><p>Functions to return vectors of controlled values</p></div>
 
-        </dt>
-        <dd>Prepare GEDCOM lines for export</dd>
-      </dl><dl><dt>
 
-          <code><a href="prop_definitions.html">prop_definitions</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Define properties in GEDCOM 7.0 specification</dd>
-      </dl><dl><dt>
 
-          <code><a href="pull_record.html">pull_record()</a></code>
 
-        </dt>
-        <dd>Pull a record from a GEDCOM object for editing</dd>
-      </dl><dl><dt>
 
-          <code><a href="push_record.html">push_record()</a></code>
+      <dl><dt>
+
+          <code><a href="lookups.html">val_record_types()</a></code> <code><a href="lookups.html">val_adoptive_parents()</a></code> <code><a href="lookups.html">val_individual_attribute_types()</a></code> <code><a href="lookups.html">val_individual_event_types()</a></code> <code><a href="lookups.html">val_family_event_types()</a></code> <code><a href="lookups.html">val_family_attribute_types()</a></code> <code><a href="lookups.html">val_event_types()</a></code> <code><a href="lookups.html">val_attribute_types()</a></code> <code><a href="lookups.html">val_fact_types()</a></code> <code><a href="lookups.html">val_individual_ordinance_types()</a></code> <code><a href="lookups.html">val_family_ordinance_types()</a></code> <code><a href="lookups.html">val_ordinance_states()</a></code> <code><a href="lookups.html">val_medium_types()</a></code> <code><a href="lookups.html">val_pedigree_types()</a></code> <code><a href="lookups.html">val_certainty()</a></code> <code><a href="lookups.html">val_restriction()</a></code> <code><a href="lookups.html">val_roles()</a></code> <code><a href="lookups.html">val_sexes()</a></code> <code><a href="lookups.html">val_confidence_types()</a></code> <code><a href="lookups.html">val_name_types()</a></code>
 
         </dt>
-        <dd>Push an edited record back into a GEDCOM object</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_gedcom.html">read_gedcom()</a></code>
-
-        </dt>
-        <dd>Import a GEDCOM file</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date.html">reg_date()</a></code>
-
-        </dt>
-        <dd>Construct a regular expression for DATE values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date_approximated.html">reg_date_approximated()</a></code>
-
-        </dt>
-        <dd>Construct the regex pattern for DATE_APPROXIMATED values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date_exact.html">reg_date_exact()</a></code>
-
-        </dt>
-        <dd>Construct a regular expression for DATE_EXACT values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date_period.html">reg_date_period()</a></code>
-
-        </dt>
-        <dd>Construct the regex pattern for DATE_PERIOD values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date_range.html">reg_date_range()</a></code>
-
-        </dt>
-        <dd>Construct the regex pattern for DATE_RANGE values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_date_value.html">reg_date_value()</a></code>
-
-        </dt>
-        <dd>Construct the regex pattern for DATE_VALUE values</dd>
-      </dl><dl><dt>
-
-          <code><a href="reg_xref.html">reg_xref()</a></code>
-
-        </dt>
-        <dd>Construct a regular expression for an xref</dd>
-      </dl><dl><dt>
-
-          <code><a href="regex_combn.html">regex_combn()</a></code>
-
-        </dt>
-        <dd>Enumerate all combinations of regex patterns</dd>
-      </dl><dl><dt>
-
-          <code><a href="remove_living.html">remove_living()</a></code>
-
-        </dt>
-        <dd>Remove living individuals in a gedcom object</dd>
-      </dl><dl><dt>
-
-          <code><a href="remove_sensitive_sections.html">remove_sensitive_sections()</a></code>
-
-        </dt>
-        <dd>Remove gedcom structures marked as sensitive</dd>
-      </dl><dl><dt>
-
-          <code><a href="rm_records.html">rm_records()</a></code>
-
-        </dt>
-        <dd>Remove records from a GEDCOM object</dd>
-      </dl><dl><dt>
-
-          <code><a href="split_gedcom_values.html">split_gedcom_values()</a></code>
-
-        </dt>
-        <dd>Create continuation lines</dd>
-      </dl><dl><dt>
-
-          <code><a href="write_gedcom.html">write_gedcom()</a></code>
-
-        </dt>
-        <dd>Save a gedcom object to disk as a GEDCOM file</dd>
+        <dd>Lookup values</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

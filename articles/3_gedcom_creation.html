@@ -66,8 +66,6 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jl5000.github.io/gedcomS7/">gedcomS7</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="creating-new-objects">Creating new objects<a class="anchor" aria-label="anchor" href="#creating-new-objects"></a>
 </h2>
@@ -75,8 +73,10 @@
 GEDCOM file. When you print a GEDCOM object to the console it provides a
 brief summary of the file. The example below imports the smallest legal
 GEDCOM file:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/minimal70.ged"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jl5000.github.io/gedcomS7/">gedcomS7</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/minimal70.ged"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ged</span></span>
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
@@ -99,14 +99,14 @@ GEDCOM file:</p>
 <span><span class="co">#&gt; Notes:                  0</span></span></code></pre></div>
 <p>A GEDCOM object can also be created using the
 <code><a href="../reference/new_gedcom.html">new_gedcom()</a></code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_gedcom.html">new_gedcom</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ged_new</span></span>
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          19 DEC 2024</span></span>
+<span><span class="co">#&gt; Creation Date:          20 DEC 2024</span></span>
 <span><span class="co">#&gt; Default Language:       en</span></span>
 <span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -140,7 +140,7 @@ with file extension .ged.</p>
 <h2 id="gedcom-object-properties">GEDCOM object properties<a class="anchor" aria-label="anchor" href="#gedcom-object-properties"></a>
 </h2>
 <p>The properties of a GEDCOM object are:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::GedcomS7&gt;</span></span>
 <span><span class="co">#&gt;  @ gedcom_version     : chr "7.0"</span></span>

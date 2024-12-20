@@ -190,6 +190,18 @@ associated information is not required.</p></dd>
 to be formatted in line with RFC 4122 and can be generated with <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>.</p></dd>
 
 
+<dt id="arg-age">age<a class="anchor" aria-label="anchor" href="#arg-age"></a></dt>
+<dd><p>A character string that indicates the age in years, months, weeks and/or days
+that the individual was at the time of the fact. Any combination of these is permitted.
+Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
+Age bounds can also be included, for example; "&lt; 40y". If the age doesn't fit this format then describe the age
+in the corresponding phrase parameter.</p></dd>
+
+
+<dt id="arg-age-phrase">age_phrase<a class="anchor" aria-label="anchor" href="#arg-age-phrase"></a></dt>
+<dd><p>Free text information that cannot be expressed in the individual's age.</p></dd>
+
+
 <dt id="arg-fam-xref">fam_xref<a class="anchor" aria-label="anchor" href="#arg-fam-xref"></a></dt>
 <dd><p>The cross-reference identifier of a family record.</p></dd>
 
