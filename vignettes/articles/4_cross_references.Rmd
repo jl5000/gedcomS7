@@ -9,10 +9,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(gedcomS7)
-```
-
 ## Introduction
 
 All GEDCOM records are given unique identifiers known as xrefs (cross-references) to allow other records to link to them. These are alphanumeric strings surrounded by '@' symbols. 
@@ -49,7 +45,7 @@ ged_max@xref_prefixes
 
 The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
 
-The `@c_xrefs` property gives a list of record xrefs in the GEDCOM object, split by records type:
+The `@c_xrefs` property gives a list of record xrefs in the GEDCOM object, split by record type:
 
 ```{r}
 ged_max@c_xrefs

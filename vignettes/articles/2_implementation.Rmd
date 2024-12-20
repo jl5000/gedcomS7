@@ -9,10 +9,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(gedcomS7)
-```
-
 ## Why gedcomS7?
 
 One of the main characteristics I wanted for this package was to hide the complexity of the GEDCOM specification, and try to automate genealogical tasks that are time consuming to do manually.

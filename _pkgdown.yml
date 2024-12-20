@@ -1,4 +1,76 @@
 url: https://jl5000.github.io/gedcomS7/
 template:
   bootstrap: 5
-
+reference:
+- title: "GEDCOM Creation"
+  desc: "Functions for creating, importing, and exporting GEDCOM files"
+  contents:
+  - new_gedcom
+  - import_gedcom
+  - export_gedcom
+- title: "GEDCOM Classes"
+  desc: "Classes to create and edit GEDCOM objects"
+  contents:
+  - starts_with("Gedcom")
+- title: "Record Classes"
+  desc: "Classes to create and edit GEDCOM records"
+  contents:
+  - ends_with("Record")
+  - pull_record
+  - push_record
+- title: "Location Classes"
+  desc: "Classes to create and edit location objects"
+  contents:
+  - Place
+  - Address
+- title: "Date/Time Classes"
+  desc: "Classes to create and edit Date/Time objects"
+  contents: 
+  - starts_with("Date")
+  - date_exact_current
+  - Time
+  - ends_with("Date")
+- title: "Record Link Classes"
+  desc: "Classes to create linkages to other records"
+  contents:
+  - matches("Link")
+  - matches("Citation")
+  - Association
+- title: "Individual/Family Fact Classes"
+  desc: "Classes to create facts about individuals and families"
+  contents:
+  - starts_with("PersonalName")
+  - ends_with("Event")
+  - ends_with("Attribute")
+  - Ordinance
+  - SpouseSealing
+- title: "Other Classes"
+  desc: "Classes used to provide supplementary information in records"
+  contents:
+  - Note
+  - Translationtext
+  - FactsRecorded
+  - SourceCallNumber
+  - MediaFile
+- title: "Batch Creation/Deletion of Records"
+  desc: "Functions that allow you to create and delete multiple records at once"
+  contents:
+  - starts_with("add_")
+  - rm_records
+  - remove_living
+- title: "Finding Records"
+  desc: "Functions that allow you to find xrefs of records that match criteria"
+  contents:
+  - starts_with("get_")
+- title: "Summarising Records"
+  desc: "Functions that allow you to generate dataframe summaries of record types"
+  contents:
+  - starts_with("df_")
+- title: "Parsing Functions"
+  desc: "Functions for parsing GEDCOM dates/ages into R dates/numerics"
+  contents:
+  - starts_with("parse_")
+- title: "Controlled Values"
+  desc: "Functions to return vectors of controlled values"
+  contents:
+  - starts_with("val_")
