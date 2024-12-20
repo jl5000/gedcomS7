@@ -7,6 +7,7 @@
 #' will specify what tag they are recorded against.
 #'
 #' @return A vector of GEDCOM lines.
+#' @keywords internal
 obj_to_ged <- function(obj, tag = NULL){
   
   if(is.atomic(obj) && is.null(tag))

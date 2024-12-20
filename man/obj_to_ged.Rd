@@ -19,3 +19,4 @@ A vector of GEDCOM lines.
 \description{
 Convert an input into a vector of GEDCOM lines
 }
+\keyword{internal}
