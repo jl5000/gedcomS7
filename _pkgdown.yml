@@ -22,6 +22,7 @@ reference:
   - starts_with("Date")
   - Time
   - ends_with("Date")
+  - date_exact_current
 - subtitle: "Record Link Classes"
   desc: "Classes to create linkages to other records"
   contents:
@@ -65,7 +66,7 @@ reference:
   contents:
   - starts_with("get_")
 - title: "Summarising Records"
-  desc: "Functions that allow you to generate dataframe summaries of record types"
+  desc: "Functions that allow you to generate dataframe summaries of record types and facts"
   contents:
   - starts_with("df_")
 - title: "Parsing Functions"

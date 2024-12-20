@@ -15,11 +15,7 @@ CreationDate <- S7::new_class(
   properties = list(
     date_exact = S7::new_property(S7::class_character | 
                                     S7::new_S3_class("gedcomS7::DateExact"), 
-                                  # This is a hack used only here
-                                  # date_exact_current() can't be used because it
-                                  # gets read in after this
-                                  default = paste(as.integer(format(Sys.Date(), "%d")), 
-                                                  toupper(format(Sys.Date(), "%b %Y"))),
+                                  default = date_exact_current(),
                                   getter = function(self) self@date_exact,
                                   setter = function(self, value){
                                     if(is.character(value)) value <- toupper(value)

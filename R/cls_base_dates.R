@@ -65,13 +65,15 @@ DateExact <- S7::new_class(
 #' Create a GEDCOM Exact Date object for today
 #' 
 #' @return An S7 object representing a GEDCOM Exact Date for today.
-#' @keywords internal
+#' @export
 #' @tests
 #' expect_equal(date_exact_current()@as_date, Sys.Date())
 date_exact_current <- function(){
-  DateExact(year = as.integer(format(Sys.Date(), "%Y")),
-                   month = as.integer(format(Sys.Date(), "%m")),
-                   day = as.integer(format(Sys.Date(), "%d")))
+  DateExact(
+    year = as.integer(format(Sys.Date(), "%Y")),
+    month = as.integer(format(Sys.Date(), "%m")),
+    day = as.integer(format(Sys.Date(), "%d"))
+  )
 }
 
 

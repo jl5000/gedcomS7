@@ -4,7 +4,7 @@
 \alias{CreationDate}
 \title{Create a creation date object}
 \usage{
-CreationDate(date_exact = "20 DEC 2024", time = character(0))
+CreationDate(date_exact = <object>, time = character(0))
 }
 \arguments{
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
