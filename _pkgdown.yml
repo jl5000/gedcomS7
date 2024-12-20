@@ -48,7 +48,7 @@ reference:
   desc: "Classes used to provide supplementary information in records"
   contents:
   - Note
-  - Translationtext
+  - TranslationText
   - FactsRecorded
   - SourceCallNumber
   - MediaFile
