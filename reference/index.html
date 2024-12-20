@@ -37,9 +37,15 @@
     </div>
 
     <div class="section level2">
-      <h2 id="gedcom-creation">GEDCOM Creation<a class="anchor" aria-label="anchor" href="#gedcom-creation"></a></h2>
+      <h2 id="classes">Classes<a class="anchor" aria-label="anchor" href="#classes"></a></h2>
 
-      <div class="section-desc"><p>Functions for creating, importing, and exporting GEDCOM files</p></div>
+
+
+
+    </div><div class="section level2">
+
+      <h3 id="gedcom-classes">GEDCOM Classes<a class="anchor" aria-label="anchor" href="#gedcom-classes"></a></h3>
+      <div class="section-desc"><p>Classes to create new GEDCOM objects from scratch</p></div>
 
 
     </div><div class="section level2">
@@ -49,36 +55,7 @@
 
       <dl><dt>
 
-          <code><a href="new_gedcom.html">new_gedcom()</a></code>
-
-        </dt>
-        <dd>Create a new gedcom object</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_gedcom.html">read_gedcom()</a></code>
-
-        </dt>
-        <dd>Import a GEDCOM file</dd>
-      </dl><dl><dt>
-
-          <code><a href="write_gedcom.html">write_gedcom()</a></code>
-
-        </dt>
-        <dd>Save a gedcom object to disk as a GEDCOM file</dd>
-      </dl></div><div class="section level2">
-      <h2 id="gedcom-classes">GEDCOM Classes<a class="anchor" aria-label="anchor" href="#gedcom-classes"></a></h2>
-
-      <div class="section-desc"><p>Classes to create and edit GEDCOM objects</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="GedcomS7.html">GedcomS7</a></code>
+          <code><a href="GedcomS7.html">GedcomS7()</a></code>
 
         </dt>
         <dd>Create a GEDCOM object</dd>
@@ -89,9 +66,9 @@
         </dt>
         <dd>Create a GEDCOM source object</dd>
       </dl></div><div class="section level2">
-      <h2 id="record-classes">Record Classes<a class="anchor" aria-label="anchor" href="#record-classes"></a></h2>
 
-      <div class="section-desc"><p>Classes to create and edit GEDCOM records</p></div>
+      <h3 id="record-classes">Record Classes<a class="anchor" aria-label="anchor" href="#record-classes"></a></h3>
+      <div class="section-desc"><p>Classes to create new GEDCOM records</p></div>
 
 
     </div><div class="section level2">
@@ -141,21 +118,9 @@
 
         </dt>
         <dd>Create a submitter record object</dd>
-      </dl><dl><dt>
-
-          <code><a href="pull_record.html">pull_record()</a></code>
-
-        </dt>
-        <dd>Pull a record from a GEDCOM object for editing</dd>
-      </dl><dl><dt>
-
-          <code><a href="push_record.html">push_record()</a></code>
-
-        </dt>
-        <dd>Push an edited record back into a GEDCOM object</dd>
       </dl></div><div class="section level2">
-      <h2 id="location-classes">Location Classes<a class="anchor" aria-label="anchor" href="#location-classes"></a></h2>
 
+      <h3 id="location-classes">Location Classes<a class="anchor" aria-label="anchor" href="#location-classes"></a></h3>
       <div class="section-desc"><p>Classes to create and edit location objects</p></div>
 
 
@@ -177,8 +142,8 @@
         </dt>
         <dd>Create an address object</dd>
       </dl></div><div class="section level2">
-      <h2 id="date-time-classes">Date/Time Classes<a class="anchor" aria-label="anchor" href="#date-time-classes"></a></h2>
 
+      <h3 id="date-time-classes">Date/Time Classes<a class="anchor" aria-label="anchor" href="#date-time-classes"></a></h3>
       <div class="section-desc"><p>Classes to create and edit Date/Time objects</p></div>
 
 
@@ -231,12 +196,6 @@
         <dd>Create a GEDCOM Date Value object</dd>
       </dl><dl><dt>
 
-          <code><a href="date_exact_current.html">date_exact_current()</a></code>
-
-        </dt>
-        <dd>Create a GEDCOM Exact Date object for today</dd>
-      </dl><dl><dt>
-
           <code><a href="Time.html">Time()</a></code>
 
         </dt>
@@ -254,8 +213,8 @@
         </dt>
         <dd>Create a creation date object</dd>
       </dl></div><div class="section level2">
-      <h2 id="record-link-classes">Record Link Classes<a class="anchor" aria-label="anchor" href="#record-link-classes"></a></h2>
 
+      <h3 id="record-link-classes">Record Link Classes<a class="anchor" aria-label="anchor" href="#record-link-classes"></a></h3>
       <div class="section-desc"><p>Classes to create linkages to other records</p></div>
 
 
@@ -301,8 +260,8 @@
         </dt>
         <dd>Create an association object</dd>
       </dl></div><div class="section level2">
-      <h2 id="individual-family-fact-classes">Individual/Family Fact Classes<a class="anchor" aria-label="anchor" href="#individual-family-fact-classes"></a></h2>
 
+      <h3 id="individual-family-fact-classes">Individual/Family Fact Classes<a class="anchor" aria-label="anchor" href="#individual-family-fact-classes"></a></h3>
       <div class="section-desc"><p>Classes to create facts about individuals and families</p></div>
 
 
@@ -372,8 +331,8 @@
         </dt>
         <dd>Create a spouse sealing object</dd>
       </dl></div><div class="section level2">
-      <h2 id="other-classes">Other Classes<a class="anchor" aria-label="anchor" href="#other-classes"></a></h2>
 
+      <h3 id="other-classes">Other Classes<a class="anchor" aria-label="anchor" href="#other-classes"></a></h3>
       <div class="section-desc"><p>Classes used to provide supplementary information in records</p></div>
 
 
@@ -413,9 +372,61 @@
         </dt>
         <dd>Create a media file object</dd>
       </dl></div><div class="section level2">
+      <h2 id="gedcom-creation">GEDCOM Creation<a class="anchor" aria-label="anchor" href="#gedcom-creation"></a></h2>
+
+      <div class="section-desc"><p>Functions for creating, importing, and exporting pre-populated GEDCOM files</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="new_gedcom.html">new_gedcom()</a></code>
+
+        </dt>
+        <dd>Create a new gedcom object</dd>
+      </dl><dl><dt>
+
+          <code><a href="read_gedcom.html">read_gedcom()</a></code>
+
+        </dt>
+        <dd>Import a GEDCOM file</dd>
+      </dl><dl><dt>
+
+          <code><a href="write_gedcom.html">write_gedcom()</a></code>
+
+        </dt>
+        <dd>Save a gedcom object to disk as a GEDCOM file</dd>
+      </dl></div><div class="section level2">
+      <h2 id="record-editing">Record Editing<a class="anchor" aria-label="anchor" href="#record-editing"></a></h2>
+
+      <div class="section-desc"><p>Functions to edit GEDCOM records</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pull_record.html">pull_record()</a></code>
+
+        </dt>
+        <dd>Pull a record from a GEDCOM object for editing</dd>
+      </dl><dl><dt>
+
+          <code><a href="push_record.html">push_record()</a></code>
+
+        </dt>
+        <dd>Push an edited record back into a GEDCOM object</dd>
+      </dl></div><div class="section level2">
       <h2 id="batch-creation-deletion-of-records">Batch Creation/Deletion of Records<a class="anchor" aria-label="anchor" href="#batch-creation-deletion-of-records"></a></h2>
 
-      <div class="section-desc"><p>Functions that allow you to create and delete multiple records at once</p></div>
+      <div class="section-desc"><p>Functions that allow you to create records for relatives and delete multiple records at once</p></div>
 
 
     </div><div class="section level2">
@@ -428,7 +439,7 @@
           <code><a href="add_children.html">add_children()</a></code>
 
         </dt>
-        <dd>Create multiple children for a Family</dd>
+        <dd>Create children records for a family</dd>
       </dl><dl><dt>
 
           <code><a href="add_parents.html">add_parents()</a></code>
@@ -440,25 +451,25 @@
           <code><a href="add_siblings.html">add_siblings()</a></code>
 
         </dt>
-        <dd>Create siblings for an Individual</dd>
+        <dd>Create sibling records for an individual</dd>
       </dl><dl><dt>
 
           <code><a href="add_spouse.html">add_spouse()</a></code>
 
         </dt>
-        <dd>Add a spouse for an individual</dd>
+        <dd>Add a spouse record for an individual</dd>
+      </dl><dl><dt>
+
+          <code><a href="rm_living.html">rm_living()</a></code>
+
+        </dt>
+        <dd>Remove living individuals in a GEDCOM object</dd>
       </dl><dl><dt>
 
           <code><a href="rm_records.html">rm_records()</a></code>
 
         </dt>
         <dd>Remove records from a GEDCOM object</dd>
-      </dl><dl><dt>
-
-          <code><a href="remove_living.html">remove_living()</a></code>
-
-        </dt>
-        <dd>Remove living individuals in a gedcom object</dd>
       </dl></div><div class="section level2">
       <h2 id="finding-records">Finding Records<a class="anchor" aria-label="anchor" href="#finding-records"></a></h2>
 
@@ -499,13 +510,13 @@
           <code><a href="get_fam_children.html">get_fam_children()</a></code>
 
         </dt>
-        <dd>Identify all children in a Family Group</dd>
+        <dd>Identify all children in a family</dd>
       </dl><dl><dt>
 
           <code><a href="get_fam_partners.html">get_fam_partners()</a></code>
 
         </dt>
-        <dd>Identify all partners in a Family Group</dd>
+        <dd>Identify all partners in a family</dd>
       </dl><dl><dt>
 
           <code><a href="get_indi_children.html">get_indi_children()</a></code>
@@ -601,12 +612,6 @@
 
 
       <dl><dt>
-
-          <code><a href="parse_common_record_elements.html">parse_common_record_elements()</a></code>
-
-        </dt>
-        <dd>Parse common elements into a record object</dd>
-      </dl><dl><dt>
 
           <code><a href="parse_gedcom_age.html">parse_gedcom_age()</a></code>
 
