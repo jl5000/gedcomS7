@@ -267,13 +267,8 @@ GedcomHeader <- S7::new_class(
 #' @return An S7 object representing a GEDCOM file.
 #' @export
 #' @tests
-#' ged_raw <- readLines(test_path("maximal70.ged"))
-#' ###### Temporary fix
-#' move <- ged_raw[4:12]
-#' ged_raw <- append(ged_raw, move, 49)
-#' ged_raw <- ged_raw[-(4:12)]
-#' ######
-#' ged_parsed <- read_gedcom(test_path("maximal70.ged"))
+#' ged_raw <- readLines(test_path("maximal70-fixed.ged"))
+#' ged_parsed <- read_gedcom(test_path("maximal70-fixed.ged"))
 #' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                                note = "N", sour = "S", subm = "U")
 #' ged_raw2 <- ged_parsed@c_as_ged

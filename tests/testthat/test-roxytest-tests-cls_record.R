@@ -2,8 +2,8 @@
 
 # File R/cls_record.R: @tests
 
-test_that("Function Record() @ L23", {
-  ged <- read_gedcom(test_path("maximal70.ged"))
+test_that("Function Record() @ L18", {
+  ged <- read_gedcom(test_path("maximal70-fixed.ged"))
   
   for(rec_type in names(ged@xref_prefixes)){
     xrefs <- ged@c_xrefs[[rec_type]]
@@ -11,11 +11,6 @@ test_that("Function Record() @ L23", {
     for(xref in xrefs){
       rec_raw <- S7::prop(ged, rec_type)[[xref]]
       
-      if(xref == "@I1@") { #' ###### Temporary fix
-        move <- rec_raw[154:155]
-        rec_raw <- append(rec_raw, move, 152)
-        rec_raw <- rec_raw[-(156:157)]
-      } ######
       # Remove extension tags
       rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), parse_line_tag(rec_raw))]
       rec_parsed <- suppressWarnings(pull_record(ged, xref))

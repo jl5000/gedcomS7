@@ -14,7 +14,7 @@
 #' @return The filepath (invisibly).
 #' @export
 #' @tests
-#' ged <- read_gedcom(test_path("maximal70.ged"))
+#' ged <- read_gedcom(test_path("maximal70-fixed.ged"))
 #' ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                        note = "N", sour = "S", subm = "U")
 #'                                
