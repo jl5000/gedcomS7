@@ -4,29 +4,9 @@
 \alias{prop_definitions}
 \title{Define properties in GEDCOM 7.0 specification}
 \arguments{
-\item{full}{A full address as it would appear on a mailing label, with lines separated
-by semi-colon and a space. For example:
-"The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"}
-
-\item{adr1}{Deprecated.}
-
-\item{adr2}{Deprecated.}
-
-\item{adr3}{Deprecated.}
-
-\item{city}{The city component of the address.}
-
-\item{state}{The state component of the address.}
-
-\item{postal_code}{The postal code component of the address.}
-
-\item{country}{The country component of the address.}
-
 \item{text}{A character string. New lines are created with \\n.}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
-
-\item{languages}{A character vector of language tags as defined in BCP 47.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
@@ -36,26 +16,6 @@ One for each alternate translation of the text.}
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 
-\item{crop}{Whether to crop the multimedia to a specific area.}
-
-\item{top}{The number of pixels to omit from the top side of the image.}
-
-\item{left}{The number of pixels to omit from the left side of the image.}
-
-\item{height}{The height in pixels of the cropped region.}
-
-\item{width}{The width in pixels of the cropped region.}
-
-\item{where}{A specific location within the information referenced. For a published work, this could
-include the volume of a multi-volume work and the page number or numbers. For a
-periodical, it could include volume, issue, and page numbers. For a newspaper, it could
-include a date, page number, and column number. For an unpublished source or micro‐
-filmed works, this could be a film or sheet number, page number, or frame number. A
-census record might have an enumerating district, page number, line number, dwelling
-number, and family number.
-It is recommended that the data in this field be formatted comma-separated with label:
-value pairs}
-
 \item{source_text}{A verbatim copy of any description contained within the source. This can
 either be a \code{TranslationText} object, a list of them, or a character vector of text.
 If any \code{TranslationText} objects are provided, then you will be forced to define an
@@ -63,106 +23,19 @@ associated language or media type.}
 
 \item{fact_type}{TODO}
 
-\item{fact_phrase}{Textual information that cannot be expressed in the fact type.}
-
-\item{role}{What role this person played in this fact.}
-
-\item{role_phrase}{Textual information that cannot be expressed in the role.}
-
-\item{certainty}{An enumerated value indicating the credibility of a
-piece of information, based on its supporting evidence. Some systems use this feature to
-rank multiple conflicting opinions for display of most likely information first. It is not
-intended to eliminate the receivers’ need to evaluate the evidence for themselves.
-"0" = unreliable/estimated data
-"1" = Questionable reliability of evidence
-"2" = Secondary evidence, data officially recorded sometime after event
-"3" = Direct and primary evidence used, or by dominance of the evidence}
-
-\item{indi_phrase}{Textual information that cannot be expressed in the @indi_xref.}
-
-\item{relation_is}{The nature of the association. This must be a value from \code{val_roles()}.
-If a value of "OTHER" is used, a @relation_phrase must be given.}
-
-\item{relation_phrase}{Textual information that cannot be expressed in the relation.}
-
-\item{place_name}{A comma-separated string of region names, ordered from smallest to
-largest. The specific meaning of each element is given by the @place_form, or in the
-\verb{@default_place_form} of the gedcom object if there is no @place_form defined. Elements
-should be left blank if they are unknown, do not apply to the location, or are too
-specific for the region in question. For example "Baltimore, , Maryland, USA".}
-
-\item{place_form}{A comma-separated string of jurisdictional titles, which has the same
-number of elements as @place_form. For example "City, County, State, Country".}
-
-\item{place_translations}{A named character vector of translations of the place name.
-The vector values must follow the same form as the @place_name and the vector names
-must be a language value as defined by @language.}
-
-\item{lat_long}{The latitude and longitude of the place, separated by a space.
-The latitude coordinate is the direction North or South from the equator in degrees and
-fraction of degrees. The longitude coordinate is in degrees and fraction of degrees East
-or West of the zero or base meridian coordinate.
-For example: 18 degrees, 9 minutes, and 3.4 seconds North, 168 degrees, 9 minutes, and
-3.4 seconds East would be formatted as "N18.150944 E168.150944".}
-
-\item{fact_types}{A character string indicating the types
-of events that were recorded in a particular source. Each event type is separated by a
-comma and space. For example, a parish register of births, deaths, and marriages
-would be BIRT, DEAT, MARR.}
-
-\item{territory}{The territory associated with the events covered. This can either be a
-\code{Place} object or a character string (a comma-separated string of region names,
-ordered from smallest to largest). If a character string is provided then only the
-region names can be recorded (and not associated information). This option is easier if
-associated information is not required.}
-
-\item{pedigree}{TODO}
-
-\item{pedigree_phrase}{TODO}
-
-\item{confidence}{TODO}
-
-\item{confidence_phrase}{TODO}
-
-\item{call_numbers}{Call number(s) used to file and retrieve items from the repository.
-This can either be a \code{SourceCallNumber} object, a list of them,
-or a character vector of call numbers. If a character vector is provided then only the
-call numbers themselves can be recorded (and not associated medium). This option is easier if
-associated information is not required.}
-
-\item{call_number}{The call number.}
-
-\item{location}{TODO}
-
 \item{medium}{TODO}
 
 \item{medium_phrase}{TODO}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
-\item{prefix}{The name prefix, e.g. Cmdr.}
-
-\item{given}{The given name or earned name.}
-
-\item{nickname}{A descriptive or familiar name that is used instead of, or in addition to, one’s proper
-name.}
-
-\item{surname_prefix}{Surname prefix or article used in a family name.
-For example in the name "de la Cruz", this value would be "de la".}
-
-\item{surname}{Surname or family name.}
-
-\item{suffix}{Name piece that appears after the given name and surname parts, e.g. Jr.}
+\item{pers_name}{TODO}
 
 \item{name_pieces}{A \code{PersonalNamePieces} object defining the pieces of the full name.}
-
-\item{pers_name}{TODO}
 
 \item{name_type}{TODO}
 
 \item{type_phrase}{TODO}
-
-\item{name_translations}{TODO}
 
 \item{event_type}{TODO}
 
@@ -226,112 +99,28 @@ in the corresponding phrase parameter.}
 
 \item{wife_age_phrase}{Free text information that cannot be expressed in the wife's age.}
 
-\item{adop_parent}{TODO}
-
-\item{adop_parent_phrase}{TODO}
-
-\item{pers_names}{TODO}
-
-\item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
-"U" (undetermined, the default),}
-
-\item{fam_links_chil}{TODO}
-
-\item{fam_links_spou}{TODO}
-
-\item{files}{A \code{MediaFile} object or a list of them. This refers to 1 or more external
-digital files. Grouped files should each pertain to the same context.}
-
-\item{repo_name}{The name of the repository.}
-
-\item{facts_recorded}{The facts recorded by the source. This can either be a \code{FactsRecorded} object,
-a list of them, or a character vector of comma-delimited fact types. If a character vector is
-provided then only the fact types themselves can be recorded (and not associated information).
-This option is easier if associated information is not required. For example, a parish register of
-births, deaths, and marriages would be "BIRT, DEAT, MARR". The \code{val_fact_types()} function gives a
-list of possible fact types.}
-
-\item{originator}{The person, agency, or entity who created the record. For a published work,
-this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished
-source, this may be an individual, a government agency, church organization, or private organization.}
-
-\item{full_title}{The full title of the source.}
-
-\item{short_title}{A shortened name of the source used for sorting, filing, and retrieving records.}
-
-\item{publication_facts}{When and where the record was created. For published works, this
-includes information such as the city of publication, name of the publisher, and year of publication.}
-
-\item{repo_citations}{Associated repositories. This can either be a \code{RepositoryCitation} object,
-a list of them, or a character vector of XREFs of repository records. If a character vector is
-provided then only the XREFs themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.}
-
-\item{subm_name}{The name of the submitter.}
-
 \item{facts}{TODO}
 
 \item{non_events}{TODO}
-
-\item{spouse_sealings}{TODO}
-
-\item{ordinances}{TODO}
-
-\item{ord_type}{TODO}
 
 \item{temple_name}{TODO}
 
 \item{ord_state}{TODO}
 
+\item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
+\code{DateExact} object.}
+
+\item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
+\code{Time} object.}
+
 \item{xref}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
-\item{indi_xref}{The cross-reference identifier of an individual record. If the individual
-does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you should define an @indi_phrase.}
-
 \item{fam_xref}{The cross-reference identifier of a family record.}
-
-\item{sour_xref}{The cross-reference identifier of a source record. If the source
-does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you should describe the source in @where.}
-
-\item{repo_xref}{The cross-reference identifier of a repository record. If the repository
-does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
-you should describe the repository in @notes.}
-
-\item{media_xref}{The cross-reference identifier of a multimedia record.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{data_note_xrefs}{A character vector of note record cross-reference identifiers relevant
-to the source data.}
-
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
-
-\item{husb_xref}{The cross-reference identifier of the husband's individual record.
-If the individual does not have a record, then the value "@VOID@" can be used.
-However, you will need to describe the individual by using a named vector (a description can be used
-in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
-
-\item{wife_xref}{The cross-reference identifier of the wife's individual record.
-If the individual does not have a record, then the value "@VOID@" can be used.
-However, you will need to describe the individual by using a named vector (a description can be used
-in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
-
-\item{chil_xrefs}{The cross-reference identifier(s) of the children's individual records.
-If the individual does not have a record, then the value "@VOID@" can be used.
-However, you will need to describe the individual by using a named vector (a description can be used
-in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@")}
-
-\item{alia_xrefs}{A named character vector of relevant individual record cross-reference identifiers
-whose records also represent this individual. The vector names may provide a description of these records.}
-
-\item{anci_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the ancestors of this individual.}
-
-\item{desi_xrefs}{A character vector of relevant submitter record cross-reference identifiers
-who are interested in the descendants of this individual.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
@@ -352,44 +141,16 @@ or a character vector of notes. If a character vector is provided then only the 
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{data_notes}{Associated notes about the source data. This can either be a \code{Note}
-object, a list of them, or a character vector of notes. If a character vector is provided
-then only the notes themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.}
-
 \item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
-
-\item{hour}{The hour of the day given as an integer between 0 and 23.}
-
-\item{minute}{The minute of the hour given as an integer between 0 and 59.}
-
-\item{second}{The second of the minute given as an integer between 0 and 59.}
-
-\item{fraction}{The fraction of the second given as an integer.}
-
-\item{utc}{Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
-is in local time (FALSE).}
 
 \item{year}{The year given as an integer (greater than 0).}
 
 \item{month}{The month of the year given as an integer between 1 and 12.}
 
 \item{day}{The day of the month given as an integer between 1 and 31.}
-
-\item{bce}{Whether the date is Before the Common Era. This is FALSE by default,
-but if TRUE, only the year should be given.}
-
-\item{about}{Whether the date is near to the date given.}
-
-\item{calc}{Whether the date is calculated from other values.}
-
-\item{est}{Whether the date is near to the date given, and is calculated from other values.}
-
-\item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
-\code{DateGregorian} object.}
 
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
 \code{DateExact} object. If not given, it will default to today's date.}
@@ -419,15 +180,9 @@ Creating an object with no parameters sets the date to today.}
 
 \item{updated}{A \code{ChangeDate} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
-
-\item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
-\code{DateExact} object.}
-
-\item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
-\code{Time} object.}
 }
 \description{
-Define all properties used in S7 classes.
+Define common properties used in S7 classes.
 }
 \details{
 This empty function serves as a single location where all properties are defined,

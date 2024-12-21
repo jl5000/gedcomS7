@@ -9,6 +9,12 @@
 #' applies to the first file.
 #'  
 #' @inheritParams prop_definitions
+#' @param media_xref The cross-reference identifier of a multimedia record.
+#' @param top The number of pixels to omit from the top side of the image.
+#' @param left The number of pixels to omit from the left side of the image.
+#' @param height The height in pixels of the cropped region.
+#' @param width The width in pixels of the cropped region.
+#' 
 #' @return An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
 #' @tests

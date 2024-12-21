@@ -2,6 +2,19 @@
 #' Create an individual record object
 #' 
 #' @inheritParams prop_definitions 
+#' @param pers_names TODO
+#' @param sex The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
+#' "U" (undetermined, the default).
+#' @param ordinances TODO
+#' @param fam_links_chil TODO
+#' @param fam_links_spou TODO
+#' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
+#' whose records also represent this individual. The vector names may provide a description of these records.
+#' @param anci_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the ancestors of this individual.
+#' @param desi_xrefs A character vector of relevant submitter record cross-reference identifiers
+#' who are interested in the descendants of this individual.
+#' 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
 #' @tests

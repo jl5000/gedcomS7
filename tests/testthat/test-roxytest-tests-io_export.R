@@ -2,10 +2,8 @@
 
 # File R/io_export.R: @tests
 
-test_that("Function write_gedcom() @ L36", {
-  skip_if_offline(host = "gedcom.io")
-  
-  ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+test_that("Function write_gedcom() @ L34", {
+  ged <- read_gedcom(test_path("maximal70.ged"))
   ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
                          note = "N", sour = "S", subm = "U")
                                  
@@ -25,7 +23,7 @@ test_that("Function write_gedcom() @ L36", {
 })
 
 
-test_that("Function date_diff() @ L164", {
+test_that("Function date_diff() @ L162", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
@@ -36,7 +34,7 @@ test_that("Function date_diff() @ L164", {
 })
 
 
-test_that("Function split_gedcom_values() @ L250", {
+test_that("Function split_gedcom_values() @ L248", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

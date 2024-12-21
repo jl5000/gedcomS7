@@ -2,7 +2,10 @@
 #' Create a submitter record object
 #' 
 #' @inheritParams prop_definitions 
+#' @param subm_name The name of the submitter.
 #' @param citations Not used.
+#' @param languages A character vector of language tags as defined in BCP 47.
+#' 
 #' @return An S7 object representing a GEDCOM SUBMITTER_RECORD.
 #' @export
 SubmitterRecord <- S7::new_class(

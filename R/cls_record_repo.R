@@ -2,8 +2,10 @@
 #' Create a repository record object
 #' 
 #' @inheritParams prop_definitions 
+#' @param repo_name The name of the repository.
 #' @param citations Not used.
 #' @param media_links Not used.
+#' 
 #' @return An S7 object representing a GEDCOM REPOSITORY_RECORD.
 #' @export
 RepositoryRecord <- S7::new_class(

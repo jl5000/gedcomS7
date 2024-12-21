@@ -80,7 +80,7 @@ Creating an object with no parameters sets the date to today.}
 \item{pers_names}{TODO}
 
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
-"U" (undetermined, the default),}
+"U" (undetermined, the default).}
 
 \item{facts}{TODO}
 

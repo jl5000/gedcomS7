@@ -2,7 +2,7 @@
 
 # File R/cls_record_media.R: @tests
 
-test_that("Function MediaFile() @ L25", {
+test_that("Function MediaFile() @ L27", {
   expect_error(MediaFile(location = "media/original.mp3",
                                 media_type = "audio/mp3",
                                 medium = "CD"),
@@ -22,7 +22,7 @@ test_that("Function MediaFile() @ L25", {
 })
 
 
-test_that("Function MediaRecord() @ L101", {
+test_that("Function MediaRecord() @ L106", {
   fls <- list(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",

@@ -1,7 +1,17 @@
 
 #' Create an address object
 #' 
-#' @inheritParams prop_definitions
+#' @param full A full address as it would appear on a mailing label, with lines separated
+#' by semi-colon and a space. For example:
+#' "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"
+#' @param adr1 Deprecated.
+#' @param adr2 Deprecated.
+#' @param adr3 Deprecated.
+#' @param city The city component of the address.
+#' @param state The state component of the address.
+#' @param postal_code The postal code component of the address.
+#' @param country The country component of the address.
+#' 
 #' @return An S7 object representing a GEDCOM ADDRESS_STRUCTURE.
 #' @export
 #' @tests

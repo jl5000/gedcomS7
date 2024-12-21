@@ -2,6 +2,14 @@
 #' Create an association object
 #' 
 #' @inheritParams prop_definitions
+#' @param indi_xref The cross-reference identifier of an individual record. If the individual
+#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' you should define an @indi_phrase.
+#' @param indi_phrase Textual information that cannot be expressed in the @indi_xref.
+#' @param relation_is The nature of the association. This must be a value from `val_roles()`.
+#' If a value of "OTHER" is used, a @relation_phrase must be given.
+#' @param relation_phrase Textual information that cannot be expressed in the relation.
+#' 
 #' @return An S7 object representing a GEDCOM ASSOCIATION_STRUCTURE.
 #' @export
 #' @tests

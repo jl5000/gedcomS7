@@ -14,9 +14,7 @@
 #' @return The filepath (invisibly).
 #' @export
 #' @tests
-#' skip_if_offline(host = "gedcom.io")
-#' 
-#' ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+#' ged <- read_gedcom(test_path("maximal70.ged"))
 #' ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                        note = "N", sour = "S", subm = "U")
 #'                                

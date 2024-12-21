@@ -2,7 +2,7 @@
 
 # File R/cls_place.R: @tests
 
-test_that("Function Place() @ L24", {
+test_that("Function Place() @ L41", {
   expect_error(Place(), regexp = "@place_name has too few elements")
   expect_error(Place(""), regexp = "@place_name has too few characters")
   expect_snapshot_value(Place("here")@c_as_ged, "json2")

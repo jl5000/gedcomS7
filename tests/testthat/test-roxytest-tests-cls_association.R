@@ -2,7 +2,7 @@
 
 # File R/cls_association.R: @tests
 
-test_that("Function Association() @ L21", {
+test_that("Function Association() @ L29", {
   expect_snapshot_value(Association(relation_is = "FATH")@c_as_ged, "json2")
   expect_error(Association(indi_phrase = "someone", relation_is = "CHILD"),
                regexp = "@relation_is has an invalid value")

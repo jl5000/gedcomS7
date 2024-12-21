@@ -2,7 +2,7 @@
 
 # File R/cls_fact_indi.R: @tests
 
-test_that("Function IndividualEvent() @ L58", {
+test_that("Function IndividualEvent() @ L61", {
   expect_error(IndividualEvent("birth", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
   expect_error(IndividualEvent("BIRT", fact_val = "Yes"), 
@@ -35,7 +35,7 @@ test_that("Function IndividualEvent() @ L58", {
 })
 
 
-test_that("Function IndividualAttribute() @ L152", {
+test_that("Function IndividualAttribute() @ L155", {
   expect_error(IndividualAttribute("descr", fact_val = "Tall"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(IndividualAttribute("DSCR"), 

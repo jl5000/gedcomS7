@@ -231,19 +231,27 @@ GedcomHeader <- S7::new_class(
 
 #' Create a GEDCOM object
 #' 
+#' You shouldn't need to use this directly to create new GEDCOM objects. Instead, use
+#' `new_gedcom()` which populates relevant defaults.
+#' 
 #' @inheritParams prop_definitions 
-#' @param gedcom_version TODO
-#' @param ext_tags TODO
-#' @param source TODO
-#' @param destination TODO
+#' @param gedcom_version The version number of the official specification that this 
+#' GEDCOM conforms to. This must include the major and minor version (for example, “7.0”); 
+#' it may include the patch as well (for example, “7.0.1”), but doing so is not required. 
+#' @param ext_tags Not supported.
+#' @param source A `GedcomSource` object describing the software that has generated the GEDCOM.`
+#' @param destination An identifier for the system expected to receive this GEDCOM.
 #' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
 #' `DateExact` object.
 #' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
 #' `Time` object.
-#' @param subm_xref The cross-reference identifier of a submitter record.
-#' @param gedcom_copyright TODO
-#' @param default_language TODO
-#' @param default_place_form TODO
+#' @param subm_xref The cross-reference identifier of the primary submitter.
+#' @param gedcom_copyright A copyright statement, as appropriate for the copyright laws applicable to 
+#' this data.
+#' @param default_language The default language for the entire GEDCOM object.
+#' @param default_place_form The default form for place names in the GEDCOM object. 
+#' A comma-separated string of jurisdictional titles. 
+#' For example "City, County, State, Country".
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
@@ -259,9 +267,13 @@ GedcomHeader <- S7::new_class(
 #' @return An S7 object representing a GEDCOM file.
 #' @export
 #' @tests
-#' skip_if_offline(host = "gedcom.io")
-#' ged_raw <- readLines("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
-#' ged_parsed <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+#' ged_raw <- readLines(test_path("maximal70.ged"))
+#' ###### Temporary fix
+#' move <- ged_raw[4:12]
+#' ged_raw <- append(ged_raw, move, 49)
+#' ged_raw <- ged_raw[-(4:12)]
+#' ######
+#' ged_parsed <- read_gedcom(test_path("maximal70.ged"))
 #' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                                note = "N", sour = "S", subm = "U")
 #' ged_raw2 <- ged_parsed@c_as_ged

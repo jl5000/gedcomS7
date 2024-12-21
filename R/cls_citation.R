@@ -2,6 +2,30 @@
 #' Create a source citation object
 #' 
 #' @inheritParams prop_definitions
+#' @param sour_xref The cross-reference identifier of a source record. If the source
+#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' you should describe the source in @where.
+#' @param where A specific location within the information referenced. For a published work, this could
+#' include the volume of a multi-volume work and the page number or numbers. For a
+#' periodical, it could include volume, issue, and page numbers. For a newspaper, it could
+#' include a date, page number, and column number. For an unpublished source or micro‐
+#' filmed works, this could be a film or sheet number, page number, or frame number. A
+#' census record might have an enumerating district, page number, line number, dwelling
+#' number, and family number.
+#' It is recommended that the data in this field be formatted comma-separated with label:
+#'   value pairs
+#' @param fact_phrase Textual information that cannot be expressed in the fact type.
+#' @param role What role this person played in this fact.
+#' @param role_phrase Textual information that cannot be expressed in the role.
+#' @param certainty An enumerated value indicating the credibility of a
+#' piece of information, based on its supporting evidence. Some systems use this feature to
+#' rank multiple conflicting opinions for display of most likely information first. It is not
+#' intended to eliminate the receivers’ need to evaluate the evidence for themselves.
+#' "0" = unreliable/estimated data
+#' "1" = Questionable reliability of evidence 
+#' "2" = Secondary evidence, data officially recorded sometime after event
+#' "3" = Direct and primary evidence used, or by dominance of the evidence
+#' 
 #' @return An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
 #' @tests

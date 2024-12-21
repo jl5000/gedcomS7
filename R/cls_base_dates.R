@@ -80,6 +80,9 @@ date_exact_current <- function(){
 #' Create a GEDCOM Gregorian Date object
 #' 
 #' @inheritParams prop_definitions
+#' @param bce Whether the date is Before the Common Era. This is FALSE by default,
+#' but if TRUE, only the year should be given.
+#' 
 #' @return An S7 object representing a GEDCOM Gregorian Date.
 #' @export
 #' @tests
@@ -149,7 +152,12 @@ DateGregorian <- S7::new_class(
 
 #' Create a GEDCOM Approximate Date object
 #' 
-#' @inheritParams prop_definitions 
+#' @param date_greg A Gregorian date given either as a formatted GEDCOM string, or a
+#' `DateGregorian` object.
+#' @param about Whether the date is near to the date given.
+#' @param calc Whether the date is calculated from other values.
+#' @param est Whether the date is near to the date given, and is calculated from other values.
+#' 
 #' @return An S7 object representing a GEDCOM Approximate Date.
 #' @export
 #' @tests

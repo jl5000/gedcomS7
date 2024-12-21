@@ -2,6 +2,7 @@
 #' Create a source call number object
 #' 
 #' @inheritParams prop_definitions
+#' @param call_number The call number.
 #' @return An S7 object representing the CALN substructure of a GEDCOM 
 #' SOURCE_REPOSITORY_CITATION.
 #' @export
@@ -56,6 +57,15 @@ parse_call_numbers <- function(lines, location){
 #' Create a repository citation object
 #' 
 #' @inheritParams prop_definitions
+#' @param repo_xref The cross-reference identifier of a repository record. If the repository
+#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' you should describe the repository in @notes.
+#' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
+#' This can either be a `SourceCallNumber` object, a list of them,
+#' or a character vector of call numbers. If a character vector is provided then only the 
+#' call numbers themselves can be recorded (and not associated medium). This option is easier if 
+#' associated information is not required. 
+#' 
 #' @return An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
 #' @export
 #' @tests
@@ -119,6 +129,16 @@ parse_repo_citations <- function(rec_lines){
 #' Create an object recording facts covered in a source record
 #' 
 #' @inheritParams prop_definitions 
+#' @param fact_types A character string indicating the types
+#' of events that were recorded in a particular source. Each event type is separated by a
+#' comma and space. For example, a parish register of births, deaths, and marriages
+#' would be BIRT, DEAT, MARR. 
+#' @param territory The territory associated with the events covered. This can either be a 
+#' `Place` object or a character string (a comma-separated string of region names, 
+#' ordered from smallest to largest). If a character string is provided then only the 
+#' region names can be recorded (and not associated information). This option is easier if 
+#' associated information is not required. 
+#' 
 #' @return An S7 object representing a GEDCOM SOUR.EVEN structure.
 #' @export
 #' @tests
@@ -196,7 +216,31 @@ parse_events_recorded <- function(rec_lines){
 #' Create a source record object
 #' 
 #' @inheritParams prop_definitions 
+#' @param facts_recorded The facts recorded by the source. This can either be a `FactsRecorded` object, 
+#' a list of them, or a character vector of comma-delimited fact types. If a character vector is 
+#' provided then only the fact types themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required. For example, a parish register of 
+#' births, deaths, and marriages would be "BIRT, DEAT, MARR". The `val_fact_types()` function gives a
+#' list of possible fact types.
+#' @param data_note_xrefs A character vector of note record cross-reference identifiers relevant
+#' to the source data.
+#' @param data_notes Associated notes about the source data. This can either be a `Note` 
+#' object, a list of them, or a character vector of notes. If a character vector is provided 
+#' then only the notes themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required.
+#' @param originator The person, agency, or entity who created the record. For a published work, 
+#' this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished 
+#' source, this may be an individual, a government agency, church organization, or private organization.
+#' @param full_title The full title of the source.
+#' @param short_title A shortened name of the source used for sorting, filing, and retrieving records.
+#' @param publication_facts When and where the record was created. For published works, this 
+#' includes information such as the city of publication, name of the publisher, and year of publication.
+#' @param repo_citations Associated repositories. This can either be a `RepositoryCitation` object, 
+#' a list of them, or a character vector of XREFs of repository records. If a character vector is 
+#' provided then only the XREFs themselves can be recorded (and not associated information). 
+#' This option is easier if associated information is not required.
 #' @param citations Not used.
+#' 
 #' @return An S7 object representing a GEDCOM SOURCE_RECORD.
 #' @export
 SourceRecord <- S7::new_class(
