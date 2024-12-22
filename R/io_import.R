@@ -135,6 +135,23 @@ parse_records <- function(records_lst){
     subm = subset_recs(records_lst, "SUBM")
   )
   
+  x <- add_missing_xrefs(x)
+  
   x
 }
 
+add_missing_xrefs <- function(gedcom){
+  
+  for(rec_type in names(gedcom@c_xrefs)){
+    for(rec_no in seq_along(S7::prop(gedcom, rec_type))){
+      if(names(S7::prop(gedcom, rec_type))[[rec_no]] != "") next
+      
+      new_xref <- gedcom@c_next_xref[rec_type]
+      first_line <- S7::prop(gedcom, rec_type)[[rec_no]][1]
+      S7::prop(gedcom, rec_type)[[rec_no]][1] <- sub("^0", paste(0, new_xref), first_line)
+      names(S7::prop(gedcom, rec_type))[rec_no] <- new_xref
+    }
+  }
+  
+  gedcom
+}
