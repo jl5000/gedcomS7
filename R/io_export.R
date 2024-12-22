@@ -14,7 +14,10 @@
 #' @return The filepath (invisibly).
 #' @export
 #' @tests
-#' ged <- read_gedcom(test_path("maximal70-fixed.ged"))
+#' maximal <- test_path("maximal70.ged")
+#' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
+#'                                  fileext = ".ged")
+#' ged <- read_gedcom(maximal)
 #' ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
 #'                        note = "N", sour = "S", subm = "U")
 #'                                

@@ -1,6 +1,9 @@
 
 #' @tests
-#' ged <- read_gedcom(test_path("maximal70-fixed.ged"))
+#' maximal <- test_path("maximal70.ged")
+#' maximal <- withr::local_tempfile(lines = fix_maximal_records(maximal), 
+#'                                  fileext = ".ged")
+#' ged <- read_gedcom(maximal)
 #' 
 #' for(rec_type in names(ged@xref_prefixes)){
 #'   xrefs <- ged@c_xrefs[[rec_type]]
