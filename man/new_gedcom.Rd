@@ -2,7 +2,7 @@
 % Please edit documentation in R/cls_gedcom.R
 \name{new_gedcom}
 \alias{new_gedcom}
-\title{Create a new gedcom object}
+\title{Create a new GEDCOM object}
 \usage{
 new_gedcom(my_language = "en")
 }
@@ -14,5 +14,8 @@ adhere to BCP 47.}
 A minimal gedcom S7 object.
 }
 \description{
-Create a new gedcom object
+Create a new GEDCOM object
+}
+\details{
+See documentation for \code{GedcomS7()} and \code{GedcomSource()} for object properties.
 }

@@ -29,7 +29,7 @@ ged_new <- new_gedcom()
 ged_new
 ```
 
-A minimal GEDCOM object created by `gedcomS7` comes pre-populated with some additional information (more so than a minimal GEDCOM file). Information about the `gedcomS7` package (as the system/product creating the file) is given in the appropriate places, creation date, as well as a default language (English). The default language can be changed in the `new_gedcom()` function. This must be a character string of language tags as defined in [BCP 47](https://www.rfc-editor.org/info/bcp47) (as must any other language parameter in the package).
+Information about the `gedcomS7` package (as the system/product creating the file) is given in the appropriate places, creation date, as well as a default language (English). The default language can be changed in the `new_gedcom()` function. This must be a character string of language tags as defined in [BCP 47](https://www.rfc-editor.org/info/bcp47) (as must any other language parameter in the package).
 
 Once you have a GEDCOM object in R, you can write it to a valid GEDCOM file using `write_gedcom()`. The filepath must end with file extension .ged.
 

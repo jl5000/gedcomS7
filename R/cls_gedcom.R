@@ -12,7 +12,6 @@
 #' @param data_pubtime TODO
 #' @param data_copyright TODO
 #' @return An S7 object representing a GEDCOM HEAD.SOUR.
-#' @export
 GedcomSource <- S7::new_class(
   "GedcomSource",
   properties = list(
@@ -265,7 +264,6 @@ GedcomHeader <- S7::new_class(
 #' The order that these records appear in the vector will also dictate the order in which records 
 #' will appear in the exported file.
 #' @return An S7 object representing a GEDCOM file.
-#' @export
 #' @tests
 #' maximal <- test_path("maximal70.ged")
 #' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
@@ -361,7 +359,10 @@ GedcomS7 <- S7::new_class(
 )
 
 
-#' Create a new gedcom object
+#' Create a new GEDCOM object
+#' 
+#' @details
+#' See documentation for `GedcomS7()` and `GedcomSource()` for object properties.
 #'
 #' @param my_language The primary language in which data will be stored. The language code should
 #' adhere to BCP 47.
