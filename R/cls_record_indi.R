@@ -24,9 +24,9 @@
 #'              IndividualEvent("BIRT", date = "2006", place = "Colorado, USA"),
 #'              IndividualEvent("DEAT", date = "18 JUN 2020", place = "London, UK"),
 #'              IndividualEvent("DEAT", date = "2021", place = "UK"))
-#' expect_equal(IndividualRecord(xref = "@I1@", pers_names = nms)@c_primary_name, "Joe /Bloggs/")
-#' expect_equal(IndividualRecord(xref = "@I1@", pers_names = nms)@c_all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
-#' birt_deat <- IndividualRecord(xref = "@I1@", facts = fcts)
+#' expect_equal(IndividualRecord(pers_names = nms)@c_primary_name, "Joe /Bloggs/")
+#' expect_equal(IndividualRecord(pers_names = nms)@c_all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
+#' birt_deat <- IndividualRecord(facts = fcts)
 #' expect_equal(birt_deat@c_birth_date, "2005")
 #' expect_equal(birt_deat@c_birth_place, "USA")
 #' expect_equal(birt_deat@c_death_date, "18 JUN 2020")
