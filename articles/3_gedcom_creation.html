@@ -123,14 +123,11 @@ GEDCOM file:</p>
 <span><span class="co">#&gt; Repositories:           0</span></span>
 <span><span class="co">#&gt; Multimedia:             0</span></span>
 <span><span class="co">#&gt; Notes:                  0</span></span></code></pre></div>
-<p>A minimal GEDCOM object created by <code>gedcomS7</code> comes
-pre-populated with some additional information (more so than a minimal
-GEDCOM file). Information about the <code>gedcomS7</code> package (as
-the system/product creating the file) is given in the appropriate
-places, creation date, as well as a default language (English). The
-default language can be changed in the <code><a href="../reference/new_gedcom.html">new_gedcom()</a></code>
-function. This must be a character string of language tags as defined in
-<a href="https://www.rfc-editor.org/info/bcp47" class="external-link">BCP 47</a> (as must any
+<p>Information about the <code>gedcomS7</code> package (as the
+system/product creating the file) is given in the appropriate places,
+creation date, as well as a default language (English). The default
+language can be changed in the <code><a href="../reference/new_gedcom.html">new_gedcom()</a></code> function. This
+must be a character string of language tags as defined in <a href="https://www.rfc-editor.org/info/bcp47" class="external-link">BCP 47</a> (as must any
 other language parameter in the package).</p>
 <p>Once you have a GEDCOM object in R, you can write it to a valid
 GEDCOM file using <code><a href="../reference/write_gedcom.html">write_gedcom()</a></code>. The filepath must end
