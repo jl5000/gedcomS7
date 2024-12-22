@@ -118,17 +118,6 @@ IndividualRecord <- S7::new_class(
         }, FUN.VALUE = character(1), USE.NAMES = FALSE)
       }),
     
-    c_desc_short = S7::new_property(
-      S7::class_character,
-      getter = function(self){
-        if(length(self@c_primary_name) == 0){
-          name <- "Unnamed individual"
-        } else {
-          name <- self@c_primary_name
-        }
-        paste0("Individual ", self@xref, ", ", name)
-      }),
-    
     c_birth_date = S7::new_property(
       S7::class_character,
       getter = function(self){
