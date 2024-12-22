@@ -5,7 +5,7 @@
 \title{Create a repository record object}
 \usage{
 RepositoryRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

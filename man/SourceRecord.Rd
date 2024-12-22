@@ -5,7 +5,7 @@
 \title{Create a source record object}
 \usage{
 SourceRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

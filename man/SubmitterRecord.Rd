@@ -5,7 +5,7 @@
 \title{Create a submitter record object}
 \usage{
 SubmitterRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

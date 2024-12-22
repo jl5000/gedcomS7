@@ -5,7 +5,7 @@
 \title{Create an individual record object}
 \usage{
 IndividualRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

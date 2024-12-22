@@ -5,7 +5,7 @@
 \title{Create a shared note record object}
 \usage{
 NoteRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

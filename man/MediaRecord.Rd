@@ -5,7 +5,7 @@
 \title{Create a multimedia record object}
 \usage{
 MediaRecord(
-  xref = "@ORPHAN@",
+  xref = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,

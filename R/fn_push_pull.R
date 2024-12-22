@@ -72,14 +72,14 @@ push_record <- function(gedcom, record){
   }
   
   if(gedcom@add_creation_dates){
-    if(length(record@created) == 0 && record@xref == "@ORPHAN@"){
+    if(length(record@created) == 0 && record@xref == "@GEDCOMS7_ORPHAN@"){
       record@created <- CreationDate()
     }
   }
   
   rec_type <- get_record_type(record)
   
-  if(record@xref == "@ORPHAN@"){
+  if(record@xref == "@GEDCOMS7_ORPHAN@"){
     record@xref <- unname(gedcom@c_next_xref[rec_type])
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   }
