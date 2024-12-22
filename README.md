@@ -38,22 +38,24 @@ are available, including an online validator at
 The package does not currently support extension tags. If you import a
 file with these features, the package may behave unpredictably.
 
+It can be quite cumbersome manipulating GEDCOM files using this package
+at the command line. Ideally, the package would have a shiny app
+interface, and this is a longer term aspiration.
+
 ## Example
 
-GEDCOM files can be imported or created from scratch, creating an S7
-object representation:
+GEDCOM files can be imported (with `read_gedcom()`) or created from
+scratch, creating an S7 object representation:
 
 ``` r
 library(gedcomS7)
-
-ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 
 ged <- new_gedcom()
 ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          19 DEC 2024
+#> Creation Date:          22 DEC 2024
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -81,7 +83,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          19 DEC 2024
+#> Creation Date:          22 DEC 2024
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -138,7 +140,7 @@ ged@c_as_ged
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 19 DEC 2024"                              
+#>  [8] "1 DATE 22 DEC 2024"                              
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        

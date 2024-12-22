@@ -41,14 +41,14 @@ When importing existing GEDCOM files, you should ensure that they are error free
       
 The package does not currently support extension tags. If you import a file with these features, the package may behave unpredictably.
 
+It can be quite cumbersome manipulating GEDCOM files using this package at the command line. Ideally, the package would have a shiny app interface, and this is a longer term aspiration.
+
 ## Example
 
-GEDCOM files can be imported or created from scratch, creating an S7 object representation:
+GEDCOM files can be imported (with `read_gedcom()`) or created from scratch, creating an S7 object representation:
 
-```{r example}
+```{r}
 library(gedcomS7)
-
-ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 
 ged <- new_gedcom()
 ged
