@@ -7,6 +7,13 @@
 #'
 #' @return A gedcom S7 object.
 #' @export
+#' @tests
+#' maximal <- test_path("maximal70.ged")
+#' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
+#'                                  fileext = ".ged")
+#' length_maximal <- length(readLines(maximal))
+#' ged <- read_gedcom(maximal)
+#' expect_equal(length(ged@c_as_ged), length_maximal)
 read_gedcom <- function(filepath = file.choose()) {
   
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
