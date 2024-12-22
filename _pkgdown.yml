@@ -3,76 +3,83 @@ template:
   bootstrap: 5
 reference:
 - title: "Classes"
+
 - subtitle: "GEDCOM Classes"
-  desc: "Classes to create new GEDCOM objects from scratch"
   contents:
   - starts_with("Gedcom")
+  
 - subtitle: "Record Classes"
-  desc: "Classes to create new GEDCOM records"
   contents:
   - ends_with("Record")
+  
 - subtitle: "Location Classes"
-  desc: "Classes to create and edit location objects"
   contents:
   - Place
   - Address
+  
 - subtitle: "Date/Time Classes"
-  desc: "Classes to create and edit Date/Time objects"
   contents: 
   - starts_with("Date")
   - Time
   - ends_with("Date")
   - date_exact_current
-- subtitle: "Record Link Classes"
-  desc: "Classes to create linkages to other records"
+  
+- subtitle: "Record Linkage Classes"
   contents:
   - matches("Link")
   - matches("Citation")
   - Association
+  
 - subtitle: "Individual/Family Fact Classes"
-  desc: "Classes to create facts about individuals and families"
   contents:
   - starts_with("PersonalName")
   - ends_with("Event")
   - ends_with("Attribute")
   - Ordinance
   - SpouseSealing
+  
 - subtitle: "Other Classes"
-  desc: "Classes used to provide supplementary information in records"
   contents:
   - Note
   - TranslationText
   - FactsRecorded
   - SourceCallNumber
   - MediaFile
+  
 - title: "GEDCOM Creation"
   desc: "Functions for creating, importing, and exporting pre-populated GEDCOM files"
   contents:
   - new_gedcom
   - read_gedcom
   - write_gedcom
+  
 - title: "Record Editing"
   desc: "Functions to edit GEDCOM records"
   contents:
   - pull_record
   - push_record
+  
 - title: "Batch Creation/Deletion of Records"
   desc: "Functions that allow you to create records for relatives and delete multiple records at once"
   contents:
   - starts_with("add_")
   - starts_with("rm_")
+  
 - title: "Finding Records"
   desc: "Functions that allow you to find xrefs of records that match criteria"
   contents:
   - starts_with("get_")
+  
 - title: "Summarising Records"
   desc: "Functions that allow you to generate dataframe summaries of record types and facts"
   contents:
   - starts_with("df_")
+  
 - title: "Parsing Functions"
   desc: "Functions for parsing GEDCOM dates/ages into R dates/numerics"
   contents:
   - starts_with("parse_")
+  
 - title: "Controlled Values"
   desc: "Functions to return vectors of controlled values"
   contents:
