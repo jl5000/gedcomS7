@@ -18,7 +18,7 @@ comma and space. For example, a parish register of births, deaths, and marriages
 would be BIRT, DEAT, MARR.}
 
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
-\code{DatePeriod} object.}
+\code{DatePeriod()} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 

@@ -21,15 +21,18 @@ GedcomSource(
 )
 }
 \arguments{
-\item{product_id}{TODO}
+\item{product_id}{An identifier for the product producing this dataset.}
 
-\item{product_name}{TODO}
+\item{product_name}{The name of the product producing this dataset.}
 
-\item{product_version}{TODO}
+\item{product_version}{The version of the product producing this dataset.}
 
-\item{business_name}{TODO}
+\item{business_name}{The name of the business, corporation, or person that produced
+or commissioned the product.}
 
-\item{business_address}{TODO}
+\item{business_address}{The address of the business, corporation, or person that produced
+or commissioned the product. The address is given either as a \code{Address()} object or as a
+character string. This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
 
@@ -39,13 +42,13 @@ GedcomSource(
 
 \item{web_pages}{A character vector of web page URLs.}
 
-\item{data_name}{TODO}
+\item{data_name}{Deprecated.}
 
-\item{data_pubdate}{TODO}
+\item{data_pubdate}{Deprecated.}
 
-\item{data_pubtime}{TODO}
+\item{data_pubtime}{Deprecated.}
 
-\item{data_copyright}{TODO}
+\item{data_copyright}{Deprecated.}
 }
 \value{
 An S7 object representing a GEDCOM HEAD.SOUR.

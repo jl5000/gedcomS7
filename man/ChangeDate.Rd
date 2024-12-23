@@ -13,14 +13,14 @@ ChangeDate(
 }
 \arguments{
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
-\code{DateExact} object. If not given, it will default to today's date.}
+\code{DateExact()} object. If not given, it will default to today's date.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
-\code{Time} object.}
+\code{Time()} object.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}

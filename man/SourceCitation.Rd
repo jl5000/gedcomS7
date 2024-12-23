@@ -35,11 +35,11 @@ It is recommended that the data in this field be formatted comma-separated with 
 value pairs}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{DateValue} object.}
+\code{DateValue()} object.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{TranslationText} object, a list of them, or a character vector of text.
-If any \code{TranslationText} objects are provided, then you will be forced to define an
+either be a \code{TranslationText()} object, a list of them, or a character vector of text.
+If any \code{TranslationText()} objects are provided, then you will be forced to define an
 associated language or media type.}
 
 \item{fact_type}{TODO}
@@ -59,14 +59,14 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 "2" = Secondary evidence, data officially recorded sometime after event
 "3" = Direct and primary evidence used, or by dominance of the evidence}
 
-\item{media_links}{Associated multimedia. This can either be a \code{MediaLink} object, a list of them,
+\item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}

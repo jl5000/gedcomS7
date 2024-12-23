@@ -8,10 +8,10 @@ CreationDate(date_exact = <object>, time = character(0))
 }
 \arguments{
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
-\code{DateExact} object. If not given, it will default to today's date.}
+\code{DateExact()} object. If not given, it will default to today's date.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
-\code{Time} object.}
+\code{Time()} object.}
 }
 \value{
 An S7 object representing a GEDCOM CREATION_DATE.

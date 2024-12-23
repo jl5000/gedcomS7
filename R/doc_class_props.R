@@ -11,14 +11,14 @@
 #' @param language A character string of language tags as defined in BCP 47.
 #' 
 #' @param media_type The media type as defined in RFC 2045.
-#' @param translations A `TranslationText` object or a list of them.
+#' @param translations A `TranslationText()` object or a list of them.
 #' One for each alternate translation of the text.
 #' @param title The title of the multimedia record. This will supersede any title given
 #' in the record.
 #' 
 #' @param source_text A verbatim copy of any description contained within the source. This can 
-#' either be a `TranslationText` object, a list of them, or a character vector of text. 
-#' If any `TranslationText` objects are provided, then you will be forced to define an
+#' either be a `TranslationText()` object, a list of them, or a character vector of text. 
+#' If any `TranslationText()` objects are provided, then you will be forced to define an
 #' associated language or media type.
 #' @param fact_type TODO
 #' 
@@ -26,7 +26,7 @@
 #' @param medium_phrase TODO
 #' @param media_alt A named vector of the media in alternative media forms, c(form = location)
 #' @param pers_name TODO
-#' @param name_pieces A `PersonalNamePieces` object defining the pieces of the full name.
+#' @param name_pieces A `PersonalNamePieces()` object defining the pieces of the full name.
 #' @param name_type TODO
 #' @param type_phrase TODO
 #' 
@@ -34,7 +34,7 @@
 #' @param fact_val TODO
 #' @param fact_desc TODO
 #' @param place see territory
-#' @param address The address given either as a `Address` object or as a character string.
+#' @param address The address given either as a `Address()` object or as a character string.
 #' This would be as written on a mailing label with new lines separated by \\n.
 #' @param phone_numbers A character vector of phone numbers.
 #' @param emails A character vector of email addresses.
@@ -51,7 +51,7 @@
 #' treated as read-only.
 #' @param private A logical value indicating whether the associated record/fact should be
 #' treated as private. This allows them to be excluded on export.
-#' @param associations Associated individuals. This can either be a `Association` object or a list of them.
+#' @param associations Associated individuals. This can either be a `Association()` object or a list of them.
 #' @param age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
@@ -96,15 +96,15 @@
 #' The names must be given as a URI. See the GEDCOM specification for more information.
 #' 
 #' 
-#' @param media_links Associated multimedia. This can either be a `MediaLink` object, a list of them,
+#' @param media_links Associated multimedia. This can either be a `MediaLink()` object, a list of them,
 #' or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param notes Associated notes. This can either be a `Note` object, a list of them,
+#' @param notes Associated notes. This can either be a `Note()` object, a list of them,
 #' or a character vector of notes. If a character vector is provided then only the notes themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
-#' @param citations Associated sources. This can either be a `SourceCitation` object, a list of them,
+#' @param citations Associated sources. This can either be a `SourceCitation()` object, a list of them,
 #' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 #' can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
@@ -114,23 +114,23 @@
 #' @param day The day of the month given as an integer between 1 and 31.
 #' 
 #' @param date_exact An exact date given either as a formatted GEDCOM string, or a
-#' `DateExact` object. If not given, it will default to today's date.
+#' `DateExact()` object. If not given, it will default to today's date.
 #' @param date_period A date period given either as a formatted GEDCOM string, or a
-#' `DatePeriod` object.
+#' `DatePeriod()` object.
 #' @param date The date given either as a formatted GEDCOM string, or a
-#' `DateValue` object.
+#' `DateValue()` object.
 #' @param date_sort The date given either as a formatted GEDCOM string, or a
-#' `DateSorting` object.
+#' `DateSorting()` object.
 #' @param date_phrase Textual information that cannot be expressed in the date.
 #' @param start_date The start of the period/range given either as a formatted GEDCOM string, or a
-#' `DateGregorian` object.
+#' `DateGregorian()` object.
 #' @param end_date The end of the period/range given either as a formatted GEDCOM string, or a
-#' `DateGregorian` object.
+#' `DateGregorian()` object.
 #' @param time The time given either as a formatted GEDCOM string, or a
-#' `Time` object.
-#' @param created A `CreationDate` object containing the date the record was created.
+#' `Time()` object.
+#' @param created A `CreationDate()` object containing the date the record was created.
 #' Creating an object with no parameters sets the date to today.
-#' @param updated A `ChangeDate` object containing the date the record was updated.
+#' @param updated A `ChangeDate()` object containing the date the record was updated.
 #' Creating an object with no parameters sets the date to today.
 #' 
 #' 

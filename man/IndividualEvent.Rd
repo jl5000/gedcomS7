@@ -43,11 +43,11 @@ IndividualEvent(
 \item{fact_desc}{TODO}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{DateValue} object.}
+\code{DateValue()} object.}
 
 \item{place}{see territory}
 
-\item{address}{The address given either as a \code{Address} object or as a character string.
+\item{address}{The address given either as a \code{Address()} object or as a character string.
 This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
@@ -76,23 +76,23 @@ treated as read-only.}
 treated as private. This allows them to be excluded on export.}
 
 \item{date_sort}{The date given either as a formatted GEDCOM string, or a
-\code{DateSorting} object.}
+\code{DateSorting()} object.}
 
-\item{associations}{Associated individuals. This can either be a \code{Association} object or a list of them.}
+\item{associations}{Associated individuals. This can either be a \code{Association()} object or a list of them.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{media_links}{Associated multimedia. This can either be a \code{MediaLink} object, a list of them,
+\item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}

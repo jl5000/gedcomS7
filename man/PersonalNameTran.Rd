@@ -15,7 +15,7 @@ PersonalNameTran(
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 
-\item{name_pieces}{A \code{PersonalNamePieces} object defining the pieces of the full name.}
+\item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 }
 \value{
 An S7 object representing a GEDCOM personal name translation substructure.

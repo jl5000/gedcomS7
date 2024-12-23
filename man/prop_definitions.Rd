@@ -10,15 +10,15 @@
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
-\item{translations}{A \code{TranslationText} object or a list of them.
+\item{translations}{A \code{TranslationText()} object or a list of them.
 One for each alternate translation of the text.}
 
 \item{title}{The title of the multimedia record. This will supersede any title given
 in the record.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{TranslationText} object, a list of them, or a character vector of text.
-If any \code{TranslationText} objects are provided, then you will be forced to define an
+either be a \code{TranslationText()} object, a list of them, or a character vector of text.
+If any \code{TranslationText()} objects are provided, then you will be forced to define an
 associated language or media type.}
 
 \item{fact_type}{TODO}
@@ -31,7 +31,7 @@ associated language or media type.}
 
 \item{pers_name}{TODO}
 
-\item{name_pieces}{A \code{PersonalNamePieces} object defining the pieces of the full name.}
+\item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 
 \item{name_type}{TODO}
 
@@ -45,7 +45,7 @@ associated language or media type.}
 
 \item{place}{see territory}
 
-\item{address}{The address given either as a \code{Address} object or as a character string.
+\item{address}{The address given either as a \code{Address()} object or as a character string.
 This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}
@@ -73,7 +73,7 @@ treated as read-only.}
 \item{private}{A logical value indicating whether the associated record/fact should be
 treated as private. This allows them to be excluded on export.}
 
-\item{associations}{Associated individuals. This can either be a \code{Association} object or a list of them.}
+\item{associations}{Associated individuals. This can either be a \code{Association()} object or a list of them.}
 
 \item{age}{A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
@@ -131,17 +131,17 @@ be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 \item{ext_ids}{A named character vector of identifiers maintained by an external authority.
 The names must be given as a URI. See the GEDCOM specification for more information.}
 
-\item{media_links}{Associated multimedia. This can either be a \code{MediaLink} object, a list of them,
+\item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
@@ -153,32 +153,32 @@ associated information is not required.}
 \item{day}{The day of the month given as an integer between 1 and 31.}
 
 \item{date_exact}{An exact date given either as a formatted GEDCOM string, or a
-\code{DateExact} object. If not given, it will default to today's date.}
+\code{DateExact()} object. If not given, it will default to today's date.}
 
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
-\code{DatePeriod} object.}
+\code{DatePeriod()} object.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
-\code{DateValue} object.}
+\code{DateValue()} object.}
 
 \item{date_sort}{The date given either as a formatted GEDCOM string, or a
-\code{DateSorting} object.}
+\code{DateSorting()} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
 \item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian} object.}
+\code{DateGregorian()} object.}
 
 \item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian} object.}
+\code{DateGregorian()} object.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
-\code{Time} object.}
+\code{Time()} object.}
 
-\item{created}{A \code{CreationDate} object containing the date the record was created.
+\item{created}{A \code{CreationDate()} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
 
-\item{updated}{A \code{ChangeDate} object containing the date the record was updated.
+\item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 }
 \description{

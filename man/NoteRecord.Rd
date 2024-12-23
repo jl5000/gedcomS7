@@ -50,17 +50,17 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 \item{notes}{Not used.}
 
-\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
 \item{media_links}{Not used.}
 
-\item{created}{A \code{CreationDate} object containing the date the record was created.
+\item{created}{A \code{CreationDate()} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
 
-\item{updated}{A \code{ChangeDate} object containing the date the record was updated.
+\item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
 \item{text}{A character string. New lines are created with \\n.}
@@ -69,7 +69,7 @@ Creating an object with no parameters sets the date to today.}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 
-\item{translations}{A \code{TranslationText} object or a list of them.
+\item{translations}{A \code{TranslationText()} object or a list of them.
 One for each alternate translation of the text.}
 }
 \value{

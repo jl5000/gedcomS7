@@ -50,7 +50,7 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
@@ -59,15 +59,15 @@ associated information is not required.}
 
 \item{media_links}{Not used.}
 
-\item{created}{A \code{CreationDate} object containing the date the record was created.
+\item{created}{A \code{CreationDate()} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
 
-\item{updated}{A \code{ChangeDate} object containing the date the record was updated.
+\item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
 \item{repo_name}{The name of the repository.}
 
-\item{address}{The address given either as a \code{Address} object or as a character string.
+\item{address}{The address given either as a \code{Address()} object or as a character string.
 This would be as written on a mailing label with new lines separated by \\n.}
 
 \item{phone_numbers}{A character vector of phone numbers.}

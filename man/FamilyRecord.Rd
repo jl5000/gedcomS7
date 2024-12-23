@@ -52,25 +52,25 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{media_links}{Associated multimedia. This can either be a \code{MediaLink} object, a list of them,
+\item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
 or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{created}{A \code{CreationDate} object containing the date the record was created.
+\item{created}{A \code{CreationDate()} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
 
-\item{updated}{A \code{ChangeDate} object containing the date the record was updated.
+\item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
 \item{facts}{TODO}
@@ -82,7 +82,7 @@ If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used
 in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@").}
 
-\item{associations}{Associated individuals. This can either be a \code{Association} object or a list of them.}
+\item{associations}{Associated individuals. This can either be a \code{Association()} object or a list of them.}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 

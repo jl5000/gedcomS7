@@ -37,15 +37,15 @@ it may include the patch as well (for example, “7.0.1”), but doing so is not
 
 \item{ext_tags}{Not supported.}
 
-\item{source}{A \code{GedcomSource} object describing the software that has generated the GEDCOM.`}
+\item{source}{A \code{GedcomSource()} object describing the software that has generated the GEDCOM.`}
 
 \item{destination}{An identifier for the system expected to receive this GEDCOM.}
 
 \item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
-\code{DateExact} object.}
+\code{DateExact()} object.}
 
 \item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
-\code{Time} object.}
+\code{Time()} object.}
 
 \item{subm_xref}{The cross-reference identifier of the primary submitter.}
 
@@ -58,7 +58,7 @@ this data.}
 A comma-separated string of jurisdictional titles.
 For example "City, County, State, Country".}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}

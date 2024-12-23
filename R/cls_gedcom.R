@@ -2,15 +2,18 @@
 #' Create a GEDCOM source object
 #' 
 #' @inheritParams prop_definitions 
-#' @param product_id TODO
-#' @param product_name TODO
-#' @param product_version TODO
-#' @param business_name TODO
-#' @param business_address TODO
-#' @param data_name TODO
-#' @param data_pubdate TODO
-#' @param data_pubtime TODO
-#' @param data_copyright TODO
+#' @param product_id An identifier for the product producing this dataset.
+#' @param product_name The name of the product producing this dataset.
+#' @param product_version The version of the product producing this dataset.
+#' @param business_name The name of the business, corporation, or person that produced 
+#' or commissioned the product.
+#' @param business_address The address of the business, corporation, or person that produced 
+#' or commissioned the product. The address is given either as a `Address()` object or as a 
+#' character string. This would be as written on a mailing label with new lines separated by \\n.
+#' @param data_name Deprecated.
+#' @param data_pubdate Deprecated.
+#' @param data_pubtime Deprecated.
+#' @param data_copyright Deprecated.
 #' @return An S7 object representing a GEDCOM HEAD.SOUR.
 GedcomSource <- S7::new_class(
   "GedcomSource",
@@ -238,12 +241,12 @@ GedcomHeader <- S7::new_class(
 #' GEDCOM conforms to. This must include the major and minor version (for example, “7.0”); 
 #' it may include the patch as well (for example, “7.0.1”), but doing so is not required. 
 #' @param ext_tags Not supported.
-#' @param source A `GedcomSource` object describing the software that has generated the GEDCOM.`
+#' @param source A `GedcomSource()` object describing the software that has generated the GEDCOM.`
 #' @param destination An identifier for the system expected to receive this GEDCOM.
 #' @param creation_date The creation date of the file given either as a formatted GEDCOM string, or a
-#' `DateExact` object.
+#' `DateExact()` object.
 #' @param creation_time The creation time of the file given either as a formatted GEDCOM string, or a
-#' `Time` object.
+#' `Time()` object.
 #' @param subm_xref The cross-reference identifier of the primary submitter.
 #' @param gedcom_copyright A copyright statement, as appropriate for the copyright laws applicable to 
 #' this data.
@@ -372,9 +375,9 @@ GedcomS7 <- S7::new_class(
 new_gedcom <- function(my_language = "en"){
   
   sour <- GedcomSource(product_id = "https://github.com/jl5000/gedcomS7",
-                              product_name = "The 'gedcomS7' package for the R language",
-                              business_name = "Jamie Lendrum",
-                              emails = "jalendrum@gmail.com")
+                       product_name = "The 'gedcomS7' package for the R language",
+                       business_name = "Jamie Lendrum",
+                       emails = "jalendrum@gmail.com")
   
   GedcomS7(gedcom_version = "7.0",
            source = sour,

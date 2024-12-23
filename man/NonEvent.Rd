@@ -17,18 +17,18 @@ NonEvent(
 \item{event_type}{TODO}
 
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
-\code{DatePeriod} object.}
+\code{DatePeriod()} object.}
 
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
-\item{notes}{Associated notes. This can either be a \code{Note} object, a list of them,
+\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{citations}{Associated sources. This can either be a \code{SourceCitation} object, a list of them,
+\item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
 or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
