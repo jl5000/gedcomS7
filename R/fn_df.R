@@ -11,7 +11,7 @@ df_indi <- function(x){
   
   df <- data.frame(
     xref = names(x@indi),
-    name = desc_indi_name(x, names(x@indi), unnamed = ""),
+    name = vapply(x@indi, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
     sex = vapply(x@indi, \(lines) chronify(find_ged_values(lines, "SEX")), FUN.VALUE = character(1)),
     birth_date = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))), FUN.VALUE = character(1)),
     birth_place = vapply(x@indi, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))), FUN.VALUE = character(1)),
