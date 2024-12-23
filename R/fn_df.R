@@ -141,7 +141,7 @@ df_subm <- function(x){
 df_indi_facts <- function(x, xref){
   check_indi_rec(x, xref)
   
-  indi <- pull_record(x, xref)
+  indi <- suppressWarnings(pull_record(x, xref))
   fcts <- indi@facts
   
   df <- data.frame(
@@ -170,7 +170,7 @@ df_indi_facts <- function(x, xref){
 df_fam_facts <- function(x, xref){
   check_fam_rec(x, xref)
   
-  fam <- pull_record(x, xref)
+  fam <- suppressWarnings(pull_record(x, xref))
   fcts <- fam@facts
   
   df <- data.frame(
