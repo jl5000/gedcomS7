@@ -30,6 +30,8 @@ pull_record <- function(x, xref){
                 SUBM = parse_record_subm(rec_lines)
   )
   
+  check_unparsed(rec_lines, rec)
+
   if(rec@locked){
     warning("The record is locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object.") 
   } else {

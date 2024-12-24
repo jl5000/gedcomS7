@@ -122,3 +122,16 @@ parse_gedcom_age <- function(age_string) {
   years_num + months_prop + weeks_prop + days_prop
   
 }
+
+check_unparsed <- function(lines, parsed){
+  
+  not_parsed <- setdiff(
+    lines,
+    parsed@c_as_ged
+  )
+  
+  if(length(not_parsed) > 0)
+    warning("The following lines could not be parsed:\n", 
+            paste(not_parsed, collapse = "\n"))
+  
+}
