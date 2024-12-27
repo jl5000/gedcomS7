@@ -24,9 +24,9 @@ read_gedcom <- function(filepath = file.choose()) {
   
   ged_lines_raw <- readLines(con)
   
-  validate_lines(ged_lines_raw)
-  
-  ged_lines <- remove_at_escapes(ged_lines_raw) |> 
+  ged_lines <- ged_lines_raw |> 
+    validate_lines() |> 
+    remove_at_escapes() |> 
     combine_cont_lines()
   
   records_lst <- split(ged_lines, cumsum(substr(ged_lines, 1, 1) == "0"))
@@ -51,11 +51,21 @@ validate_lines <- function(lines){
   #check characters in components
   
   #non-greg calendars not allowed
+  date_lines <- parse_line_tag(lines) == "DATE"
+  non_greg_lines <- grepl("(JULIAN|FRENCH_R|HEBREW)", parse_line_value(lines))
+  unsupp_date_rows <- which(date_lines & non_greg_lines)
+  
+  if(length(unsupp_date_rows) > 0)
+    stop("Non-Gregorian dates are not supported. See line ", 
+         toString(unsupp_date_rows))
+  
+  # Make explicit GREGORIANs implicit
+  lines[date_lines] <- gsub("GREGORIAN ", "", lines[date_lines])
   
   if(lines[1] != "0 HEAD")
     stop("The file does not start with a HEAD record")
   
-  if(lines[length(lines)] != "0 TRLR")
+  if(rev(lines)[1] != "0 TRLR")
     stop("The file does not end with a TRLR record")
   
   # UIDs should only appear once
@@ -68,7 +78,7 @@ validate_lines <- function(lines){
       stop("Some UIDs are duplicated: ", toString(unique(uids[dupes])))
   }
   
-  NULL
+  lines
 }
 
 remove_at_escapes <- function(lines){

@@ -35,7 +35,7 @@ There are two other properties that place restrictions on records: `@confidentia
 
 ## Notes
 
-All records (apart from Note records) allow you to attach as many free text notes as you wish. If a note applies in many places then it is best, to create a Note record which can be referenced everywhere it is needed, but otherwise use the `@notes` property. 
+All records (apart from Note records) allow you to attach as many free text notes as you wish. If a note applies in many places then it is best to create a Note record which can be referenced everywhere it is needed, but otherwise use the `@notes` property. 
 
 This property can take notes in a number of ways. The simplest way is via a character vector. Another way is via a `Note()` object, which also allows you to define some other properties of the note such as its language and media type.
 
