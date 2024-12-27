@@ -374,7 +374,7 @@ GedcomS7 <- S7::new_class(
 #' @export
 new_gedcom <- function(my_language = "en"){
   
-  sour <- GedcomSource(product_id = "https://github.com/jl5000/gedcomS7",
+  sour <- GedcomSource(product_id = "gedcomS7",
                        product_name = "The 'gedcomS7' package for the R language",
                        business_name = "Jamie Lendrum",
                        emails = "jalendrum@gmail.com")

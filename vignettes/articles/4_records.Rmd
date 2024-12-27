@@ -1,0 +1,166 @@
+---
+title: "Records"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This article introduces records, which are how genealogical data is stored and organised in a GEDCOM file. There are several types of records, which are the subject of subsequent articles, but this article focuses on those aspects which they all (or almost all) have in common.
+
+New records are created using the set of `*Record()` functions, e.g.
+
+```{r}
+library(gedcomS7)
+
+indi <- IndividualRecord()
+```
+
+## Restrictions
+
+Records are considered read-only when the `@locked` property is set to TRUE. If you attempt to pull a locked record from a GEDCOM object for editing, you will be presented with a warning:
+
+```{r}
+indi@locked <- TRUE
+ged <- push_record(new_gedcom(), indi)
+indi <- pull_record(ged, "@I1@")
+```
+
+There are two other properties that place restrictions on records: `@confidential` and `@private`. The exact interpretation of confidential and private is largely up to the author of the file, but they allow two independent mechanisms for excluding certain records on export.
+
+## Notes
+
+All records (apart from Note records) allow you to attach as many free text notes as you wish. If a note applies in many places then it is best, to create a Note record which can be referenced everywhere it is needed, but otherwise use the `@notes` property. 
+
+This property can take notes in a number of ways. The simplest way is via a character vector. Another way is via a `Note()` object, which also allows you to define some other properties of the note such as its language and media type.
+
+```{r}
+indi@notes <- "This is a single note"
+
+indi@notes <- c("This is a note", "This is an another note")
+
+indi@notes <- Note(text = "This is a single note using a Note object",
+                   media_type = "text/plain")
+```
+
+Alternatively, you can supply a list which can contain any number of character or Note elements:
+
+```{r}
+indi@notes <- list(
+  Note(text = "This is one of a number of <b>Note</b> objects. This one is HTML.",
+       media_type = "text/html"),
+  Note(text = "Esta es una nota",
+       language = "es",
+       media_type = "text/plain"),
+  "This one is a character note"
+)
+```
+
+You should remember that for any properties that can take multiple elements, you can append any new values to the existing ones, otherwise they will be overwritten:
+
+```{r}
+indi@notes <- append(
+  indi@notes,
+  list(
+    "This is an appended note",
+    Note("This is another appended note")
+  )
+)
+
+indi@notes
+```
+
+## Identifiers
+
+### Cross references
+
+All GEDCOM records are given unique identifiers known as xrefs (cross-references) to allow other records to link to them. These are alphanumeric strings surrounded by '@' symbols. 
+
+Even though xref identifiers will be imported unchanged in the `gedcomS7` package, some systems do create their own xref identifiers on import. So you cannot assume they will survive between systems. However, they should always be internally consistent.
+
+For this reason xref identifiers are not supposed to be exposed to the typical user. However this rule can only really be applied to GEDCOM software that has a point-and-click user interface, rather than one that works interactively at the R console (and the `S7` package does not allow you to hide property values). If a `shiny` app is created, then xrefs will be hidden from the user.
+
+### Summarising and controlling xrefs
+
+The `gedcomS7` package creates xrefs automatically when creating and pushing new records. When creating a new record it will be given an xref identifying it as a standalone record that has not yet been pushed to the GEDCOM object:
+
+```{r}
+new_person <- IndividualRecord()
+new_person@xref
+```
+
+This is a special xref which indicates to the code that this is a new record and not an existing one. It is important you do not change it.
+
+If you then push it to a GEDCOM object, it will assign it a proper xref:
+
+```{r}
+ged <- push_record(new_gedcom(), new_person)
+```
+
+The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
+
+We'll import a different GEDCOM file which has some records in it:
+
+```{r}
+ged_max <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
+
+ged_max@xref_prefixes
+```
+
+The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
+
+The `@c_xrefs` property gives a list of record xrefs in the GEDCOM object, split by record type:
+
+```{r}
+ged_max@c_xrefs
+```
+
+The next xrefs of each type will therefore be:
+
+```{r}
+ged_max@c_next_xref
+```
+
+### Other identifiers
+
+As well as cross-reference identifiers, which are internally defined, there are also a number of other identifiers that can be supplied to a record:
+
+* User-defined identifiers (`@user_ids`)
+* Globally unique identifiers (`@unique_ids`)
+* Identifiers given by an external authority (`@ext_ids`)
+
+The `@user_ids` must be a vector of user reference numbers, for example it may be a record number within the submitter’s automated or manual system, or it may be a page and position number on a pedigree chart. It can optionally be a named vector, where the vector names describe what the reference number is. It's usually a good idea to provide this.
+
+The `@unique_ids` must take the form of a [Universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier) (UUID). These can be generated with `uuid::UUIDgenerate()`, e.g.
+
+```{r}
+uuid::UUIDgenerate(n = 1)
+```
+
+The `@ext_ids` must take the form of a named vector where the names are the URI defining the identifier. For example, to include the reference to an individual's [Find a Grave's](https://www.findagrave.com) page, you would supply `c("https://www.findagrave.com/memorial" = "1075")`, which would be interpreted as https://www.findagrave.com/memorial/1075.
+
+
+## Creation/modification dates
+
+You have the option of recording when a record is created or changed. When you push a record to a GEDCOM object, it will record creation/change dates depending on the values of `@add_creation_dates` and `@update_change_dates` (these are FALSE by default):
+
+```{r}
+ged <- new_gedcom()
+ged@update_change_dates <- TRUE
+ged@add_creation_dates <- TRUE
+
+new_record <- IndividualRecord()
+ged <- push_record(ged, new_record)
+
+# Extract record with creation/change dates added
+new_record <- pull_record(ged, "@I1@")
+new_record@created
+new_record@updated
+```
+
+You can add a time and/or notes to these dates, but that's probably overkill.
