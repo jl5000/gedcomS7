@@ -23,8 +23,10 @@ IndividualFact <- S7::new_class(
 #' Create an individual event object
 #' 
 #' @inheritParams prop_definitions 
-#' @param adop_parent TODO
-#' @param adop_parent_phrase TODO
+#' @param adop_parent The adopting parent. Must be a value from `val_adoptive_parents()`. 
+#' For adoption events only.
+#' @param adop_parent_phrase A free text description of the adoptive parent (if the
+#' value itself is insufficient).
 #' 
 #' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
 #' @export

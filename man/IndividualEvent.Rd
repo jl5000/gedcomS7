@@ -110,9 +110,11 @@ in the corresponding phrase parameter.}
 
 \item{fam_xref}{The cross-reference identifier of a family record.}
 
-\item{adop_parent}{TODO}
+\item{adop_parent}{The adopting parent. Must be a value from \code{val_adoptive_parents()}.
+For adoption events only.}
 
-\item{adop_parent_phrase}{TODO}
+\item{adop_parent_phrase}{A free text description of the adoptive parent (if the
+value itself is insufficient).}
 }
 \value{
 An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
