@@ -251,9 +251,8 @@ rm_records <- function(x, xrefs){
 
 
 void_xref_ptrs <- function(lines, xref){
-  # TODO: This doesn't update the change date
   rows <- parse_line_value(lines) == xref
   if(sum(rows) == 0) return(lines)
-  lines[rows] <- sub(paste0(xref, "$"), "@VOID@", lines[rows])
+  lines[rows] <- sub(xref, "@VOID@", lines[rows])
   lines
 }

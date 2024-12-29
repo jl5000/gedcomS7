@@ -65,12 +65,7 @@ pull_record <- function(x, xref){
 push_record <- function(gedcom, record){
   
   if(gedcom@update_change_dates){
-    if(length(record@updated) == 1){
-      record@updated@date_exact <- date_exact_current()
-      record@updated@time <- character()
-    } else {
-      record@updated <- ChangeDate()
-    }
+     record@updated <- ChangeDate()
   }
   
   if(gedcom@add_creation_dates){
