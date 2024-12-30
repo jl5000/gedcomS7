@@ -76,18 +76,22 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
 
 #' Add a spouse record for an individual
 #' 
-#' This creates a record for a spouse and their Family record.
+#' This creates a record for a spouse and potentially their Family record.
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of an Individual record.
 #' @param sex The sex of the spouse.
 #' @param spou_name Optional name to give to the spouse.
 #' Surnames must be enclosed in forward slashes.
+#' @param fam_xref The cross-reference identifier of the Family record
+#' if it already exists. If this is not provided, a new Family record will
+#' be created.
 #'
 #' @return A gedcom object with additional spouse and Family Group records.
 #' @export
-add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
+add_spouse <- function(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL){
   check_indi_rec(x, xref)
+  if(!is.null(fam_xref)) check_fam_rec(x, fam_xref)
   
   spou_xref <- x@c_next_xref[["indi"]]
   
@@ -95,8 +99,10 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL){
     sex = sex
   )
   if(!is.null(spou_name)) spou_rec@pers_names <- spou_name
+  if(!is.null(fam_xref)) spou_rec@fam_links_spou <- fam_xref
   
   x <- push_record(x, spou_rec)
+  if(!is.null(fam_xref)) return(x)
   
   if(sex == "M"){
     husb_xref = spou_xref

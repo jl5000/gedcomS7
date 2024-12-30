@@ -4,7 +4,7 @@
 \alias{add_spouse}
 \title{Add a spouse record for an individual}
 \usage{
-add_spouse(x, xref, sex = "U", spou_name = NULL)
+add_spouse(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
@@ -15,10 +15,14 @@ add_spouse(x, xref, sex = "U", spou_name = NULL)
 
 \item{spou_name}{Optional name to give to the spouse.
 Surnames must be enclosed in forward slashes.}
+
+\item{fam_xref}{The cross-reference identifier of the Family record
+if it already exists. If this is not provided, a new Family record will
+be created.}
 }
 \value{
 A gedcom object with additional spouse and Family Group records.
 }
 \description{
-This creates a record for a spouse and their Family record.
+This creates a record for a spouse and potentially their Family record.
 }
