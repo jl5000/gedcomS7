@@ -1,4 +1,4 @@
-# Function IndividualEvent() @ L61
+# Function IndividualEvent() @ L63
 
     {
       "type": "character",
@@ -38,7 +38,7 @@
       "value": ["0 ADOP Y", "1 TYPE More info on adoption", "1 DATE JAN 1980", "1 FAMC @123@", "2 ADOP WIFE", "3 PHRASE Gloria"]
     }
 
-# Function IndividualAttribute() @ L155
+# Function IndividualAttribute() @ L157
 
     {
       "type": "character",

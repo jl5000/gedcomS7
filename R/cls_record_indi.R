@@ -24,8 +24,8 @@
 #'              IndividualEvent("BIRT", date = "2006", place = "Colorado, USA"),
 #'              IndividualEvent("DEAT", date = "18 JUN 2020", place = "London, UK"),
 #'              IndividualEvent("DEAT", date = "2021", place = "UK"))
-#' expect_equal(IndividualRecord(pers_names = nms)@c_primary_name, "Joe /Bloggs/")
-#' expect_equal(IndividualRecord(pers_names = nms)@c_all_names, c("Joe /Bloggs/","Joseph /Bloggs/"))
+#' expect_equal(IndividualRecord(pers_names = nms)@c_primary_name, "Joe Bloggs")
+#' expect_equal(IndividualRecord(pers_names = nms)@c_all_names, c("Joe Bloggs","Joseph Bloggs"))
 #' birt_deat <- IndividualRecord(facts = fcts)
 #' expect_equal(birt_deat@c_birth_date, "2005")
 #' expect_equal(birt_deat@c_birth_place, "USA")
@@ -106,7 +106,8 @@ IndividualRecord <- S7::new_class(
         if(length(self@pers_names) == 0){
           character()
         } else {
-          obj_to_val(as.iterable(self@pers_names)[[1]])
+          obj_to_val(as.iterable(self@pers_names)[[1]]) |> 
+            gsub(pattern = "/", replacement = "")
         }
       }),
     
@@ -115,7 +116,8 @@ IndividualRecord <- S7::new_class(
       getter = function(self){
         vapply(as.iterable(self@pers_names), \(nm){
           obj_to_val(nm)
-        }, FUN.VALUE = character(1), USE.NAMES = FALSE)
+        }, FUN.VALUE = character(1), USE.NAMES = FALSE) |> 
+          gsub(pattern = "/", replacement = "")
       }),
     
     c_birth_date = S7::new_property(
