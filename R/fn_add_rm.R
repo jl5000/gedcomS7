@@ -194,9 +194,14 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
     fath_xref <- find_ged_values(x@fam[[xref]], "HUSB")
     moth_xref <- find_ged_values(x@fam[[xref]], "WIFE")
     par_xref <- c(fath_xref, moth_xref)
-    if(length(par_xref > 0)){
+    if(length(par_xref) > 0){
       par_xref <- par_xref[1] # father or mother
       par_name <- find_ged_values(x@indi[[par_xref]], "NAME")
+      if(length(par_name) > 0){
+        par_name <- par_name[1]
+      } else {
+        par_name <- "None"
+      }
       family_name <- sub("^.*/(.*)/.*$", "\\1", par_name)
       if(family_name != par_name){
         chil_names[chil_names != ""] <- sprintf("%s /%s/", 
