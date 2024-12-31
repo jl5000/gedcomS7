@@ -355,9 +355,9 @@ rm_records <- function(x, xrefs){
       # Delete the record (if it is this type of record)
       S7::prop(x, rec_type)[[xref]] <- NULL
       
-      # Delete the pointers to it
-      S7::prop(x, rec_type) <- lapply(S7::prop(x, rec_type), 
-                                      \(lines) void_xref_ptrs(lines, xref))
+      # Void the pointers to it
+      S7::prop(x, rec_type) <- lapply(S7::prop(x, rec_type), \(lines) 
+                                      void_xref_ptrs(lines, xref, void_refs))
     }
   }
   x
