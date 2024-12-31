@@ -179,10 +179,10 @@ refresh_indi_links <- function(gedcom, record){
     if(!record@xref %in% fam_spou){
       if(length(fam_spou) == 0){
         # use sex as determinant
-        if(record@sex == "M"){
-          spou_type <- "HUSB"
-        } else {
+        if(record@sex == "F"){
           spou_type <- "WIFE"
+        } else {
+          spou_type <- "HUSB"
         }
         
       } else if(length(fam_husb) == 0) {

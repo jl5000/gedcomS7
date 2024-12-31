@@ -16,7 +16,72 @@
 #'
 #' @return A gedcom object with additional parent records.
 #' @export
-add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = NULL){
+#' @tests
+#' ged <- new_gedcom()
+#' 
+#' ged_no_parents <- push_record(ged, IndividualRecord()) |> 
+#'                   suppressMessages()
+#' ged_with_parents <- add_parents(ged_no_parents, "@I1@") |> 
+#'                   suppressMessages()
+#' expect_true("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_true("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
+#' expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 HUSB @I2@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 WIFE @I3@" %in% ged_with_parents@fam[["@F1@"]])
+#' 
+#' ged_with_parents <- add_parents(ged_no_parents, "@I1@", inc_sex = FALSE) |> 
+#'                   suppressMessages()
+#' expect_false("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_false("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
+#' 
+#' ged_with_parents <- add_parents(ged_no_parents, "@I1@",
+#'                                 fath_name = "Joe Bloggs",
+#'                                 moth_name = "Jess Bloggs") |> 
+#'                   suppressMessages()
+#' expect_true("1 NAME Joe Bloggs" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_true("1 NAME Jess Bloggs" %in% ged_with_parents@indi[["@I3@"]])
+#' 
+#' ged_with_parents2 <- add_parents(ged_with_parents, "@I1@") |> 
+#'                   suppressMessages()
+#' expect_equal(ged_with_parents@c_as_ged, ged_with_parents2@c_as_ged)
+#' expect_warning(add_parents(ged_with_parents, "@I1@", fath_name = "Me"),
+#'                regexp = "^Father name not used")
+#' expect_warning(add_parents(ged_with_parents, "@I1@", moth_name = "Me"),
+#'                regexp = "^Mother name not used")
+#' 
+#' ged_one_parent_f <- suppressMessages(
+#'   ged |> 
+#'     push_record(IndividualRecord()) |>
+#'     push_record(IndividualRecord(sex = "M")) |> 
+#'     push_record(FamilyRecord(chil_xrefs = "@I1@", husb_xref = "@I2@"))
+#' )
+#' ged_with_parents <- add_parents(ged_one_parent_f, "@I1@") |> 
+#'                   suppressMessages()
+#' expect_true("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_true("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
+#' expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 HUSB @I2@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 WIFE @I3@" %in% ged_with_parents@fam[["@F1@"]])
+#' 
+#' ged_one_parent_m <- suppressMessages(
+#'   ged |> 
+#'     push_record(IndividualRecord()) |>
+#'     push_record(IndividualRecord(sex = "F")) |> 
+#'     push_record(FamilyRecord(chil_xrefs = "@I1@", wife_xref = "@I2@"))
+#' )
+#' ged_with_parents <- add_parents(ged_one_parent_m, "@I1@") |> 
+#'                   suppressMessages()
+#' expect_true("1 SEX F" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_true("1 SEX M" %in% ged_with_parents@indi[["@I3@"]])
+#' expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 WIFE @I2@" %in% ged_with_parents@fam[["@F1@"]])
+#' expect_true("1 HUSB @I3@" %in% ged_with_parents@fam[["@F1@"]])
+add_parents <- function(x, 
+                        xref, 
+                        inc_sex = TRUE, 
+                        fath_name = NULL, 
+                        moth_name = NULL){
+  
   check_indi_rec(x, xref)
   
   # Get first family xref as child - cannot assume there will be just one
@@ -89,6 +154,44 @@ add_parents <- function(x, xref, inc_sex = TRUE, fath_name = NULL, moth_name = N
 #'
 #' @return A gedcom object with additional spouse and Family Group records.
 #' @export
+#' @tests
+#' ged <- new_gedcom()
+#' 
+#' ged_no_spouse <- push_record(ged, IndividualRecord()) |> 
+#'                   suppressMessages()
+#' ged_with_spouse <- add_spouse(ged_no_spouse, "@I1@") |> 
+#'                   suppressMessages()
+#' 
+#' expect_true("1 SEX U" %in% ged_with_spouse@indi[["@I2@"]])
+#' expect_true("1 HUSB @I1@" %in% ged_with_spouse@fam[["@F1@"]])
+#' expect_true("1 WIFE @I2@" %in% ged_with_spouse@fam[["@F1@"]])
+#' 
+#' ged_with_spouse <- add_spouse(ged_no_spouse, "@I1@",
+#'                               spou_name = "Joe Bloggs") |> 
+#'                   suppressMessages()
+#' 
+#' expect_true("1 NAME Joe Bloggs" %in% ged_with_spouse@indi[["@I2@"]])
+#' 
+#' ged_no_spouse_fam <- suppressMessages(
+#'   ged |> 
+#'     push_record(IndividualRecord()) |> 
+#'     push_record(FamilyRecord(husb_xref = "@I1@"))
+#' )
+#' ged_with_spouse_fam_new <- add_spouse(ged_no_spouse_fam, "@I1@") |> 
+#'                   suppressMessages()
+#' ged_with_spouse_fam <- add_spouse(ged_no_spouse_fam, "@I1@", fam_xref = "@F1@") |> 
+#'                   suppressMessages()
+#' 
+#' expect_equal(length(ged_with_spouse_fam_new@fam), 2)
+#' expect_equal(length(ged_with_spouse_fam@fam), 1)
+#' expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@fam[["@F1@"]])
+#' expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@fam[["@F2@"]])
+#' 
+#' expect_false("1 WIFE @I2@" %in% ged_with_spouse_fam_new@fam[["@F1@"]])
+#' expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam_new@fam[["@F2@"]])
+#' 
+#' expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam@fam[["@F1@"]])
+#' expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam@fam[["@F1@"]])
 add_spouse <- function(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL){
   check_indi_rec(x, xref)
   if(!is.null(fam_xref)) check_fam_rec(x, fam_xref)
