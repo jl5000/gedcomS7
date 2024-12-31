@@ -53,12 +53,20 @@ write_gedcom <- function(gedcom,
   con <- file(filepath, encoding = "UTF-8", open = "a")
   on.exit(close(con))
   
+  if(!inc_confid) gedcom <- rm_records(gedcom, unlist(gedcom@c_xrefs_confid))
+  if(!inc_private) gedcom <- rm_records(gedcom, unlist(gedcom@c_xrefs_private))
   if(!inc_living) gedcom <- rm_living(gedcom)
   
   lines <- gedcom@c_as_ged
   
-  if(!inc_confid) lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
-  if(!inc_private) lines <- remove_sensitive_sections(lines, "PRIVACY")
+  if(!inc_confid){
+    
+    lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
+  } 
+  if(!inc_private){
+    
+    lines <- remove_sensitive_sections(lines, "PRIVACY")
+  } 
   
   # Moved to c_as_ged property - in order to make the test work
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)

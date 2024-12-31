@@ -17,8 +17,7 @@ level lower).}
 }
 \value{
 The character vector of GEDCOM lines without the structure referenced by
-the line_no. If the structure is an entire record, then any xref pointers to it
-will also be replaced with a VOID pointer.
+the line_no.
 }
 \description{
 Delete a structure from GEDCOM lines

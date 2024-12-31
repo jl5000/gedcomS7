@@ -4,16 +4,20 @@
 \alias{rm_records}
 \title{Remove records from a GEDCOM object}
 \usage{
-rm_records(x, xrefs)
+rm_records(x, xrefs, void_refs = TRUE)
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xrefs}{A character vector of xrefs to remove.}
+
+\item{void_refs}{Whether to replace references to this record with
+a @VOID@ reference. This indicates to people that there was a reference
+to a record here. Note that if this is set to FALSE, you risk losing
+supplementary information (e.g. pedigree data in family links).}
 }
 \value{
-The gedcom object with the records removed. Pointers to the record will
-be replaced with void pointers.
+The gedcom object with the records removed.
 }
 \description{
 Remove records from a GEDCOM object

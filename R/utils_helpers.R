@@ -8,24 +8,19 @@
 #' level lower).
 #'
 #' @return The character vector of GEDCOM lines without the structure referenced by
-#' the line_no. If the structure is an entire record, then any xref pointers to it
-#' will also be replaced with a VOID pointer.
+#' the line_no.
 #' @keywords internal
 delete_ged_section <- function(lines, line_no, containing_line = TRUE){
   
   lvl <- parse_line_level(lines[line_no])
+  if(lvl == 0 || (lvl == 1 && !containing_line))
+    stop("If you want to remove a whole record you should use rm_records().")
+  
   if(!containing_line){ # move line_no to containing line
     while(line_no > 0 && parse_line_level(lines[line_no]) >= lvl){
       line_no <- line_no - 1
     }
     lvl <- parse_line_level(lines[line_no])
-  }
-  
-  # Replace xref pointers with VOID
-  section_xref <- parse_line_xref(lines[line_no])
-  if(section_xref != ""){
-    ptr_lines <- grepl(reg_xref(TRUE), parse_line_value(lines))
-    lines[ptr_lines] <- sub(section_xref, "@VOID@", lines[ptr_lines])
   }
   
   # Delete section
