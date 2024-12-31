@@ -320,6 +320,28 @@ GedcomS7 <- S7::new_class(
                                  stats::setNames(rec_xrefs, rec_types)
                                }),
     
+    c_xrefs_private = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        rec_types <- names(self@xref_prefixes)
+        priv <- lapply(rec_types, \(rec_type) 
+                       Filter(\(x) sum(grepl("^1 RESN .*PRIVACY", x)) > 0, 
+                              S7::prop(self, rec_type)) |> names()
+        )
+        stats::setNames(priv, rec_types)
+      }),
+    
+    c_xrefs_confid = S7::new_property(
+      S7::class_character,
+      getter = function(self){
+        rec_types <- names(self@xref_prefixes)
+        conf <- lapply(rec_types, \(rec_type) 
+                       Filter(\(x) sum(grepl("^1 RESN .*CONFIDENTIAL", x)) > 0, 
+                              S7::prop(self, rec_type)) |> names()
+        )
+        stats::setNames(conf, rec_types)
+      }),
+    
     c_next_xref = S7::new_property(S7::class_character,
                                    getter = function(self){
                                      idx <- integer(7L)
