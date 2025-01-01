@@ -369,8 +369,8 @@ rm_records <- function(x, xrefs, void_refs = TRUE){
 
 rm_xref_ptrs <- function(lines, xref, void_refs){
   ptr_rows <- \(lines) which(parse_line_value(lines) == xref)
-  
-  if(length(ptr_rows(lines)) == 0) return(lines)
+  rows <- ptr_rows(lines)
+  if(length(rows) == 0) return(lines)
   
   if(void_refs){
     lines[rows] <- sub(xref, "@VOID@", lines[rows])
