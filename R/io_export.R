@@ -59,14 +59,8 @@ write_gedcom <- function(gedcom,
   
   lines <- gedcom@c_as_ged
   
-  if(!inc_confid){
-    
-    lines <- remove_sensitive_sections(lines, "CONFIDENTIAL")
-  } 
-  if(!inc_private){
-    
-    lines <- remove_sensitive_sections(lines, "PRIVACY")
-  } 
+  if(!inc_confid) lines <- rm_restricted_structures(lines, "CONFIDENTIAL")
+  if(!inc_private) lines <- rm_restricted_structures(lines, "PRIVACY")
   
   # Moved to c_as_ged property - in order to make the test work
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
@@ -76,31 +70,12 @@ write_gedcom <- function(gedcom,
   invisible(filepath)
 }
 
-
-#' Remove gedcom structures marked as sensitive
-#'
-#' @param lines A character vector of gedcom lines.
-#' @param restriction Whether to remove structures marked as "CONFIDENTIAL" or "PRIVACY".
-#'
-#' @return A vector of sanitised GEDCOM lines.
-#' @keywords internal
-remove_sensitive_sections <- function(lines, restriction){
-  
-  restriction_rows <- function(lines, restriction){
-    intersect(
-      grep("RESN", parse_line_tag(lines)), 
-      grep(restriction, parse_line_value(lines))
-    )
-  }
-  
-  while(length(restriction_rows(lines, restriction)) > 0){
-    
-    line_no <- restriction_rows(lines, restriction)[1]
-    
-    lines <- delete_ged_section(lines, line_no, containing_line = FALSE)
-    
-  }
-  lines
+rm_restricted_structures <- function(lines, restriction){
+  delete_ged_sections(
+    lines, 
+    \(x) grep(sprintf("^\\d RESN .*%s", restriction), x),
+    containing_line = FALSE
+  )
 }
 
 

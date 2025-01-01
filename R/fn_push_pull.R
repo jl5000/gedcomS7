@@ -140,14 +140,10 @@ refresh_fam_links <- function(gedcom, record){
   for(indi in gedcom@c_xrefs[["indi"]]){
     if(indi %in% c(spou_xref, chil_xrefs)) next
     
-    rec <- gedcom@indi[[indi]]
-    
-    fam_row <- grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), rec)
-    
-    if(length(fam_row) > 0){
-      # Might want to alert the user if extra stuff is being deleted
-      gedcom@indi[[indi]] <- delete_ged_section(rec, fam_row)
-    }
+    gedcom@indi[[indi]] <- delete_ged_sections(
+      gedcom@indi[[indi]],
+      \(x) grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), x)
+    )
 
   }
   gedcom
@@ -219,14 +215,10 @@ refresh_indi_links <- function(gedcom, record){
     
     if(fam %in% fam_lnks) next
     
-    rec <- gedcom@fam[[fam]]
-    
-    memb_row <- grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), rec)
-    
-    if(length(memb_row) > 0){
-      # Might want to alert the user if extra stuff is being deleted
-      gedcom@fam[[fam]] <- delete_ged_section(rec, memb_row)
-    }
+    gedcom@fam[[fam]] <- delete_ged_sections(
+      gedcom@fam[[fam]],
+      \(x) grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), x)
+    )
     
   }
   

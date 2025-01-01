@@ -32,6 +32,28 @@ delete_ged_section <- function(lines, line_no, containing_line = TRUE){
   lines
 }
 
+#' Delete potentially multiple structures from GEDCOM lines
+#'
+#' @param lines A character vector of GEDCOM lines.
+#' @param line_fn A callback function which takes a single input, lines, and
+#' returns an integer vector identifying the row of each structure to be deleted.
+#' @param containing_line Whether the line number(s) returned by the callback
+#' are the first line of the structure(s) or whether the line number(s) 
+#' reference a line within the structure (but not more than one
+#' level lower).
+#'
+#' @return The character vector of GEDCOM lines without the structures 
+#' identified by the callback function. 
+#' @keywords internal
+delete_ged_sections <- function(lines, line_fn, containing_line = TRUE){
+  
+  while(length(line_fn(lines)) > 0){
+    line_no <- line_fn(lines)[1]
+    lines <- delete_ged_section(lines, line_no, containing_line)
+  }
+  lines
+}
+
 find_ged_values <- function(lines, 
                             tag,
                             return_list = FALSE){

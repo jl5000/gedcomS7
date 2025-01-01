@@ -343,11 +343,14 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
 #'
 #' @param x A gedcom object.
 #' @param xrefs A character vector of xrefs to remove.
+#' @param void_refs Whether to replace references to this record with
+#' a @VOID@ reference. This indicates to people that there was a reference
+#' to a record here. Note that if this is set to FALSE, you risk losing
+#' supplementary information (e.g. pedigree data in family links).
 #'
-#' @return The gedcom object with the records removed. Pointers to the record will
-#' be replaced with void pointers.
+#' @return The gedcom object with the records removed.
 #' @export
-rm_records <- function(x, xrefs){
+rm_records <- function(x, xrefs, void_refs = TRUE){
   xrefs <- unique(xrefs)
   for(xref in xrefs){
     for(rec_type in val_record_types()){
@@ -355,18 +358,25 @@ rm_records <- function(x, xrefs){
       # Delete the record (if it is this type of record)
       S7::prop(x, rec_type)[[xref]] <- NULL
       
-      # Void the pointers to it
+      # Delete the pointers to it
       S7::prop(x, rec_type) <- lapply(S7::prop(x, rec_type), \(lines) 
-                                      void_xref_ptrs(lines, xref, void_refs))
+                                      rm_xref_ptrs(lines, xref, void_refs))
     }
   }
   x
 }
 
 
-void_xref_ptrs <- function(lines, xref){
-  rows <- parse_line_value(lines) == xref
-  if(sum(rows) == 0) return(lines)
-  lines[rows] <- sub(xref, "@VOID@", lines[rows])
+rm_xref_ptrs <- function(lines, xref, void_refs){
+  ptr_rows <- \(lines) which(parse_line_value(lines) == xref)
+  
+  if(length(ptr_rows(lines)) == 0) return(lines)
+  
+  if(void_refs){
+    lines[rows] <- sub(xref, "@VOID@", lines[rows])
+  } else {
+    delete_ged_sections(lines, ptr_rows)
+  }
+  
   lines
 }
