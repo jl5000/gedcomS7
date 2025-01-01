@@ -5,7 +5,7 @@
 #'
 #' @param filepath The full filepath of the GEDCOM file.
 #'
-#' @return A gedcom S7 object.
+#' @returns A gedcom S7 object.
 #' @export
 #' @tests
 #' maximal <- test_path("maximal70.ged")
@@ -97,7 +97,7 @@ remove_at_escapes <- function(lines){
 #' 
 #' @param lines A character vector of gedcom lines.
 #'
-#' @return A new character vector of gedcom lines.
+#' @returns A new character vector of gedcom lines.
 #' @keywords internal
 combine_cont_lines <- function(lines) {
   

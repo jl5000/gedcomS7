@@ -8,7 +8,7 @@
 #' If it includes "BIRTH" then this will also pick up non-existent values 
 #' (since BIRTH is assumed to be the default).
 #'
-#' @return A character vector of xrefs.
+#' @returns A character vector of xrefs.
 #' @export
 get_fam_as_child <- function(x, 
                              xref,

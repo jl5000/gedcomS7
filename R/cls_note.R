@@ -5,7 +5,7 @@
 #' separately in relevant structures.
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM NOTE_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM NOTE_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(Note(), regexp = "@text has too few elements")

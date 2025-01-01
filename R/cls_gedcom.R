@@ -14,7 +14,7 @@
 #' @param data_pubdate Deprecated.
 #' @param data_pubtime Deprecated.
 #' @param data_copyright Deprecated.
-#' @return An S7 object representing a GEDCOM HEAD.SOUR.
+#' @returns An S7 object representing a GEDCOM HEAD.SOUR.
 GedcomSource <- S7::new_class(
   "GedcomSource",
   properties = list(
@@ -266,7 +266,7 @@ GedcomHeader <- S7::new_class(
 #' c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
 #' The order that these records appear in the vector will also dictate the order in which records 
 #' will appear in the exported file.
-#' @return An S7 object representing a GEDCOM file.
+#' @returns An S7 object representing a GEDCOM file.
 #' @tests
 #' maximal <- test_path("maximal70.ged")
 #' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
@@ -392,7 +392,7 @@ GedcomS7 <- S7::new_class(
 #' @param my_language The primary language in which data will be stored. The language code should
 #' adhere to BCP 47.
 #'
-#' @return A minimal gedcom S7 object.
+#' @returns A minimal gedcom S7 object.
 #' @export
 new_gedcom <- function(my_language = "en"){
   

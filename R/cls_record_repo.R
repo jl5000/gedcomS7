@@ -6,7 +6,7 @@
 #' @param citations Not used.
 #' @param media_links Not used.
 #' 
-#' @return An S7 object representing a GEDCOM REPOSITORY_RECORD.
+#' @returns An S7 object representing a GEDCOM REPOSITORY_RECORD.
 #' @export
 RepositoryRecord <- S7::new_class(
   "RepositoryRecord", 

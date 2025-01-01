@@ -15,7 +15,7 @@
 #' @param desi_xrefs A character vector of relevant submitter record cross-reference identifiers
 #' who are interested in the descendants of this individual.
 #' 
-#' @return An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
+#' @returns An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
 #' @tests
 #' nms <- list(PersonalName("Joe /Bloggs/"),

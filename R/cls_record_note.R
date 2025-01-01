@@ -5,7 +5,7 @@
 #' @param notes Not used.
 #' @param note_xrefs Not used.
 #' @param media_links Not used.
-#' @return An S7 object representing a GEDCOM SHARED_NOTE_RECORD.
+#' @returns An S7 object representing a GEDCOM SHARED_NOTE_RECORD.
 #' @export
 #' @tests
 #' expect_snapshot_value(NoteRecord("@N4@",

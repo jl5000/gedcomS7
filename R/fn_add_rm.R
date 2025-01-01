@@ -14,7 +14,7 @@
 #' @param fath_name,moth_name Optional names to give to the parents. 
 #' Surnames must be enclosed in forward slashes.
 #'
-#' @return A gedcom object with additional parent records.
+#' @returns A gedcom object with additional parent records.
 #' @export
 #' @tests
 #' ged <- new_gedcom()
@@ -152,7 +152,7 @@ add_parents <- function(x,
 #' if it already exists. If this is not provided, a new Family record will
 #' be created.
 #'
-#' @return A gedcom object with additional spouse and Family Group records.
+#' @returns A gedcom object with additional spouse and Family Group records.
 #' @export
 #' @tests
 #' ged <- new_gedcom()
@@ -250,7 +250,7 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL){
 #' Surnames must be enclosed in forward slashes. If all names you supply do not
 #' contain forward slashes then surnames will be taken from the father (or mother).
 #'
-#' @return A gedcom object with additional sibling records.
+#' @returns A gedcom object with additional sibling records.
 #' @export
 add_siblings <- function(x, xref, sexes, sib_names = NULL){
   check_indi_rec(x, xref)
@@ -285,7 +285,7 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
 #' Surnames must be enclosed in forward slashes. If all names you supply do not
 #' contain forward slashes then surnames will be taken from the father (or mother).
 #'
-#' @return A gedcom object with additional child records.
+#' @returns A gedcom object with additional child records.
 #' @export
 add_children <- function(x, xref, sexes, chil_names = NULL){
   check_fam_rec(x, xref)
@@ -348,7 +348,7 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
 #' to a record here. Note that if this is set to FALSE, you risk losing
 #' supplementary information (e.g. pedigree data in family links).
 #'
-#' @return The gedcom object with the records removed.
+#' @returns The gedcom object with the records removed.
 #' @export
 rm_records <- function(x, xrefs, void_refs = TRUE){
   xrefs <- unique(xrefs)

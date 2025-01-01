@@ -8,7 +8,7 @@
 #' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@").
 #' @param spouse_sealings TODO
 #' 
-#' @return An S7 object representing a GEDCOM FAMILY_RECORD.
+#' @returns An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
 #' @tests
 #' fct <- list(FamilyEvent("MARR", husb_age = "22y", wife_age = "28y 6m",

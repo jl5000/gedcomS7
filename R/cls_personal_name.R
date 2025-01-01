@@ -10,7 +10,7 @@
 #' @param surname Surname or family name.
 #' @param suffix Name piece that appears after the given name and surname parts, e.g. Jr.
 #'
-#' @return An S7 object representing a GEDCOM PERSONAL_NAME_PIECES.
+#' @returns An S7 object representing a GEDCOM PERSONAL_NAME_PIECES.
 #' @export
 #' @tests
 #' expect_snapshot_value(PersonalNamePieces(prefix = "Mr",
@@ -68,7 +68,7 @@ PersonalNamePieces <- S7::new_class(
 #' 
 #' @inheritParams prop_definitions 
 #' 
-#' @return An S7 object representing a GEDCOM personal name translation substructure.
+#' @returns An S7 object representing a GEDCOM personal name translation substructure.
 #' @export
 #' @tests
 #' expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
@@ -114,7 +114,7 @@ PersonalNameTran <- S7::new_class(
 #' @inheritParams prop_definitions 
 #' @param name_translations TODO
 #' 
-#' @return An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),

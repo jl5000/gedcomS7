@@ -5,7 +5,7 @@
 #' @inheritParams prop_definitions
 #' @param location An absolute or relative URL to the file.
 #' 
-#' @return An S7 object representing a GEDCOM multimedia file substructure.
+#' @returns An S7 object representing a GEDCOM multimedia file substructure.
 #' @export
 #' @tests
 #' expect_error(MediaFile(location = "media/original.mp3",
@@ -86,7 +86,7 @@ MediaFile <- S7::new_class(
 #' @param files A `MediaFile` object or a list of them. This refers to 1 or more external 
 #' digital files. Grouped files should each pertain to the same context.
 #'
-#' @return An S7 object representing a GEDCOM MULTIMEDIA_RECORD.
+#' @returns An S7 object representing a GEDCOM MULTIMEDIA_RECORD.
 #' @export
 #' @tests
 #' fls <- list(MediaFile(location = "media/original.mp3",

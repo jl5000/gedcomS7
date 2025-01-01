@@ -12,7 +12,7 @@
 #' @param postal_code The postal code component of the address.
 #' @param country The country component of the address.
 #' 
-#' @return An S7 object representing a GEDCOM ADDRESS_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM ADDRESS_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(Address(), "@full has too few elements")

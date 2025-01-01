@@ -2,7 +2,7 @@
 #' Create a family link (as spouse) object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM family link as a spouse.
+#' @returns An S7 object representing a GEDCOM family link as a spouse.
 #' @export
 #' @tests
 #' expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
@@ -50,7 +50,7 @@ FamilyLinkSpouse <- S7::new_class(
 #' @param confidence TODO
 #' @param confidence_phrase TODO
 #' 
-#' @return An S7 object representing a GEDCOM family link as a child.
+#' @returns An S7 object representing a GEDCOM family link as a child.
 #' @export
 #' @tests
 #' expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 

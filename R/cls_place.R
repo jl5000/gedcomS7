@@ -19,7 +19,7 @@
 #' For example: 18 degrees, 9 minutes, and 3.4 seconds North, 168 degrees, 9 minutes, and 
 #' 3.4 seconds East would be formatted as "N18.150944 E168.150944".
 #' 
-#' @return An S7 object representing a GEDCOM PLACE_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM PLACE_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(Place(), regexp = "@place_name has too few elements")

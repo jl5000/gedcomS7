@@ -4,7 +4,7 @@
 #' @param inc_generic Whether to include a generic facts.
 #' @param ord_type One of the values in `val_individual_ordinance_types()` or
 #' `val_family_ordinance_types()`.
-#' @return A vector of allowed values.
+#' @returns A vector of allowed values.
 #' @export
 val_record_types <- function(){
   c(Individual = "indi", Family = "fam", Source = "sour", Submitter = "subm",

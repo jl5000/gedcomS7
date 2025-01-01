@@ -6,7 +6,7 @@
 #' @param x A gedcom object.
 #' @param xref The xref of the record to pull.
 #'
-#' @return An S7 object representing the record.
+#' @returns An S7 object representing the record.
 #' @export
 pull_record <- function(x, xref){
   
@@ -60,7 +60,7 @@ pull_record <- function(x, xref){
 #' @param record An object representing the record to place back into the
 #' GEDCOM object.
 #'
-#' @return An updated GEDCOM object.
+#' @returns An updated GEDCOM object.
 #' @export
 push_record <- function(gedcom, record){
   

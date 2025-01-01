@@ -31,7 +31,7 @@ parse_vals_and_types <- function(lines, val_tag){
 #' @param minimise Whether to fill in missing date pieces so that the date is minimised. 
 #' For example, if no month is given, January is used. If minimise = FALSE, December will be used.
 #'
-#' @return A date.
+#' @returns A date.
 #' @export
 #' @tests
 #' expect_equal(parse_gedcom_date("BEF 1980"), as.Date(NA_character_))
@@ -99,7 +99,7 @@ days_in_month <- function(date) {
 #' @param age_string A string describing an age at an event, 
 #' e.g. "14y 3m 1w 2d".
 #'
-#' @return A numeric value giving the age in years.
+#' @returns A numeric value giving the age in years.
 #' @export
 #' @tests
 #' expect_equal(parse_gedcom_age("16y"), 16)

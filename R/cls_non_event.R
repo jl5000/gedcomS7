@@ -2,7 +2,7 @@
 #' Create a non-event object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM NON_EVENT_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM NON_EVENT_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(NonEvent("death"), regexp = "@event_type has an invalid value")

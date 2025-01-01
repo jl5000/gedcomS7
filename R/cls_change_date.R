@@ -2,7 +2,7 @@
 #' Create a creation date object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM CREATION_DATE.
+#' @returns An S7 object representing a GEDCOM CREATION_DATE.
 #' @export
 #' @tests
 #' expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
@@ -52,7 +52,7 @@ CreationDate <- S7::new_class(
 #' Create a change date object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM CHANGE_DATE.
+#' @returns An S7 object representing a GEDCOM CHANGE_DATE.
 #' @export
 #' @tests
 #' expect_snapshot_value(ChangeDate(date = "1 JAN 2005",

@@ -110,7 +110,7 @@ Record <- S7::new_class(
 #' @param rec An S7 record object.
 #' @param rec_lines A character vector of lines of a GEDCOM record.
 #'
-#' @return The S7 record object with common elements added as properties.
+#' @returns The S7 record object with common elements added as properties.
 #' @keywords internal
 parse_common_record_elements <- function(rec, rec_lines){
   

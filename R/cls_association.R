@@ -10,7 +10,7 @@
 #' If a value of "OTHER" is used, a @relation_phrase must be given.
 #' @param relation_phrase Textual information that cannot be expressed in the relation.
 #' 
-#' @return An S7 object representing a GEDCOM ASSOCIATION_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM ASSOCIATION_STRUCTURE.
 #' @export
 #' @tests
 #' expect_snapshot_value(Association(relation_is = "FATH")@c_as_ged, "json2")

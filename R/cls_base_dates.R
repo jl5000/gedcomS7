@@ -5,7 +5,7 @@ DateClass <- S7::new_class("DateClass", abstract = TRUE)
 #' Create a GEDCOM Exact Date object
 #' 
 #' @inheritParams prop_definitions
-#' @return An S7 object representing a GEDCOM Exact Date.
+#' @returns An S7 object representing a GEDCOM Exact Date.
 #' @export
 #' @tests
 #' expect_error(DateExact(), regexp = "@year has too few.*@month has too few.*@day has too few")
@@ -64,7 +64,7 @@ DateExact <- S7::new_class(
 
 #' Create a GEDCOM Exact Date object for today
 #' 
-#' @return An S7 object representing a GEDCOM Exact Date for today.
+#' @returns An S7 object representing a GEDCOM Exact Date for today.
 #' @export
 #' @tests
 #' expect_equal(date_exact_current()@as_date, Sys.Date())
@@ -83,7 +83,7 @@ date_exact_current <- function(){
 #' @param bce Whether the date is Before the Common Era. This is FALSE by default,
 #' but if TRUE, only the year should be given.
 #' 
-#' @return An S7 object representing a GEDCOM Gregorian Date.
+#' @returns An S7 object representing a GEDCOM Gregorian Date.
 #' @export
 #' @tests
 #' expect_error(DateGregorian(), regexp = "@year has too few elements")
@@ -158,7 +158,7 @@ DateGregorian <- S7::new_class(
 #' @param calc Whether the date is calculated from other values.
 #' @param est Whether the date is near to the date given, and is calculated from other values.
 #' 
-#' @return An S7 object representing a GEDCOM Approximate Date.
+#' @returns An S7 object representing a GEDCOM Approximate Date.
 #' @export
 #' @tests
 #' expect_error(DateApprox("hello"), regexp = "@date_greg is in an invalid format")
@@ -218,7 +218,7 @@ DateApprox <- S7::new_class(
 #' Create a GEDCOM Date Period object
 #' 
 #' @inheritParams prop_definitions
-#' @return An S7 object representing a GEDCOM Date Period.
+#' @returns An S7 object representing a GEDCOM Date Period.
 #' @export
 #' @tests
 #' expect_equal(DatePeriod()@c_as_val, "")
@@ -316,7 +316,7 @@ DatePeriod <- S7::new_class(
 #' Create a GEDCOM Date Range object
 #' 
 #' @inheritParams prop_definitions
-#' @return An S7 object representing a GEDCOM Date Range.
+#' @returns An S7 object representing a GEDCOM Date Range.
 #' @export
 #' @tests
 #' expect_error(DateRange(), regexp = "has too few elements")
@@ -386,7 +386,7 @@ DateRange <- S7::new_class(
 #' Create a GEDCOM Date Value object
 #' 
 #' @inheritParams prop_definitions
-#' @return An S7 object representing a GEDCOM Date Value.
+#' @returns An S7 object representing a GEDCOM Date Value.
 #' @export
 #' @tests
 #' expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
@@ -457,7 +457,7 @@ DateValue <- S7::new_class(
 #' `DateGregorian` object.
 #' @inheritParams prop_definitions
 #' 
-#' @return An S7 object representing a GEDCOM Sorting Date.
+#' @returns An S7 object representing a GEDCOM Sorting Date.
 #' @export
 #' @tests
 #' expect_error(DateSorting(""), regexp = "@date is in an invalid format")

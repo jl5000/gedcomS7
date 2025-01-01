@@ -15,7 +15,7 @@
 #' @param height The height in pixels of the cropped region.
 #' @param width The width in pixels of the cropped region.
 #' 
-#' @return An S7 object representing a GEDCOM MULTIMEDIA_LINK.
+#' @returns An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
 #' @tests
 #' expect_snapshot_value(MediaLink()@c_as_ged, "json2")

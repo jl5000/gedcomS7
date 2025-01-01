@@ -28,7 +28,7 @@ IndividualFact <- S7::new_class(
 #' @param adop_parent_phrase A free text description of the adoptive parent (if the
 #' value itself is insufficient).
 #' 
-#' @return An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM INDIVIDUAL_EVENT_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(IndividualEvent("birth", fact_val = "Y"), 
@@ -127,7 +127,7 @@ IndividualEvent <- S7::new_class(
 #' Create an individual attribute object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM INDIVIDUAL_ATTRIBUTE_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM INDIVIDUAL_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(IndividualAttribute("descr", fact_val = "Tall"), 

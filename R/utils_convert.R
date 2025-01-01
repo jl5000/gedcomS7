@@ -6,7 +6,7 @@
 #' @param tag If the obj contains any atomic elements, then this
 #' will specify what tag they are recorded against.
 #'
-#' @return A vector of GEDCOM lines.
+#' @returns A vector of GEDCOM lines.
 #' @keywords internal
 obj_to_ged <- function(obj, tag = NULL){
   

@@ -3,7 +3,7 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param call_number The call number.
-#' @return An S7 object representing the CALN substructure of a GEDCOM 
+#' @returns An S7 object representing the CALN substructure of a GEDCOM 
 #' SOURCE_REPOSITORY_CITATION.
 #' @export
 SourceCallNumber <- S7::new_class(
@@ -66,7 +66,7 @@ parse_call_numbers <- function(lines, location){
 #' call numbers themselves can be recorded (and not associated medium). This option is easier if 
 #' associated information is not required. 
 #' 
-#' @return An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
+#' @returns An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
 #' @export
 #' @tests
 #' expect_snapshot_value(RepositoryCitation()@c_as_ged, "json2")
@@ -139,7 +139,7 @@ parse_repo_citations <- function(rec_lines){
 #' region names can be recorded (and not associated information). This option is easier if 
 #' associated information is not required. 
 #' 
-#' @return An S7 object representing a GEDCOM SOUR.EVEN structure.
+#' @returns An S7 object representing a GEDCOM SOUR.EVEN structure.
 #' @export
 #' @tests
 #' expect_error(FactsRecorded("birth"), regexp = "@fact_types is in an invalid format")
@@ -241,7 +241,7 @@ parse_events_recorded <- function(rec_lines){
 #' This option is easier if associated information is not required.
 #' @param citations Not used.
 #' 
-#' @return An S7 object representing a GEDCOM SOURCE_RECORD.
+#' @returns An S7 object representing a GEDCOM SOURCE_RECORD.
 #' @export
 SourceRecord <- S7::new_class(
   "SourceRecord", 

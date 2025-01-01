@@ -7,7 +7,7 @@
 #' whether the line number references a line within the structure (but not more than one
 #' level lower).
 #'
-#' @return The character vector of GEDCOM lines without the structure referenced by
+#' @returns The character vector of GEDCOM lines without the structure referenced by
 #' the line_no.
 #' @keywords internal
 delete_ged_section <- function(lines, line_no, containing_line = TRUE){
@@ -42,7 +42,7 @@ delete_ged_section <- function(lines, line_no, containing_line = TRUE){
 #' reference a line within the structure (but not more than one
 #' level lower).
 #'
-#' @return The character vector of GEDCOM lines without the structures 
+#' @returns The character vector of GEDCOM lines without the structures 
 #' identified by the callback function. 
 #' @keywords internal
 delete_ged_sections <- function(lines, line_fn, containing_line = TRUE){
@@ -108,7 +108,7 @@ find_ged_values <- function(lines,
 #'
 #' @param x An atomic vector of any length.
 #'
-#' @return A character vector of length one. It is either an empty string for a
+#' @returns A character vector of length one. It is either an empty string for a
 #' zero length input, or takes the value of the first element.
 #' @keywords internal
 chronify <- function(x){
@@ -121,7 +121,7 @@ chronify <- function(x){
 #' @param ged A character vector of GEDCOM lines.
 #' @param by The number of levels to increment.
 #'
-#' @return The vector of GEDCOM lines with incremented levels.
+#' @returns The vector of GEDCOM lines with incremented levels.
 #' @keywords internal
 increase_level <- function(ged, by = 1){
   if(length(ged) == 0) return(character())

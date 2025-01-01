@@ -31,7 +31,7 @@ reg_ged_line <- function(){
 #' @param reg1 A vector of regex patterns.
 #' @param reg2 A vector of regex patterns.
 #'
-#' @return A vector of all combinations of the concatenation of reg1 and reg2.
+#' @returns A vector of all combinations of the concatenation of reg1 and reg2.
 #' @keywords internal
 regex_combn <- function(reg1, reg2) {
   paste(rep(reg1, each = length(reg2)), reg2, sep = "")
@@ -78,7 +78,7 @@ reg_time <- function(only = TRUE){
 #' the regular expression accepts patterns where text can come before or after
 #' the xref.
 #'
-#' @return A regular expression pattern for an xref.
+#' @returns A regular expression pattern for an xref.
 #' @keywords internal
 reg_xref <- function(only = TRUE) {
   reg <- "@[A-Z0-9_]+@"
@@ -125,7 +125,7 @@ reg_role_in_event <- function(){
 #' @param only Whether to allow strings of only date_exact. If FALSE,
 #' the regular expression accepts patterns where text can come before or after
 #' the date_exact().
-#' @return A regex string
+#' @returns A regex string
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_exact(), "14 JAN 2005"), TRUE)
@@ -157,7 +157,7 @@ reg_date_exact <- function(only = TRUE) {
 #' @param only Whether to allow strings of only date. If FALSE,
 #' the regular expression accepts patterns where text can come before or after
 #' the date().
-#' @return Either a single regex string or a vector of them.
+#' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date(), "14 JAN 2005"), TRUE)
@@ -192,7 +192,7 @@ reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
-#' @return Either a single regex string or a vector of them.
+#' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_period(), ""), TRUE)
@@ -226,7 +226,7 @@ reg_date_period <- function(flatten = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
-#' @return Either a single regex string or a vector of them.
+#' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_range(), "BEF 14 JAN 2005"), TRUE)
@@ -258,7 +258,7 @@ reg_date_range <- function(flatten = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
-#' @return Either a single regex string or a vector of them.
+#' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_approximated(), "ABT 14 JAN 2005"), TRUE)
@@ -285,7 +285,7 @@ reg_date_approximated <- function(flatten = TRUE) {
 
 #' Construct the regex pattern for DATE_VALUE values
 #'
-#' @return Either a single regex string or a vector of them.
+#' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_value(), "14 JAN 2005"), TRUE)

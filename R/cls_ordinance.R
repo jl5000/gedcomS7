@@ -4,7 +4,7 @@
 #' @inheritParams prop_definitions 
 #' @param ord_type TODO
 #' 
-#' @return An S7 object representing a GEDCOM LDS_INDIVIDUAL_ORDINANCE.
+#' @returns An S7 object representing a GEDCOM LDS_INDIVIDUAL_ORDINANCE.
 #' @export
 Ordinance <- S7::new_class(
   "Ordinance",
@@ -118,7 +118,7 @@ Ordinance <- S7::new_class(
 #' 
 #' @inheritParams prop_definitions 
 #'  
-#' @return An S7 object representing a GEDCOM LDS_SPOUSE_SEALING.
+#' @returns An S7 object representing a GEDCOM LDS_SPOUSE_SEALING.
 #' @export
 SpouseSealing <- S7::new_class(
   "SpouseSealing",

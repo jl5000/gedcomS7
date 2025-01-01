@@ -4,7 +4,7 @@
 #'
 #' @param x A gedcom object.
 #'
-#' @return A dataframe summarising a record on each row.
+#' @returns A dataframe summarising a record on each row.
 #' @export
 df_indi <- function(x){
   if(length(x@indi) == 0) return(NULL)
@@ -136,7 +136,7 @@ df_subm <- function(x){
 #' @param x A gedcom object.
 #' @param xref The cross-reference identifier of an individual record.
 #'
-#' @return A dataframe summarising an attribute/event on each row.
+#' @returns A dataframe summarising an attribute/event on each row.
 #' @export
 df_indi_facts <- function(x, xref){
   check_indi_rec(x, xref)
@@ -165,7 +165,7 @@ df_indi_facts <- function(x, xref){
 #' @param x A gedcom object.
 #' @param xref The cross-reference identifier of a family record.
 #'
-#' @return A dataframe summarising an attribute/event on each row.
+#' @returns A dataframe summarising an attribute/event on each row.
 #' @export
 df_fam_facts <- function(x, xref){
   check_fam_rec(x, xref)

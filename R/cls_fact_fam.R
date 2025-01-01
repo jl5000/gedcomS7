@@ -58,7 +58,7 @@ FamilyFact <- S7::new_class(
 #' Create a family event object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM FAMILY_EVENT_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM FAMILY_EVENT_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(FamilyEvent("marr", fact_val = "Y"), 
@@ -84,7 +84,7 @@ FamilyEvent <- S7::new_class(
 #' Create a family attribute object
 #' 
 #' @inheritParams prop_definitions 
-#' @return An S7 object representing a GEDCOM FAMILY_ATTRIBUTE_STRUCTURE.
+#' @returns An S7 object representing a GEDCOM FAMILY_ATTRIBUTE_STRUCTURE.
 #' @export
 #' @tests
 #' expect_error(FamilyAttribute("residence", fact_val = "Earth"), 

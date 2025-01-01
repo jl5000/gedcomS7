@@ -3,7 +3,7 @@
 #' Create a text translation object
 #' 
 #' @inheritParams prop_definitions
-#' @return An S7 object representing a GEDCOM text translation substructure.
+#' @returns An S7 object representing a GEDCOM text translation substructure.
 #' @export
 #' @tests
 #' expect_error(TranslationText(), regexp = "@text has too few elements")

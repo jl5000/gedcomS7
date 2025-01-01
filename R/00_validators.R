@@ -11,7 +11,7 @@
 #' @param max_val The maximum number of characters or value the input should have
 #' (depending on input type).
 #'
-#' @return Either a character string giving an error message, or NULL.
+#' @returns Either a character string giving an error message, or NULL.
 #' @keywords internal
 #' @tests
 #' expect_equal(chk_input_size(letters, min_len = 27),

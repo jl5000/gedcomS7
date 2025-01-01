@@ -26,7 +26,7 @@
 #' "2" = Secondary evidence, data officially recorded sometime after event
 #' "3" = Direct and primary evidence used, or by dominance of the evidence
 #' 
-#' @return An S7 object representing a GEDCOM SOURCE_CITATION.
+#' @returns An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
 #' @tests
 #' expect_snapshot_value(SourceCitation()@c_as_ged, "json2")

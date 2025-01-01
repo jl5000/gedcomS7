@@ -11,7 +11,7 @@
 #' @param inc_private Whether to include records that are marked as private.
 #' @param inc_living Whether to include individual records for suspected living people.
 #'
-#' @return The filepath (invisibly).
+#' @returns The filepath (invisibly).
 #' @export
 #' @tests
 #' maximal <- test_path("maximal70.ged")
@@ -84,7 +84,7 @@ rm_restricted_structures <- function(lines, restriction){
 #' @param x A gedcom object.
 #' @param max_age The maximum age to assume for a living person (if a date of birth is given).
 #'
-#' @return A gedcom object cleansed of information on living individuals.
+#' @returns A gedcom object cleansed of information on living individuals.
 #' @export
 rm_living <- function(x,
                       max_age = 100) {
@@ -134,7 +134,7 @@ is_alive <- function(x, xref, max_age = 100){
 #' @param minimise If date ranges or periods are used in the dates, whether to choose the bounds which
 #' assume the minimum date difference. If this is FALSE, the maximum date difference is assumed.
 #'
-#' @return A numeric value giving the number of years. A numeric value less than zero means no
+#' @returns A numeric value giving the number of years. A numeric value less than zero means no
 #' determination could be made.
 #' @keywords internal
 #' @tests
@@ -161,7 +161,7 @@ date_diff <- function(date1,
 #'
 #' @param lines A character vector of gedcom lines.
 #'
-#' @return A vector of GEDCOM lines ready for export.
+#' @returns A vector of GEDCOM lines ready for export.
 #' @keywords internal
 prepare_gedcom_lines <- function(lines){
   
@@ -175,7 +175,7 @@ prepare_gedcom_lines <- function(lines){
 #'
 #' @param lines A character vector of gedcom lines.
 #'
-#' @return Nothing. If applicable, the function will result in a warning if
+#' @returns Nothing. If applicable, the function will result in a warning if
 #' inappropriate mentions of xrefs are found.
 #' @keywords internal
 check_for_xref_mentions <- function(lines){
@@ -215,7 +215,7 @@ add_at_escapes <- function(lines){
 #'
 #' @param lines A character vector of gedcom lines.
 #' 
-#' @return A new character vector of gedcom lines, possibly expanded to include CONT lines.
+#' @returns A new character vector of gedcom lines, possibly expanded to include CONT lines.
 #' @keywords internal
 #' @tests
 #' test1 <- c(

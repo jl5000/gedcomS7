@@ -8,7 +8,7 @@
 #' @param utc Whether the time is in Coordinated Universal Time (UTC) (TRUE, the default) or
 #' is in local time (FALSE).
 #' 
-#' @return An S7 object representing a GEDCOM time.
+#' @returns An S7 object representing a GEDCOM time.
 #' @export
 #' @tests
 #' expect_error(Time(), regexp = "@hour has too few elements.*@minute has too few elements")
