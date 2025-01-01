@@ -44,7 +44,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rm_records</span><span class="op">(</span><span class="va">x</span>, <span class="va">xrefs</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rm_records</span><span class="op">(</span><span class="va">x</span>, <span class="va">xrefs</span>, void_refs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -58,11 +58,17 @@
 <dt id="arg-xrefs">xrefs<a class="anchor" aria-label="anchor" href="#arg-xrefs"></a></dt>
 <dd><p>A character vector of xrefs to remove.</p></dd>
 
+
+<dt id="arg-void-refs">void_refs<a class="anchor" aria-label="anchor" href="#arg-void-refs"></a></dt>
+<dd><p>Whether to replace references to this record with
+a @VOID@ reference. This indicates to people that there was a reference
+to a record here. Note that if this is set to FALSE, you risk losing
+supplementary information (e.g. pedigree data in family links).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The gedcom object with the records removed. Pointers to the record will
-be replaced with void pointers.</p>
+    <p>The gedcom object with the records removed.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
