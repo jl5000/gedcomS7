@@ -375,7 +375,7 @@ rm_xref_ptrs <- function(lines, xref, void_refs){
   if(void_refs){
     lines[rows] <- sub(xref, "@VOID@", lines[rows])
   } else {
-    delete_ged_sections(lines, ptr_rows)
+    lines <- delete_ged_sections(lines, ptr_rows)
   }
   
   lines
