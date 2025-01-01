@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # gedcomS7
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/jl5000/gedcomS7/graph/badge.svg)](https://app.codecov.io/gh/jl5000/gedcomS7)
 <!-- badges: end -->
 
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and many of the other packages in the `gedcompendium`. The key changes are:

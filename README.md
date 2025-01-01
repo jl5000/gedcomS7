@@ -4,6 +4,9 @@
 # gedcomS7
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/jl5000/gedcomS7/graph/badge.svg)](https://app.codecov.io/gh/jl5000/gedcomS7)
 <!-- badges: end -->
 
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files.
@@ -55,13 +58,13 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          22 DEC 2024
+#> Creation Date:          1 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
 #> Copyright:              <Undefined>
 #> 
-#> Source system:          https://github.com/jl5000/gedcomS7
+#> Source system:          gedcomS7
 #> Product name:           The 'gedcomS7' package for the R language
 #> Source system version:  <Undefined>
 #> 
@@ -83,13 +86,13 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          22 DEC 2024
+#> Creation Date:          1 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
 #> Copyright:              Copyright Jamie Lendrum 2023
 #> 
-#> Source system:          https://github.com/jl5000/gedcomS7
+#> Source system:          gedcomS7
 #> Product name:           The 'gedcomS7' package for the R language
 #> Source system version:  <Undefined>
 #> 
@@ -136,11 +139,11 @@ ged@c_as_ged
 #>  [1] "0 HEAD"                                          
 #>  [2] "1 GEDC"                                          
 #>  [3] "2 VERS 7.0"                                      
-#>  [4] "1 SOUR https://github.com/jl5000/gedcomS7"       
+#>  [4] "1 SOUR gedcomS7"                                 
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 22 DEC 2024"                              
+#>  [8] "1 DATE 1 JAN 2025"                               
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
