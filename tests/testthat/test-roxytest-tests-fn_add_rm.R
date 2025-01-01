@@ -105,3 +105,16 @@ test_that("Function add_spouse() @ L195", {
   expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam@fam[["@F1@"]])
 })
 
+
+test_that("Function rm_xref_ptrs() @ L389", {
+  lines <- readLines(test_path("maximal70.ged"))
+  lines1 <- lines[391:399]
+  void_lines <- rm_xref_ptrs(lines1, "@S1@", TRUE)
+  expect_equal(parse_line_value(void_lines)[6], "@VOID@")
+  expect_equal(parse_line_value(void_lines)[8], "@VOID@")
+  expect_length(rm_xref_ptrs(lines1, "@S1@", FALSE), 5)
+  void_lines <- rm_xref_ptrs(lines1, "@N1@", TRUE)
+  expect_equal(parse_line_value(void_lines)[5], "@VOID@")
+  expect_length(rm_xref_ptrs(lines1, "@N1@", FALSE), 8)
+})
+

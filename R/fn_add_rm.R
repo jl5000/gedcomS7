@@ -367,6 +367,25 @@ rm_records <- function(x, xrefs, void_refs = TRUE){
 }
 
 
+#' Remove xref pointers from GEDCOM lines
+#'
+#' @param lines A character vector of GEDCOM lines.
+#' @param xref The xref to remove.
+#' @param void_refs Whether to replace references to the xref with
+#' a @VOID@ reference, or remove the structure entirely.
+#'
+#' @returns The GEDCOM lines without pointers to the xref.
+#' @keywords internal
+#' @tests
+#' lines <- readLines(test_path("maximal70.ged"))
+#' lines1 <- lines[391:399]
+#' void_lines <- rm_xref_ptrs(lines1, "@S1@", TRUE)
+#' expect_equal(parse_line_value(void_lines)[6], "@VOID@")
+#' expect_equal(parse_line_value(void_lines)[8], "@VOID@")
+#' expect_length(rm_xref_ptrs(lines1, "@S1@", FALSE), 5)
+#' void_lines <- rm_xref_ptrs(lines1, "@N1@", TRUE)
+#' expect_equal(parse_line_value(void_lines)[5], "@VOID@")
+#' expect_length(rm_xref_ptrs(lines1, "@N1@", FALSE), 8)
 rm_xref_ptrs <- function(lines, xref, void_refs){
   ptr_rows <- \(lines) which(parse_line_value(lines) == xref)
   rows <- ptr_rows(lines)
