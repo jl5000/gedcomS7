@@ -8,6 +8,29 @@
 #'
 #' @returns An S7 object representing the record.
 #' @export
+#' @tests
+#' expect_error(pull_record(new_gedcom(), "@I1@"),
+#'              regexp = "^The xref is not in the GEDCOM")
+#' 
+#' ged <- new_gedcom() |> 
+#'          push_record(IndividualRecord(locked = TRUE)) |> 
+#'          suppressMessages()
+#' expect_warning(pull_record(ged, "@I1@"),
+#'                regexp = "^The record is locked")
+#'                
+#' ged <- new_gedcom() |> 
+#'          push_record(IndividualRecord(
+#'             facts = IndividualEvent("BIRT", locked = TRUE))) |> 
+#'          suppressMessages()
+#' expect_warning(pull_record(ged, "@I1@"),
+#'                regexp = "^The following facts are locked")
+#'                
+#' ged <- new_gedcom() |> 
+#'          push_record(IndividualRecord(sex = "M")) |> 
+#'          suppressMessages()
+#' ged@indi[[1]] <- c(ged@indi[[1]], "1 _FRE Wow", "2 _ERR No")
+#' expect_warning(pull_record(ged, "@I1@"),
+#'                regexp = "The following lines could not be parsed.+Wow.+No")
 pull_record <- function(x, xref){
   
   if(!xref %in% unlist(x@c_xrefs))
@@ -62,6 +85,48 @@ pull_record <- function(x, xref){
 #'
 #' @returns An updated GEDCOM object.
 #' @export
+#' @tests
+#' ged <- new_gedcom()
+#' ged@update_change_dates <- TRUE
+#' ged@add_creation_dates <- TRUE
+#' expect_message(ged <- push_record(ged, IndividualRecord()),
+#'                regexp = "New Individual record added with xref @I1@")
+#' expect_true("1 CHAN" %in% ged@indi[[1]])
+#' expect_true("1 CREA" %in% ged@indi[[1]])
+#' 
+#' ged <- new_gedcom()
+#' 
+#' expect_error(push_record(ged, FamilyRecord(chil_xrefs = "@I1@")),
+#'              regexp = "^There is no individual")
+#' expect_error(push_record(ged, IndividualRecord(fam_links_spou = "@F1@")),
+#'              regexp = "^There is no family")
+#'              
+#' suppressMessages({
+#'   ged <- push_record(ged, FamilyRecord())
+#'   ged <- push_record(ged, FamilyRecord())
+#'   ged <- push_record(ged, IndividualRecord(fam_links_spou = "@F2@"))
+#'   ged <- push_record(ged, IndividualRecord(fam_links_chil = "@F1@"))
+#' })
+#' 
+#' expect_true("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
+#' expect_true("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
+#' 
+#' suppressMessages({
+#'   rec_F1 <- pull_record(ged, "@F1@")
+#'   rec_F1@chil_xrefs <- "@I1@"
+#'   ged <- push_record(ged, rec_F1)
+#'   
+#'   rec_F2 <- pull_record(ged, "@F2@")
+#'   rec_F2@husb_xref <- "@I2@"
+#'   ged <- push_record(ged, rec_F2)
+#' })
+#' 
+#' expect_true("1 FAMC @F1@" %in% ged@indi[["@I1@"]])
+#' expect_true("1 FAMS @F2@" %in% ged@indi[["@I2@"]])
+#' expect_false("1 FAMC @F1@" %in% ged@indi[["@I2@"]])
+#' expect_false("1 FAMS @F2@" %in% ged@indi[["@I1@"]])
+#' expect_false("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
+#' expect_false("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
 push_record <- function(gedcom, record){
   
   if(gedcom@update_change_dates){
@@ -75,11 +140,10 @@ push_record <- function(gedcom, record){
   }
   
   rec_type <- get_record_type(record)
+  new_rec <- record@xref == "@GEDCOMS7_ORPHAN@"
   
-  if(record@xref == "@GEDCOMS7_ORPHAN@"){
+  if(new_rec)
     record@xref <- unname(gedcom@c_next_xref[rec_type])
-    message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
-  }
   
   # Don't do this yet
   #if(rec_type %in% c("indi","fam")) record <- order_facts(record)
@@ -91,6 +155,9 @@ push_record <- function(gedcom, record){
   } else if(rec_type == "fam"){
     gedcom <- refresh_fam_links(gedcom, record)
   }
+  
+  if(new_rec)
+    message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
   
   gedcom
 }
