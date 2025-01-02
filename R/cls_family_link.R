@@ -45,10 +45,14 @@ FamilyLinkSpouse <- S7::new_class(
 #' Create a family link (as child) object
 #' 
 #' @inheritParams prop_definitions 
-#' @param pedigree TODO
-#' @param pedigree_phrase TODO
-#' @param confidence TODO
-#' @param confidence_phrase TODO
+#' @param pedigree An optional value from `val_pedigree_types()` indicating the nature
+#' of the link.
+#' @param pedigree_phrase An optional free-text phrase describing the nature of the
+#' link. This is required if `@pedigree` is "OTHER".
+#' @param confidence An optional value from `val_confidence_types()` indicating the
+#' confidence of the link.
+#' @param confidence_phrase An optional free-text phrase expanding on the confidence of the
+#' link.
 #' 
 #' @returns An S7 object representing a GEDCOM family link as a child.
 #' @export

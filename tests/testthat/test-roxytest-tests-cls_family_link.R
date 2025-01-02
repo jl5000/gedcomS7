@@ -10,7 +10,7 @@ test_that("Function FamilyLinkSpouse() @ L12", {
 })
 
 
-test_that("Function FamilyLinkChild() @ L70", {
+test_that("Function FamilyLinkChild() @ L74", {
   expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
                                        regexp = "@pedigree has an invalid value")
   expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 

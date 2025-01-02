@@ -24,13 +24,17 @@ or a character vector of notes. If a character vector is provided then only the 
 can be recorded (and not associated information). This option is easier if
 associated information is not required.}
 
-\item{pedigree}{TODO}
+\item{pedigree}{An optional value from \code{val_pedigree_types()} indicating the nature
+of the link.}
 
-\item{pedigree_phrase}{TODO}
+\item{pedigree_phrase}{An optional free-text phrase describing the nature of the
+link. This is required if \verb{@pedigree} is "OTHER".}
 
-\item{confidence}{TODO}
+\item{confidence}{An optional value from \code{val_confidence_types()} indicating the
+confidence of the link.}
 
-\item{confidence_phrase}{TODO}
+\item{confidence_phrase}{An optional free-text phrase expanding on the confidence of the
+link.}
 }
 \value{
 An S7 object representing a GEDCOM family link as a child.
