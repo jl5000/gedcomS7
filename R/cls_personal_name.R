@@ -120,6 +120,8 @@ PersonalNameTran <- S7::new_class(
 #'              regexp = "@name_type has an invalid value")
 #' expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),
 #'              regexp = "@type_phrase requires a @name_type")
+#' expect_error(PersonalName("Joe /Bloggs/", name_type = "OTHER"),
+#'              regexp = "An OTHER name type requires explanation in @type_phrase")
 #' expect_snapshot_value(PersonalName("Joe /Bloggs/",
 #'                                           name_type = "OTHER",
 #'                                           type_phrase = "Circus",
@@ -191,7 +193,14 @@ PersonalName <- S7::new_class(
   ),
   
   validator = function(self){
-    chk_input_parents(self@type_phrase, "@type_phrase", self@name_type, "@name_type")
+    err <- NULL
+    if(chronify(self@name_type) == "OTHER" && length(self@type_phrase) == 0)
+      err <- "An OTHER name type requires explanation in @type_phrase."
+    
+    c(
+      err,
+      chk_input_parents(self@type_phrase, "@type_phrase", self@name_type, "@name_type")
+    )
   }
 )
 
