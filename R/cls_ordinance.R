@@ -123,6 +123,8 @@ Ordinance <- S7::new_class(
 SpouseSealing <- S7::new_class(
   "SpouseSealing",
   properties = list( 
+    ord_type = S7::new_property(S7::class_character,
+                                getter = function(self) "SLGS"),
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateValue"),
                             validator = function(value){
@@ -182,7 +184,7 @@ SpouseSealing <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          "0 SLGS",
+          sprintf("0 %s", self@ord_type),
           obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
           sprintf("1 TEMP %s", self@temple_name),
           obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
