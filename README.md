@@ -4,9 +4,6 @@
 # gedcomS7
 
 <!-- badges: start -->
-
-[![Codecov test
-coverage](https://codecov.io/gh/jl5000/gedcomS7/graph/badge.svg)](https://app.codecov.io/gh/jl5000/gedcomS7)
 <!-- badges: end -->
 
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files.
@@ -58,7 +55,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          1 JAN 2025
+#> Creation Date:          2 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -86,7 +83,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          1 JAN 2025
+#> Creation Date:          2 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -143,7 +140,7 @@ ged@c_as_ged
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 1 JAN 2025"                               
+#>  [8] "1 DATE 2 JAN 2025"                               
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
