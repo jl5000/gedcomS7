@@ -6,7 +6,8 @@ articles:
   articles/2_implementation: 2_implementation.html
   articles/3_gedcom_creation: 3_gedcom_creation.html
   articles/4_records: 4_records.html
-last_built: 2025-01-01T23:21Z
+  articles/5_individual_records: 5_individual_records.html
+last_built: 2025-01-02T06:37Z
 urls:
   reference: https://jl5000.github.io/gedcomS7/reference
   article: https://jl5000.github.io/gedcomS7/articles
