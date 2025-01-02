@@ -70,11 +70,9 @@
 #' @param age_phrase Free text information that cannot be expressed in the individual's age.
 #' @param husb_age_phrase Free text information that cannot be expressed in the husband's age.
 #' @param wife_age_phrase Free text information that cannot be expressed in the wife's age.
-#' @param facts TODO
-#' @param non_events TODO
 #' 
-#' @param temple_name TODO
-#' @param ord_state TODO
+#' @param temple_name The name of a temple of The Church of Jesus Christ of Latter-day Saints.
+#' @param ord_state An optional value from `val_ordinance_states(@ord_type|"SLGS")`. 
 #' @param state_date The ordinance date given either as a formatted GEDCOM string, or a
 #' `DateExact` object.
 #' @param state_time The ordinance time given either as a formatted GEDCOM string, or a

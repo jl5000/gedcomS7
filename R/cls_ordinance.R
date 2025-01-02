@@ -2,7 +2,7 @@
 #' Create an individual ordinance object
 #' 
 #' @inheritParams prop_definitions 
-#' @param ord_type TODO
+#' @param ord_type A value from `val_individual_ordinance_types()`.
 #' 
 #' @returns An S7 object representing a GEDCOM LDS_INDIVIDUAL_ORDINANCE.
 #' @export

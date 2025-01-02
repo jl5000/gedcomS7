@@ -5,7 +5,11 @@
 #' @param pers_names TODO
 #' @param sex The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 #' "U" (undetermined, the default).
-#' @param ordinances TODO
+#' @param facts Events and/or attributes for this individual.
+#' An `IndividualEvent()`/`IndividualAttribute()` object, or a list of them.
+#' @param non_events Events that this individual did not experience.
+#' A `NonEvent()` object, or a list of them.
+#' @param ordinances An `Ordinance()` object, or a list of them.
 #' @param fam_links_chil TODO
 #' @param fam_links_spou TODO
 #' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers

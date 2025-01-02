@@ -82,11 +82,13 @@ Creating an object with no parameters sets the date to today.}
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default).}
 
-\item{facts}{TODO}
+\item{facts}{Events and/or attributes for this individual.
+An \code{IndividualEvent()}/\code{IndividualAttribute()} object, or a list of them.}
 
-\item{non_events}{TODO}
+\item{non_events}{Events that this individual did not experience.
+A \code{NonEvent()} object, or a list of them.}
 
-\item{ordinances}{TODO}
+\item{ordinances}{An \code{Ordinance()} object, or a list of them.}
 
 \item{fam_links_chil}{TODO}
 

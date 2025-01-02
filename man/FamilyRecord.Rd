@@ -73,9 +73,8 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
-\item{facts}{TODO}
-
-\item{non_events}{TODO}
+\item{facts}{Events and/or attributes for this family.
+A \code{FamilyEvent()}/\code{FamilyAttribute()} object, or a list of them.}
 
 \item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of member's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.

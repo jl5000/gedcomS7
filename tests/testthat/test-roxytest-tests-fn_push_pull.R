@@ -28,7 +28,7 @@ test_that("Function pull_record() @ L34", {
 })
 
 
-test_that("Function push_record() @ L130", {
+test_that("Function push_record() @ L131", {
   ged <- new_gedcom()
   ged@update_change_dates <- TRUE
   ged@add_creation_dates <- TRUE
@@ -40,9 +40,10 @@ test_that("Function push_record() @ L130", {
   ged <- new_gedcom()
   
   expect_error(push_record(ged, FamilyRecord(chil_xrefs = "@I1@")),
-               regexp = "^There is no individual")
-  expect_error(push_record(ged, IndividualRecord(fam_links_spou = "@F1@")),
-               regexp = "^There is no family")
+               regexp = "^The following xrefs were not found in the GEDCOM object: @I1@")
+  expect_error(push_record(ged, IndividualRecord(fam_links_spou = "@F1@",
+                                                 media_links = "@O1@")),
+               regexp = "^The following xrefs were not found in the GEDCOM object: @F1@, @O1@")
                
   suppressMessages({
     ged <- push_record(ged, FamilyRecord())

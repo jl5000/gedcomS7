@@ -97,9 +97,10 @@ pull_record <- function(x, xref){
 #' ged <- new_gedcom()
 #' 
 #' expect_error(push_record(ged, FamilyRecord(chil_xrefs = "@I1@")),
-#'              regexp = "^There is no individual")
-#' expect_error(push_record(ged, IndividualRecord(fam_links_spou = "@F1@")),
-#'              regexp = "^There is no family")
+#'              regexp = "^The following xrefs were not found in the GEDCOM object: @I1@")
+#' expect_error(push_record(ged, IndividualRecord(fam_links_spou = "@F1@",
+#'                                                media_links = "@O1@")),
+#'              regexp = "^The following xrefs were not found in the GEDCOM object: @F1@, @O1@")
 #'              
 #' suppressMessages({
 #'   ged <- push_record(ged, FamilyRecord())
@@ -129,6 +130,8 @@ pull_record <- function(x, xref){
 #' expect_false("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
 push_record <- function(gedcom, record){
   
+  check_missing_xrefs(gedcom, record)
+  
   if(gedcom@update_change_dates){
      record@updated <- ChangeDate()
   }
@@ -147,8 +150,9 @@ push_record <- function(gedcom, record){
   
   # Don't do this yet
   #if(rec_type %in% c("indi","fam")) record <- order_facts(record)
-    
-  S7::prop(gedcom, rec_type)[[record@xref]] <- record@c_as_ged
+  
+  lines <- record@c_as_ged
+  S7::prop(gedcom, rec_type)[[record@xref]] <- lines
   
   if(rec_type == "indi"){
     gedcom <- refresh_indi_links(gedcom, record)
@@ -163,6 +167,20 @@ push_record <- function(gedcom, record){
 }
 
 
+check_missing_xrefs <- function(gedcom, record){
+  
+  lines <- record@c_as_ged
+  line_vals <- parse_line_value(lines)
+  xref_ptrs <- line_vals[grepl(reg_xref(TRUE), line_vals)]
+  xref_ptrs <- remove_void_xrefs(xref_ptrs)
+  missing_xrefs <- setdiff(xref_ptrs, unlist(gedcom@c_xrefs))
+  
+  if(length(missing_xrefs) > 0)
+    stop("The following xrefs were not found in the GEDCOM object: ", 
+         toString(missing_xrefs))
+  
+}
+
 refresh_fam_links <- function(gedcom, record){
   
   # Family group record has changed
@@ -173,12 +191,6 @@ refresh_fam_links <- function(gedcom, record){
     remove_void_xrefs()
   chil_xrefs <- unname(c(record@chil_xrefs)) |> 
     remove_void_xrefs()
-  
-  for(indi in c(spou_xref, chil_xrefs)){
-    if(!indi %in% gedcom@c_xrefs[["indi"]]){
-      stop("There is no individual with xref ", indi)
-    }
-  }
   
   # Ensure these members have the family link
   for(spou in spou_xref){
@@ -224,13 +236,7 @@ refresh_indi_links <- function(gedcom, record){
   
   # Go through each family link
   # Ensure record@xref is properly reflected in family record membership
-  fam_lnks <- find_ged_values(record@c_as_ged, "FAMS|FAMC")
-  for(fam in fam_lnks){
-    if(!fam %in% gedcom@c_xrefs[["fam"]]){
-      stop("There is no family with xref ", fam)
-    }
-  }
-  
+
   for(lnk in as.iterable(record@fam_links_spou)){
     fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
     fam_rec <- gedcom@fam[[fam_xref]]
@@ -278,6 +284,8 @@ refresh_indi_links <- function(gedcom, record){
   } 
   
   # Ensure this individual (record@xref) appears in no other fam records
+  fam_lnks <- find_ged_values(record@c_as_ged, "FAMS|FAMC")
+  
   for(fam in gedcom@c_xrefs[["fam"]]){
     
     if(fam %in% fam_lnks) next

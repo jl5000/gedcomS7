@@ -2,7 +2,7 @@
 
 # File R/cls_record_indi.R: @tests
 
-test_that("Function IndividualRecord() @ L37", {
+test_that("Function IndividualRecord() @ L41", {
   nms <- list(PersonalName("Joe /Bloggs/"),
               PersonalName("Joseph /Bloggs/"))
   fcts <- list(IndividualEvent("BIRT", date = "2005", place = "USA"),

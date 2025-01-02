@@ -99,13 +99,9 @@ in the corresponding phrase parameter.}
 
 \item{wife_age_phrase}{Free text information that cannot be expressed in the wife's age.}
 
-\item{facts}{TODO}
+\item{temple_name}{The name of a temple of The Church of Jesus Christ of Latter-day Saints.}
 
-\item{non_events}{TODO}
-
-\item{temple_name}{TODO}
-
-\item{ord_state}{TODO}
+\item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type|"SLGS")}.}
 
 \item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
 \code{DateExact} object.}
