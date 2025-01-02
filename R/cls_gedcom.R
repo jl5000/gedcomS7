@@ -185,7 +185,6 @@ GedcomHeader <- S7::new_class(
                                         validator = function(value){
                                           c(
                                             chk_input_size(value, 0, 1, 1)
-                                            # chk_input_choice(value, val_languages()),#TODO
                                           )
                                         }),
     default_place_form = S7::new_property(S7::class_character,

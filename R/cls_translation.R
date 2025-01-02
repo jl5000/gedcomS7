@@ -21,7 +21,6 @@ TranslationText <- S7::new_class(
                                 validator = function(value){
                                   c(
                                     chk_input_size(value, 0, 1, 1)
-                                    #TODO: language option
                                   )
                                 }),
     media_type = S7::new_property(S7::class_character,

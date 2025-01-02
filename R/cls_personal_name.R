@@ -87,7 +87,6 @@ PersonalNameTran <- S7::new_class(
                                 validator = function(value){
                                   c(
                                     chk_input_size(value, 1, 1, 1)
-                                    #TODO: language option
                                   )
                                 }),
     name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),

@@ -118,6 +118,8 @@ You can also assert that an individual never experienced an event via the `@non_
 anakin@non_events <- NonEvent("BARM")
 ```
 
+A non-event with a date period provided asserts that the event never happened in that period. If no date period is provided, it asserts the event never happened at all.
+
 You can see a summary of all facts associated with an individual with the `df_indi_facts()` function.
 
 ```{r}

@@ -39,7 +39,7 @@ SubmitterRecord <- S7::new_class(
                                  }),
     languages = S7::new_property(S7::class_character,
                                  validator = function(value){
-                                   #TODO: language patterns
+                                   chk_input_size(value, min_val = 1)
                                  }),
     
     c_as_ged = S7::new_property(
