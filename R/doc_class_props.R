@@ -3,7 +3,7 @@
 #' 
 #' Define common properties used in S7 classes.
 #' 
-#' @details This empty function serves as a single location where all properties are defined, 
+#' @details This empty function serves as a single location where all shared properties are defined, 
 #' mainly for efficiency and maintainability.
 #' @name prop_definitions
 #' 
@@ -13,8 +13,7 @@
 #' @param media_type The media type as defined in RFC 2045.
 #' @param translations A `TranslationText()` object or a list of them.
 #' One for each alternate translation of the text.
-#' @param title The title of the multimedia record. This will supersede any title given
-#' in the record.
+#' @param title The title of the multimedia record.
 #' 
 #' @param source_text A verbatim copy of any description contained within the source. This can 
 #' either be a `TranslationText()` object, a list of them, or a character vector of text. 
@@ -27,8 +26,7 @@
 #' @param media_alt A named vector of the media in alternative media forms, c(form = location)
 #' @param pers_name TODO
 #' @param name_pieces A `PersonalNamePieces()` object defining the pieces of the full name.
-#' @param name_type TODO
-#' @param type_phrase TODO
+#' 
 #' 
 #' @param event_type TODO
 #' @param fact_val TODO
@@ -72,7 +70,7 @@
 #' @param wife_age_phrase Free text information that cannot be expressed in the wife's age.
 #' 
 #' @param temple_name The name of a temple of The Church of Jesus Christ of Latter-day Saints.
-#' @param ord_state An optional value from `val_ordinance_states(@ord_type|"SLGS")`. 
+#' @param ord_state An optional value from `val_ordinance_states(@ord_type)`. 
 #' @param state_date The ordinance date given either as a formatted GEDCOM string, or a
 #' `DateExact` object.
 #' @param state_time The ordinance time given either as a formatted GEDCOM string, or a

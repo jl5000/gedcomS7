@@ -21,11 +21,13 @@ test_that("Function PersonalNameTran() @ L79", {
 })
 
 
-test_that("Function PersonalName() @ L132", {
+test_that("Function PersonalName() @ L137", {
   expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),
                regexp = "@name_type has an invalid value")
   expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),
                regexp = "@type_phrase requires a @name_type")
+  expect_error(PersonalName("Joe /Bloggs/", name_type = "OTHER"),
+               regexp = "An OTHER name type requires explanation in @type_phrase")
   expect_snapshot_value(PersonalName("Joe /Bloggs/",
                                             name_type = "OTHER",
                                             type_phrase = "Circus",

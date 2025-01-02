@@ -16,8 +16,7 @@ MediaFile(
 \arguments{
 \item{location}{An absolute or relative URL to the file.}
 
-\item{title}{The title of the multimedia record. This will supersede any title given
-in the record.}
+\item{title}{The title of the multimedia record.}
 
 \item{media_type}{The media type as defined in RFC 2045.}
 

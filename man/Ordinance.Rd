@@ -28,7 +28,7 @@ Ordinance(
 
 \item{place}{see territory}
 
-\item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type|"SLGS")}.}
+\item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type)}.}
 
 \item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
 \code{DateExact} object.}

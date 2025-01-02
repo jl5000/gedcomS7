@@ -18,9 +18,10 @@ PersonalName(
 \arguments{
 \item{pers_name}{TODO}
 
-\item{name_type}{TODO}
+\item{name_type}{An optional name type taken from \code{val_name_types()}.}
 
-\item{type_phrase}{TODO}
+\item{type_phrase}{An optional free text description of the name type. This
+is required if the name type is "OTHER".}
 
 \item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 

@@ -111,6 +111,9 @@ PersonalNameTran <- S7::new_class(
 #' Create a personal name object
 #' 
 #' @inheritParams prop_definitions 
+#' @param name_type An optional name type taken from `val_name_types()`.
+#' @param type_phrase An optional free text description of the name type. This
+#' is required if the name type is "OTHER".
 #' @param name_translations TODO
 #' 
 #' @returns An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.

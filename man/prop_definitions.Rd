@@ -13,8 +13,7 @@
 \item{translations}{A \code{TranslationText()} object or a list of them.
 One for each alternate translation of the text.}
 
-\item{title}{The title of the multimedia record. This will supersede any title given
-in the record.}
+\item{title}{The title of the multimedia record.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
 either be a \code{TranslationText()} object, a list of them, or a character vector of text.
@@ -32,10 +31,6 @@ associated language or media type.}
 \item{pers_name}{TODO}
 
 \item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
-
-\item{name_type}{TODO}
-
-\item{type_phrase}{TODO}
 
 \item{event_type}{TODO}
 
@@ -101,7 +96,7 @@ in the corresponding phrase parameter.}
 
 \item{temple_name}{The name of a temple of The Church of Jesus Christ of Latter-day Saints.}
 
-\item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type|"SLGS")}.}
+\item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type)}.}
 
 \item{state_date}{The ordinance date given either as a formatted GEDCOM string, or a
 \code{DateExact} object.}
@@ -181,7 +176,7 @@ Creating an object with no parameters sets the date to today.}
 Define common properties used in S7 classes.
 }
 \details{
-This empty function serves as a single location where all properties are defined,
+This empty function serves as a single location where all shared properties are defined,
 mainly for efficiency and maintainability.
 }
 \keyword{internal}
