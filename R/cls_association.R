@@ -83,8 +83,8 @@ Association <- S7::new_class(
       })
   ),
   validator = function(self){
-    if(self@relation_is == "OTHER" && length(self@relation_phrase) == 0)
-      "A @relation_phrase must be given if @relation_is is 'OTHER'"
+    chk_input_phrase(self@relation_phrase, "@relation_phrase",
+                     self@relation_is, "@relation_is", "OTHER")
   }
 )
 

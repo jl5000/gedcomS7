@@ -40,6 +40,9 @@
 #'                             fact_type = "BIRT", role_phrase = "phrase"),
 #'              regexp = "@role_phrase requires a @role")
 #' expect_error(SourceCitation("@1@",
+#'                             fact_type = "BIRT", role = "OTHER"),
+#'              regexp = "A @role_phrase must be given if @role is 'OTHER'")
+#' expect_error(SourceCitation("@1@",
 #'                             certainty = "4"),
 #'              regexp = "@certainty has an invalid value")
 #' expect_error(SourceCitation("@1@",
@@ -162,7 +165,9 @@ SourceCitation <- S7::new_class(
     c(
       chk_input_parents(self@fact_phrase, "@fact_phrase", self@fact_type, "@fact_type"),
       chk_input_parents(self@role, "@role", self@fact_type, "@fact_type"),
-      chk_input_parents(self@role_phrase, "@role_phrase", self@role, "@role")
+      chk_input_parents(self@role_phrase, "@role_phrase", self@role, "@role"),
+      chk_input_phrase(self@role_phrase, "@role_phrase",
+                       self@role, "@role", "OTHER")
     )
   }
   

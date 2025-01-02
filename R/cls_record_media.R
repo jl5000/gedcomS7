@@ -16,6 +16,10 @@
 #'                               media_type = "audio/mp3",
 #'                               medium_phrase = "My CD of things"),
 #'              regexp = "@medium_phrase requires a @medium")
+#' expect_error(MediaFile(location = "media/original.mp3",
+#'                               media_type = "audio/mp3",
+#'                               medium = "OTHER"),
+#'              regexp = "A @medium_phrase must be given if @medium is 'OTHER'")
 #' expect_snapshot_value(MediaFile(location = "media/original.mp3",
 #'                                        title = "My audio",
 #'                                        media_type = "audio/mp3",
@@ -75,7 +79,11 @@ MediaFile <- S7::new_class(
       })
   ),
   validator = function(self){
-    chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
+    c(
+      chk_input_phrase(self@medium_phrase, "@medium_phrase",
+                       self@medium, "@medium", "OTHER"),
+      chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
+    )
   }
 )
 

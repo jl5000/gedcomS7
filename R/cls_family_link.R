@@ -60,7 +60,7 @@ FamilyLinkSpouse <- S7::new_class(
 #' expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
 #'                                      regexp = "@pedigree has an invalid value")
 #' expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 
-#'                                      regexp = "An OTHER pedigree requires explanation in @pedigree_phrase")
+#'                                      regexp = "A @pedigree_phrase must be given if @pedigree is 'OTHER'")
 #' expect_error(FamilyLinkChild("@F123@", confidence = "LOW"), 
 #'                                      regexp = "@confidence has an invalid value")  
 #' expect_error(FamilyLinkChild("@F123@", confidence_phrase = "Don't know"), 
@@ -113,11 +113,9 @@ FamilyLinkChild <- S7::new_class(
       })
   ),
   validator = function(self){
-    err <- NULL
-    if(chronify(self@pedigree) == "OTHER" && length(self@pedigree_phrase) == 0)
-      err <- "An OTHER pedigree requires explanation in @pedigree_phrase."
     c(
-      err,
+      chk_input_phrase(self@pedigree_phrase, "@pedigree_phrase",
+                       self@pedigree, "@pedigree", "OTHER"),
       chk_input_parents(self@pedigree_phrase, "@pedigree_phrase", self@pedigree, "@pedigree"),
       chk_input_parents(self@confidence_phrase, "@confidence_phrase", self@confidence, "@confidence")
     )

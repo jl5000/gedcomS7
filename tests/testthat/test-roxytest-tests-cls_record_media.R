@@ -2,7 +2,7 @@
 
 # File R/cls_record_media.R: @tests
 
-test_that("Function MediaFile() @ L27", {
+test_that("Function MediaFile() @ L31", {
   expect_error(MediaFile(location = "media/original.mp3",
                                 media_type = "audio/mp3",
                                 medium = "CD"),
@@ -11,6 +11,10 @@ test_that("Function MediaFile() @ L27", {
                                 media_type = "audio/mp3",
                                 medium_phrase = "My CD of things"),
                regexp = "@medium_phrase requires a @medium")
+  expect_error(MediaFile(location = "media/original.mp3",
+                                media_type = "audio/mp3",
+                                medium = "OTHER"),
+               regexp = "A @medium_phrase must be given if @medium is 'OTHER'")
   expect_snapshot_value(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",
@@ -22,7 +26,7 @@ test_that("Function MediaFile() @ L27", {
 })
 
 
-test_that("Function MediaRecord() @ L106", {
+test_that("Function MediaRecord() @ L114", {
   fls <- list(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",

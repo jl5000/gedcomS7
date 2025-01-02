@@ -14,7 +14,7 @@ test_that("Function FamilyLinkChild() @ L74", {
   expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
                                        regexp = "@pedigree has an invalid value")
   expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 
-                                       regexp = "An OTHER pedigree requires explanation in @pedigree_phrase")
+                                       regexp = "A @pedigree_phrase must be given if @pedigree is 'OTHER'")
   expect_error(FamilyLinkChild("@F123@", confidence = "LOW"), 
                                        regexp = "@confidence has an invalid value")  
   expect_error(FamilyLinkChild("@F123@", confidence_phrase = "Don't know"), 

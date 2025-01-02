@@ -2,7 +2,7 @@
 
 # File R/cls_citation.R: @tests
 
-test_that("Function SourceCitation() @ L64", {
+test_that("Function SourceCitation() @ L67", {
   expect_snapshot_value(SourceCitation()@c_as_ged, "json2")
   expect_error(SourceCitation("@1@",
                               fact_phrase = "phrase"),
@@ -13,6 +13,9 @@ test_that("Function SourceCitation() @ L64", {
   expect_error(SourceCitation("@1@",
                               fact_type = "BIRT", role_phrase = "phrase"),
                regexp = "@role_phrase requires a @role")
+  expect_error(SourceCitation("@1@",
+                              fact_type = "BIRT", role = "OTHER"),
+               regexp = "A @role_phrase must be given if @role is 'OTHER'")
   expect_error(SourceCitation("@1@",
                               certainty = "4"),
                regexp = "@certainty has an invalid value")

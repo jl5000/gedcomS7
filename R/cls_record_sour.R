@@ -36,7 +36,11 @@ SourceCallNumber <- S7::new_class(
       })
   ),
   validator = function(self){
-    chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
+    c(
+      chk_input_phrase(self@medium_phrase, "@medium_phrase",
+                       self@medium, "@medium", "OTHER"),
+      chk_input_parents(self@medium_phrase, "@medium_phrase", self@medium, "@medium")
+    )
   }
 )
 
