@@ -33,48 +33,6 @@ indi <- pull_record(ged, "@I1@")
 
 There are two other properties that place restrictions on records: `@confidential` and `@private`. The exact interpretation of confidential and private is largely up to the author of the file, but they allow two independent mechanisms for excluding certain records on export.
 
-## Notes
-
-All records (apart from Note records) allow you to attach as many free text notes as you wish. If a note applies in many places then it is best to create a Note record which can be referenced everywhere it is needed, but otherwise use the `@notes` property. 
-
-This property can take notes in a number of ways. The simplest way is via a character vector. Another way is via a `Note()` object, which also allows you to define some other properties of the note such as its language and media type.
-
-```{r}
-indi@notes <- "This is a single note"
-
-indi@notes <- c("This is a note", "This is an another note")
-
-indi@notes <- Note(text = "This is a single note using a Note object",
-                   media_type = "text/plain")
-```
-
-Alternatively, you can supply a list which can contain any number of character or Note elements:
-
-```{r}
-indi@notes <- list(
-  Note(text = "This is one of a number of <b>Note</b> objects. This one is HTML.",
-       media_type = "text/html"),
-  Note(text = "Esta es una nota",
-       language = "es",
-       media_type = "text/plain"),
-  "This one is a character note"
-)
-```
-
-You should remember that for any properties that can take multiple elements, you can append any new values to the existing ones, otherwise they will be overwritten:
-
-```{r}
-indi@notes <- append(
-  indi@notes,
-  list(
-    "This is an appended note",
-    Note("This is another appended note")
-  )
-)
-
-indi@notes
-```
-
 ## Identifiers
 
 ### Cross references
@@ -143,6 +101,74 @@ uuid::UUIDgenerate(n = 1)
 ```
 
 The `@ext_ids` must take the form of a named vector where the names are the URI defining the identifier. For example, to include the reference to an individual's [Find a Grave's](https://www.findagrave.com) page, you would supply `c("https://www.findagrave.com/memorial" = "1075")`, which would be interpreted as https://www.findagrave.com/memorial/1075.
+
+## Referencing other records
+
+One of the most important aspects of a record is the provenance of the data within it. This can be provided via linking it with evidence (sources) and multimedia. It should be noted that all of these linkages can not only be provided at the record level, but also at more granular levels; for example, you can provide source citations for each personal name for an individual.
+
+### Source citations
+
+Linkages to Source records (known as source citations) are among the most important aspects of a GEDCOM file. They are accessed via the `@citations` property. A quick and dirty way of adding citations is with a character vector of Source record xrefs, but this does not allow you to record supplementary information. The alternative is to use a `SourceCitation()` object (or a list of them).
+
+```{r}
+SourceCitation()
+```
+
+Without providing any information you can see that the default xref is "@VOID@". This is a special xref value which indicates there is no record to link to. In this case, all information should be provided in the object itself, particularly the `@where` property. This is just a default value - if there is a record, you should put the xref here.
+
+### Multimedia links
+
+Links to Multimedia records are accessed via the `@media_links` property. Similar to source citations, this can take a character vector of Multimedia record xrefs, a `MediaLink()` object, or a list of them.
+
+```{r}
+MediaLink()
+```
+
+Again, a @VOID@ xref is given by default and if this is retained, a `@title` should be provided (any title given will override the title given in the Multimedia record if one is linked to). The remaining properties allow you to specify a cropped region of an image.
+
+## Notes
+
+All records (apart from Note records) allow you to attach as many free text notes as you wish. If a note applies in many places then it is best to create a Note record which can be referenced everywhere it is needed with `@note_xrefs`, but otherwise use the `@notes` property. 
+
+This property can take notes in a number of ways. The simplest way is via a character vector. Another way is via a `Note()` object, which also allows you to define some other properties of the note such as its language and media type.
+
+```{r}
+indi <- IndividualRecord()
+
+indi@notes <- "This is a single note"
+
+indi@notes <- c("This is a note", "This is an another note")
+
+indi@notes <- Note(text = "This is a single note using a Note object",
+                   media_type = "text/plain")
+```
+
+Alternatively, you can supply a list which can contain any number of character or Note elements:
+
+```{r}
+indi@notes <- list(
+  Note(text = "This is one of a number of <b>Note</b> objects. This one is HTML.",
+       media_type = "text/html"),
+  Note(text = "Esta es una nota",
+       language = "es",
+       media_type = "text/plain"),
+  "This one is a character note"
+)
+```
+
+You should remember that for any properties that can take multiple elements, you can append any new values to the existing ones, otherwise they will be overwritten:
+
+```{r}
+indi@notes <- append(
+  indi@notes,
+  list(
+    "This is an appended note",
+    Note("This is another appended note")
+  )
+)
+
+indi@notes
+```
 
 
 ## Creation/modification dates
