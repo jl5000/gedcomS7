@@ -2,7 +2,9 @@
 #' Create an individual record object
 #' 
 #' @inheritParams prop_definitions 
-#' @param pers_names TODO
+#' @param pers_names A `PersonalName()` object or a list of them, giving the names
+#' of this individual. A simple character vector of names can be provided instead,
+#' but this is not recommended. 
 #' @param sex The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 #' "U" (undetermined, the default).
 #' @param facts Events and/or attributes for this individual.
@@ -22,6 +24,10 @@
 #' @returns An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
 #' @tests
+#' expect_warning(IndividualRecord(pers_names = "Me"),
+#'                regexp = "Did you forget to enclose the surname in forward slashes")
+#' expect_warning(IndividualRecord(pers_names = list(PersonalName("Joe /Bloggs/"), "Me")),
+#'                regexp = "Did you forget to enclose the surname in forward slashes")
 #' nms <- list(PersonalName("Joe /Bloggs/"),
 #'             PersonalName("Joseph /Bloggs/"))
 #' fcts <- list(IndividualEvent("BIRT", date = "2005", place = "USA"),
@@ -45,8 +51,13 @@ IndividualRecord <- S7::new_class(
     pers_names = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::PersonalName") | 
                                     S7::class_character,
+                                  getter = function(self) self@pers_names,
+                                  setter = function(self, value){
+                                    self@pers_names <- as.S7class_list(value, gedcomS7::PersonalName)
+                                    self
+                                  },
                                   validator = function(value){
-                                    chk_input_S7classes(value, PersonalName, ".+")
+                                    chk_input_S7classes(value, gedcomS7::PersonalName)
                                   }),
     sex = S7::new_property(S7::class_character, default = "U",
                            validator = function(value){
@@ -57,30 +68,55 @@ IndividualRecord <- S7::new_class(
                            }),
     facts = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::IndividualFact"),
+                             getter = function(self) self@facts,
+                             setter = function(self, value){
+                               self@facts <- as.S7class_list(value, IndividualFact)
+                               self
+                             },
                              validator = function(value){
                                chk_input_S7classes(value, IndividualFact)
                              }),
     non_events = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::NonEvent"),
+                                  getter = function(self) self@non_events,
+                                  setter = function(self, value){
+                                    self@non_events <- as.S7class_list(value, gedcomS7::NonEvent)
+                                    self
+                                  },
                                   validator = function(value){
-                                    chk_input_S7classes(value, NonEvent)
+                                    chk_input_S7classes(value, gedcomS7::NonEvent)
                                   }),
     ordinances = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::Ordinance"),
+                                  getter = function(self) self@ordinances,
+                                  setter = function(self, value){
+                                    self@ordinances <- as.S7class_list(value, gedcomS7::Ordinance)
+                                    self
+                                  },
                                   validator = function(value){
-                                    chk_input_S7classes(value, Ordinance)
+                                    chk_input_S7classes(value, gedcomS7::Ordinance)
                                   }),
     fam_links_chil = S7::new_property(S7::class_list | 
                                         S7::new_S3_class("gedcomS7::FamilyLinkChild") | 
                                         S7::class_character,
+                                      getter = function(self) self@fam_links_chil,
+                                      setter = function(self, value){
+                                        self@fam_links_chil <- as.S7class_list(value, gedcomS7::FamilyLinkChild)
+                                        self
+                                      },
                                       validator = function(value){
-                                        chk_input_S7classes(value, FamilyLinkChild, reg_xref(TRUE))
+                                        chk_input_S7classes(value, gedcomS7::FamilyLinkChild)
                                       }),
     fam_links_spou = S7::new_property(S7::class_list | 
                                         S7::new_S3_class("gedcomS7::FamilyLinkSpouse") | 
                                         S7::class_character,
+                                      getter = function(self) self@fam_links_spou,
+                                      setter = function(self, value){
+                                        self@fam_links_spou <- as.S7class_list(value, gedcomS7::FamilyLinkSpouse)
+                                        self
+                                      },
                                       validator = function(value){
-                                        chk_input_S7classes(value, FamilyLinkSpouse, reg_xref(TRUE))
+                                        chk_input_S7classes(value, gedcomS7::FamilyLinkSpouse)
                                       }),
     subm_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -88,8 +124,13 @@ IndividualRecord <- S7::new_class(
                                   }),
     associations = S7::new_property(S7::class_list | 
                                       S7::new_S3_class("gedcomS7::Association"),
+                                    getter = function(self) self@associations,
+                                    setter = function(self, value){
+                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
+                                      self
+                                    },
                                     validator = function(value){
-                                      chk_input_S7classes(value, Association)
+                                      chk_input_S7classes(value, gedcomS7::Association)
                                     }),
     alia_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){

@@ -21,7 +21,9 @@ test_that("Function PersonalNameTran() @ L79", {
 })
 
 
-test_that("Function PersonalName() @ L137", {
+test_that("Function PersonalName() @ L140", {
+  expect_warning(PersonalName("Joe Bloggs"),
+                 regexp = "Did you forget to enclose the surname in forward slashes")
   expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),
                regexp = "@name_type has an invalid value")
   expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),

@@ -25,7 +25,8 @@ is required if the name type is "OTHER".}
 
 \item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 
-\item{name_translations}{TODO}
+\item{name_translations}{A \code{PersonalNameTran()} object or a list of them, providing
+different translations of this personal name.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
 or a character vector of notes. If a character vector is provided then only the notes themselves

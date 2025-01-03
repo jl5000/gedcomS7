@@ -18,8 +18,13 @@ RepositoryRecord <- S7::new_class(
                                  }),
     address = S7::new_property(S7::class_character | 
                                  S7::new_S3_class("gedcomS7::Address"),
+                               getter = function(self) self@address,
+                               setter = function(self, value){
+                                 self@address <- as.S7class(value, gedcomS7::Address)
+                                 self
+                               },
                                validator = function(value){
-                                 chk_input_size(value, 0, 1, 1)
+                                 chk_input_size(value, 0, 1)
                                }),
     phone_numbers = S7::new_property(S7::class_character,
                                      validator = function(value){

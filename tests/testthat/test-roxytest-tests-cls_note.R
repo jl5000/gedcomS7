@@ -2,9 +2,11 @@
 
 # File R/cls_note.R: @tests
 
-test_that("Function Note() @ L40", {
+test_that("Function Note() @ L42", {
   expect_error(Note(), regexp = "@text has too few elements")
   expect_error(Note(letters[1:2]), regexp = "@text has too many elements")
+  expect_error(Note("test", translations = TranslationText("Ole")),
+               regexp = "Each @translation requires a @language or @media_type")
   expect_snapshot_value(Note("test")@c_as_ged, "json2")
   expect_snapshot_value(Note("test", language = "en")@c_as_ged, "json2")
   expect_snapshot_value(Note("test", 
@@ -24,13 +26,13 @@ test_that("Function Note() @ L40", {
                        "json2")
   expect_error(Note("test", 
                           language = "en",
-                          translations = Address("street"))@c_as_ged,
-               regexp = "@translations must be <list> or ")
+                          translations = Address("street")),
+               regexp = "@translations contains an invalid object")
   expect_error(Note("test", 
                           language = "en",
                           translations = list(TranslationText("test",
                                                                 language = "en"),
                                           Address("street"))),
-               regexp = "@translations contains an invalid object not of TranslationText")
+               regexp = "@translations contains an invalid object not of class TranslationText")
 })
 

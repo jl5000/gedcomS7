@@ -35,11 +35,11 @@
 #' expect_false("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
 #' 
 #' ged_with_parents <- add_parents(ged_no_parents, "@I1@",
-#'                                 fath_name = "Joe Bloggs",
-#'                                 moth_name = "Jess Bloggs") |> 
+#'                                 fath_name = "Joe /Bloggs/",
+#'                                 moth_name = "Jess /Bloggs/") |> 
 #'                   suppressMessages()
-#' expect_true("1 NAME Joe Bloggs" %in% ged_with_parents@indi[["@I2@"]])
-#' expect_true("1 NAME Jess Bloggs" %in% ged_with_parents@indi[["@I3@"]])
+#' expect_true("1 NAME Joe /Bloggs/" %in% ged_with_parents@indi[["@I2@"]])
+#' expect_true("1 NAME Jess /Bloggs/" %in% ged_with_parents@indi[["@I3@"]])
 #' 
 #' ged_with_parents2 <- add_parents(ged_with_parents, "@I1@") |> 
 #'                   suppressMessages()
@@ -167,10 +167,10 @@ add_parents <- function(x,
 #' expect_true("1 WIFE @I2@" %in% ged_with_spouse@fam[["@F1@"]])
 #' 
 #' ged_with_spouse <- add_spouse(ged_no_spouse, "@I1@",
-#'                               spou_name = "Joe Bloggs") |> 
+#'                               spou_name = "Joe /Bloggs/") |> 
 #'                   suppressMessages()
 #' 
-#' expect_true("1 NAME Joe Bloggs" %in% ged_with_spouse@indi[["@I2@"]])
+#' expect_true("1 NAME Joe /Bloggs/" %in% ged_with_spouse@indi[["@I2@"]])
 #' 
 #' ged_no_spouse_fam <- suppressMessages(
 #'   ged |> 

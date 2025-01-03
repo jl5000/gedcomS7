@@ -17,7 +17,7 @@ test_that("Function SourceCitation() @ L62", {
   expect_error(SourceCitation("@1@", certainty = "4"),
                regexp = "@certainty has an invalid value")
   expect_error(SourceCitation("@1@", notes = ""),
-               regexp = "@notes is in an invalid format")
+               regexp = "@text has too few characters")
   expect_error(SourceCitation("@1@", fact_type = "birth"),
                regexp = "@fact_type has an invalid value")             
   expect_snapshot_value(SourceCitation("@1@",

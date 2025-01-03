@@ -36,8 +36,13 @@ GedcomSource <- S7::new_class(
                                      }),
     business_address = S7::new_property(S7::class_character | 
                                           S7::new_S3_class("gedcomS7::Address"),
+                                        getter = function(self) self@business_address,
+                                        setter = function(self, value){
+                                          self@business_address <- as.S7class(value, gedcomS7::Address)
+                                          self
+                                        },
                                         validator = function(value){
-                                          chk_input_size(value, 0, 1, 1)
+                                          chk_input_size(value, 0, 1)
                                         }),
     phone_numbers = S7::new_property(S7::class_character,
                                      validator = function(value){
@@ -194,8 +199,13 @@ GedcomHeader <- S7::new_class(
     notes = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
+                             getter = function(self) self@notes,
+                             setter = function(self, value){
+                               self@notes <- as.S7class_list(value, gedcomS7::Note)
+                               self
+                             },
                              validator = function(value){
-                               chk_input_S7classes(value, Note, ".+")
+                               chk_input_S7classes(value, gedcomS7::Note)
                              }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){

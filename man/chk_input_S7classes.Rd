@@ -4,14 +4,12 @@
 \alias{chk_input_S7classes}
 \title{Validate a list to ensure it contains elements of the correct S7 class}
 \usage{
-chk_input_S7classes(input, target_class, backup_pattern = NULL)
+chk_input_S7classes(input_lst, target_class)
 }
 \arguments{
-\item{input}{The input.}
+\item{input_lst}{The list of S7 objects to check.}
 
 \item{target_class}{The S7 class that the elements of the list should contain.}
-
-\item{backup_pattern}{Need to handle List of mixed stuff vs character vector vs list of characters}
 }
 \value{
 Either a character string giving an error message, or NULL.

@@ -10,6 +10,8 @@
 #' @tests
 #' expect_error(Note(), regexp = "@text has too few elements")
 #' expect_error(Note(letters[1:2]), regexp = "@text has too many elements")
+#' expect_error(Note("test", translations = TranslationText("Ole")),
+#'              regexp = "Each @translation requires a @language or @media_type")
 #' expect_snapshot_value(Note("test")@c_as_ged, "json2")
 #' expect_snapshot_value(Note("test", language = "en")@c_as_ged, "json2")
 #' expect_snapshot_value(Note("test", 
@@ -29,14 +31,14 @@
 #'                      "json2")
 #' expect_error(Note("test", 
 #'                         language = "en",
-#'                         translations = Address("street"))@c_as_ged,
-#'              regexp = "@translations must be <list> or ")
+#'                         translations = Address("street")),
+#'              regexp = "@translations contains an invalid object")
 #' expect_error(Note("test", 
 #'                         language = "en",
 #'                         translations = list(TranslationText("test",
 #'                                                               language = "en"),
 #'                                         Address("street"))),
-#'              regexp = "@translations contains an invalid object not of TranslationText")
+#'              regexp = "@translations contains an invalid object not of class TranslationText")
 Note <- S7::new_class(
   "Note",
   properties = list(
@@ -59,15 +61,30 @@ Note <- S7::new_class(
                                   }),
     translations = S7::new_property(S7::class_list | 
                                       S7::new_S3_class("gedcomS7::TranslationText"),
+                                    getter = function(self) self@translations,
+                                    setter = function(self, value){
+                                      self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
+                                      self
+                                    },
                                     validator = function(value){
-                                      chk_input_S7classes(value, TranslationText)
+                                      err <- chk_input_S7classes(value, gedcomS7::TranslationText)
+                                      if(!is.null(err)) return(err)
+                                      for(tran in value){
+                                        if(length(tran@language) + length(tran@media_type) == 0)
+                                          return("Each @translation requires a @language or @media_type to be defined.")
+                                      }
                                     }),
     # Using S3 because of recursion
     citations = S7::new_property(S7::class_list | 
                                    S7::new_S3_class("gedcomS7::SourceCitation") | 
                                    S7::class_character,
+                                 getter = function(self) self@citations,
+                                 setter = function(self, value){
+                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
+                                   self
+                                 },
                                  validator = function(value){
-                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
                                  }),
 
     

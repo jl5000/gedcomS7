@@ -8,7 +8,9 @@
 #' If the individual does not have a record, then the value "@VOID@" can be used. 
 #' However, you will need to describe the individual by using a named vector (a description can be used
 #' in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@").
-#' @param spouse_sealings TODO
+#' @param spouse_sealings A `SpouseSealing()` object or a list of them detailing 
+#' the sealing of a husband and wife in a temple ceremony of The Church of Jesus 
+#' Christ of Latter-day Saints.
 #' 
 #' @returns An S7 object representing a GEDCOM FAMILY_RECORD.
 #' @export
@@ -35,13 +37,23 @@ FamilyRecord <- S7::new_class(
   properties = list(
     facts = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::FamilyFact"),
+                             getter = function(self) self@facts,
+                             setter = function(self, value){
+                               self@facts <- as.S7class_list(value, FamilyFact)
+                               self
+                             },
                              validator = function(value){
                                chk_input_S7classes(value, FamilyFact)
                              }),
     non_events = S7::new_property(S7::class_list | 
                                     S7::new_S3_class("gedcomS7::NonEvent"),
+                                  getter = function(self) self@non_events,
+                                  setter = function(self, value){
+                                    self@non_events <- as.S7class_list(value, NonEvent)
+                                    self
+                                  },
                                   validator = function(value){
-                                    chk_input_S7classes(value, NonEvent)
+                                    chk_input_S7classes(value, gedcomS7::NonEvent)
                                   }),
     husb_xref = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -63,8 +75,13 @@ FamilyRecord <- S7::new_class(
                                   }),
     associations = S7::new_property(S7::class_list | 
                                       S7::new_S3_class("gedcomS7::Association"),
+                                    getter = function(self) self@associations,
+                                    setter = function(self, value){
+                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
+                                      self
+                                    },
                                     validator = function(value){
-                                      chk_input_S7classes(value, Association)
+                                      chk_input_S7classes(value, gedcomS7::Association)
                                     }),
     subm_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -72,8 +89,13 @@ FamilyRecord <- S7::new_class(
                                   }),
     spouse_sealings = S7::new_property(S7::class_list | 
                                          S7::new_S3_class("gedcomS7::SpouseSealing"),
+                                       getter = function(self) self@spouse_sealings,
+                                       setter = function(self, value){
+                                         self@spouse_sealings <- as.S7class_list(value, gedcomS7::SpouseSealing)
+                                         self
+                                       },
                                     validator = function(value){
-                                      chk_input_S7classes(value, SpouseSealing)
+                                      chk_input_S7classes(value, gedcomS7::SpouseSealing)
                                     }),
     
     c_marriage_date = S7::new_property(

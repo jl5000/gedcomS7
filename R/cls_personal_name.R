@@ -114,11 +114,14 @@ PersonalNameTran <- S7::new_class(
 #' @param name_type An optional name type taken from `val_name_types()`.
 #' @param type_phrase An optional free text description of the name type. This
 #' is required if the name type is "OTHER".
-#' @param name_translations TODO
+#' @param name_translations A `PersonalNameTran()` object or a list of them, providing
+#' different translations of this personal name.
 #' 
 #' @returns An S7 object representing a GEDCOM PERSONAL_NAME_STRUCTURE.
 #' @export
 #' @tests
+#' expect_warning(PersonalName("Joe Bloggs"),
+#'                regexp = "Did you forget to enclose the surname in forward slashes")
 #' expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),
 #'              regexp = "@name_type has an invalid value")
 #' expect_error(PersonalName("Joe /Bloggs/", type_phrase = "After 2012"),
@@ -138,6 +141,14 @@ PersonalName <- S7::new_class(
   "PersonalName",
   properties = list(
     pers_name = S7::new_property(S7::class_character,
+                                 getter = function(self) self@pers_name,
+                                 setter = function(self, value){
+                                   if(!grepl("/", value))
+                                     warning("Did you forget to enclose the surname in forward slashes?: ", value)
+                                   
+                                   self@pers_name <- value
+                                   self
+                                 },
                                  validator = function(value){
                                    chk_input_size(value, 1, 1, 1)
                                  }),
@@ -158,22 +169,39 @@ PersonalName <- S7::new_class(
                                    }),
     name_translations = S7::new_property(S7::class_list | 
                                            S7::new_S3_class("gedcomS7::PersonalNameTran"),
+                                         getter = function(self) self@name_translations,
+                                         setter = function(self, value){
+                                           self@name_translations <- as.S7class_list(value, gedcomS7::PersonalNameTran)
+                                           self
+                                         },
                                          validator = function(value){
-                                           chk_input_S7classes(value, PersonalNameTran)
+                                           chk_input_S7classes(value, gedcomS7::PersonalNameTran)
                                          }),
     notes = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
+                             getter = function(self) self@notes,
+                             setter = function(self, value){
+                               self@notes <- as.S7class_list(value, gedcomS7::Note)
+                               self
+                             },
                              validator = function(value){
-                               chk_input_S7classes(value, Note, ".+")
+                               chk_input_S7classes(value, gedcomS7::Note)
                              }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    citations = S7::new_property(S7::class_list | SourceCitation | S7::class_character,
+    citations = S7::new_property(S7::class_list | 
+                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
+                                   S7::class_character,
+                                 getter = function(self) self@citations,
+                                 setter = function(self, value){
+                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
+                                   self
+                                 },
                                  validator = function(value){
-                                   chk_input_S7classes(value, SourceCitation, reg_xref(TRUE))
+                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
                                  }),
     
     c_as_val = S7::new_property(S7::class_character, 

@@ -85,7 +85,9 @@ in either case), e.g. c("Joe Bloggs" = "@VOID@") or c("Joe Bloggs" = "@I1@").}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 
-\item{spouse_sealings}{TODO}
+\item{spouse_sealings}{A \code{SpouseSealing()} object or a list of them detailing
+the sealing of a husband and wife in a temple ceremony of The Church of Jesus
+Christ of Latter-day Saints.}
 }
 \value{
 An S7 object representing a GEDCOM FAMILY_RECORD.

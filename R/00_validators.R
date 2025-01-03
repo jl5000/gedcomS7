@@ -113,29 +113,16 @@ chk_input_choice <- function(input, choices) {
 
 #' Validate a list to ensure it contains elements of the correct S7 class
 #'
-#' @inheritParams chk_input_size 
+#' @param input_lst The list of S7 objects to check.
 #' @param target_class The S7 class that the elements of the list should contain.
-#' @param backup_pattern Need to handle List of mixed stuff vs character vector vs list of characters
 #'
 #' @inherit chk_input_size return
 #' @keywords internal
-chk_input_S7classes <- function(input, target_class, backup_pattern = NULL){
-  
-  if("S7_object" %in% class(input)){
-    if(!S7::S7_inherits(input, target_class))
-      return(sprintf("contains an invalid object not of %s.", 
+chk_input_S7classes <- function(input_lst, target_class){
+  for(inp in input_lst){
+    if(!S7::S7_inherits(inp, target_class))
+      return(sprintf("contains an invalid object not of class %s.", 
                      target_class@name))
-  } else {
-    for(inp in input){
-      if(is.character(inp) && !is.null(backup_pattern)){
-        if(!grepl(backup_pattern, inp))
-          return("is in an invalid format.")
-      } else {
-        if(!S7::S7_inherits(inp, target_class))
-          return(sprintf("contains an invalid object not of %s.", 
-                         target_class@name))
-      }
-    }
   }
   
   NULL

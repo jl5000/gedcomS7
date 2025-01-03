@@ -1,5 +1,8 @@
 
 # Used in SNOTE record, SOUR record, NOTE structure, and SOURCE_CITATION
+# For NOTE/SNOTE, a language or media type is required
+# For SOUR, neither is needed
+
 #' Create a text translation object
 #' 
 #' @inheritParams prop_definitions
@@ -8,14 +11,13 @@
 #' @tests
 #' expect_error(TranslationText(), regexp = "@text has too few elements")
 #' expect_error(TranslationText(letters[1:2]), regexp = "@text has too many elements")
-#' expect_error(TranslationText("test"), regexp = "A @language or @media_type must be defined")
 #' expect_snapshot_value(TranslationText("test", language = "en")@c_as_ged, "json2")
 TranslationText <- S7::new_class(
   "TranslationText",
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){
-                              chk_input_size(value, 1, 1)
+                              chk_input_size(value, 1, 1, 1)
                             }),
     language = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -40,11 +42,7 @@ TranslationText <- S7::new_class(
           sprintf("1 LANG %s", self@language)
         )
       })
-  ),
-  validator = function(self){
-    if(length(self@language) + length(self@media_type) == 0)
-      return("A @language or @media_type must be defined.")
-  }
+  )
 )
 
 

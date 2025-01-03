@@ -43,7 +43,7 @@
 #' expect_error(SourceCitation("@1@", certainty = "4"),
 #'              regexp = "@certainty has an invalid value")
 #' expect_error(SourceCitation("@1@", notes = ""),
-#'              regexp = "@notes is in an invalid format")
+#'              regexp = "@text has too few characters")
 #' expect_error(SourceCitation("@1@", fact_type = "birth"),
 #'              regexp = "@fact_type has an invalid value")             
 #' expect_snapshot_value(SourceCitation("@1@",
@@ -84,8 +84,13 @@ SourceCitation <- S7::new_class(
     source_text = S7::new_property(S7::class_list | 
                                      S7::new_S3_class("gedcomS7::TranslationText") | 
                                      S7::class_character,
+                                   getter = function(self) self@source_text,
+                                   setter = function(self, value){
+                                     self@source_text <- as.S7class_list(value, gedcomS7::TranslationText)
+                                     self
+                                   },
                                    validator = function(value){
-                                     chk_input_S7classes(value, TranslationText, ".+")
+                                     chk_input_S7classes(value, gedcomS7::TranslationText)
                                    }),
     fact_type = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -119,8 +124,13 @@ SourceCitation <- S7::new_class(
     media_links = S7::new_property(S7::class_list | 
                                      S7::new_S3_class("gedcomS7::MediaLink") | 
                                      S7::class_character,
+                                   getter = function(self) self@media_links,
+                                   setter = function(self, value){
+                                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
+                                     self
+                                   },
                                    validator = function(value){
-                                     chk_input_S7classes(value, MediaLink, reg_xref(TRUE))
+                                     chk_input_S7classes(value, gedcomS7::MediaLink)
                                    }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -129,8 +139,13 @@ SourceCitation <- S7::new_class(
     notes = S7::new_property(S7::class_list | 
                                S7::new_S3_class("gedcomS7::Note") | 
                                S7::class_character,
+                             getter = function(self) self@notes,
+                             setter = function(self, value){
+                               self@notes <- as.S7class_list(value, gedcomS7::Note)
+                               self
+                             },
                              validator = function(value){
-                               chk_input_S7classes(value, Note, ".+")
+                               chk_input_S7classes(value, gedcomS7::Note)
                              }),
     
     c_as_ged = S7::new_property(

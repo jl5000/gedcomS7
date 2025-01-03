@@ -77,7 +77,9 @@ Creating an object with no parameters sets the date to today.}
 \item{updated}{A \code{ChangeDate()} object containing the date the record was updated.
 Creating an object with no parameters sets the date to today.}
 
-\item{pers_names}{TODO}
+\item{pers_names}{A \code{PersonalName()} object or a list of them, giving the names
+of this individual. A simple character vector of names can be provided instead,
+but this is not recommended.}
 
 \item{sex}{The sex of the individual. Either "M" (male), "F" (female), "X" (other), or
 "U" (undetermined, the default).}

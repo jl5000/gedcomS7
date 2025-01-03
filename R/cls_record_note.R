@@ -11,6 +11,8 @@
 #' expect_snapshot_value(NoteRecord("@N4@",
 #'                                         text = "The note goes something like this",
 #'                                         language = "en")@c_as_ged, "json2")
+#' expect_error(NoteRecord("test", translations = TranslationText("Woohoo")),
+#'              regexp = "Each @translation requires a @language or @media_type")
 NoteRecord <- S7::new_class(
   "NoteRecord", 
   parent = Record,
@@ -34,8 +36,18 @@ NoteRecord <- S7::new_class(
                                 }),
     translations = S7::new_property(S7::class_list | 
                                       S7::new_S3_class("gedcomS7::TranslationText"),
+                                    getter = function(self) self@translations,
+                                    setter = function(self, value){
+                                      self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
+                                      self
+                                    },
                                     validator = function(value){
-                                      chk_input_S7classes(value, TranslationText)
+                                      err <- chk_input_S7classes(value, gedcomS7::TranslationText)
+                                      if(!is.null(err)) return(err)
+                                      for(tran in value){
+                                        if(length(tran@language) + length(tran@media_type) == 0)
+                                          return("Each @translation requires a @language or @media_type to be defined.")
+                                      }
                                     }),
     
     c_as_ged = S7::new_property(
