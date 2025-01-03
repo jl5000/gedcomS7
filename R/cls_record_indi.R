@@ -148,18 +148,16 @@ IndividualRecord <- S7::new_class(
     c_primary_name = S7::new_property(
       S7::class_character,
       getter = function(self){
-        if(length(self@pers_names) == 0){
-          character()
-        } else {
-          obj_to_val(as.iterable(self@pers_names)[[1]]) |> 
-            gsub(pattern = "/", replacement = "")
-        }
+        if(length(self@pers_names) == 0) return(character())
+        
+        obj_to_val(self@pers_names[[1]]) |> 
+          gsub(pattern = "/", replacement = "")
       }),
     
     c_all_names = S7::new_property(
       S7::class_character,
       getter = function(self){
-        vapply(as.iterable(self@pers_names), \(nm){
+        vapply(self@pers_names, \(nm){
           obj_to_val(nm)
         }, FUN.VALUE = character(1), USE.NAMES = FALSE) |> 
           gsub(pattern = "/", replacement = "")
@@ -168,7 +166,7 @@ IndividualRecord <- S7::new_class(
     c_birth_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in as.iterable(self@facts)){
+        for(fact in self@facts){
           if(fact@fact_type == "BIRT") return(fact@c_fact_date)
         }
         character()
@@ -177,7 +175,7 @@ IndividualRecord <- S7::new_class(
     c_birth_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in as.iterable(self@facts)){
+        for(fact in self@facts){
           if(fact@fact_type == "BIRT") return(fact@c_fact_location)
         }
         character()
@@ -186,7 +184,7 @@ IndividualRecord <- S7::new_class(
     c_death_date = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in as.iterable(self@facts)){
+        for(fact in self@facts){
           if(fact@fact_type == "DEAT") return(fact@c_fact_date)
         }
         character()
@@ -195,7 +193,7 @@ IndividualRecord <- S7::new_class(
     c_death_place = S7::new_property(
       S7::class_character,
       getter = function(self){
-        for(fact in as.iterable(self@facts)){
+        for(fact in self@facts){
           if(fact@fact_type == "DEAT") return(fact@c_fact_location)
         }
         character()

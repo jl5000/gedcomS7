@@ -237,7 +237,7 @@ refresh_indi_links <- function(gedcom, record){
   # Go through each family link
   # Ensure record@xref is properly reflected in family record membership
 
-  for(lnk in as.iterable(record@fam_links_spou)){
+  for(lnk in record@fam_links_spou){
     fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
     fam_rec <- gedcom@fam[[fam_xref]]
     
@@ -270,7 +270,7 @@ refresh_indi_links <- function(gedcom, record){
     }
   }
   
-  for(lnk in as.iterable(record@fam_links_chil)){
+  for(lnk in record@fam_links_chil){
     fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
     fam_rec <- gedcom@fam[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")

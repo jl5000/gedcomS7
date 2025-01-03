@@ -64,7 +64,7 @@ restrictions_to_resn <- function(confidential, locked, private){
 }
 
 as.S7class_list <- function(input, S7class){
-  input <- as.iterable(input)
+  if("S7_object" %in% class(input)) return(list(input))
   lapply(input, \(x) 
          if(is.atomic(x)) do.call(S7class, list(x)) else x)
 }

@@ -135,6 +135,3 @@ remove_void_xrefs <- function(xrefs){
   xrefs[xrefs != "@VOID@"]
 }
 
-as.iterable <- function(x) {
-  if(is.list(x) || is.atomic(x)) x else list(x)
-}
