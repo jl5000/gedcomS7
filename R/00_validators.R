@@ -262,7 +262,23 @@ chk_input_parents <- function(input, name, parent, parent_name){
   NULL
 }
 
-
+#' Validate the existence of a subordinate phrase
+#'
+#' @param input The value of the phrase input.
+#' @param name The phrase input name.
+#' @param parent The parent input.
+#' @param parent_name The name of the parent input used in any error messages.
+#' @param parent_val The value of the parent input which requires a subordinate phrase.
+#'
+#' @inherit chk_input_size return
+#' @keywords internal
+#' @tests
+#' expect_null(chk_input_phrase(character(), "@child", character(), "@parent", ""))
+#' expect_null(chk_input_phrase(character(), "@child", "parent", "@parent", "paren"))
+#' expect_equal(chk_input_phrase(character(), "@child", "parent", "@parent", "parent"),
+#'              "A @child must be given if @parent is 'parent'")
+#' expect_equal(chk_input_phrase(character(), "@child", "", "@parent", ""),
+#'              "A @child must be given if @parent is ''")
 chk_input_phrase <- function(input, name, parent, parent_name, parent_val){
   if(isTRUE(parent == parent_val) && length(input) == 0)
     return(sprintf("A %s must be given if %s is '%s'",

@@ -85,3 +85,13 @@ test_that("Function chk_input_parents() @ L258", {
   expect_null(chk_input_parents("child", "@child", "parent", "@parent"))
 })
 
+
+test_that("Function chk_input_phrase() @ L282", {
+  expect_null(chk_input_phrase(character(), "@child", character(), "@parent", ""))
+  expect_null(chk_input_phrase(character(), "@child", "parent", "@parent", "paren"))
+  expect_equal(chk_input_phrase(character(), "@child", "parent", "@parent", "parent"),
+               "A @child must be given if @parent is 'parent'")
+  expect_equal(chk_input_phrase(character(), "@child", "", "@parent", ""),
+               "A @child must be given if @parent is ''")
+})
+
