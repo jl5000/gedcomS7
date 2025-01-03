@@ -89,7 +89,9 @@ this is just for use in quick demonstrations and should not be used for
 serious genealogical recording (enclosing forward slashes are GEDCOM’s
 way of indicating a surname):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">pers_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anakin /Skywalker/"</span>, <span class="st">"Darth Vader"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">pers_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anakin /Skywalker/"</span>, <span class="st">"Darth Vader"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in (function (self, value) : Did you forget to enclose the surname in</span></span>
+<span><span class="co">#&gt; forward slashes?: Darth Vader</span></span></code></pre></div>
 <p>Individuals can have more than one name. These can be different kinds
 of name such as birth name or adoptive name, or if there is uncertainty,
 variants of these based on conflicting evidence sources. There is also
@@ -125,7 +127,14 @@ complexity, a personal name is usually defined using a
 <span><span class="co">#&gt;  .. @ suffix        : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ c_as_ged      : chr [1:2] "0 GIVN Anakin" "0 SURN Skywalker"</span></span>
 <span><span class="co">#&gt;  @ name_translations: list()</span></span>
-<span><span class="co">#&gt;  @ notes            : chr "He had this name since the death of Mace Windu."</span></span>
+<span><span class="co">#&gt;  @ notes            :List of 1</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;gedcomS7::Note&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ text        : chr "He had this name since the death of Mace Windu."</span></span>
+<span><span class="co">#&gt;  ..  ..@ language    : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ media_type  : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ translations: list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ citations   : list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ c_as_ged    : chr "0 NOTE He had this name since the death of Mace Windu."</span></span>
 <span><span class="co">#&gt;  @ note_xrefs       : chr(0) </span></span>
 <span><span class="co">#&gt;  @ citations        : list()</span></span>
 <span><span class="co">#&gt;  @ c_as_val         : chr "Anakin /Skywalker/"</span></span>
@@ -137,11 +146,12 @@ complexity, a personal name is usually defined using a
 <span><span class="co">#&gt;  @ name_type        : chr "AKA"</span></span>
 <span><span class="co">#&gt;  @ type_phrase      : chr "Dark Side name"</span></span>
 <span><span class="co">#&gt;  @ name_pieces      : NULL</span></span>
-<span><span class="co">#&gt;  @ name_translations: &lt;gedcomS7::PersonalNameTran&gt;</span></span>
-<span><span class="co">#&gt;  .. @ pers_name  : chr "Dark Father"</span></span>
-<span><span class="co">#&gt;  .. @ language   : chr "en"</span></span>
-<span><span class="co">#&gt;  .. @ name_pieces: NULL</span></span>
-<span><span class="co">#&gt;  .. @ c_as_ged   : chr [1:2] "0 TRAN Dark Father" "1 LANG en"</span></span>
+<span><span class="co">#&gt;  @ name_translations:List of 1</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;gedcomS7::PersonalNameTran&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ pers_name  : chr "Dark Father"</span></span>
+<span><span class="co">#&gt;  ..  ..@ language   : chr "en"</span></span>
+<span><span class="co">#&gt;  ..  ..@ name_pieces: NULL</span></span>
+<span><span class="co">#&gt;  ..  ..@ c_as_ged   : chr [1:2] "0 TRAN Dark Father" "1 LANG en"</span></span>
 <span><span class="co">#&gt;  @ notes            : list()</span></span>
 <span><span class="co">#&gt;  @ note_xrefs       : chr(0) </span></span>
 <span><span class="co">#&gt;  @ citations        : list()</span></span>

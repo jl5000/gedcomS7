@@ -209,7 +209,7 @@ unique identifier</a> (UUID). These can be generated with
 <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>, e.g.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ece96a63-5306-4c56-a599-121da15996dd"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "e4f72125-38c2-499a-ad58-c0e769a4c395"</span></span></code></pre></div>
 <p>The <code>@ext_ids</code> must take the form of a named vector where
 the names are the URI defining the identifier. For example, to include
 the reference to an individual’s <a href="https://www.findagrave.com" class="external-link">Find a Grave’s</a> page, you would
@@ -347,10 +347,22 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ c_as_ged    : chr [1:3] "0 NOTE Esta es una nota" "1 MIME text/plain" "1 LANG es"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; [1] "This one is a character note"</span></span>
+<span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
+<span><span class="co">#&gt;  @ text        : chr "This one is a character note"</span></span>
+<span><span class="co">#&gt;  @ language    : chr(0) </span></span>
+<span><span class="co">#&gt;  @ media_type  : chr(0) </span></span>
+<span><span class="co">#&gt;  @ translations: list()</span></span>
+<span><span class="co">#&gt;  @ citations   : list()</span></span>
+<span><span class="co">#&gt;  @ c_as_ged    : chr "0 NOTE This one is a character note"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; [1] "This is an appended note"</span></span>
+<span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
+<span><span class="co">#&gt;  @ text        : chr "This is an appended note"</span></span>
+<span><span class="co">#&gt;  @ language    : chr(0) </span></span>
+<span><span class="co">#&gt;  @ media_type  : chr(0) </span></span>
+<span><span class="co">#&gt;  @ translations: list()</span></span>
+<span><span class="co">#&gt;  @ citations   : list()</span></span>
+<span><span class="co">#&gt;  @ c_as_ged    : chr "0 NOTE This is an appended note"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[5]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
