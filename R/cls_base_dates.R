@@ -392,6 +392,7 @@ DateRange <- S7::new_class(
 #' expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
 #' expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
 #'              regexp = "A date period should not have a time defined")
+#' expect_error(DateValue(""), regexp = "A @date_phrase must be given if @date is ''")
 #' expect_equal(DateValue(DateGregorian(2005, 1, 5))@c_as_val, "5 JAN 2005")
 #' expect_snapshot_value(DateValue("aft 1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 #' expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@c_as_ged, "json2")
@@ -448,6 +449,9 @@ DateValue <- S7::new_class(
       if(length(self@time) > 0)
         return("A date period should not have a time defined.")
     }
+    
+    chk_input_phrase(self@date_phrase, "@date_phrase",
+                     obj_to_val(self@date), "@date", "")
   }
 )
 
@@ -468,19 +472,37 @@ DateValue <- S7::new_class(
 #' expect_snapshot_value(DateSorting("1990", date_phrase = "Maybe 1992")@c_as_ged, "json2")
 DateSorting <- S7::new_class(
   "DateSorting",
-  parent = DateValue,
+  parent = DateClass,
   properties = list(
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateGregorian"),
-                            # getter = function(self) self@date,
-                            # setter = function(self, value){
-                            #   if(is.character(value)) value <- toupper(value)
-                            #   self@date <- value
-                            #   self
-                            # },
+                            getter = function(self) self@date,
+                            setter = function(self, value){
+                              if(is.character(value)) value <- toupper(value)
+                              self@date <- value
+                              self
+                            },
                             validator = function(value){
-                              chk_input_pattern(value, reg_date_gregorian())
+                              c(
+                                chk_input_size(value, 1, 1),
+                                chk_input_pattern(value, reg_date_gregorian())
+                              )
                             }),
+    date_phrase = S7::new_property(S7::class_character,
+                                   validator = function(value){
+                                     chk_input_size(value, 0, 1, 1)
+                                   }),
+    time = S7::new_property(S7::class_character | 
+                              S7::new_S3_class("gedcomS7::Time"),
+                            validator = function(value){
+                              c(
+                                chk_input_size(value, 0, 1),
+                                chk_input_pattern(value, reg_time())
+                              )
+                            }),
+    
+    c_as_val = S7::new_property(S7::class_character, 
+                                getter = function(self) obj_to_val(self@date)),
     
     c_as_ged = S7::new_property(
       S7::class_character,

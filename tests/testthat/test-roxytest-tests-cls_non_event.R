@@ -2,10 +2,14 @@
 
 # File R/cls_non_event.R: @tests
 
-test_that("Function NonEvent() @ L18", {
+test_that("Function NonEvent() @ L22", {
   expect_error(NonEvent("death"), regexp = "@event_type has an invalid value")
   expect_error(NonEvent("DEAT", date_phrase = "Before the olympics"), 
                regexp = "@date_phrase requires a @date_period")
+  expect_error(NonEvent("DEAT", date_period = ""), 
+               regexp = "A @date_phrase must be given if @date_period is ''")
+  expect_error(NonEvent("DEAT", date_period = DatePeriod()), 
+               regexp = "A @date_phrase must be given if @date_period is ''")
   expect_error(NonEvent("DEAT", date_period = "JAN 1984"), 
                regexp = "@date_period is in an invalid format")
   expect_snapshot_value(NonEvent("IMMI", 

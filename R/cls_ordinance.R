@@ -18,6 +18,12 @@ Ordinance <- S7::new_class(
                                 }),
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateValue"),
+                            getter = function(self) self@date,
+                            setter = function(self, value){
+                              if(is.character(value)) value <- toupper(value)
+                              self@date <- value
+                              self
+                            },
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -104,6 +110,9 @@ Ordinance <- S7::new_class(
     if(length(self@fam_xref) == 1 && self@ord_type != "SLGC")
       errs <- c(errs, "A @fam_xref is not required for this @ord_type")
     
+    if(is.character(self@date) && isTRUE(self@date == ""))
+      errs <- c(errs, "A blank @date requires a @date_phrase and therefore requires a DateValue object.")
+    
     c(
       errs,
       chk_input_parents(self@ord_state, "@ord_state", self@state_date, "@state_date"),
@@ -127,6 +136,12 @@ SpouseSealing <- S7::new_class(
                                 getter = function(self) "SLGS"),
     date = S7::new_property(S7::class_character | 
                               S7::new_S3_class("gedcomS7::DateValue"),
+                            getter = function(self) self@date,
+                            setter = function(self, value){
+                              if(is.character(value)) value <- toupper(value)
+                              self@date <- value
+                              self
+                            },
                             validator = function(value){
                               c(
                                 chk_input_size(value, 0, 1),
@@ -198,7 +213,12 @@ SpouseSealing <- S7::new_class(
       })
   ),
   validator = function(self){
+    errs <- NULL
+    if(is.character(self@date) && isTRUE(self@date == ""))
+      errs <- c(errs, "A blank @date requires a @date_phrase and therefore requires a DateValue object.")
+    
     c(
+      errs,
       chk_input_parents(self@ord_state, "@ord_state", self@state_date, "@state_date"),
       chk_input_parents(self@state_date, "@state_date", self@ord_state, "@ord_state"),
       chk_input_parents(self@state_time, "@state_time", self@state_date, "@state_date")

@@ -91,7 +91,9 @@ FamilyEvent <- S7::new_class(
 #'              regexp = "This is not a valid @fact_type for this attribute")
 #' expect_error(FamilyAttribute("RESI", fact_val = ""), 
 #'              regexp = "@fact_val has too few characters")   
-#' expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")   
+#' expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")
+#' expect_error(FamilyAttribute("NCHI", fact_val = "3", date = ""),
+#'              regexp = "A blank @date requires a @date_phrase")   
 FamilyAttribute <- S7::new_class(
   "FamilyAttribute",
   parent = FamilyFact,

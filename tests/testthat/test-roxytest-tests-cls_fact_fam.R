@@ -17,11 +17,13 @@ test_that("Function FamilyEvent() @ L75", {
 })
 
 
-test_that("Function FamilyAttribute() @ L95", {
+test_that("Function FamilyAttribute() @ L97", {
   expect_error(FamilyAttribute("residence", fact_val = "Earth"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(FamilyAttribute("RESI", fact_val = ""), 
                regexp = "@fact_val has too few characters")   
   expect_error(FamilyAttribute("FACT"), regexp = "A @fact_val is required for this fact")
+  expect_error(FamilyAttribute("NCHI", fact_val = "3", date = ""),
+               regexp = "A blank @date requires a @date_phrase")
 })
 

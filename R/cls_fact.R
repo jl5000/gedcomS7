@@ -206,6 +206,9 @@ Fact <- S7::new_class(
     
     if(self@fact_type %in% c("FACT","EVEN","IDNO") && length(self@fact_desc) == 0)
       return("A @fact_desc is required for this type of fact.")
+    
+    if(is.character(self@date) && isTRUE(self@date == ""))
+      return("A blank @date requires a @date_phrase and therefore requires a DateValue object.")
   }
 )
 

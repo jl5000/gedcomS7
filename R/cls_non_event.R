@@ -8,6 +8,10 @@
 #' expect_error(NonEvent("death"), regexp = "@event_type has an invalid value")
 #' expect_error(NonEvent("DEAT", date_phrase = "Before the olympics"), 
 #'              regexp = "@date_phrase requires a @date_period")
+#' expect_error(NonEvent("DEAT", date_period = ""), 
+#'              regexp = "A @date_phrase must be given if @date_period is ''")
+#' expect_error(NonEvent("DEAT", date_period = DatePeriod()), 
+#'              regexp = "A @date_phrase must be given if @date_period is ''")
 #' expect_error(NonEvent("DEAT", date_period = "JAN 1984"), 
 #'              regexp = "@date_period is in an invalid format")
 #' expect_snapshot_value(NonEvent("IMMI", 
@@ -68,7 +72,11 @@ NonEvent <- S7::new_class(
       })
   ),
   validator = function(self){
-    chk_input_parents(self@date_phrase, "@date_phrase", self@date_period, "@date_period")
+    c(
+      chk_input_phrase(self@date_phrase, "@date_phrase",
+                       obj_to_val(self@date_period), "@date_period", ""),
+      chk_input_parents(self@date_phrase, "@date_phrase", self@date_period, "@date_period")
+    )
   }
 )
 

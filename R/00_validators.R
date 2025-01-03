@@ -264,7 +264,7 @@ chk_input_parents <- function(input, name, parent, parent_name){
 
 
 chk_input_phrase <- function(input, name, parent, parent_name, parent_val){
-  if(chronify(parent) == parent_val && length(input) == 0)
+  if(isTRUE(parent == parent_val) && length(input) == 0)
     return(sprintf("A %s must be given if %s is '%s'",
                    name, parent_name, parent_val))
   

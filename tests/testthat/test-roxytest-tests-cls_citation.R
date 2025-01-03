@@ -2,28 +2,23 @@
 
 # File R/cls_citation.R: @tests
 
-test_that("Function SourceCitation() @ L67", {
+test_that("Function SourceCitation() @ L62", {
   expect_snapshot_value(SourceCitation()@c_as_ged, "json2")
-  expect_error(SourceCitation("@1@",
-                              fact_phrase = "phrase"),
+  expect_error(SourceCitation("@1@", date = ""),
+               regexp = "A blank @date requires a @date_phrase")
+  expect_error(SourceCitation("@1@", fact_phrase = "phrase"),
                regexp = "@fact_phrase requires a @fact_type")
-  expect_error(SourceCitation("@1@",
-                              role = "HUSB"),
+  expect_error(SourceCitation("@1@", role = "HUSB"),
                regexp = "@role requires a @fact_type")
-  expect_error(SourceCitation("@1@",
-                              fact_type = "BIRT", role_phrase = "phrase"),
+  expect_error(SourceCitation("@1@", fact_type = "BIRT", role_phrase = "phrase"),
                regexp = "@role_phrase requires a @role")
-  expect_error(SourceCitation("@1@",
-                              fact_type = "BIRT", role = "OTHER"),
+  expect_error(SourceCitation("@1@", fact_type = "BIRT", role = "OTHER"),
                regexp = "A @role_phrase must be given if @role is 'OTHER'")
-  expect_error(SourceCitation("@1@",
-                              certainty = "4"),
+  expect_error(SourceCitation("@1@", certainty = "4"),
                regexp = "@certainty has an invalid value")
-  expect_error(SourceCitation("@1@",
-                              notes = ""),
+  expect_error(SourceCitation("@1@", notes = ""),
                regexp = "@notes is in an invalid format")
-  expect_error(SourceCitation("@1@",
-                              fact_type = "birth"),
+  expect_error(SourceCitation("@1@", fact_type = "birth"),
                regexp = "@fact_type has an invalid value")             
   expect_snapshot_value(SourceCitation("@1@",
                                        where = "page 2",
