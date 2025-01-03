@@ -250,6 +250,9 @@ the <code>@non_events</code> property. This takes a
 <code><a href="../reference/NonEvent.html">NonEvent()</a></code> object or a list of them.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">non_events</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NonEvent.html">NonEvent</a></span><span class="op">(</span><span class="st">"BARM"</span><span class="op">)</span></span></code></pre></div>
+<p>A non-event with a date period provided asserts that the event never
+happened in that period. If no date period is provided, it asserts the
+event never happened at all.</p>
 <p>You can see a summary of all facts associated with an individual with
 the <code><a href="../reference/df_indi_facts.html">df_indi_facts()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
