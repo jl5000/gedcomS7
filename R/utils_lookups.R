@@ -36,7 +36,7 @@ val_individual_attribute_types <- function(inc_generic = FALSE) {
     `Nobility title` = "TITL"
   )
   if(!inc_generic) return(vals)
-  c(vals, `Other individual attribute` = "FACT")
+  c(vals, `Other attribute` = "FACT")
 }
 
 #' @rdname lookups
@@ -67,7 +67,7 @@ val_individual_event_types <- function(inc_generic = FALSE) {
     Will = "WILL"
   )
   if(!inc_generic) return(vals)
-  c(vals, `Other individual event` = "EVEN")
+  c(vals, `Other event` = "EVEN")
 }
 
 #' @rdname lookups
@@ -86,7 +86,7 @@ val_family_event_types <- function(inc_generic = FALSE) {
     `Marriage settlement` = "MARS"
   )
   if(!inc_generic) return(vals)
-  c(vals, `Other family event` = "EVEN")
+  c(vals, `Other event` = "EVEN")
 }
 
 
@@ -98,7 +98,7 @@ val_family_attribute_types <- function(inc_generic = FALSE) {
     Residence = "RESI"
   )
   if(!inc_generic) return(vals)
-  c(vals, `Other family attribute` = "FACT")
+  c(vals, `Other attribute` = "FACT")
 }
 
 #' @rdname lookups
@@ -122,11 +122,15 @@ val_attribute_types <- function(inc_generic = FALSE) {
 #' @rdname lookups
 #' @export
 val_fact_types <- function(inc_generic = FALSE) {
-  c(
+  fcts <- c(
     val_event_types(inc_generic),
     val_individual_attribute_types(inc_generic),
     val_family_attribute_types(inc_generic)
   )
+  fct_nms <- names(fcts)
+  fcts <- unique(fcts)
+  names(fcts) <- unique(fct_nms)
+  fcts
 }
 
 #' @rdname lookups
@@ -242,3 +246,35 @@ val_name_types <- function() {
   )
 }
 
+
+val_facts_rules <- function(){
+
+  all_df <- data.frame(fact_name = names(val_fact_types(TRUE)),
+                       fact_type = unname(val_fact_types(TRUE)))
+  
+  # General rules
+  all_df$individual <- all_df$fact_type %in% c(val_individual_attribute_types(TRUE),
+                                              val_individual_event_types(TRUE))
+  all_df$family <- all_df$fact_type %in% c(val_family_attribute_types(TRUE),
+                                          val_family_event_types(TRUE))
+  all_df$fact <- ifelse(all_df$fact_type %in% c(val_family_event_types(TRUE),
+                                               val_individual_event_types(TRUE)),
+                       "Event", "Attribute")
+  all_df$fact_val_required <- all_df$fact == "Attribute"
+  all_df$fact_val <- ifelse(all_df$fact == "Event", "Y", "Any")
+  
+  # Exceptions
+  all_df$fact_val <- ifelse(all_df$fact_type %in% c("NCHI","NMR"),
+                            "Number", all_df$fact_val)
+  all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
+                                     TRUE, all_df$fact_val_required)
+  all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("RESI"),
+                                     FALSE, all_df$fact_val_required)
+  all_df$fact_val <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
+                            "Any", all_df$fact_val)
+  all_df$fact_desc_required <- all_df$fact_type %in% c("FACT", "EVEN", "IDNO")
+  
+  all_df
+}
+  
+  
