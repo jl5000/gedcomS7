@@ -45,6 +45,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/jl5000/gedcomS7/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -69,7 +70,7 @@
       <h1>Records</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/jl5000/gedcomS7/blob/master/vignettes/articles/4_records.Rmd" class="external-link"><code>vignettes/articles/4_records.Rmd</code></a></small>
       <div class="d-none name"><code>4_records.Rmd</code></div>
     </div>
 
@@ -217,7 +218,7 @@ unique identifier</a> (UUID). These can be generated with
 <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>, e.g.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "89823948-d714-4de7-95d3-7f84887197eb"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "e4b3cdc8-a179-4e7e-8ee5-5b9455af0e7b"</span></span></code></pre></div>
 <p>The <code>@ext_ids</code> must take the form of a named vector where
 the names are the URI defining the identifier. For example, to include
 the reference to an individual’s <a href="https://www.findagrave.com" class="external-link">Find a Grave’s</a> page, you would
