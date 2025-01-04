@@ -220,17 +220,24 @@ Fact <- S7::new_class(
     )
   ),
   validator = function(self) {
-    if(self@fact_type %in% val_event_types(FALSE) && 
-       length(self@fact_val) == 1 && 
-       self@fact_val != "Y")
-      return("Only a @fact_val of 'Y' is permitted for this event.")
+    rules <- val_facts_rules()
+    relev_rules <- rules[rules$fact_type == self@fact_type,]
+    if(nrow(relev_rules) == 0) return()
     
-    if(self@fact_type %in% c("EVEN", val_attribute_types(TRUE)) && 
-       self@fact_type != "RESI" &&
-       length(self@fact_val) == 0)
+    if(relev_rules$fact_val_required && length(self@fact_val) == 0)
       return("A @fact_val is required for this fact.")
     
-    if(self@fact_type %in% c("FACT","EVEN","IDNO") && length(self@fact_desc) == 0)
+    if(length(self@fact_val) == 1 && relev_rules$fact_val != "Any"){
+      if(relev_rules$fact_val == "Y"){
+        if(self@fact_val != "Y")
+          return("Only a @fact_val of 'Y' is permitted for this event.")
+      } else if(relev_rules$fact_val == "Integer"){
+        if(!grepl("^\\d+$", self@fact_val))
+          return("Number of children/marriages must be a whole number.")
+      }
+    }
+    
+    if(relev_rules$fact_desc_required && length(self@fact_desc) == 0)
       return("A @fact_desc is required for this type of fact.")
     
     if(is.character(self@date) && isTRUE(self@date == ""))

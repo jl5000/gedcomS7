@@ -179,9 +179,6 @@ IndividualAttribute <- S7::new_class(
     errs <- NULL
     if(!self@fact_type %in% val_individual_attribute_types(TRUE))
       errs <- c(errs, "This is not a valid @fact_type for this attribute.")
-    
-    if(self@fact_type %in% c("NCHI","NMR") && !grepl("^\\d+$", self@fact_val))
-      errs <- c(errs, "Number of children/marriages must be a whole number.")
       
     errs
   }

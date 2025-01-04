@@ -22,10 +22,14 @@
 #' @param fact_type A code indicating the type of fact. This must be taken from one of
 #' `val_individual_event_types()`, `val_individual_attribute_types()`,
 #' `val_family_event_types()`, or `val_family_attribute_types()`. A generic event ("EVEN")
-#' or attribute ("FACT") can also be defined for more bespoke facts.
+#' or attribute ("FACT") can also be defined for more bespoke facts. See `val_facts_rules()`
+#' for the set of rules surrounding the codes allowed.
 #' @param fact_val A value associated with the fact. For example for "NCHI" this would
-#' be the number of children. This must be given as a character string. 
-#' @param fact_desc TODO
+#' be the number of children. See `val_facts_rules()` for the set of rules surrounding the 
+#' need for values and the values allowed.
+#' @param fact_desc A further classification of the fact. This is required for generic
+#' events or attributes. See `val_facts_rules()` for the set of rules surrounding the 
+#' need for this.
 #' 
 #' @param medium TODO
 #' @param medium_phrase TODO

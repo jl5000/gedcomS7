@@ -38,12 +38,16 @@ FamilyEvent(
 \item{fact_type}{A code indicating the type of fact. This must be taken from one of
 \code{val_individual_event_types()}, \code{val_individual_attribute_types()},
 \code{val_family_event_types()}, or \code{val_family_attribute_types()}. A generic event ("EVEN")
-or attribute ("FACT") can also be defined for more bespoke facts.}
+or attribute ("FACT") can also be defined for more bespoke facts. See \code{val_facts_rules()}
+for the set of rules surrounding the codes allowed.}
 
 \item{fact_val}{A value associated with the fact. For example for "NCHI" this would
-be the number of children. This must be given as a character string.}
+be the number of children. See \code{val_facts_rules()} for the set of rules surrounding the
+need for values and the values allowed.}
 
-\item{fact_desc}{TODO}
+\item{fact_desc}{A further classification of the fact. This is required for generic
+events or attributes. See \code{val_facts_rules()} for the set of rules surrounding the
+need for this.}
 
 \item{date}{The date given either as a formatted GEDCOM string, or a
 \code{DateValue()} object.}

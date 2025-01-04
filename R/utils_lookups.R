@@ -265,7 +265,7 @@ val_facts_rules <- function(){
   
   # Exceptions
   all_df$fact_val <- ifelse(all_df$fact_type %in% c("NCHI","NMR"),
-                            "Number", all_df$fact_val)
+                            "Integer", all_df$fact_val)
   all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
                                      TRUE, all_df$fact_val_required)
   all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("RESI"),
