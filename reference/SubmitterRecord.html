@@ -60,7 +60,7 @@
 <span>  created <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  updated <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subm_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  address <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  address <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  phone_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  emails <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  faxes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
@@ -114,9 +114,7 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
 <dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of notes.</p></dd>
 
 
 <dt id="arg-citations">citations<a class="anchor" aria-label="anchor" href="#arg-citations"></a></dt>
@@ -125,9 +123,7 @@ associated information is not required.</p></dd>
 
 <dt id="arg-media-links">media_links<a class="anchor" aria-label="anchor" href="#arg-media-links"></a></dt>
 <dd><p>Associated multimedia. This can either be a <code><a href="MediaLink.html">MediaLink()</a></code> object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of multimedia records.</p></dd>
 
 
 <dt id="arg-created">created<a class="anchor" aria-label="anchor" href="#arg-created"></a></dt>

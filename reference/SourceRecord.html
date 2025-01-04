@@ -117,9 +117,7 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
 <dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of notes.</p></dd>
 
 
 <dt id="arg-citations">citations<a class="anchor" aria-label="anchor" href="#arg-citations"></a></dt>
@@ -128,9 +126,7 @@ associated information is not required.</p></dd>
 
 <dt id="arg-media-links">media_links<a class="anchor" aria-label="anchor" href="#arg-media-links"></a></dt>
 <dd><p>Associated multimedia. This can either be a <code><a href="MediaLink.html">MediaLink()</a></code> object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of multimedia records.</p></dd>
 
 
 <dt id="arg-created">created<a class="anchor" aria-label="anchor" href="#arg-created"></a></dt>
@@ -145,9 +141,7 @@ Creating an object with no parameters sets the date to today.</p></dd>
 
 <dt id="arg-facts-recorded">facts_recorded<a class="anchor" aria-label="anchor" href="#arg-facts-recorded"></a></dt>
 <dd><p>The facts recorded by the source. This can either be a <code>FactsRecorded</code> object,
-a list of them, or a character vector of comma-delimited fact types. If a character vector is
-provided then only the fact types themselves can be recorded (and not associated information).
-This option is easier if associated information is not required. For example, a parish register of
+a list of them, or a character vector of comma-delimited fact types. For example, a parish register of
 births, deaths, and marriages would be "BIRT, DEAT, MARR". The <code><a href="lookups.html">val_fact_types()</a></code> function gives a
 list of possible fact types.</p></dd>
 
@@ -165,9 +159,7 @@ to the source data.</p></dd>
 
 <dt id="arg-data-notes">data_notes<a class="anchor" aria-label="anchor" href="#arg-data-notes"></a></dt>
 <dd><p>Associated notes about the source data. This can either be a <code>Note</code>
-object, a list of them, or a character vector of notes. If a character vector is provided
-then only the notes themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.</p></dd>
+object, a list of them, or a character vector of notes.</p></dd>
 
 
 <dt id="arg-originator">originator<a class="anchor" aria-label="anchor" href="#arg-originator"></a></dt>
@@ -191,16 +183,12 @@ includes information such as the city of publication, name of the publisher, and
 
 <dt id="arg-source-text">source_text<a class="anchor" aria-label="anchor" href="#arg-source-text"></a></dt>
 <dd><p>A verbatim copy of any description contained within the source. This can
-either be a <code><a href="TranslationText.html">TranslationText()</a></code> object, a list of them, or a character vector of text.
-If any <code><a href="TranslationText.html">TranslationText()</a></code> objects are provided, then you will be forced to define an
-associated language or media type.</p></dd>
+either be a <code><a href="TranslationText.html">TranslationText()</a></code> object, a list of them, or a character vector of text.</p></dd>
 
 
 <dt id="arg-repo-citations">repo_citations<a class="anchor" aria-label="anchor" href="#arg-repo-citations"></a></dt>
 <dd><p>Associated repositories. This can either be a <code>RepositoryCitation</code> object,
-a list of them, or a character vector of XREFs of repository records. If a character vector is
-provided then only the XREFs themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.</p></dd>
+a list of them, or a character vector of XREFs of repository records.</p></dd>
 
 </dl></div>
     <div class="section level2">

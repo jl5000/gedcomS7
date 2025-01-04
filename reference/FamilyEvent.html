@@ -50,8 +50,8 @@
 <span>  fact_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  fact_desc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  place <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  address <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  place <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  address <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  phone_numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  emails <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  faxes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
@@ -81,15 +81,23 @@
 
 
 <dl><dt id="arg-fact-type">fact_type<a class="anchor" aria-label="anchor" href="#arg-fact-type"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A code indicating the type of fact. This must be taken from one of
+<code><a href="lookups.html">val_individual_event_types()</a></code>, <code><a href="lookups.html">val_individual_attribute_types()</a></code>,
+<code><a href="lookups.html">val_family_event_types()</a></code>, or <code><a href="lookups.html">val_family_attribute_types()</a></code>. A generic event ("EVEN")
+or attribute ("FACT") can also be defined for more bespoke facts. See <code>val_facts_rules()</code>
+for the set of rules surrounding the codes allowed.</p></dd>
 
 
 <dt id="arg-fact-val">fact_val<a class="anchor" aria-label="anchor" href="#arg-fact-val"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A value associated with the fact. For example for "NCHI" this would
+be the number of children. See <code>val_facts_rules()</code> for the set of rules surrounding the
+need for values and the values allowed.</p></dd>
 
 
 <dt id="arg-fact-desc">fact_desc<a class="anchor" aria-label="anchor" href="#arg-fact-desc"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A further classification of the fact. This is required for generic
+events or attributes. See <code>val_facts_rules()</code> for the set of rules surrounding the
+need for this.</p></dd>
 
 
 <dt id="arg-date">date<a class="anchor" aria-label="anchor" href="#arg-date"></a></dt>
@@ -166,23 +174,17 @@ treated as private. This allows them to be excluded on export.</p></dd>
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
 <dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of notes.</p></dd>
 
 
 <dt id="arg-citations">citations<a class="anchor" aria-label="anchor" href="#arg-citations"></a></dt>
 <dd><p>Associated sources. This can either be a <code><a href="SourceCitation.html">SourceCitation()</a></code> object, a list of them,
-or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of source records.</p></dd>
 
 
 <dt id="arg-media-links">media_links<a class="anchor" aria-label="anchor" href="#arg-media-links"></a></dt>
 <dd><p>Associated multimedia. This can either be a <code><a href="MediaLink.html">MediaLink()</a></code> object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of multimedia records.</p></dd>
 
 
 <dt id="arg-unique-ids">unique_ids<a class="anchor" aria-label="anchor" href="#arg-unique-ids"></a></dt>

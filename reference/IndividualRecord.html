@@ -119,23 +119,17 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
 <dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of notes.</p></dd>
 
 
 <dt id="arg-citations">citations<a class="anchor" aria-label="anchor" href="#arg-citations"></a></dt>
 <dd><p>Associated sources. This can either be a <code><a href="SourceCitation.html">SourceCitation()</a></code> object, a list of them,
-or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of source records.</p></dd>
 
 
 <dt id="arg-media-links">media_links<a class="anchor" aria-label="anchor" href="#arg-media-links"></a></dt>
 <dd><p>Associated multimedia. This can either be a <code><a href="MediaLink.html">MediaLink()</a></code> object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of multimedia records.</p></dd>
 
 
 <dt id="arg-created">created<a class="anchor" aria-label="anchor" href="#arg-created"></a></dt>
@@ -174,11 +168,17 @@ A <code><a href="NonEvent.html">NonEvent()</a></code> object, or a list of them.
 
 
 <dt id="arg-fam-links-chil">fam_links_chil<a class="anchor" aria-label="anchor" href="#arg-fam-links-chil"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A <code><a href="FamilyLinkChild.html">FamilyLinkChild()</a></code> object or a list of them, giving the
+Family records that this individual is a member of as a child. A character vector
+of Family record xrefs can also be provided. This will be automatically updated if
+the individual's membership in a Family record changes.</p></dd>
 
 
 <dt id="arg-fam-links-spou">fam_links_spou<a class="anchor" aria-label="anchor" href="#arg-fam-links-spou"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A <code><a href="FamilyLinkSpouse.html">FamilyLinkSpouse()</a></code> object or a list of them, giving the
+Family records that this individual is a member of as a spouse. A character vector
+of Family record xrefs can also be provided. This will be automatically updated if
+the individual's membership in a Family record changes.</p></dd>
 
 
 <dt id="arg-subm-xrefs">subm_xrefs<a class="anchor" aria-label="anchor" href="#arg-subm-xrefs"></a></dt>

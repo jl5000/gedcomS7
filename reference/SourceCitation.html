@@ -90,13 +90,15 @@ value pairs</p></dd>
 
 <dt id="arg-source-text">source_text<a class="anchor" aria-label="anchor" href="#arg-source-text"></a></dt>
 <dd><p>A verbatim copy of any description contained within the source. This can
-either be a <code><a href="TranslationText.html">TranslationText()</a></code> object, a list of them, or a character vector of text.
-If any <code><a href="TranslationText.html">TranslationText()</a></code> objects are provided, then you will be forced to define an
-associated language or media type.</p></dd>
+either be a <code><a href="TranslationText.html">TranslationText()</a></code> object, a list of them, or a character vector of text.</p></dd>
 
 
 <dt id="arg-fact-type">fact_type<a class="anchor" aria-label="anchor" href="#arg-fact-type"></a></dt>
-<dd><p>TODO</p></dd>
+<dd><p>A code indicating the type of fact. This must be taken from one of
+<code><a href="lookups.html">val_individual_event_types()</a></code>, <code><a href="lookups.html">val_individual_attribute_types()</a></code>,
+<code><a href="lookups.html">val_family_event_types()</a></code>, or <code><a href="lookups.html">val_family_attribute_types()</a></code>. A generic event ("EVEN")
+or attribute ("FACT") can also be defined for more bespoke facts. See <code>val_facts_rules()</code>
+for the set of rules surrounding the codes allowed.</p></dd>
 
 
 <dt id="arg-fact-phrase">fact_phrase<a class="anchor" aria-label="anchor" href="#arg-fact-phrase"></a></dt>
@@ -124,9 +126,7 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 
 <dt id="arg-media-links">media_links<a class="anchor" aria-label="anchor" href="#arg-media-links"></a></dt>
 <dd><p>Associated multimedia. This can either be a <code><a href="MediaLink.html">MediaLink()</a></code> object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of XREFs of multimedia records.</p></dd>
 
 
 <dt id="arg-note-xrefs">note_xrefs<a class="anchor" aria-label="anchor" href="#arg-note-xrefs"></a></dt>
@@ -135,9 +135,7 @@ associated information is not required.</p></dd>
 
 <dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
 <dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.</p></dd>
+or a character vector of notes.</p></dd>
 
 </dl></div>
     <div class="section level2">

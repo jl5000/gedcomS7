@@ -198,37 +198,29 @@ applied (among other aspects).</p>
 <p>The full list of fact types that can be created are given below:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lookups.html">val_individual_attribute_types</a></span><span class="op">(</span>inc_generic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                      Caste       Physical description </span></span>
-<span><span class="co">#&gt;                     "CAST"                     "DSCR" </span></span>
-<span><span class="co">#&gt;       Academic achievement                  ID number </span></span>
-<span><span class="co">#&gt;                     "EDUC"                     "IDNO" </span></span>
-<span><span class="co">#&gt;                Nationality         Number of children </span></span>
-<span><span class="co">#&gt;                     "NATI"                     "NCHI" </span></span>
-<span><span class="co">#&gt;        Number of marriages                 Occupation </span></span>
-<span><span class="co">#&gt;                      "NMR"                     "OCCU" </span></span>
-<span><span class="co">#&gt;                   Property                   Religion </span></span>
-<span><span class="co">#&gt;                     "PROP"                     "RELI" </span></span>
-<span><span class="co">#&gt;                  Residence     Social security number </span></span>
-<span><span class="co">#&gt;                     "RESI"                      "SSN" </span></span>
-<span><span class="co">#&gt;             Nobility title Other individual attribute </span></span>
-<span><span class="co">#&gt;                     "TITL"                     "FACT"</span></span>
+<span><span class="co">#&gt;                  Caste   Physical description   Academic achievement </span></span>
+<span><span class="co">#&gt;                 "CAST"                 "DSCR"                 "EDUC" </span></span>
+<span><span class="co">#&gt;              ID number            Nationality     Number of children </span></span>
+<span><span class="co">#&gt;                 "IDNO"                 "NATI"                 "NCHI" </span></span>
+<span><span class="co">#&gt;    Number of marriages             Occupation               Property </span></span>
+<span><span class="co">#&gt;                  "NMR"                 "OCCU"                 "PROP" </span></span>
+<span><span class="co">#&gt;               Religion              Residence Social security number </span></span>
+<span><span class="co">#&gt;                 "RELI"                 "RESI"                  "SSN" </span></span>
+<span><span class="co">#&gt;         Nobility title        Other attribute </span></span>
+<span><span class="co">#&gt;                 "TITL"                 "FACT"</span></span>
 <span><span class="fu"><a href="../reference/lookups.html">val_individual_event_types</a></span><span class="op">(</span>inc_generic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               Adoption                Baptism            Bar-mitzvah </span></span>
-<span><span class="co">#&gt;                 "ADOP"                 "BAPM"                 "BARM" </span></span>
-<span><span class="co">#&gt;            Bas-mitzvah                  Birth               Blessing </span></span>
-<span><span class="co">#&gt;                 "BASM"                 "BIRT"                 "BLES" </span></span>
-<span><span class="co">#&gt;                 Burial                 Census            Christening </span></span>
-<span><span class="co">#&gt;                 "BURI"                 "CENS"                  "CHR" </span></span>
-<span><span class="co">#&gt;      Adult christening           Confirmation              Cremation </span></span>
-<span><span class="co">#&gt;                 "CHRA"                 "CONF"                 "CREM" </span></span>
-<span><span class="co">#&gt;                  Death             Emigration        First communion </span></span>
-<span><span class="co">#&gt;                 "DEAT"                 "EMIG"                 "FCOM" </span></span>
-<span><span class="co">#&gt;             Graduation            Immigration         Naturalization </span></span>
-<span><span class="co">#&gt;                 "GRAD"                 "IMMI"                 "NATU" </span></span>
-<span><span class="co">#&gt;             Ordination                Probate             Retirement </span></span>
-<span><span class="co">#&gt;                 "ORDN"                 "PROB"                 "RETI" </span></span>
-<span><span class="co">#&gt;                   Will Other individual event </span></span>
-<span><span class="co">#&gt;                 "WILL"                 "EVEN"</span></span></code></pre></div>
+<span><span class="co">#&gt;          Adoption           Baptism       Bar-mitzvah       Bas-mitzvah </span></span>
+<span><span class="co">#&gt;            "ADOP"            "BAPM"            "BARM"            "BASM" </span></span>
+<span><span class="co">#&gt;             Birth          Blessing            Burial            Census </span></span>
+<span><span class="co">#&gt;            "BIRT"            "BLES"            "BURI"            "CENS" </span></span>
+<span><span class="co">#&gt;       Christening Adult christening      Confirmation         Cremation </span></span>
+<span><span class="co">#&gt;             "CHR"            "CHRA"            "CONF"            "CREM" </span></span>
+<span><span class="co">#&gt;             Death        Emigration   First communion        Graduation </span></span>
+<span><span class="co">#&gt;            "DEAT"            "EMIG"            "FCOM"            "GRAD" </span></span>
+<span><span class="co">#&gt;       Immigration    Naturalization        Ordination           Probate </span></span>
+<span><span class="co">#&gt;            "IMMI"            "NATU"            "ORDN"            "PROB" </span></span>
+<span><span class="co">#&gt;        Retirement              Will       Other event </span></span>
+<span><span class="co">#&gt;            "RETI"            "WILL"            "EVEN"</span></span></code></pre></div>
 <p>In the example below, we add 4 facts for Anakin:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">facts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -271,12 +263,12 @@ the <code><a href="../reference/df_indi_facts.html">df_indi_facts()</a></code> f
 <span><span class="co">#&gt; New Individual record added with xref @I1@</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/df_indi_facts.html">df_indi_facts</a></span><span class="op">(</span><span class="va">skywalkers</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   xref                   type       val   desc date      place age</span></span>
-<span><span class="co">#&gt; 1 @I1@         Nobility title      Lord                           </span></span>
-<span><span class="co">#&gt; 2 @I1@    Number of marriages         1                           </span></span>
-<span><span class="co">#&gt; 3 @I1@                  Birth                         Tatooine    </span></span>
-<span><span class="co">#&gt; 4 @I1@                  Death                       Death Star    </span></span>
-<span><span class="co">#&gt; 5 @I1@ Other individual event Lost legs Injury        Mustafar</span></span></code></pre></div>
+<span><span class="co">#&gt;   xref                type       val   desc date      place age</span></span>
+<span><span class="co">#&gt; 1 @I1@      Nobility title      Lord                           </span></span>
+<span><span class="co">#&gt; 2 @I1@ Number of marriages         1                           </span></span>
+<span><span class="co">#&gt; 3 @I1@               Birth                         Tatooine    </span></span>
+<span><span class="co">#&gt; 4 @I1@               Death                       Death Star    </span></span>
+<span><span class="co">#&gt; 5 @I1@         Other event Lost legs Injury        Mustafar</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="links-to-other-records">Links to other records<a class="anchor" aria-label="anchor" href="#links-to-other-records"></a>
@@ -329,6 +321,20 @@ each of the sexes defined. Names can be optionally provided; if no
 surnames are included in any names (indicated by forward slashes) then
 they will be taken from the father (or mother if there is no
 father).</p>
+<p>The <code><a href="../reference/df_indi.html">df_indi()</a></code> function provides a dataframe summary of
+all Individual records in a GEDCOM object:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/df_indi.html">df_indi</a></span><span class="op">(</span><span class="va">skywalkers</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   xref               name sex birth_date birth_place is_alive death_date</span></span>
+<span><span class="co">#&gt; 1 @I1@ Anakin /Skywalker/   M               Tatooine    FALSE           </span></span>
+<span><span class="co">#&gt; 2 @I2@    Padme /Amidala/   F                            TRUE           </span></span>
+<span><span class="co">#&gt; 3 @I3@   Luke /Skywalker/   M                            TRUE           </span></span>
+<span><span class="co">#&gt; 4 @I4@   Leia /Skywalker/   F                            TRUE           </span></span>
+<span><span class="co">#&gt;   death_place fam_as_child fam_as_spouse last_modified</span></span>
+<span><span class="co">#&gt; 1  Death Star                       @F1@              </span></span>
+<span><span class="co">#&gt; 2                                   @F1@              </span></span>
+<span><span class="co">#&gt; 3                     @F1@                            </span></span>
+<span><span class="co">#&gt; 4                     @F1@</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="individual-records">Individual records<a class="anchor" aria-label="anchor" href="#individual-records"></a>
@@ -346,7 +352,7 @@ necessarily familial. You can record these with the
 have an Individual record, and if this is the case (as in the examples
 below), an <code>@indi_phrase</code> must be given containing their
 name. A <code>@relation_is</code> value is mandatory.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anakin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">skywalkers</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">anakin</span><span class="op">@</span><span class="va">associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -362,7 +368,7 @@ name. A <code>@relation_is</code> value is mandatory.</p>
 <p>The <code>@relation_is</code> property must take one of the following
 values. If it is “OTHER”, then a <code>@relation_phrase</code> must be
 given.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lookups.html">val_roles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              Child Religious official             Father             Friend </span></span>
 <span><span class="co">#&gt;             "CHIL"           "CLERGY"             "FATH"           "FRIEND" </span></span>

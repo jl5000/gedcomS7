@@ -181,10 +181,10 @@ lists, or NULL (depending on the property). Many properties take values
 which are particular <code>gedcomS7</code> objects (or lists of them, if
 they take more than one). For ease of use, you are often permitted to
 provide a simple atomic vector, and <code>gedcomS7</code> will convert
-these to their relevant objects automatically. For example, the
-<code>@notes</code> property can take a simple character vector of
-notes, and these will be converted to a list of <code><a href="../reference/Note.html">Note()</a></code>
-objects.</p>
+these to their relevant objects automatically, but only if the object
+only requires its first property. For example, the <code>@notes</code>
+property can take a simple character vector of notes, and these will be
+converted to a list of <code><a href="../reference/Note.html">Note()</a></code> objects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"This is a note"</span>, <span class="st">"This is another note"</span><span class="op">)</span></span>
 <span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span></span>
