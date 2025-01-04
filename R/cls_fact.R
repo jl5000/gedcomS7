@@ -10,6 +10,11 @@ Fact <- S7::new_class(
                                    # fact_type enum checked later
                                  }),
     fact_val = S7::new_property(S7::class_character,
+                                getter = function(self) self@fact_val,
+                                setter = function(self, value){
+                                  self@fact_val <- as.character(value)
+                                  self
+                                },
                                 validator = function(value){
                                   chk_input_size(value, 0, 1, 1)
                                 }),

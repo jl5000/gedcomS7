@@ -166,6 +166,12 @@ skywalkers <- skywalkers |>
 
 These functions allow for quite a lot of automation. The `add_spouse()` function automatically creates an Individual record for Padme with her sex and name, and if there was no existing Family record it would have created that as well. The `add_children()` function creates an Individual record for each of the sexes defined. Names can be optionally provided; if no surnames are included in any names (indicated by forward slashes) then they will be taken from the father (or mother if there is no father).
 
+The `df_indi()` function provides a dataframe summary of all Individual records in a GEDCOM object:
+
+```{r}
+df_indi(skywalkers)
+```
+
 ### Individual records
 
 An alternative way of recording the alter ego of Anakin Skywalker would have been to create a separate Individual record for Darth Vader, and link them together. This is achievable via the `@alia_xrefs` property. Whether you include a one-way, or mutual link is up to you.

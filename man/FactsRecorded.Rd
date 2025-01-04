@@ -8,7 +8,7 @@ FactsRecorded(
   fact_types = character(0),
   date_period = character(0),
   date_phrase = character(0),
-  territory = character(0)
+  territory = NULL
 )
 }
 \arguments{

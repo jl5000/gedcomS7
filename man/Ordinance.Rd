@@ -8,7 +8,7 @@ Ordinance(
   ord_type = character(0),
   date = character(0),
   temple_name = character(0),
-  place = character(0),
+  place = NULL,
   ord_state = character(0),
   state_date = character(0),
   state_time = character(0),

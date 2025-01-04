@@ -38,7 +38,15 @@
       "value": ["0 ADOP Y", "1 TYPE More info on adoption", "1 DATE JAN 1980", "1 FAMC @123@", "2 ADOP WIFE", "3 PHRASE Gloria"]
     }
 
-# Function IndividualAttribute() @ L157
+# Function IndividualAttribute() @ L158
+
+    {
+      "type": "character",
+      "attributes": {},
+      "value": ["0 NCHI 3"]
+    }
+
+---
 
     {
       "type": "character",

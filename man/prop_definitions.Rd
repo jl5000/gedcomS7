@@ -20,7 +20,15 @@ either be a \code{TranslationText()} object, a list of them, or a character vect
 If any \code{TranslationText()} objects are provided, then you will be forced to define an
 associated language or media type.}
 
-\item{fact_type}{TODO}
+\item{fact_type}{A code indicating the type of fact. This must be taken from one of
+\code{val_individual_event_types()}, \code{val_individual_attribute_types()},
+\code{val_family_event_types()}, or \code{val_family_attribute_types()}. A generic event ("EVEN")
+or attribute ("FACT") can also be defined for more bespoke facts.}
+
+\item{fact_val}{A value associated with the fact. For example for "NCHI" this would
+be the number of children. This must be given as a character string.}
+
+\item{fact_desc}{TODO}
 
 \item{medium}{TODO}
 
@@ -33,10 +41,6 @@ associated language or media type.}
 \item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 
 \item{event_type}{TODO}
-
-\item{fact_val}{TODO}
-
-\item{fact_desc}{TODO}
 
 \item{place}{see territory}
 

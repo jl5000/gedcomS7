@@ -9,7 +9,7 @@ GedcomSource(
   product_name = character(0),
   product_version = character(0),
   business_name = character(0),
-  business_address = character(0),
+  business_address = NULL,
   phone_numbers = character(0),
   emails = character(0),
   faxes = character(0),

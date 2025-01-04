@@ -54,7 +54,7 @@
 #'                                      fact_phrase = "Parish births",
 #'                                      role = "HUSB",
 #'                                      role_phrase = "phrase",
-#'                                      certainty = "3",
+#'                                      certainty = 3,
 #'                                      media_links = MediaLink("@34E@"),
 #'                                      note_xrefs = c("@WER@",
 #'                                                    "@4334@"),
@@ -113,6 +113,11 @@ SourceCitation <- S7::new_class(
                                      chk_input_size(value, 0, 1, 1)
                                    }),
     certainty = S7::new_property(S7::class_character,
+                                 getter = function(self) self@certainty,
+                                 setter = function(self, value){
+                                   self@certainty <- as.character(value)
+                                   self
+                                 },
                                  validator = function(value){
                                    c(
                                      chk_input_size(value, 0, 1),

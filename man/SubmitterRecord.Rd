@@ -19,7 +19,7 @@ SubmitterRecord(
   created = NULL,
   updated = NULL,
   subm_name = character(0),
-  address = character(0),
+  address = NULL,
   phone_numbers = character(0),
   emails = character(0),
   faxes = character(0),

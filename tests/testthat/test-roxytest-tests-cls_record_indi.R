@@ -2,7 +2,7 @@
 
 # File R/cls_record_indi.R: @tests
 
-test_that("Function IndividualRecord() @ L47", {
+test_that("Function IndividualRecord() @ L53", {
   expect_warning(IndividualRecord(pers_names = "Me"),
                  regexp = "Did you forget to enclose the surname in forward slashes")
   expect_warning(IndividualRecord(pers_names = list(PersonalName("Joe /Bloggs/"), "Me")),

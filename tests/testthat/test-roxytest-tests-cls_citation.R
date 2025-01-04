@@ -28,7 +28,7 @@ test_that("Function SourceCitation() @ L62", {
                                        fact_phrase = "Parish births",
                                        role = "HUSB",
                                        role_phrase = "phrase",
-                                       certainty = "3",
+                                       certainty = 3,
                                        media_links = MediaLink("@34E@"),
                                        note_xrefs = c("@WER@",
                                                      "@4334@"),

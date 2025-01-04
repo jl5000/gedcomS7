@@ -92,9 +92,15 @@ A \code{NonEvent()} object, or a list of them.}
 
 \item{ordinances}{An \code{Ordinance()} object, or a list of them.}
 
-\item{fam_links_chil}{TODO}
+\item{fam_links_chil}{A \code{FamilyLinkChild()} object or a list of them, giving the
+Family records that this individual is a member of as a child. A character vector
+of Family record xrefs can also be provided. This will be automatically updated if
+the individual's membership in a Family record changes.}
 
-\item{fam_links_spou}{TODO}
+\item{fam_links_spou}{A \code{FamilyLinkSpouse()} object or a list of them, giving the
+Family records that this individual is a member of as a spouse. A character vector
+of Family record xrefs can also be provided. This will be automatically updated if
+the individual's membership in a Family record changes.}
 
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 

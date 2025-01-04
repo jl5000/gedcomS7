@@ -136,6 +136,7 @@ IndividualEvent <- S7::new_class(
 #'              regexp = "A @fact_val is required for this fact")
 #' expect_error(IndividualAttribute("NCHI", fact_val = "2.4"), 
 #'              regexp = "Number of children/marriages must be a whole number")
+#' expect_snapshot_value(IndividualAttribute("NCHI", 3)@c_as_ged, "json2")
 #' expect_snapshot_value(IndividualAttribute("FACT", "Diabetes",
 #'                                  fact_desc = "Medical condition",
 #'                                  date = "26 JUN 2001",

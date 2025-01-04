@@ -108,7 +108,7 @@ One of the most important aspects of a record is the provenance of the data with
 
 ### Source citations
 
-Linkages to Source records (known as source citations) are among the most important aspects of a GEDCOM file. They are accessed via the `@citations` property. A quick and dirty way of adding citations is with a character vector of Source record xrefs, but this does not allow you to record supplementary information. The alternative is to use a `SourceCitation()` object (or a list of them).
+Linkages to Source records (known as source citations) are among the most important aspects of a GEDCOM file. They are accessed via the `@citations` property. This takes a list of `SourceCitation()` objects. You can provide a single object, or even a character vector of Source record xrefs, and it will be converted into a list of `SourceCitation()` objects. 
 
 ```{r}
 SourceCitation()

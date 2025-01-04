@@ -9,7 +9,7 @@ test_that("Function RepositoryCitation() @ L79", {
 })
 
 
-test_that("Function FactsRecorded() @ L171", {
+test_that("Function FactsRecorded() @ L167", {
   expect_error(FactsRecorded("birth"), regexp = "@fact_types is in an invalid format")
   expect_error(FactsRecorded("BIRT "), regexp = "@fact_types is in an invalid format")
   expect_error(FactsRecorded("BIRT,DEAT"), regexp = "@fact_types is in an invalid format")
