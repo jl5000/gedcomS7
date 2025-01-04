@@ -88,7 +88,7 @@ SourceCitation <- S7::new_class(
                                      self
                                    },
                                    validator = function(value){
-                                     chk_input_S7classes(value, gedcomS7::TranslationText)
+                                     for(inp in value) if(is.character(inp)) return(inp)
                                    }),
     fact_type = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -131,7 +131,7 @@ SourceCitation <- S7::new_class(
                                      self
                                    },
                                    validator = function(value){
-                                     chk_input_S7classes(value, gedcomS7::MediaLink)
+                                     for(inp in value) if(is.character(inp)) return(inp)
                                    }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -144,7 +144,7 @@ SourceCitation <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     
     c_as_ged = S7::new_property(

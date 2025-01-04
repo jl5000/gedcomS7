@@ -42,18 +42,12 @@ Fact <- S7::new_class(
                              setter = function(self, value){
                                self@place <- as.S7class(value, gedcomS7::Place)
                                self
-                             },
-                             validator = function(value){
-                               chk_input_size(value, 0, 1)
                              }),
     address = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
                                getter = function(self) self@address,
                                setter = function(self, value){
                                  self@address <- as.S7class(value, gedcomS7::Address)
                                  self
-                               },
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1)
                                }),
     phone_numbers = S7::new_property(S7::class_character,
                                      validator = function(value){
@@ -110,7 +104,7 @@ Fact <- S7::new_class(
                                       self
                                     },
                                     validator = function(value){
-                                      chk_input_S7classes(value, gedcomS7::Association)
+                                      for(inp in value) if(is.character(inp)) return(inp)
                                     }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -123,7 +117,7 @@ Fact <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
@@ -132,7 +126,7 @@ Fact <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     media_links = S7::new_property(S7::class_list,
                                    getter = function(self) self@media_links,
@@ -141,7 +135,7 @@ Fact <- S7::new_class(
                                      self
                                    },
                                    validator = function(value){
-                                     chk_input_S7classes(value, gedcomS7::MediaLink)
+                                     for(inp in value) if(is.character(inp)) return(inp)
                                    }),
     unique_ids = S7::new_property(S7::class_character,
                                   validator = function(value){

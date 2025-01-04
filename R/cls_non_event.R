@@ -55,7 +55,7 @@ NonEvent <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
@@ -64,7 +64,7 @@ NonEvent <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
     c_as_ged = S7::new_property(

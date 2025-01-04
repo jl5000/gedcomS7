@@ -66,8 +66,8 @@ Note <- S7::new_class(
                                       self
                                     },
                                     validator = function(value){
-                                      err <- chk_input_S7classes(value, gedcomS7::TranslationText)
-                                      if(!is.null(err)) return(err)
+                                      for(inp in value) if(is.character(inp)) return(inp)
+                                      
                                       for(tran in value){
                                         if(length(tran@language) + length(tran@media_type) == 0)
                                           return("Each @translation requires a @language or @media_type to be defined.")
@@ -81,7 +81,7 @@ Note <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
 
     

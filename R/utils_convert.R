@@ -64,9 +64,19 @@ restrictions_to_resn <- function(confidential, locked, private){
 }
 
 as.S7class_list <- function(input, S7class){
-  if("S7_object" %in% class(input)) return(list(input))
+  if("S7_object" %in% class(input)) input <- list(input)
   lapply(input, \(x) 
-         if(is.atomic(x)) do.call(S7class, list(x)) else x)
+         if(is.atomic(x)){
+           do.call(S7class, list(x))
+         } else {
+           if(S7::S7_inherits(x, S7class)){
+             x
+           } else {
+             sprintf("contains an invalid object not of class %s.", 
+                     S7class@name)
+           }
+         }
+  )
 }
 
 as.S7class <- function(input, S7class){

@@ -30,7 +30,7 @@ FamilyLinkSpouse <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     
     c_as_ged = S7::new_property(

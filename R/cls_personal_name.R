@@ -174,7 +174,7 @@ PersonalName <- S7::new_class(
                                            self
                                          },
                                          validator = function(value){
-                                           chk_input_S7classes(value, gedcomS7::PersonalNameTran)
+                                           for(inp in value) if(is.character(inp)) return(inp)
                                          }),
     notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
@@ -183,7 +183,7 @@ PersonalName <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     note_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -196,7 +196,7 @@ PersonalName <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
     c_as_val = S7::new_property(S7::class_character, 

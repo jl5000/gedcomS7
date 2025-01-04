@@ -39,9 +39,6 @@ Ordinance <- S7::new_class(
                              setter = function(self, value){
                                self@place <- as.S7class(value, gedcomS7::Place)
                                self
-                             },
-                             validator = function(value){
-                               chk_input_size(value, 0, 1)
                              }),
     ord_state = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -74,7 +71,7 @@ Ordinance <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
@@ -83,7 +80,7 @@ Ordinance <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -167,9 +164,6 @@ SpouseSealing <- S7::new_class(
                              setter = function(self, value){
                                self@place <- as.S7class(value, gedcomS7::Place)
                                self
-                             },
-                             validator = function(value){
-                               chk_input_size(value, 0, 1)
                              }),
     ord_state = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -203,7 +197,7 @@ SpouseSealing <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
@@ -212,7 +206,7 @@ SpouseSealing <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
     c_as_ged = S7::new_property(

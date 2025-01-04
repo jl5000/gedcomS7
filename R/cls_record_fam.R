@@ -42,7 +42,7 @@ FamilyRecord <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, FamilyFact)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     non_events = S7::new_property(S7::class_list,
                                   getter = function(self) self@non_events,
@@ -51,7 +51,7 @@ FamilyRecord <- S7::new_class(
                                     self
                                   },
                                   validator = function(value){
-                                    chk_input_S7classes(value, gedcomS7::NonEvent)
+                                    for(inp in value) if(is.character(inp)) return(inp)
                                   }),
     husb_xref = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -78,7 +78,7 @@ FamilyRecord <- S7::new_class(
                                       self
                                     },
                                     validator = function(value){
-                                      chk_input_S7classes(value, gedcomS7::Association)
+                                      for(inp in value) if(is.character(inp)) return(inp)
                                     }),
     subm_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -91,7 +91,7 @@ FamilyRecord <- S7::new_class(
                                          self
                                        },
                                     validator = function(value){
-                                      chk_input_S7classes(value, gedcomS7::SpouseSealing)
+                                      for(inp in value) if(is.character(inp)) return(inp)
                                     }),
     
     c_marriage_date = S7::new_property(

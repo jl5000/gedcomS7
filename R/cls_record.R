@@ -67,7 +67,7 @@ Record <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, gedcomS7::Note)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
@@ -76,7 +76,7 @@ Record <- S7::new_class(
                                    self
                                  },
                                  validator = function(value){
-                                   chk_input_S7classes(value, gedcomS7::SourceCitation)
+                                   for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     media_links = S7::new_property(S7::class_list,
                                    getter = function(self) self@media_links,
@@ -85,7 +85,7 @@ Record <- S7::new_class(
                                      self
                                    },
                                    validator = function(value){
-                                     chk_input_S7classes(value, gedcomS7::MediaLink)
+                                     for(inp in value) if(is.character(inp)) return(inp)
                                    }),
     created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
                                validator = function(value){

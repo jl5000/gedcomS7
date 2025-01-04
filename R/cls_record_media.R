@@ -122,10 +122,8 @@ MediaRecord <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               c(
-                                 chk_input_size(value, 1),
-                                 chk_input_S7classes(value, gedcomS7::MediaFile)
-                               )
+                               for(inp in value) if(is.character(inp)) return(inp)
+                               chk_input_size(value, 1)
                              }),
     
     c_as_ged = S7::new_property(

@@ -61,7 +61,7 @@ IndividualRecord <- S7::new_class(
                                     self
                                   },
                                   validator = function(value){
-                                    chk_input_S7classes(value, gedcomS7::PersonalName)
+                                    for(inp in value) if(is.character(inp)) return(inp)
                                   }),
     sex = S7::new_property(S7::class_character, default = "U",
                            validator = function(value){
@@ -77,7 +77,7 @@ IndividualRecord <- S7::new_class(
                                self
                              },
                              validator = function(value){
-                               chk_input_S7classes(value, IndividualFact)
+                               for(inp in value) if(is.character(inp)) return(inp)
                              }),
     non_events = S7::new_property(S7::class_list,
                                   getter = function(self) self@non_events,
@@ -86,7 +86,7 @@ IndividualRecord <- S7::new_class(
                                     self
                                   },
                                   validator = function(value){
-                                    chk_input_S7classes(value, gedcomS7::NonEvent)
+                                    for(inp in value) if(is.character(inp)) return(inp)
                                   }),
     ordinances = S7::new_property(S7::class_list,
                                   getter = function(self) self@ordinances,
@@ -95,7 +95,7 @@ IndividualRecord <- S7::new_class(
                                     self
                                   },
                                   validator = function(value){
-                                    chk_input_S7classes(value, gedcomS7::Ordinance)
+                                    for(inp in value) if(is.character(inp)) return(inp)
                                   }),
     fam_links_chil = S7::new_property(S7::class_list,
                                       getter = function(self) self@fam_links_chil,
@@ -104,7 +104,7 @@ IndividualRecord <- S7::new_class(
                                         self
                                       },
                                       validator = function(value){
-                                        chk_input_S7classes(value, gedcomS7::FamilyLinkChild)
+                                        for(inp in value) if(is.character(inp)) return(inp)
                                       }),
     fam_links_spou = S7::new_property(S7::class_list,
                                       getter = function(self) self@fam_links_spou,
@@ -113,7 +113,7 @@ IndividualRecord <- S7::new_class(
                                         self
                                       },
                                       validator = function(value){
-                                        chk_input_S7classes(value, gedcomS7::FamilyLinkSpouse)
+                                        for(inp in value) if(is.character(inp)) return(inp)
                                       }),
     subm_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -126,7 +126,7 @@ IndividualRecord <- S7::new_class(
                                       self
                                     },
                                     validator = function(value){
-                                      chk_input_S7classes(value, gedcomS7::Association)
+                                      for(inp in value) if(is.character(inp)) return(inp)
                                     }),
     alia_xrefs = S7::new_property(S7::class_character,
                                   validator = function(value){
