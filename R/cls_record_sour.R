@@ -86,9 +86,7 @@ RepositoryCitation <- S7::new_class(
                                      chk_input_pattern(value, reg_xref(TRUE))
                                    )
                                  }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -101,9 +99,7 @@ RepositoryCitation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    call_numbers = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::SourceCallNumber") | 
-                                      S7::class_character,
+    call_numbers = S7::new_property(S7::class_list,
                                     getter = function(self) self@call_numbers,
                                     setter = function(self, value){
                                       self@call_numbers <- as.S7class_list(value, gedcomS7::SourceCallNumber)
@@ -192,8 +188,7 @@ FactsRecorded <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    territory = S7::new_property(S7::class_character | 
-                                   S7::new_S3_class("gedcomS7::Place"),
+    territory = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
                                  getter = function(self) self@territory,
                                  setter = function(self, value){
                                    self@territory <- as.S7class(value, gedcomS7::Place)
@@ -266,9 +261,7 @@ SourceRecord <- S7::new_class(
   "SourceRecord", 
   parent = Record,
   properties = list(
-    facts_recorded = S7::new_property(S7::class_list | 
-                                        S7::new_S3_class("gedcomS7::FactsRecorded") | 
-                                        S7::class_character,
+    facts_recorded = S7::new_property(S7::class_list,
                                       getter = function(self) self@facts_recorded,
                                       setter = function(self, value){
                                         self@facts_recorded <- as.S7class_list(value, gedcomS7::FactsRecorded)
@@ -285,9 +278,7 @@ SourceRecord <- S7::new_class(
                                        validator = function(value){
                                          chk_input_pattern(value, reg_xref(TRUE))
                                        }),
-    data_notes = S7::new_property(S7::class_list | 
-                                    S7::new_S3_class("gedcomS7::Note") | 
-                                    S7::class_character,
+    data_notes = S7::new_property(S7::class_list,
                                   getter = function(self) self@data_notes,
                                   setter = function(self, value){
                                     self@data_notes <- as.S7class_list(value, gedcomS7::Note)
@@ -313,9 +304,7 @@ SourceRecord <- S7::new_class(
                                            chk_input_size(value, 0, 1, 1)
                                          }),
     # NOTE I've made the cardinality of this {0,M} to match source citation
-    source_text = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::TranslationText") | 
-                                     S7::class_character,
+    source_text = S7::new_property(S7::class_list,
                                    getter = function(self) self@source_text,
                                    setter = function(self, value){
                                      self@source_text <- as.S7class_list(value, gedcomS7::TranslationText)
@@ -324,9 +313,7 @@ SourceRecord <- S7::new_class(
                                    validator = function(value){
                                      chk_input_S7classes(value, gedcomS7::TranslationText)
                                    }),
-    repo_citations = S7::new_property(S7::class_list | 
-                                        S7::new_S3_class("gedcomS7::RepositoryCitation") | 
-                                        S7::class_character,
+    repo_citations = S7::new_property(S7::class_list,
                                       getter = function(self) self@repo_citations,
                                       setter = function(self, value){
                                         self@repo_citations <- as.S7class_list(value, gedcomS7::RepositoryCitation)

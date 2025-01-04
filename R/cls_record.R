@@ -60,9 +60,7 @@ Record <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -71,9 +69,7 @@ Record <- S7::new_class(
                              validator = function(value){
                                chk_input_S7classes(value, gedcomS7::Note)
                              }),
-    citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
-                                   S7::class_character,
+    citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
                                    self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
@@ -82,9 +78,7 @@ Record <- S7::new_class(
                                  validator = function(value){
                                    chk_input_S7classes(value, gedcomS7::SourceCitation)
                                  }),
-    media_links = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::MediaLink") | 
-                                     S7::class_character,
+    media_links = S7::new_property(S7::class_list,
                                    getter = function(self) self@media_links,
                                    setter = function(self, value){
                                      self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)

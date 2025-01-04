@@ -81,9 +81,7 @@ SourceCitation <- S7::new_class(
                                 chk_input_pattern(value, reg_date_value())
                               )
                             }),
-    source_text = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::TranslationText") | 
-                                     S7::class_character,
+    source_text = S7::new_property(S7::class_list,
                                    getter = function(self) self@source_text,
                                    setter = function(self, value){
                                      self@source_text <- as.S7class_list(value, gedcomS7::TranslationText)
@@ -121,9 +119,7 @@ SourceCitation <- S7::new_class(
                                      chk_input_choice(value, val_certainty())
                                    )
                                  }),
-    media_links = S7::new_property(S7::class_list | 
-                                     S7::new_S3_class("gedcomS7::MediaLink") | 
-                                     S7::class_character,
+    media_links = S7::new_property(S7::class_list,
                                    getter = function(self) self@media_links,
                                    setter = function(self, value){
                                      self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
@@ -136,9 +132,7 @@ SourceCitation <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)

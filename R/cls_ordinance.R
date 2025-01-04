@@ -34,8 +34,7 @@ Ordinance <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    place = S7::new_property(S7::class_character | 
-                               S7::new_S3_class("gedcomS7::Place"),
+    place = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
                              getter = function(self) self@place,
                              setter = function(self, value){
                                self@place <- as.S7class(value, gedcomS7::Place)
@@ -68,9 +67,7 @@ Ordinance <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -79,9 +76,7 @@ Ordinance <- S7::new_class(
                              validator = function(value){
                                chk_input_S7classes(value, gedcomS7::Note)
                              }),
-    citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
-                                   S7::class_character,
+    citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
                                    self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
@@ -167,8 +162,7 @@ SpouseSealing <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1, 1)
                                    }),
-    place = S7::new_property(S7::class_character | 
-                               S7::new_S3_class("gedcomS7::Place"),
+    place = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
                              getter = function(self) self@place,
                              setter = function(self, value){
                                self@place <- as.S7class(value, gedcomS7::Place)
@@ -202,9 +196,7 @@ SpouseSealing <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -213,9 +205,7 @@ SpouseSealing <- S7::new_class(
                              validator = function(value){
                                chk_input_S7classes(value, gedcomS7::Note)
                              }),
-    citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
-                                   S7::class_character,
+    citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
                                    self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)

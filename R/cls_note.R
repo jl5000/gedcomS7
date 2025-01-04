@@ -59,8 +59,7 @@ Note <- S7::new_class(
                                       chk_input_choice(value, c("text/plain","text/html"))
                                     )
                                   }),
-    translations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::TranslationText"),
+    translations = S7::new_property(S7::class_list,
                                     getter = function(self) self@translations,
                                     setter = function(self, value){
                                       self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
@@ -75,9 +74,7 @@ Note <- S7::new_class(
                                       }
                                     }),
     # Using S3 because of recursion
-    citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
-                                   S7::class_character,
+    citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
                                    self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)

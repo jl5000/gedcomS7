@@ -16,8 +16,7 @@ RepositoryRecord <- S7::new_class(
                                  validator = function(value){
                                    chk_input_size(value, 1, 1, 1)
                                  }),
-    address = S7::new_property(S7::class_character | 
-                                 S7::new_S3_class("gedcomS7::Address"),
+    address = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
                                getter = function(self) self@address,
                                setter = function(self, value){
                                  self@address <- as.S7class(value, gedcomS7::Address)

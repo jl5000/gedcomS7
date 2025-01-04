@@ -34,8 +34,7 @@ NoteRecord <- S7::new_class(
                                     chk_input_size(value, 0, 1, 1)
                                   )
                                 }),
-    translations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::TranslationText"),
+    translations = S7::new_property(S7::class_list,
                                     getter = function(self) self@translations,
                                     setter = function(self, value){
                                       self@translations <- as.S7class_list(value, gedcomS7::TranslationText)

@@ -93,7 +93,7 @@ Address <- S7::new_class(
 parse_address <- function(lines, location = NULL){
   
   addr <- find_ged_values(lines, c(location, "ADDR"))
-  if(length(addr) == 0) return(character())
+  if(length(addr) == 0) return(NULL)
   
   Address(
     full = gsub("\n", "; ", addr),

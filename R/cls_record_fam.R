@@ -35,8 +35,7 @@ FamilyRecord <- S7::new_class(
   "FamilyRecord", 
   parent = Record,
   properties = list(
-    facts = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::FamilyFact"),
+    facts = S7::new_property(S7::class_list,
                              getter = function(self) self@facts,
                              setter = function(self, value){
                                self@facts <- as.S7class_list(value, FamilyFact)
@@ -45,8 +44,7 @@ FamilyRecord <- S7::new_class(
                              validator = function(value){
                                chk_input_S7classes(value, FamilyFact)
                              }),
-    non_events = S7::new_property(S7::class_list | 
-                                    S7::new_S3_class("gedcomS7::NonEvent"),
+    non_events = S7::new_property(S7::class_list,
                                   getter = function(self) self@non_events,
                                   setter = function(self, value){
                                     self@non_events <- as.S7class_list(value, NonEvent)
@@ -73,8 +71,7 @@ FamilyRecord <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    associations = S7::new_property(S7::class_list | 
-                                      S7::new_S3_class("gedcomS7::Association"),
+    associations = S7::new_property(S7::class_list,
                                     getter = function(self) self@associations,
                                     setter = function(self, value){
                                       self@associations <- as.S7class_list(value, gedcomS7::Association)
@@ -87,8 +84,7 @@ FamilyRecord <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    spouse_sealings = S7::new_property(S7::class_list | 
-                                         S7::new_S3_class("gedcomS7::SpouseSealing"),
+    spouse_sealings = S7::new_property(S7::class_list,
                                        getter = function(self) self@spouse_sealings,
                                        setter = function(self, value){
                                          self@spouse_sealings <- as.S7class_list(value, gedcomS7::SpouseSealing)

@@ -167,8 +167,7 @@ PersonalName <- S7::new_class(
                                    validator = function(value){
                                      chk_input_size(value, 0, 1)
                                    }),
-    name_translations = S7::new_property(S7::class_list | 
-                                           S7::new_S3_class("gedcomS7::PersonalNameTran"),
+    name_translations = S7::new_property(S7::class_list,
                                          getter = function(self) self@name_translations,
                                          setter = function(self, value){
                                            self@name_translations <- as.S7class_list(value, gedcomS7::PersonalNameTran)
@@ -177,9 +176,7 @@ PersonalName <- S7::new_class(
                                          validator = function(value){
                                            chk_input_S7classes(value, gedcomS7::PersonalNameTran)
                                          }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -192,9 +189,7 @@ PersonalName <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    citations = S7::new_property(S7::class_list | 
-                                   S7::new_S3_class("gedcomS7::SourceCitation") | 
-                                   S7::class_character,
+    citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
                                    self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)

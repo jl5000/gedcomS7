@@ -80,9 +80,7 @@ Place <- S7::new_class(
                                   validator = function(value){
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
-    notes = S7::new_property(S7::class_list | 
-                               S7::new_S3_class("gedcomS7::Note") | 
-                               S7::class_character,
+    notes = S7::new_property(S7::class_list,
                              getter = function(self) self@notes,
                              setter = function(self, value){
                                self@notes <- as.S7class_list(value, gedcomS7::Note)
@@ -127,7 +125,7 @@ Place <- S7::new_class(
 parse_place <- function(lines, location = NULL){
   
   place_name <- find_ged_values(lines, c(location, "PLAC"))
-  if(length(place_name) == 0) return(character())
+  if(length(place_name) == 0) return(NULL)
   
   latlong <- paste(
     find_ged_values(lines, c(location, "PLAC", "MAP", "LATI")),
