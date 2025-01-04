@@ -19,7 +19,13 @@
 #' either be a `TranslationText()` object, a list of them, or a character vector of text. 
 #' If any `TranslationText()` objects are provided, then you will be forced to define an
 #' associated language or media type.
-#' @param fact_type TODO
+#' @param fact_type A code indicating the type of fact. This must be taken from one of
+#' `val_individual_event_types()`, `val_individual_attribute_types()`,
+#' `val_family_event_types()`, or `val_family_attribute_types()`. A generic event ("EVEN")
+#' or attribute ("FACT") can also be defined for more bespoke facts.
+#' @param fact_val A value associated with the fact. For example for "NCHI" this would
+#' be the number of children. This must be given as a character string. 
+#' @param fact_desc TODO
 #' 
 #' @param medium TODO
 #' @param medium_phrase TODO
@@ -29,8 +35,7 @@
 #' 
 #' 
 #' @param event_type TODO
-#' @param fact_val TODO
-#' @param fact_desc TODO
+#' 
 #' @param place see territory
 #' @param address The address given either as a `Address()` object or as a character string.
 #' This would be as written on a mailing label with new lines separated by \\n.

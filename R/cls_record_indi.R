@@ -12,8 +12,14 @@
 #' @param non_events Events that this individual did not experience.
 #' A `NonEvent()` object, or a list of them.
 #' @param ordinances An `Ordinance()` object, or a list of them.
-#' @param fam_links_chil TODO
-#' @param fam_links_spou TODO
+#' @param fam_links_chil A `FamilyLinkChild()` object or a list of them, giving the
+#' Family records that this individual is a member of as a child. A character vector
+#' of Family record xrefs can also be provided. This will be automatically updated if
+#' the individual's membership in a Family record changes.
+#' @param fam_links_spou A `FamilyLinkSpouse()` object or a list of them, giving the
+#' Family records that this individual is a member of as a spouse. A character vector
+#' of Family record xrefs can also be provided. This will be automatically updated if
+#' the individual's membership in a Family record changes.
 #' @param alia_xrefs A named character vector of relevant individual record cross-reference identifiers
 #' whose records also represent this individual. The vector names may provide a description of these records.
 #' @param anci_xrefs A character vector of relevant submitter record cross-reference identifiers
