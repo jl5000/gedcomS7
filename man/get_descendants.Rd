@@ -24,8 +24,8 @@ get_descendants(
 \item{inc_part}{Whether to also include all partners of this individual (and their descendants and
 descendants' partners).}
 
-\item{inc_fam}{Whether to also include all Family Group records where this individual is a partner
-(and all descendants' Family Group records).}
+\item{inc_fam}{Whether to also include all Family records where this individual is a partner
+(and all descendants' Family records).}
 
 \item{inc_supp}{Whether to also include all supporting records (Note, Source, Repository, Multimedia).}
 

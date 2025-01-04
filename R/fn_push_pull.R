@@ -183,7 +183,7 @@ check_missing_xrefs <- function(gedcom, record){
 
 refresh_fam_links <- function(gedcom, record){
   
-  # Family group record has changed
+  # Family record has changed
   # Ensure FAMS/FAMC in indi records are correct
   
   # Who are the members of this family?

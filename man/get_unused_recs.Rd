@@ -17,6 +17,6 @@ This function identifies records that are not referenced in any other records.
 }
 \details{
 You would expect every record to be referenced by another in some way. For example, Individual
-records should reference Family Group records (and vice-versa), Repository records should be referenced
+records should reference Family records (and vice-versa), Repository records should be referenced
 by Source records, and Source records should be cited by other records.
 }

@@ -21,7 +21,7 @@ if it already exists. If this is not provided, a new Family record will
 be created.}
 }
 \value{
-A gedcom object with additional spouse and Family Group records.
+A gedcom object with additional spouse and Family records.
 }
 \description{
 This creates a record for a spouse and potentially their Family record.

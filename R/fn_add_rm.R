@@ -152,7 +152,7 @@ add_parents <- function(x,
 #' if it already exists. If this is not provided, a new Family record will
 #' be created.
 #'
-#' @returns A gedcom object with additional spouse and Family Group records.
+#' @returns A gedcom object with additional spouse and Family records.
 #' @export
 #' @tests
 #' ged <- new_gedcom()

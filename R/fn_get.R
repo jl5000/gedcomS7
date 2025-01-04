@@ -330,7 +330,7 @@ get_supporting_recs <- function(x,
 #' This function identifies records that are not referenced in any other records.
 #' 
 #' @details You would expect every record to be referenced by another in some way. For example, Individual
-#' records should reference Family Group records (and vice-versa), Repository records should be referenced
+#' records should reference Family records (and vice-versa), Repository records should be referenced
 #' by Source records, and Source records should be cited by other records.
 #'
 #' @inheritParams get_fam_as_child
@@ -356,8 +356,8 @@ get_unused_recs <- function(x){
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_part Whether to also include all partners of this individual (and their descendants and
 #' descendants' partners).
-#' @param inc_fam Whether to also include all Family Group records where this individual is a partner 
-#' (and all descendants' Family Group records).
+#' @param inc_fam Whether to also include all Family records where this individual is a partner 
+#' (and all descendants' Family records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
 #'
 #' @inherit get_fam_as_child return
@@ -386,7 +386,7 @@ get_descendants <- function(x,
     chil_xref <- unique(c(chil_xref, part_chil_xref))
   }
   
-  #deal with family groups first (while the individuals are still in them)
+  #deal with families first (while the individuals are still in them)
   if (inc_fam) return_xrefs <- c(return_xrefs, fams_xref)
   if (inc_part) return_xrefs <- c(return_xrefs, spou_xref)
   if (inc_indi) return_xrefs <- c(return_xrefs, xref)
@@ -417,8 +417,8 @@ get_descendants <- function(x,
 #' @param inc_indi Whether to also include the individual themselves.
 #' @param inc_sibs Whether to also include all siblings of ancestors (siblings of this individual will only be
 #' included if the individual is included).
-#' @param inc_fam Whether to also include all Family Group records where this individual is a child 
-#' (and all ancestors' Family Group records).
+#' @param inc_fam Whether to also include all Family records where this individual is a child 
+#' (and all ancestors' Family records).
 #' @param inc_supp Whether to also include all supporting records (Note, Source, Repository, Multimedia).
 #'
 #' @inherit get_fam_as_child return
