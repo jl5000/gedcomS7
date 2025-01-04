@@ -23,7 +23,7 @@ would be BIRT, DEAT, MARR.}
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
 \item{territory}{The territory associated with the events covered. This can either be a
-\code{Place} object or a character string (a comma-separated string of region names,
+\code{Place()} object or a character string (a comma-separated string of region names,
 ordered from smallest to largest).}
 }
 \value{

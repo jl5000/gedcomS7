@@ -16,7 +16,7 @@ PersonalName(
 )
 }
 \arguments{
-\item{pers_name}{TODO}
+\item{pers_name}{The full name of the individual. Surnames should be enclosed in forward slashes.}
 
 \item{name_type}{An optional name type taken from \code{val_name_types()}.}
 

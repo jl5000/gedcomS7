@@ -1,6 +1,7 @@
 url: https://jl5000.github.io/gedcomS7/
 template:
   bootstrap: 5
+  light-switch: true
 reference:
 - title: "Classes"
 
@@ -32,15 +33,16 @@ reference:
   
 - subtitle: "Individual/Family Fact Classes"
   contents:
-  - starts_with("PersonalName")
   - ends_with("Event")
   - ends_with("Attribute")
-  - Ordinance
-  - SpouseSealing
+  - fact_rules_df
   
 - subtitle: "Other Classes"
   contents:
   - Note
+  - starts_with("PersonalName")
+  - Ordinance
+  - SpouseSealing
   - TranslationText
   - FactsRecorded
   - SourceCallNumber

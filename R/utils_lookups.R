@@ -245,36 +245,3 @@ val_name_types <- function() {
     "AKA","BIRTH","IMMIGRANT","MAIDEN","MARRIED","PROFESSIONAL","OTHER"
   )
 }
-
-
-val_facts_rules <- function(){
-
-  all_df <- data.frame(fact_name = names(val_fact_types(TRUE)),
-                       fact_type = unname(val_fact_types(TRUE)))
-  
-  # General rules
-  all_df$individual <- all_df$fact_type %in% c(val_individual_attribute_types(TRUE),
-                                              val_individual_event_types(TRUE))
-  all_df$family <- all_df$fact_type %in% c(val_family_attribute_types(TRUE),
-                                          val_family_event_types(TRUE))
-  all_df$fact <- ifelse(all_df$fact_type %in% c(val_family_event_types(TRUE),
-                                               val_individual_event_types(TRUE)),
-                       "Event", "Attribute")
-  all_df$fact_val_required <- all_df$fact == "Attribute"
-  all_df$fact_val <- ifelse(all_df$fact == "Event", "Y", "Any")
-  
-  # Exceptions
-  all_df$fact_val <- ifelse(all_df$fact_type %in% c("NCHI","NMR"),
-                            "Integer", all_df$fact_val)
-  all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
-                                     TRUE, all_df$fact_val_required)
-  all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("RESI"),
-                                     FALSE, all_df$fact_val_required)
-  all_df$fact_val <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
-                            "Any", all_df$fact_val)
-  all_df$fact_desc_required <- all_df$fact_type %in% c("FACT", "EVEN", "IDNO")
-  
-  all_df
-}
-  
-  

@@ -22,7 +22,9 @@ SpouseSealing(
 
 \item{temple_name}{The name of a temple of The Church of Jesus Christ of Latter-day Saints.}
 
-\item{place}{see territory}
+\item{place}{The associated place. This can either be a
+\code{Place()} object or a character string (a comma-separated string of region names,
+ordered from smallest to largest).}
 
 \item{ord_state}{An optional value from \verb{val_ordinance_states(@ord_type)}.}
 

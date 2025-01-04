@@ -1,4 +1,4 @@
-# Function RepositoryCitation() @ L79
+# Function RepositoryCitation() @ L77
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 REPO @VOID@", "1 NOTE Local library", "1 CALN ABC", "1 CALN 123"]
     }
 
-# Function FactsRecorded() @ L167
+# Function FactsRecorded() @ L163
 
     {
       "type": "character",

@@ -11,7 +11,7 @@ PersonalNameTran(
 )
 }
 \arguments{
-\item{pers_name}{TODO}
+\item{pers_name}{The full name of the individual. Surnames should be enclosed in forward slashes.}
 
 \item{language}{A character string of language tags as defined in BCP 47.}
 

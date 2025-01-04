@@ -14,7 +14,8 @@ NonEvent(
 )
 }
 \arguments{
-\item{event_type}{TODO}
+\item{event_type}{A code indicating the type of event that didn't happen.
+This must be taken from \code{val_event_types()}.}
 
 \item{date_period}{A date period given either as a formatted GEDCOM string, or a
 \code{DatePeriod()} object.}

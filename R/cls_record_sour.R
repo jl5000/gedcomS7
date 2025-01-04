@@ -142,7 +142,7 @@ parse_repo_citations <- function(rec_lines){
 #' comma and space. For example, a parish register of births, deaths, and marriages
 #' would be BIRT, DEAT, MARR. 
 #' @param territory The territory associated with the events covered. This can either be a 
-#' `Place` object or a character string (a comma-separated string of region names, 
+#' `Place()` object or a character string (a comma-separated string of region names, 
 #' ordered from smallest to largest).
 #' 
 #' @returns An S7 object representing a GEDCOM SOUR.EVEN structure.

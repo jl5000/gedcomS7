@@ -20,9 +20,11 @@ MediaFile(
 
 \item{media_type}{The media type as defined in RFC 2045.}
 
-\item{medium}{TODO}
+\item{medium}{A value from \code{val_medium_types()}. If "OTHER" is selected then a \verb{@medium_phrase}
+must be given.}
 
-\item{medium_phrase}{TODO}
+\item{medium_phrase}{A free text description of the medium. This is mandatory if \verb{@medium} is
+"OTHER".}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 }

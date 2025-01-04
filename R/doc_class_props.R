@@ -20,25 +20,26 @@
 #' @param fact_type A code indicating the type of fact. This must be taken from one of
 #' `val_individual_event_types()`, `val_individual_attribute_types()`,
 #' `val_family_event_types()`, or `val_family_attribute_types()`. A generic event ("EVEN")
-#' or attribute ("FACT") can also be defined for more bespoke facts. See `val_facts_rules()`
+#' or attribute ("FACT") can also be defined for more bespoke facts. See `fact_rules_df()`
 #' for the set of rules surrounding the codes allowed.
 #' @param fact_val A value associated with the fact. For example for "NCHI" this would
-#' be the number of children. See `val_facts_rules()` for the set of rules surrounding the 
+#' be the number of children. See `fact_rules_df()` for the set of rules surrounding the 
 #' need for values and the values allowed.
 #' @param fact_desc A further classification of the fact. This is required for generic
-#' events or attributes. See `val_facts_rules()` for the set of rules surrounding the 
+#' events or attributes. See `fact_rules_df()` for the set of rules surrounding the 
 #' need for this.
 #' 
-#' @param medium TODO
-#' @param medium_phrase TODO
+#' @param medium A value from `val_medium_types()`. If "OTHER" is selected then a `@medium_phrase`
+#' must be given.
+#' @param medium_phrase A free text description of the medium. This is mandatory if `@medium` is
+#' "OTHER".
 #' @param media_alt A named vector of the media in alternative media forms, c(form = location)
-#' @param pers_name TODO
+#' @param pers_name The full name of the individual. Surnames should be enclosed in forward slashes.
 #' @param name_pieces A `PersonalNamePieces()` object defining the pieces of the full name.
 #' 
-#' 
-#' @param event_type TODO
-#' 
-#' @param place see territory
+#' @param place The associated place. This can either be a 
+#' `Place()` object or a character string (a comma-separated string of region names, 
+#' ordered from smallest to largest).
 #' @param address The address given either as a `Address()` object or as a character string.
 #' This would be as written on a mailing label with new lines separated by \\n.
 #' @param phone_numbers A character vector of phone numbers.

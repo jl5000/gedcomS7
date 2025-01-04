@@ -2,6 +2,9 @@
 #' Create a non-event object
 #' 
 #' @inheritParams prop_definitions 
+#' @param event_type A code indicating the type of event that didn't happen. 
+#' This must be taken from `val_event_types()`.
+#' 
 #' @returns An S7 object representing a GEDCOM NON_EVENT_STRUCTURE.
 #' @export
 #' @tests

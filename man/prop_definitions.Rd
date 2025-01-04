@@ -21,30 +21,32 @@ either be a \code{TranslationText()} object, a list of them, or a character vect
 \item{fact_type}{A code indicating the type of fact. This must be taken from one of
 \code{val_individual_event_types()}, \code{val_individual_attribute_types()},
 \code{val_family_event_types()}, or \code{val_family_attribute_types()}. A generic event ("EVEN")
-or attribute ("FACT") can also be defined for more bespoke facts. See \code{val_facts_rules()}
+or attribute ("FACT") can also be defined for more bespoke facts. See \code{fact_rules_df()}
 for the set of rules surrounding the codes allowed.}
 
 \item{fact_val}{A value associated with the fact. For example for "NCHI" this would
-be the number of children. See \code{val_facts_rules()} for the set of rules surrounding the
+be the number of children. See \code{fact_rules_df()} for the set of rules surrounding the
 need for values and the values allowed.}
 
 \item{fact_desc}{A further classification of the fact. This is required for generic
-events or attributes. See \code{val_facts_rules()} for the set of rules surrounding the
+events or attributes. See \code{fact_rules_df()} for the set of rules surrounding the
 need for this.}
 
-\item{medium}{TODO}
+\item{medium}{A value from \code{val_medium_types()}. If "OTHER" is selected then a \verb{@medium_phrase}
+must be given.}
 
-\item{medium_phrase}{TODO}
+\item{medium_phrase}{A free text description of the medium. This is mandatory if \verb{@medium} is
+"OTHER".}
 
 \item{media_alt}{A named vector of the media in alternative media forms, c(form = location)}
 
-\item{pers_name}{TODO}
+\item{pers_name}{The full name of the individual. Surnames should be enclosed in forward slashes.}
 
 \item{name_pieces}{A \code{PersonalNamePieces()} object defining the pieces of the full name.}
 
-\item{event_type}{TODO}
-
-\item{place}{see territory}
+\item{place}{The associated place. This can either be a
+\code{Place()} object or a character string (a comma-separated string of region names,
+ordered from smallest to largest).}
 
 \item{address}{The address given either as a \code{Address()} object or as a character string.
 This would be as written on a mailing label with new lines separated by \\n.}
