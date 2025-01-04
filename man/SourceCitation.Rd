@@ -38,9 +38,7 @@ value pairs}
 \code{DateValue()} object.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{TranslationText()} object, a list of them, or a character vector of text.
-If any \code{TranslationText()} objects are provided, then you will be forced to define an
-associated language or media type.}
+either be a \code{TranslationText()} object, a list of them, or a character vector of text.}
 
 \item{fact_type}{A code indicating the type of fact. This must be taken from one of
 \code{val_individual_event_types()}, \code{val_individual_attribute_types()},
@@ -64,16 +62,12 @@ intended to eliminate the receivers’ need to evaluate the evidence for themsel
 "3" = Direct and primary evidence used, or by dominance of the evidence}
 
 \item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of multimedia records.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 }
 \value{
 An S7 object representing a GEDCOM SOURCE_CITATION.

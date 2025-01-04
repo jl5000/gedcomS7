@@ -51,9 +51,7 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 \item{notes}{Not used.}
 
 \item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
-or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of source records.}
 
 \item{media_links}{Not used.}
 

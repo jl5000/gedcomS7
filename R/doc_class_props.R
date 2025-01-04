@@ -17,8 +17,6 @@
 #' 
 #' @param source_text A verbatim copy of any description contained within the source. This can 
 #' either be a `TranslationText()` object, a list of them, or a character vector of text. 
-#' If any `TranslationText()` objects are provided, then you will be forced to define an
-#' associated language or media type.
 #' @param fact_type A code indicating the type of fact. This must be taken from one of
 #' `val_individual_event_types()`, `val_individual_attribute_types()`,
 #' `val_family_event_types()`, or `val_family_attribute_types()`. A generic event ("EVEN")
@@ -102,17 +100,11 @@
 #' 
 #' 
 #' @param media_links Associated multimedia. This can either be a `MediaLink()` object, a list of them,
-#' or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-#' can be recorded (and not associated information). This option is easier if 
-#' associated information is not required. 
+#' or a character vector of XREFs of multimedia records.
 #' @param notes Associated notes. This can either be a `Note()` object, a list of them,
-#' or a character vector of notes. If a character vector is provided then only the notes themselves
-#' can be recorded (and not associated information). This option is easier if 
-#' associated information is not required. 
+#' or a character vector of notes.
 #' @param citations Associated sources. This can either be a `SourceCitation()` object, a list of them,
-#' or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-#' can be recorded (and not associated information). This option is easier if 
-#' associated information is not required. 
+#' or a character vector of XREFs of source records.
 #' 
 #' @param year The year given as an integer (greater than 0).
 #' @param month The month of the year given as an integer between 1 and 12.

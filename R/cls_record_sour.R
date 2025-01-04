@@ -66,9 +66,7 @@ parse_call_numbers <- function(lines, location){
 #' you should describe the repository in @notes.
 #' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
 #' This can either be a `SourceCallNumber` object, a list of them,
-#' or a character vector of call numbers. If a character vector is provided then only the 
-#' call numbers themselves can be recorded (and not associated medium). This option is easier if 
-#' associated information is not required. 
+#' or a character vector of call numbers.
 #' 
 #' @returns An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
 #' @export
@@ -145,9 +143,7 @@ parse_repo_citations <- function(rec_lines){
 #' would be BIRT, DEAT, MARR. 
 #' @param territory The territory associated with the events covered. This can either be a 
 #' `Place` object or a character string (a comma-separated string of region names, 
-#' ordered from smallest to largest). If a character string is provided then only the 
-#' region names can be recorded (and not associated information). This option is easier if 
-#' associated information is not required. 
+#' ordered from smallest to largest).
 #' 
 #' @returns An S7 object representing a GEDCOM SOUR.EVEN structure.
 #' @export
@@ -231,17 +227,13 @@ parse_events_recorded <- function(rec_lines){
 #' 
 #' @inheritParams prop_definitions 
 #' @param facts_recorded The facts recorded by the source. This can either be a `FactsRecorded` object, 
-#' a list of them, or a character vector of comma-delimited fact types. If a character vector is 
-#' provided then only the fact types themselves can be recorded (and not associated information). 
-#' This option is easier if associated information is not required. For example, a parish register of 
+#' a list of them, or a character vector of comma-delimited fact types. For example, a parish register of 
 #' births, deaths, and marriages would be "BIRT, DEAT, MARR". The `val_fact_types()` function gives a
 #' list of possible fact types.
 #' @param data_note_xrefs A character vector of note record cross-reference identifiers relevant
 #' to the source data.
 #' @param data_notes Associated notes about the source data. This can either be a `Note` 
-#' object, a list of them, or a character vector of notes. If a character vector is provided 
-#' then only the notes themselves can be recorded (and not associated information). 
-#' This option is easier if associated information is not required.
+#' object, a list of them, or a character vector of notes.
 #' @param originator The person, agency, or entity who created the record. For a published work, 
 #' this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished 
 #' source, this may be an individual, a government agency, church organization, or private organization.
@@ -250,9 +242,7 @@ parse_events_recorded <- function(rec_lines){
 #' @param publication_facts When and where the record was created. For published works, this 
 #' includes information such as the city of publication, name of the publisher, and year of publication.
 #' @param repo_citations Associated repositories. This can either be a `RepositoryCitation` object, 
-#' a list of them, or a character vector of XREFs of repository records. If a character vector is 
-#' provided then only the XREFs themselves can be recorded (and not associated information). 
-#' This option is easier if associated information is not required.
+#' a list of them, or a character vector of XREFs of repository records.
 #' @param citations Not used.
 #' 
 #' @returns An S7 object representing a GEDCOM SOURCE_RECORD.

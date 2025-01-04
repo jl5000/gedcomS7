@@ -90,19 +90,13 @@ treated as private. This allows them to be excluded on export.}
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
-or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of source records.}
 
 \item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of multimedia records.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
 to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}

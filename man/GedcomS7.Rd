@@ -59,9 +59,7 @@ A comma-separated string of jurisdictional titles.
 For example "City, County, State, Country".}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 

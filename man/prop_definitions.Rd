@@ -16,9 +16,7 @@ One for each alternate translation of the text.}
 \item{title}{The title of the multimedia record.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{TranslationText()} object, a list of them, or a character vector of text.
-If any \code{TranslationText()} objects are provided, then you will be forced to define an
-associated language or media type.}
+either be a \code{TranslationText()} object, a list of them, or a character vector of text.}
 
 \item{fact_type}{A code indicating the type of fact. This must be taken from one of
 \code{val_individual_event_types()}, \code{val_individual_attribute_types()},
@@ -131,19 +129,13 @@ be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 The names must be given as a URI. See the GEDCOM specification for more information.}
 
 \item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of multimedia records.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{citations}{Associated sources. This can either be a \code{SourceCitation()} object, a list of them,
-or a character vector of XREFs of source records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of source records.}
 
 \item{year}{The year given as an integer (greater than 0).}
 

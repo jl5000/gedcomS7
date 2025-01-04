@@ -17,17 +17,13 @@ does not have a record, then this can be left blank and the value "@VOID@" will 
 you should describe the repository in @notes.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{call_numbers}{Call number(s) used to file and retrieve items from the repository.
 This can either be a \code{SourceCallNumber} object, a list of them,
-or a character vector of call numbers. If a character vector is provided then only the
-call numbers themselves can be recorded (and not associated medium). This option is easier if
-associated information is not required.}
+or a character vector of call numbers.}
 }
 \value{
 An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.

@@ -24,9 +24,7 @@ would be BIRT, DEAT, MARR.}
 
 \item{territory}{The territory associated with the events covered. This can either be a
 \code{Place} object or a character string (a comma-separated string of region names,
-ordered from smallest to largest). If a character string is provided then only the
-region names can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+ordered from smallest to largest).}
 }
 \value{
 An S7 object representing a GEDCOM SOUR.EVEN structure.

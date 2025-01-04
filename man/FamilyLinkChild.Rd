@@ -20,9 +20,7 @@ FamilyLinkChild(
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{pedigree}{An optional value from \code{val_pedigree_types()} indicating the nature
 of the link.}

@@ -55,16 +55,12 @@ The names must be given as a URI. See the GEDCOM specification for more informat
 \item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes. If a character vector is provided then only the notes themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of notes.}
 
 \item{citations}{Not used.}
 
 \item{media_links}{Associated multimedia. This can either be a \code{MediaLink()} object, a list of them,
-or a character vector of XREFs of multimedia records. If a character vector is provided then only the XREFs themselves
-can be recorded (and not associated information). This option is easier if
-associated information is not required.}
+or a character vector of XREFs of multimedia records.}
 
 \item{created}{A \code{CreationDate()} object containing the date the record was created.
 Creating an object with no parameters sets the date to today.}
@@ -73,9 +69,7 @@ Creating an object with no parameters sets the date to today.}
 Creating an object with no parameters sets the date to today.}
 
 \item{facts_recorded}{The facts recorded by the source. This can either be a \code{FactsRecorded} object,
-a list of them, or a character vector of comma-delimited fact types. If a character vector is
-provided then only the fact types themselves can be recorded (and not associated information).
-This option is easier if associated information is not required. For example, a parish register of
+a list of them, or a character vector of comma-delimited fact types. For example, a parish register of
 births, deaths, and marriages would be "BIRT, DEAT, MARR". The \code{val_fact_types()} function gives a
 list of possible fact types.}
 
@@ -87,9 +81,7 @@ associated occupation, or an educational establishment that has awarded a schola
 to the source data.}
 
 \item{data_notes}{Associated notes about the source data. This can either be a \code{Note}
-object, a list of them, or a character vector of notes. If a character vector is provided
-then only the notes themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.}
+object, a list of them, or a character vector of notes.}
 
 \item{originator}{The person, agency, or entity who created the record. For a published work,
 this could be the author, compiler, transcriber, abstractor, or editor. For an unpublished
@@ -103,14 +95,10 @@ source, this may be an individual, a government agency, church organization, or 
 includes information such as the city of publication, name of the publisher, and year of publication.}
 
 \item{source_text}{A verbatim copy of any description contained within the source. This can
-either be a \code{TranslationText()} object, a list of them, or a character vector of text.
-If any \code{TranslationText()} objects are provided, then you will be forced to define an
-associated language or media type.}
+either be a \code{TranslationText()} object, a list of them, or a character vector of text.}
 
 \item{repo_citations}{Associated repositories. This can either be a \code{RepositoryCitation} object,
-a list of them, or a character vector of XREFs of repository records. If a character vector is
-provided then only the XREFs themselves can be recorded (and not associated information).
-This option is easier if associated information is not required.}
+a list of them, or a character vector of XREFs of repository records.}
 }
 \value{
 An S7 object representing a GEDCOM SOURCE_RECORD.

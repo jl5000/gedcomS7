@@ -2,14 +2,14 @@
 
 # File R/cls_record_sour.R: @tests
 
-test_that("Function RepositoryCitation() @ L79", {
+test_that("Function RepositoryCitation() @ L77", {
   expect_snapshot_value(RepositoryCitation()@c_as_ged, "json2")
   expect_snapshot_value(RepositoryCitation(notes = "Local library",
                                                   call_numbers = c("ABC","123"))@c_as_ged, "json2")
 })
 
 
-test_that("Function FactsRecorded() @ L167", {
+test_that("Function FactsRecorded() @ L163", {
   expect_error(FactsRecorded("birth"), regexp = "@fact_types is in an invalid format")
   expect_error(FactsRecorded("BIRT "), regexp = "@fact_types is in an invalid format")
   expect_error(FactsRecorded("BIRT,DEAT"), regexp = "@fact_types is in an invalid format")
