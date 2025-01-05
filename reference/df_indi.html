@@ -52,19 +52,19 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">df_indi</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">df_indi</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_fam</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">df_fam</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_sour</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">df_sour</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_repo</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">df_repo</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_media</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">df_media</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_note</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">df_note</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">df_subm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">df_subm</span><span class="op">(</span><span class="va">x</span>, xrefs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -73,6 +73,11 @@
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A gedcom object.</p></dd>
+
+
+<dt id="arg-xrefs">xrefs<a class="anchor" aria-label="anchor" href="#arg-xrefs"></a></dt>
+<dd><p>A vector of xrefs to summarise. If this is left NULL,
+all relevant xrefs will be used.</p></dd>
 
 </dl></div>
     <div class="section level2">
