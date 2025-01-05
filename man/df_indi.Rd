@@ -10,22 +10,25 @@
 \alias{df_subm}
 \title{Summarise records of a particular type in a dataframe}
 \usage{
-df_indi(x)
+df_indi(x, xrefs = NULL)
 
-df_fam(x)
+df_fam(x, xrefs = NULL)
 
-df_sour(x)
+df_sour(x, xrefs = NULL)
 
-df_repo(x)
+df_repo(x, xrefs = NULL)
 
-df_media(x)
+df_media(x, xrefs = NULL)
 
-df_note(x)
+df_note(x, xrefs = NULL)
 
-df_subm(x)
+df_subm(x, xrefs = NULL)
 }
 \arguments{
 \item{x}{A gedcom object.}
+
+\item{xrefs}{A vector of xrefs to summarise. If this is left NULL,
+all relevant xrefs will be used.}
 }
 \value{
 A dataframe summarising a record on each row.

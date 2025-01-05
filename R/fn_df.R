@@ -1,4 +1,14 @@
 
+get_records <- function(x, xrefs, rec_type){
+  rec_list <- S7::prop(x, rec_type)
+  xrefs <- xrefs %||% names(rec_list)
+  invalid <- setdiff(xrefs, names(rec_list))
+  if(length(invalid) > 0){
+    xrefs <- setdiff(xrefs, invalid)
+    warning("The following xrefs are not of the right type: ", toString(invalid))
+  }
+  rec_list <- rec_list[xrefs]
+}
 
 #' Summarise records of a particular type in a dataframe
 #'
@@ -9,30 +19,21 @@
 #' @returns A dataframe summarising a record on each row.
 #' @export
 df_indi <- function(x, xrefs = NULL){
-  rec_type <- "indi"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "indi")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     name = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
     sex = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "SEX")), FUN.VALUE = character(1)),
     birth_date = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))), FUN.VALUE = character(1)),
     birth_place = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))), FUN.VALUE = character(1)),
-    is_alive = vapply(xrefs, \(xref) is_alive(x, xref), FUN.VALUE = logical(1)),
+    is_alive = vapply(names(rec_list), \(xref) is_alive(x, xref), FUN.VALUE = logical(1)),
     death_date = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))), FUN.VALUE = character(1)),
     death_place = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))), FUN.VALUE = character(1)),
-    fam_as_child = vapply(xrefs, \(xref) get_fam_as_child(x, xref, "BIRTH") |> 
+    fam_as_child = vapply(names(rec_list), \(xref) get_fam_as_child(x, xref, "BIRTH") |> 
                             paste(collapse = ";"), FUN.VALUE = character(1)),
-    fam_as_spouse = vapply(xrefs, \(xref) get_fam_as_spouse(x, xref) |> 
+    fam_as_spouse = vapply(names(rec_list), \(xref) get_fam_as_spouse(x, xref) |> 
                              paste(collapse = ";"), FUN.VALUE = character(1)),
     last_modified = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
   )
@@ -44,20 +45,11 @@ df_indi <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_fam <- function(x, xrefs = NULL){
-  rec_type <- "fam"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "fam")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     husb_xref = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "HUSB")), FUN.VALUE = character(1)),
     wife_xref = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "WIFE")), FUN.VALUE = character(1)),
     chil_xref = vapply(rec_list, \(lines) find_ged_values(lines, "CHIL") |>
@@ -74,20 +66,11 @@ df_fam <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_sour <- function(x, xrefs = NULL){
-  rec_type <- "sour"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "sour")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     originator = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "AUTH")), FUN.VALUE = character(1)),
     title = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "TITL")), FUN.VALUE = character(1)),
     repo_xref = vapply(rec_list, \(lines) find_ged_values(lines, "REPO") |>
@@ -102,20 +85,11 @@ df_sour <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_repo <- function(x, xrefs = NULL){
-  rec_type <- "repo"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "repo")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     name = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
     address = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "ADDR")), FUN.VALUE = character(1)),
     last_modified = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
@@ -128,20 +102,11 @@ df_repo <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_media <- function(x, xrefs = NULL){
-  rec_type <- "media"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "media")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     num_files = vapply(rec_list, \(lines) length(find_ged_values(lines, "FILE")), FUN.VALUE = integer(1)),
     paths = vapply(rec_list, \(lines) find_ged_values(lines, "FILE") |>
                      paste(collapse = ";"), FUN.VALUE = character(1)),
@@ -155,20 +120,11 @@ df_media <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_note <- function(x, xrefs = NULL){
-  rec_type <- "note"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "note")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     language = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "LANG")), FUN.VALUE = character(1)),
     last_modified = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
   )
@@ -180,20 +136,11 @@ df_note <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_subm <- function(x, xrefs = NULL){
-  rec_type <- "subm"
-  rec_list <- S7::prop(x, rec_type)
-  xrefs <- xrefs %||% names(rec_list)
-  invalid <- setdiff(xrefs, names(rec_list))
-  if(length(invalid) > 0){
-    xrefs <- setdiff(xrefs, invalid)
-    warning("The following xrefs are not of the right type: ", toString(invalid))
-  }
-  if(length(xrefs) == 0) return(NULL)
-  
-  rec_list <- rec_list[xrefs]
+  rec_list <- get_records(x, xrefs, "subm")
+  if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
-    xref = xrefs,
+    xref = names(rec_list),
     name = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "NAME")), FUN.VALUE = character(1)),
     address = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "ADDR")), FUN.VALUE = character(1)),
     last_modified = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("CHAN","DATE"))), FUN.VALUE = character(1))
