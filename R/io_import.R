@@ -168,3 +168,22 @@ add_missing_xrefs <- function(gedcom){
   
   gedcom
 }
+
+validate_gedcom <- function(filepath = file.choose()){
+  
+  #pb <- testthat::ProgressReporter$new()
+  #pb$start_context("Header")
+  ged <- read_gedcom(filepath)
+  
+  #pb$end_context("Header")
+  
+  for(rec_type in names(ged@c_xrefs)){
+    #pb$start_context(rec_type)
+    for(xref in ged@c_xrefs[[rec_type]]){
+      rec <- pull_record(ged, xref)
+    }
+    #pb$end_context(rec_type)
+  }
+  
+  NULL
+}
