@@ -7,30 +7,30 @@ is_media_rec <- function(record) S7::S7_inherits(record, MediaRecord)
 is_note_rec <- function(record) S7::S7_inherits(record, NoteRecord)
 is_subm_rec <- function(record) S7::S7_inherits(record, SubmitterRecord)
 
-is_indi_xref <- function(x, xref) xref %in% x@c_xrefs[["indi"]]
-is_fam_xref <- function(x, xref) xref %in% x@c_xrefs[["fam"]]
-is_sour_xref <- function(x, xref) xref %in% x@c_xrefs[["sour"]]
-is_repo_xref <- function(x, xref) xref %in% x@c_xrefs[["repo"]]
-is_media_xref <- function(x, xref) xref %in% x@c_xrefs[["media"]]
-is_note_xref <- function(x, xref) xref %in% x@c_xrefs[["note"]]
-is_subm_xref <- function(x, xref) xref %in% x@c_xrefs[["subm"]]
+is_indi_xref <- function(x, xref) xref %in% x@records@XREFS[["INDI"]]
+is_fam_xref <- function(x, xref) xref %in% x@records@XREFS[["FAM"]]
+is_sour_xref <- function(x, xref) xref %in% x@records@XREFS[["SOUR"]]
+is_repo_xref <- function(x, xref) xref %in% x@records@XREFS[["REPO"]]
+is_media_xref <- function(x, xref) xref %in% x@records@XREFS[["OBJE"]]
+is_note_xref <- function(x, xref) xref %in% x@records@XREFS[["SNOTE"]]
+is_subm_xref <- function(x, xref) xref %in% x@records@XREFS[["SUBM"]]
 
 get_record_type <- function(record){
   
   if(S7::S7_inherits(record, IndividualRecord)){
-    "indi"
+    "INDI"
   } else if(S7::S7_inherits(record, FamilyRecord)){
-    "fam"
+    "FAM"
   } else if(S7::S7_inherits(record, SourceRecord)){
-    "sour"
+    "SOUR"
   } else if(S7::S7_inherits(record, RepositoryRecord)){
-    "repo"
+    "REPO"
   } else if(S7::S7_inherits(record, MediaRecord)){
-    "media"
+    "OBJE"
   } else if(S7::S7_inherits(record, NoteRecord)){
-    "note"
+    "SNOTE"
   } else if(S7::S7_inherits(record, SubmitterRecord)){
-    "subm"
+    "SUBM"
   } else {
     stop("Unrecognised record")
   }

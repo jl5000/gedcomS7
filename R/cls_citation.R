@@ -29,7 +29,7 @@
 #' @returns An S7 object representing a GEDCOM SOURCE_CITATION.
 #' @export
 #' @tests
-#' expect_snapshot_value(SourceCitation()@c_as_ged, "json2")
+#' expect_snapshot_value(SourceCitation()@GEDCOM, "json2")
 #' expect_error(SourceCitation("@1@", date = ""),
 #'              regexp = "A blank @date requires a @date_phrase")
 #' expect_error(SourceCitation("@1@", fact_phrase = "phrase"),
@@ -58,7 +58,7 @@
 #'                                      media_links = MediaLink("@34E@"),
 #'                                      note_xrefs = c("@WER@",
 #'                                                    "@4334@"),
-#'                                      notes = c("these are","some notes"))@c_as_ged, "json2")
+#'                                      notes = c("these are","some notes"))@GEDCOM, "json2")
 SourceCitation <- S7::new_class(
   "SourceCitation",
   properties = list(
@@ -147,7 +147,7 @@ SourceCitation <- S7::new_class(
                                for(inp in value) if(is.character(inp)) return(inp)
                              }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

@@ -38,13 +38,13 @@ S7::method(print, GedcomS7) <- function(x, ...){
   }
  
   cat(eol)
-  to_console("Submitters:", length(x@subm), exdent)
-  to_console("Individuals:", length(x@indi), exdent)
-  to_console("Families:", length(x@fam), exdent)
-  to_console("Sources:", length(x@sour), exdent)
-  to_console("Repositories:", length(x@repo), exdent)
-  to_console("Multimedia:", length(x@media), exdent)
-  to_console("Notes:", length(x@note), exdent)
+  to_console("Submitters:", length(x@records@RAW@SUBM), exdent)
+  to_console("Individuals:", length(x@records@RAW@INDI), exdent)
+  to_console("Families:", length(x@records@RAW@FAM), exdent)
+  to_console("Sources:", length(x@records@RAW@SOUR), exdent)
+  to_console("Repositories:", length(x@records@RAW@REPO), exdent)
+  to_console("Multimedia:", length(x@records@RAW@OBJE), exdent)
+  to_console("Notes:", length(x@records@RAW@SNOTE), exdent)
 
 }
 

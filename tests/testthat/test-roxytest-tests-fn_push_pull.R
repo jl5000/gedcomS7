@@ -22,20 +22,20 @@ test_that("Function pull_record() @ L34", {
   ged <- new_gedcom() |> 
            push_record(IndividualRecord(sex = "M")) |> 
            suppressMessages()
-  ged@indi[[1]] <- c(ged@indi[[1]], "1 _FRE Wow", "2 _ERR No")
+  ged@records@RAW@INDI[[1]] <- c(ged@records@RAW@INDI[[1]], "1 _FRE Wow", "2 _ERR No")
   expect_warning(pull_record(ged, "@I1@"),
                  regexp = "The following lines could not be parsed.+Wow.+No")
 })
 
 
-test_that("Function push_record() @ L131", {
+test_that("Function push_record() @ L133", {
   ged <- new_gedcom()
   ged@update_change_dates <- TRUE
   ged@add_creation_dates <- TRUE
   expect_message(ged <- push_record(ged, IndividualRecord()),
                  regexp = "New Individual record added with xref @I1@")
-  expect_true("1 CHAN" %in% ged@indi[[1]])
-  expect_true("1 CREA" %in% ged@indi[[1]])
+  expect_true("1 CHAN" %in% ged@records@RAW@INDI[[1]])
+  expect_true("1 CREA" %in% ged@records@RAW@INDI[[1]])
   
   ged <- new_gedcom()
   
@@ -52,8 +52,8 @@ test_that("Function push_record() @ L131", {
     ged <- push_record(ged, IndividualRecord(fam_links_chil = "@F1@"))
   })
   
-  expect_true("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
-  expect_true("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
+  expect_true("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
+  expect_true("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
   
   suppressMessages({
     rec_F1 <- pull_record(ged, "@F1@")
@@ -65,11 +65,11 @@ test_that("Function push_record() @ L131", {
     ged <- push_record(ged, rec_F2)
   })
   
-  expect_true("1 FAMC @F1@" %in% ged@indi[["@I1@"]])
-  expect_true("1 FAMS @F2@" %in% ged@indi[["@I2@"]])
-  expect_false("1 FAMC @F1@" %in% ged@indi[["@I2@"]])
-  expect_false("1 FAMS @F2@" %in% ged@indi[["@I1@"]])
-  expect_false("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
-  expect_false("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
+  expect_true("1 FAMC @F1@" %in% ged@records@RAW@INDI[["@I1@"]])
+  expect_true("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I2@"]])
+  expect_false("1 FAMC @F1@" %in% ged@records@RAW@INDI[["@I2@"]])
+  expect_false("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I1@"]])
+  expect_false("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
+  expect_false("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
 })
 

@@ -7,8 +7,8 @@
 #' @returns A vector of allowed values.
 #' @export
 val_record_types <- function(){
-  c(Individual = "indi", Family = "fam", Source = "sour", Submitter = "subm",
-    Repository = "repo", Multimedia = "media", Note = "note")
+  c(Individual = "INDI", Family = "FAM", Source = "SOUR", Submitter = "SUBM",
+    Repository = "REPO", Multimedia = "OBJE", Note = "SNOTE")
 }
 
 #' @rdname lookups

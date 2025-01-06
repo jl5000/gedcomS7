@@ -17,22 +17,22 @@
 #' @tests
 #' expect_error(Address(), "@full has too few elements")
 #' expect_error(Address(""), "@full has too few characters")
-#' expect_snapshot_value(Address("street\ncity\nstate")@c_as_ged, "json2")
+#' expect_snapshot_value(Address("street\ncity\nstate")@GEDCOM, "json2")
 #' expect_snapshot_value(Address("street\ncity\nstate",
-#'                                     city = "this city")@c_as_ged, "json2")
+#'                                     city = "this city")@GEDCOM, "json2")
 #' expect_snapshot_value(Address("street\ncity\nstate",
-#'                                     state = "this state")@c_as_ged, "json2")
+#'                                     state = "this state")@GEDCOM, "json2")
 #' expect_snapshot_value(Address("street\ncity\nstate",
-#'                                     country = "this country")@c_as_ged, "json2")
+#'                                     country = "this country")@GEDCOM, "json2")
 #' expect_snapshot_value(Address("street\ncity\nstate",
 #'                                     city = "this city",
 #'                                     state = "this state",
-#'                                     country = "this country")@c_as_ged, "json2")
+#'                                     country = "this country")@GEDCOM, "json2")
 #' expect_snapshot_value(Address("street\ncity\nstate",
 #'                                     city = "this city",
 #'                                     state = "this state",
 #'                                     country = "this country",
-#'                                     postal_code = "81309")@c_as_ged, "json2")
+#'                                     postal_code = "81309")@GEDCOM, "json2")
 Address <- S7::new_class(
   "Address",
   properties = list(
@@ -69,10 +69,10 @@ Address <- S7::new_class(
                               chk_input_size(value, 0, 1, 1)
                             }),
     
-    c_as_val = S7::new_property(S7::class_character, 
+    GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@full),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

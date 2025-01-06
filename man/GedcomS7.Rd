@@ -19,14 +19,7 @@ GedcomS7(
   note_xrefs = character(0),
   update_change_dates = FALSE,
   add_creation_dates = FALSE,
-  subm = list(),
-  indi = list(),
-  fam = list(),
-  sour = list(),
-  repo = list(),
-  media = list(),
-  note = list(),
-  xref_prefixes = character(0)
+  records = GEDCOMRecords()
 )
 }
 \arguments{
@@ -68,15 +61,8 @@ This happens when the record is pushed to the gedcom object.}
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
 
-\item{subm, indi, fam, sour, repo, media, note}{A named list containing character vector representations
-of GEDCOM records. Do not edit these parameters directly.}
-
-\item{xref_prefixes}{A named vector containing any alphanumeric string (up to 6 characters long)
-which will precede the number given to identify new records (of which there are 7 types).
-This vector must be of a particular length with specific names. Default value:
-c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
-The order that these records appear in the vector will also dictate the order in which records
-will appear in the exported file.}
+\item{records}{An S7 object whose properties contain information about all records. Do not edit
+properties in capitals directly. See Details for more information.}
 }
 \value{
 An S7 object representing a GEDCOM file.
@@ -84,4 +70,24 @@ An S7 object representing a GEDCOM file.
 \description{
 You shouldn't need to use this directly to create new GEDCOM objects. Instead, use
 \code{new_gedcom()} which populates relevant defaults.
+}
+\details{
+All information about records is contained in the \verb{@records} property.
+
+The \verb{@prefixes} property is a named vector containing any alphanumeric string (up to 6 characters long)
+which will precede the number given to identify new records, of which there are currently 7 types:
+
+Individual (INDI)
+Family (FAM)
+Source (SOUR)
+Repository (REPO)
+Multimedia (OBJE)
+Note (SNOTE)
+Submitter (SUBM)
+
+This vector must be of a particular length with specific names. For example:
+c(SUBM = "U", INDI = "I", FAM = "F", SOUR = "S", REPO = "R", OBJE = "M", SNOTE = "N").
+
+The order that these records appear in the vector will also dictate the order in which records
+will appear in the exported file.
 }

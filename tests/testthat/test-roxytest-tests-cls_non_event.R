@@ -16,6 +16,6 @@ test_that("Function NonEvent() @ L25", {
                                         date_period = DatePeriod("16 JUN 1980","1994"),
                                         date_phrase = "While parents alive",
                                         notes = "Note 1",
-                                        citations = "@S98@")@c_as_ged, "json2")
+                                        citations = "@S98@")@GEDCOM, "json2")
 })
 

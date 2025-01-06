@@ -2,15 +2,15 @@
 
 # File R/cls_gedcom.R: @tests
 
-test_that("Function GedcomS7() @ L284", {
+test_that("Function GedcomS7() @ L379", {
   maximal <- test_path("maximal70.ged")
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
   ged_raw <- readLines(maximal)
   ged_parsed <- read_gedcom(maximal)
-  ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                                 note = "N", sour = "S", subm = "U")
-  ged_raw2 <- ged_parsed@c_as_ged
+  ged_parsed@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+                                   SNOTE = "N", SOUR = "S", SUBM = "U")
+  ged_raw2 <- ged_parsed@GEDCOM
   
   expect_equal(ged_raw, ged_raw2)
 })

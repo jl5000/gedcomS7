@@ -7,20 +7,20 @@ test_that("Function write_gedcom() @ L37", {
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
   ged <- read_gedcom(maximal)
-  ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                         note = "N", sour = "S", subm = "U")
+  ged@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+                         SNOTE = "N", SOUR = "S", SUBM = "U")
                                  
   expect_error(write_gedcom(ged, "my_family.txt"), 
                regexp = "Output is not being saved as a GEDCOM file")
                
   roundtrip1 <- write_gedcom(ged, "maximal.ged")
   roundtrip2 <- read_gedcom("maximal.ged")
-  roundtrip2@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                         note = "N", sour = "S", subm = "U")
+  roundtrip2@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+                         SNOTE = "N", SOUR = "S", SUBM = "U")
   
   expect_identical(
-    ged@c_as_ged,
-    roundtrip2@c_as_ged
+    ged@GEDCOM,
+    roundtrip2@GEDCOM
   )
   file.remove("maximal.ged")
 })

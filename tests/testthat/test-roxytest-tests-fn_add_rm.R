@@ -9,27 +9,27 @@ test_that("Function add_parents() @ L79", {
                     suppressMessages()
   ged_with_parents <- add_parents(ged_no_parents, "@I1@") |> 
                     suppressMessages()
-  expect_true("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
-  expect_true("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
-  expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 HUSB @I2@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 WIFE @I3@" %in% ged_with_parents@fam[["@F1@"]])
+  expect_true("1 SEX M" %in% ged_with_parents@records@RAW@INDI[["@I2@"]])
+  expect_true("1 SEX F" %in% ged_with_parents@records@RAW@INDI[["@I3@"]])
+  expect_true("1 CHIL @I1@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 HUSB @I2@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I3@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
   
   ged_with_parents <- add_parents(ged_no_parents, "@I1@", inc_sex = FALSE) |> 
                     suppressMessages()
-  expect_false("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
-  expect_false("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
+  expect_false("1 SEX M" %in% ged_with_parents@records@RAW@INDI[["@I2@"]])
+  expect_false("1 SEX F" %in% ged_with_parents@records@RAW@INDI[["@I3@"]])
   
   ged_with_parents <- add_parents(ged_no_parents, "@I1@",
                                   fath_name = "Joe /Bloggs/",
                                   moth_name = "Jess /Bloggs/") |> 
                     suppressMessages()
-  expect_true("1 NAME Joe /Bloggs/" %in% ged_with_parents@indi[["@I2@"]])
-  expect_true("1 NAME Jess /Bloggs/" %in% ged_with_parents@indi[["@I3@"]])
+  expect_true("1 NAME Joe /Bloggs/" %in% ged_with_parents@records@RAW@INDI[["@I2@"]])
+  expect_true("1 NAME Jess /Bloggs/" %in% ged_with_parents@records@RAW@INDI[["@I3@"]])
   
   ged_with_parents2 <- add_parents(ged_with_parents, "@I1@") |> 
                     suppressMessages()
-  expect_equal(ged_with_parents@c_as_ged, ged_with_parents2@c_as_ged)
+  expect_equal(ged_with_parents@GEDCOM, ged_with_parents2@GEDCOM)
   expect_warning(add_parents(ged_with_parents, "@I1@", fath_name = "Me"),
                  regexp = "^Father name not used")
   expect_warning(add_parents(ged_with_parents, "@I1@", moth_name = "Me"),
@@ -43,11 +43,11 @@ test_that("Function add_parents() @ L79", {
   )
   ged_with_parents <- add_parents(ged_one_parent_f, "@I1@") |> 
                     suppressMessages()
-  expect_true("1 SEX M" %in% ged_with_parents@indi[["@I2@"]])
-  expect_true("1 SEX F" %in% ged_with_parents@indi[["@I3@"]])
-  expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 HUSB @I2@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 WIFE @I3@" %in% ged_with_parents@fam[["@F1@"]])
+  expect_true("1 SEX M" %in% ged_with_parents@records@RAW@INDI[["@I2@"]])
+  expect_true("1 SEX F" %in% ged_with_parents@records@RAW@INDI[["@I3@"]])
+  expect_true("1 CHIL @I1@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 HUSB @I2@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I3@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
   
   ged_one_parent_m <- suppressMessages(
     ged |> 
@@ -57,11 +57,11 @@ test_that("Function add_parents() @ L79", {
   )
   ged_with_parents <- add_parents(ged_one_parent_m, "@I1@") |> 
                     suppressMessages()
-  expect_true("1 SEX F" %in% ged_with_parents@indi[["@I2@"]])
-  expect_true("1 SEX M" %in% ged_with_parents@indi[["@I3@"]])
-  expect_true("1 CHIL @I1@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 WIFE @I2@" %in% ged_with_parents@fam[["@F1@"]])
-  expect_true("1 HUSB @I3@" %in% ged_with_parents@fam[["@F1@"]])
+  expect_true("1 SEX F" %in% ged_with_parents@records@RAW@INDI[["@I2@"]])
+  expect_true("1 SEX M" %in% ged_with_parents@records@RAW@INDI[["@I3@"]])
+  expect_true("1 CHIL @I1@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I2@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
+  expect_true("1 HUSB @I3@" %in% ged_with_parents@records@RAW@FAM[["@F1@"]])
 })
 
 
@@ -73,15 +73,15 @@ test_that("Function add_spouse() @ L195", {
   ged_with_spouse <- add_spouse(ged_no_spouse, "@I1@") |> 
                     suppressMessages()
   
-  expect_true("1 SEX U" %in% ged_with_spouse@indi[["@I2@"]])
-  expect_true("1 HUSB @I1@" %in% ged_with_spouse@fam[["@F1@"]])
-  expect_true("1 WIFE @I2@" %in% ged_with_spouse@fam[["@F1@"]])
+  expect_true("1 SEX U" %in% ged_with_spouse@records@RAW@INDI[["@I2@"]])
+  expect_true("1 HUSB @I1@" %in% ged_with_spouse@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I2@" %in% ged_with_spouse@records@RAW@FAM[["@F1@"]])
   
   ged_with_spouse <- add_spouse(ged_no_spouse, "@I1@",
                                 spou_name = "Joe /Bloggs/") |> 
                     suppressMessages()
   
-  expect_true("1 NAME Joe /Bloggs/" %in% ged_with_spouse@indi[["@I2@"]])
+  expect_true("1 NAME Joe /Bloggs/" %in% ged_with_spouse@records@RAW@INDI[["@I2@"]])
   
   ged_no_spouse_fam <- suppressMessages(
     ged |> 
@@ -93,16 +93,16 @@ test_that("Function add_spouse() @ L195", {
   ged_with_spouse_fam <- add_spouse(ged_no_spouse_fam, "@I1@", fam_xref = "@F1@") |> 
                     suppressMessages()
   
-  expect_equal(length(ged_with_spouse_fam_new@fam), 2)
-  expect_equal(length(ged_with_spouse_fam@fam), 1)
-  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@fam[["@F1@"]])
-  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@fam[["@F2@"]])
+  expect_equal(length(ged_with_spouse_fam_new@records@RAW@FAM), 2)
+  expect_equal(length(ged_with_spouse_fam@records@RAW@FAM), 1)
+  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@records@RAW@FAM[["@F1@"]])
+  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam_new@records@RAW@FAM[["@F2@"]])
   
-  expect_false("1 WIFE @I2@" %in% ged_with_spouse_fam_new@fam[["@F1@"]])
-  expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam_new@fam[["@F2@"]])
+  expect_false("1 WIFE @I2@" %in% ged_with_spouse_fam_new@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam_new@records@RAW@FAM[["@F2@"]])
   
-  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam@fam[["@F1@"]])
-  expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam@fam[["@F1@"]])
+  expect_true("1 HUSB @I1@" %in% ged_with_spouse_fam@records@RAW@FAM[["@F1@"]])
+  expect_true("1 WIFE @I2@" %in% ged_with_spouse_fam@records@RAW@FAM[["@F1@"]])
 })
 
 

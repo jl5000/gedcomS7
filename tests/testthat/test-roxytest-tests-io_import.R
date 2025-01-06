@@ -8,6 +8,6 @@ test_that("Function read_gedcom() @ L17", {
                                    fileext = ".ged")
   length_maximal <- length(readLines(maximal))
   ged <- read_gedcom(maximal)
-  expect_equal(length(ged@c_as_ged), length_maximal)
+  expect_equal(length(ged@GEDCOM), length_maximal)
 })
 

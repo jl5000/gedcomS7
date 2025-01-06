@@ -8,17 +8,17 @@ test_that("Function Record() @ L21", {
                                    fileext = ".ged")
   ged <- read_gedcom(maximal)
   
-  for(rec_type in names(ged@xref_prefixes)){
-    xrefs <- ged@c_xrefs[[rec_type]]
+  for(rec_type in names(ged@records@prefixes)){
+    xrefs <- ged@records@XREFS[[rec_type]]
     
     for(xref in xrefs){
-      rec_raw <- S7::prop(ged, rec_type)[[xref]]
+      rec_raw <- S7::prop(ged@records@RAW, rec_type)[[xref]]
       
       # Remove extension tags
       rec_raw <- rec_raw[grepl(anchor_it(reg_tag()), parse_line_tag(rec_raw))]
       rec_parsed <- suppressWarnings(pull_record(ged, xref))
       
-      expect_equal(rec_parsed@c_as_ged, rec_raw)
+      expect_equal(rec_parsed@GEDCOM, rec_raw)
     }
   }
 })

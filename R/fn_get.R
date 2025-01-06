@@ -16,7 +16,7 @@ get_fam_as_child <- function(x,
   
   check_indi_rec(x, xref)
   
-  indi_ged <- x@indi[[xref]]
+  indi_ged <- x@records@RAW@INDI[[xref]]
   all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
     remove_void_xrefs()
   
@@ -42,7 +42,7 @@ get_fam_as_spouse <- function(x, xref){
   
   check_indi_rec(x, xref)
   
-  indi_ged <- x@indi[[xref]]
+  indi_ged <- x@records@RAW@INDI[[xref]]
   
   find_ged_values(indi_ged, "FAMS") |> 
     remove_void_xrefs()
@@ -60,7 +60,7 @@ get_fam_partners <- function(x, xref){
   
   check_fam_rec(x, xref)
   
-  find_ged_values(x@fam[[xref]], "HUSB|WIFE") |> 
+  find_ged_values(x@records@RAW@FAM[[xref]], "HUSB|WIFE") |> 
     remove_void_xrefs()
 }
 
@@ -77,7 +77,7 @@ get_fam_children <- function(x,
   
   check_fam_rec(x, xref)
   
-  fam_ged <- x@fam[[xref]]
+  fam_ged <- x@records@RAW@FAM[[xref]]
   all_chil_xref <- find_ged_values(fam_ged, "CHIL") |> 
     remove_void_xrefs()
   
@@ -85,7 +85,7 @@ get_fam_children <- function(x,
   
   ped_chil_xref <- character()
   for(chil_xref in all_chil_xref){
-    chil_ged <- x@indi[[chil_xref]]
+    chil_ged <- x@records@RAW@INDI[[chil_xref]]
     chil_links <- parse_family_links(chil_ged, as_spouse = FALSE)
     
     for(lnk in chil_links){
@@ -205,7 +205,7 @@ get_indi_parents_fathmoth <- function(x,
   for(xref in famc_xref){
     spou_xref <- c(
       spou_xref,
-      find_ged_values(x@fam[[xref]], tag)
+      find_ged_values(x@records@RAW@FAM[[xref]], tag)
     )
   }
   unique(spou_xref) |> 
@@ -309,8 +309,9 @@ get_supporting_recs <- function(x,
   if(length(tags) == 0) return(character())
   
   vals <- lapply(xrefs, \(xref){
-    rec_lines <- c(x@indi, x@fam, x@sour,
-                   x@repo, x@media, x@note)[[xref]]
+    rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
+                   x@records@RAW@SOUR, x@records@RAW@REPO, 
+                   x@records@RAW@OBJE, x@records@RAW@SNOTE)[[xref]]
     
     tgs <- parse_line_tag(rec_lines)
     parse_line_value(rec_lines)[tgs %in% tags]
@@ -339,9 +340,9 @@ get_supporting_recs <- function(x,
 #' @export
 get_unused_recs <- function(x){
   
-  ged <- x@c_as_ged
+  ged <- x@GEDCOM
   
-  xrefs <- unlist(x@c_xrefs)
+  xrefs <- unlist(x@records@XREFS)
   vals <- parse_line_value(ged)
   xref_vals <- vals[grep(reg_xref(TRUE), vals)]
 

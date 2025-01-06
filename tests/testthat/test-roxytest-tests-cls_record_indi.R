@@ -13,15 +13,15 @@ test_that("Function IndividualRecord() @ L53", {
                IndividualEvent("BIRT", date = "2006", place = "Colorado, USA"),
                IndividualEvent("DEAT", date = "18 JUN 2020", place = "London, UK"),
                IndividualEvent("DEAT", date = "2021", place = "UK"))
-  expect_equal(IndividualRecord(pers_names = nms)@c_primary_name, "Joe Bloggs")
-  expect_equal(IndividualRecord(pers_names = nms)@c_all_names, c("Joe Bloggs","Joseph Bloggs"))
+  expect_equal(IndividualRecord(pers_names = nms)@PRIMARY_NAME, "Joe Bloggs")
+  expect_equal(IndividualRecord(pers_names = nms)@ALL_NAMES, c("Joe Bloggs","Joseph Bloggs"))
   birt_deat <- IndividualRecord(facts = fcts)
-  expect_equal(birt_deat@c_birth_date, "2005")
-  expect_equal(birt_deat@c_birth_place, "USA")
-  expect_equal(birt_deat@c_death_date, "18 JUN 2020")
-  expect_equal(birt_deat@c_death_place, "London, UK")
+  expect_equal(birt_deat@BIRTH_DATE, "2005")
+  expect_equal(birt_deat@BIRTH_PLACE, "USA")
+  expect_equal(birt_deat@DEATH_DATE, "18 JUN 2020")
+  expect_equal(birt_deat@DEATH_PLACE, "London, UK")
   expect_snapshot_value(IndividualRecord("@I4@", sex = "M", facts = fcts, pers_names = nms,
                                           fam_links_chil = "@F132@", 
-                                          fam_links_spou = "@F67@")@c_as_ged, "json2")
+                                          fam_links_spou = "@F67@")@GEDCOM, "json2")
 })
 

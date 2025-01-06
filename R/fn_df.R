@@ -1,6 +1,6 @@
 
 get_records <- function(x, xrefs, rec_type){
-  rec_list <- S7::prop(x, rec_type)
+  rec_list <- S7::prop(x@records@RAW, rec_type)
   xrefs <- xrefs %||% names(rec_list)
   invalid <- setdiff(xrefs, names(rec_list))
   if(length(invalid) > 0){
@@ -19,7 +19,7 @@ get_records <- function(x, xrefs, rec_type){
 #' @returns A dataframe summarising a record on each row.
 #' @export
 df_indi <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "indi")
+  rec_list <- get_records(x, xrefs, "INDI")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -45,7 +45,7 @@ df_indi <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_fam <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "fam")
+  rec_list <- get_records(x, xrefs, "FAM")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -66,7 +66,7 @@ df_fam <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_sour <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "sour")
+  rec_list <- get_records(x, xrefs, "SOUR")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -85,7 +85,7 @@ df_sour <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_repo <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "repo")
+  rec_list <- get_records(x, xrefs, "REPO")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -102,7 +102,7 @@ df_repo <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_media <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "media")
+  rec_list <- get_records(x, xrefs, "OBJE")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -120,7 +120,7 @@ df_media <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_note <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "note")
+  rec_list <- get_records(x, xrefs, "SNOTE")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -136,7 +136,7 @@ df_note <- function(x, xrefs = NULL){
 #' @rdname df_indi
 #' @export
 df_subm <- function(x, xrefs = NULL){
-  rec_list <- get_records(x, xrefs, "subm")
+  rec_list <- get_records(x, xrefs, "SUBM")
   if(length(rec_list) == 0) return(NULL)
   
   df <- data.frame(
@@ -168,8 +168,8 @@ df_indi_facts <- function(x, xref){
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
     desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
-    date = vapply(fcts, \(fct) chronify(fct@c_fact_date), FUN.VALUE = character(1)),
-    place = vapply(fcts, \(fct) chronify(fct@c_fact_location), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@FACT_DATE), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@FACT_LOCATION), FUN.VALUE = character(1)),
     age = vapply(fcts, \(fct) chronify(fct@age), FUN.VALUE = character(1))
   )
   
@@ -197,8 +197,8 @@ df_fam_facts <- function(x, xref){
     type = vapply(fcts, \(fct) chronify(fct@fact_type), FUN.VALUE = character(1)),
     val = vapply(fcts, \(fct) chronify(fct@fact_val), FUN.VALUE = character(1)),
     desc = vapply(fcts, \(fct) chronify(fct@fact_desc), FUN.VALUE = character(1)),
-    date = vapply(fcts, \(fct) chronify(fct@c_fact_date), FUN.VALUE = character(1)),
-    place = vapply(fcts, \(fct) chronify(fct@c_fact_location), FUN.VALUE = character(1)),
+    date = vapply(fcts, \(fct) chronify(fct@FACT_DATE), FUN.VALUE = character(1)),
+    place = vapply(fcts, \(fct) chronify(fct@FACT_LOCATION), FUN.VALUE = character(1)),
     husb_age = vapply(fcts, \(fct) chronify(fct@husb_age), FUN.VALUE = character(1)),
     wife_age = vapply(fcts, \(fct) chronify(fct@wife_age), FUN.VALUE = character(1))
   )

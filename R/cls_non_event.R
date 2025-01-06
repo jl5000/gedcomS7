@@ -21,7 +21,7 @@
 #'                                       date_period = DatePeriod("16 JUN 1980","1994"),
 #'                                       date_phrase = "While parents alive",
 #'                                       notes = "Note 1",
-#'                                       citations = "@S98@")@c_as_ged, "json2")
+#'                                       citations = "@S98@")@GEDCOM, "json2")
 NonEvent <- S7::new_class(
   "NonEvent",
   properties = list(
@@ -67,7 +67,7 @@ NonEvent <- S7::new_class(
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

@@ -18,14 +18,14 @@
 #' @returns An S7 object representing a GEDCOM MULTIMEDIA_LINK.
 #' @export
 #' @tests
-#' expect_snapshot_value(MediaLink()@c_as_ged, "json2")
+#' expect_snapshot_value(MediaLink()@GEDCOM, "json2")
 #' expect_error(MediaLink("@O4"), regexp = "@media_xref is in an invalid format")
-#' expect_snapshot_value(MediaLink("@1@")@c_as_ged, "json2")
+#' expect_snapshot_value(MediaLink("@1@")@GEDCOM, "json2")
 #' expect_snapshot_value(MediaLink("@1@", 
-#'                                        title = "new title")@c_as_ged, "json2")
+#'                                        title = "new title")@GEDCOM, "json2")
 #' expect_snapshot_value(MediaLink("@1@", 
 #'                                        title = "new title",
-#'                                        top = 5, left = 200)@c_as_ged, "json2")
+#'                                        top = 5, left = 200)@GEDCOM, "json2")
 MediaLink <- S7::new_class(
   "MediaLink",
   properties = list(
@@ -69,7 +69,7 @@ MediaLink <- S7::new_class(
                                )
                              }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

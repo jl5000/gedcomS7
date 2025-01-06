@@ -18,7 +18,7 @@
 #'                                         nickname = c("J","Jock"),
 #'                                         surname_prefix = "Mc",
 #'                                         surname = "Bloggs",
-#'                                         suffix = "Jr")@c_as_ged, "json2")
+#'                                         suffix = "Jr")@GEDCOM, "json2")
 PersonalNamePieces <- S7::new_class(
   "PersonalNamePieces",
   properties = list(
@@ -47,7 +47,7 @@ PersonalNamePieces <- S7::new_class(
                                 chk_input_size(value, min_val = 1)
                               }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -72,10 +72,10 @@ PersonalNamePieces <- S7::new_class(
 #' @export
 #' @tests
 #' expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
-#'                                                language = "en")@c_as_ged, "json2")
+#'                                                language = "en")@GEDCOM, "json2")
 #' expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
 #'                                                language = "en",
-#'                                                name_pieces = PersonalNamePieces(nickname = "JJ"))@c_as_ged, "json2")
+#'                                                name_pieces = PersonalNamePieces(nickname = "JJ"))@GEDCOM, "json2")
 PersonalNameTran <- S7::new_class(
   "PersonalNameTran",
   properties = list(
@@ -94,7 +94,7 @@ PersonalNameTran <- S7::new_class(
                                      chk_input_size(value, 0, 1)
                                    }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -136,7 +136,7 @@ PersonalNameTran <- S7::new_class(
 #'                                                                                        language = "it"),
 #'                                           notes = "This is a note",
 #'                                           note_xrefs = c("@IUY@","@733@"),
-#'                                           citations = c("@S1@","@S3@","@S7@"))@c_as_ged, "json2")
+#'                                           citations = c("@S1@","@S3@","@S7@"))@GEDCOM, "json2")
 PersonalName <- S7::new_class(
   "PersonalName",
   properties = list(
@@ -199,10 +199,10 @@ PersonalName <- S7::new_class(
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
-    c_as_val = S7::new_property(S7::class_character, 
+    GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@pers_name),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
