@@ -165,9 +165,3 @@ add_missing_xrefs <- function(gedcom){
   gedcom
 }
 
-validate_gedcom <- function(filepath = file.choose()){
-  
-  testthat::test_file("tests/testthat/validate-gedcom-file.R",
-                      reporter = testthat::ProgressReporter)
-  
-}
