@@ -134,7 +134,7 @@ complexity, a personal name is usually defined using a
 <span><span class="co">#&gt;  .. @ surname_prefix: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ surname       : chr "Skywalker"</span></span>
 <span><span class="co">#&gt;  .. @ suffix        : chr(0) </span></span>
-<span><span class="co">#&gt;  .. @ c_as_ged      : chr [1:2] "0 GIVN Anakin" "0 SURN Skywalker"</span></span>
+<span><span class="co">#&gt;  .. @ GEDCOM        : chr [1:2] "0 GIVN Anakin" "0 SURN Skywalker"</span></span>
 <span><span class="co">#&gt;  @ name_translations: list()</span></span>
 <span><span class="co">#&gt;  @ notes            :List of 1</span></span>
 <span><span class="co">#&gt;  .. $ : &lt;gedcomS7::Note&gt;</span></span>
@@ -143,11 +143,11 @@ complexity, a personal name is usually defined using a
 <span><span class="co">#&gt;  ..  ..@ media_type  : chr(0) </span></span>
 <span><span class="co">#&gt;  ..  ..@ translations: list()</span></span>
 <span><span class="co">#&gt;  ..  ..@ citations   : list()</span></span>
-<span><span class="co">#&gt;  ..  ..@ c_as_ged    : chr "0 NOTE He had this name since the death of Mace Windu."</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM      : chr "0 NOTE He had this name since the death of Mace Windu."</span></span>
 <span><span class="co">#&gt;  @ note_xrefs       : chr(0) </span></span>
 <span><span class="co">#&gt;  @ citations        : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_val         : chr "Anakin /Skywalker/"</span></span>
-<span><span class="co">#&gt;  @ c_as_ged         : chr [1:5] "0 NAME Anakin /Skywalker/" "1 TYPE BIRTH" "1 GIVN Anakin" ...</span></span>
+<span><span class="co">#&gt;  @ GEDCOM_STRING    : chr "Anakin /Skywalker/"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM           : chr [1:5] "0 NAME Anakin /Skywalker/" "1 TYPE BIRTH" "1 GIVN Anakin" ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::PersonalName&gt;</span></span>
@@ -160,12 +160,12 @@ complexity, a personal name is usually defined using a
 <span><span class="co">#&gt;  ..  ..@ pers_name  : chr "Dark Father"</span></span>
 <span><span class="co">#&gt;  ..  ..@ language   : chr "en"</span></span>
 <span><span class="co">#&gt;  ..  ..@ name_pieces: NULL</span></span>
-<span><span class="co">#&gt;  ..  ..@ c_as_ged   : chr [1:2] "0 TRAN Dark Father" "1 LANG en"</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM     : chr [1:2] "0 TRAN Dark Father" "1 LANG en"</span></span>
 <span><span class="co">#&gt;  @ notes            : list()</span></span>
 <span><span class="co">#&gt;  @ note_xrefs       : chr(0) </span></span>
 <span><span class="co">#&gt;  @ citations        : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_val         : chr "/Darth/ Vader"</span></span>
-<span><span class="co">#&gt;  @ c_as_ged         : chr [1:5] "0 NAME /Darth/ Vader" "1 TYPE AKA" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM_STRING    : chr "/Darth/ Vader"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM           : chr [1:5] "0 NAME /Darth/ Vader" "1 TYPE AKA" ...</span></span></code></pre></div>
 <p>In the example above we have defined two names in a list of
 <code><a href="../reference/PersonalName.html">PersonalName()</a></code> objects. “Darth” has been enclosed in
 forward slashes because it is the closest thing to a family name for
@@ -185,13 +185,13 @@ defined.</p>
 <p>Generally, conflicting names are arranged in order of confidence; the
 first name is more likely to be correct.</p>
 <p>Once added to the Individual record, the property
-<code>@c_primary_name</code> will provide the primary (first) name as a
-simple character string, and <code>@c_all_names</code> will provide all
+<code>@PRIMARY_NAME</code> will provide the primary (first) name as a
+simple character string, and <code>@ALL_NAMES</code> will provide all
 names as a simple character vector.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">c_primary_name</span></span>
+<code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">PRIMARY_NAME</span></span>
 <span><span class="co">#&gt; [1] "Anakin Skywalker"</span></span>
-<span><span class="va">anakin</span><span class="op">@</span><span class="va">c_all_names</span></span>
+<span><span class="va">anakin</span><span class="op">@</span><span class="va">ALL_NAMES</span></span>
 <span><span class="co">#&gt; [1] "Anakin Skywalker" "Darth Vader"</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -303,7 +303,7 @@ to reflect this:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">skywalkers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/push_record.html">push_record</a></span><span class="op">(</span><span class="va">skywalkers</span>, <span class="va">anakin</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">skywalkers</span><span class="op">@</span><span class="va">fam</span><span class="op">[[</span><span class="st">"@F1@"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">skywalkers</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">RAW</span><span class="op">@</span><span class="va">FAM</span><span class="op">[[</span><span class="st">"@F1@"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "0 @F1@ FAM"  "1 HUSB @I1@"</span></span></code></pre></div>
 <p>Creating linkages between individuals and families in this way can
 get quite cumbersome, and so a suite of helper functions have been

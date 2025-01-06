@@ -160,39 +160,39 @@ it:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/maximal70.ged"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ged_max</span><span class="op">@</span><span class="va">xref_prefixes</span></span>
-<span><span class="co">#&gt;  subm  indi   fam  sour  repo media  note </span></span>
+<span><span class="va">ged_max</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">prefixes</span></span>
+<span><span class="co">#&gt;  SUBM  INDI   FAM  SOUR  REPO  OBJE SNOTE </span></span>
 <span><span class="co">#&gt;   "U"   "I"   "F"   "S"   "R"   "M"   "N"</span></span></code></pre></div>
 <p>The order that these records appear in the vector will also dictate
 the order in which records will appear in the exported file.</p>
-<p>The <code>@c_xrefs</code> property gives a list of record xrefs in
-the GEDCOM object, split by record type:</p>
+<p>The <code>@records@XREFS</code> property gives a list of record xrefs
+in the GEDCOM object, split by record type:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">c_xrefs</span></span>
-<span><span class="co">#&gt; $subm</span></span>
+<code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">XREFS</span></span>
+<span><span class="co">#&gt; $SUBM</span></span>
 <span><span class="co">#&gt; [1] "@U1@" "@U2@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $indi</span></span>
+<span><span class="co">#&gt; $INDI</span></span>
 <span><span class="co">#&gt; [1] "@I1@" "@I2@" "@I3@" "@I4@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $fam</span></span>
+<span><span class="co">#&gt; $FAM</span></span>
 <span><span class="co">#&gt; [1] "@F1@" "@F2@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $sour</span></span>
+<span><span class="co">#&gt; $SOUR</span></span>
 <span><span class="co">#&gt; [1] "@S1@" "@S2@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $repo</span></span>
+<span><span class="co">#&gt; $REPO</span></span>
 <span><span class="co">#&gt; [1] "@R1@" "@R2@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $media</span></span>
+<span><span class="co">#&gt; $OBJE</span></span>
 <span><span class="co">#&gt; [1] "@O1@" "@O2@"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $note</span></span>
+<span><span class="co">#&gt; $SNOTE</span></span>
 <span><span class="co">#&gt; [1] "@N1@" "@N2@"</span></span></code></pre></div>
 <p>The next xrefs of each type will therefore be:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">c_next_xref</span></span>
-<span><span class="co">#&gt;   subm   indi    fam   sour   repo  media   note </span></span>
+<code class="sourceCode R"><span><span class="va">ged_max</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">XREFS_NEXT</span></span>
+<span><span class="co">#&gt;   SUBM   INDI    FAM   SOUR   REPO   OBJE  SNOTE </span></span>
 <span><span class="co">#&gt; "@U3@" "@I5@" "@F3@" "@S3@" "@R3@" "@M1@" "@N3@"</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -218,7 +218,7 @@ unique identifier</a> (UUID). These can be generated with
 <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>, e.g.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "e1ed05dc-2a59-47e3-a580-05413f068140"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "1b36e49d-c916-4c08-9e51-44be25809085"</span></span></code></pre></div>
 <p>The <code>@ext_ids</code> must take the form of a named vector where
 the names are the URI defining the identifier. For example, to include
 the reference to an individual’s <a href="https://www.findagrave.com" class="external-link">Find a Grave’s</a> page, you would
@@ -259,7 +259,7 @@ converted into a list of <code><a href="../reference/SourceCitation.html">Source
 <span><span class="co">#&gt;  @ media_links: list()</span></span>
 <span><span class="co">#&gt;  @ note_xrefs : chr(0) </span></span>
 <span><span class="co">#&gt;  @ notes      : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged   : chr "0 SOUR @VOID@"</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM     : chr "0 SOUR @VOID@"</span></span></code></pre></div>
 <p>Without providing any information you can see that the default xref
 is “<span class="citation">@VOID</span>@”. This is a special xref value
 which indicates there is no record to link to. In this case, all
@@ -283,7 +283,7 @@ can take a character vector of Multimedia record xrefs, a
 <span><span class="co">#&gt;  @ left      : int(0) </span></span>
 <span><span class="co">#&gt;  @ height    : int(0) </span></span>
 <span><span class="co">#&gt;  @ width     : int(0) </span></span>
-<span><span class="co">#&gt;  @ c_as_ged  : chr "0 OBJE @VOID@"</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM    : chr "0 OBJE @VOID@"</span></span></code></pre></div>
 <p>Again, a <span class="citation">@VOID</span>@ xref is given by
 default and if this is retained, a <code>@title</code> should be
 provided (any title given will override the title given in the
@@ -343,7 +343,7 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ media_type  : chr "text/html"</span></span>
 <span><span class="co">#&gt;  @ translations: list()</span></span>
 <span><span class="co">#&gt;  @ citations   : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged    : chr [1:2] "0 NOTE This is one of a number of &lt;b&gt;Note&lt;/b&gt; objects. This one is HTML." ...</span></span>
+<span><span class="co">#&gt;  @ GEDCOM      : chr [1:2] "0 NOTE This is one of a number of &lt;b&gt;Note&lt;/b&gt; objects. This one is HTML." ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
@@ -352,7 +352,7 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ media_type  : chr "text/plain"</span></span>
 <span><span class="co">#&gt;  @ translations: list()</span></span>
 <span><span class="co">#&gt;  @ citations   : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged    : chr [1:3] "0 NOTE Esta es una nota" "1 MIME text/plain" "1 LANG es"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM      : chr [1:3] "0 NOTE Esta es una nota" "1 MIME text/plain" "1 LANG es"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
@@ -361,7 +361,7 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ media_type  : chr(0) </span></span>
 <span><span class="co">#&gt;  @ translations: list()</span></span>
 <span><span class="co">#&gt;  @ citations   : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged    : chr "0 NOTE This one is a character note"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM      : chr "0 NOTE This one is a character note"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
@@ -370,7 +370,7 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ media_type  : chr(0) </span></span>
 <span><span class="co">#&gt;  @ translations: list()</span></span>
 <span><span class="co">#&gt;  @ citations   : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged    : chr "0 NOTE This is an appended note"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM      : chr "0 NOTE This is an appended note"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[5]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
@@ -379,7 +379,7 @@ they will be overwritten:</p>
 <span><span class="co">#&gt;  @ media_type  : chr(0) </span></span>
 <span><span class="co">#&gt;  @ translations: list()</span></span>
 <span><span class="co">#&gt;  @ citations   : list()</span></span>
-<span><span class="co">#&gt;  @ c_as_ged    : chr "0 NOTE This is another appended note"</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM      : chr "0 NOTE This is another appended note"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="creationmodification-dates">Creation/modification dates<a class="anchor" aria-label="anchor" href="#creationmodification-dates"></a>
@@ -402,14 +402,14 @@ creation/change dates depending on the values of
 <span><span class="va">new_record</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span><span class="va">new_record</span><span class="op">@</span><span class="va">created</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::CreationDate&gt;</span></span>
-<span><span class="co">#&gt;  @ date_exact: chr "5 JAN 2025"</span></span>
+<span><span class="co">#&gt;  @ date_exact: chr "6 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ time      : chr(0) </span></span>
-<span><span class="co">#&gt;  @ c_as_ged  : chr [1:2] "0 CREA" "1 DATE 5 JAN 2025"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM    : chr [1:2] "0 CREA" "1 DATE 6 JAN 2025"</span></span>
 <span><span class="va">new_record</span><span class="op">@</span><span class="va">updated</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::ChangeDate&gt;</span></span>
-<span><span class="co">#&gt;  @ date_exact: chr "5 JAN 2025"</span></span>
+<span><span class="co">#&gt;  @ date_exact: chr "6 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ time      : chr(0) </span></span>
-<span><span class="co">#&gt;  @ c_as_ged  : chr [1:2] "0 CHAN" "1 DATE 5 JAN 2025"</span></span>
+<span><span class="co">#&gt;  @ GEDCOM    : chr [1:2] "0 CHAN" "1 DATE 6 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ note_xrefs: chr(0) </span></span>
 <span><span class="co">#&gt;  @ notes     : list()</span></span></code></pre></div>
 <p>You can add a time and/or notes to these dates, but that’s probably
