@@ -102,7 +102,7 @@
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          3 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:          6 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:       en</span></span>
 <span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -127,7 +127,7 @@
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          3 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:          6 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:       en</span></span>
 <span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -163,9 +163,9 @@
 <code class="sourceCode R"><span><span class="va">joe_bloggs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span><span class="va">joe_bloggs</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="st">"He had a dog called Rover"</span></span>
 <span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/push_record.html">push_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="va">joe_bloggs</span><span class="op">)</span></span></code></pre></div>
-<p>The entire GEDCOM representation can be seen with the <code>@c_as_ged</code> property:</p>
+<p>The entire GEDCOM representation can be seen with the <code>@GEDCOM</code> property:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">c_as_ged</span></span>
+<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">GEDCOM</span></span>
 <span><span class="co">#&gt;  [1] "0 HEAD"                                          </span></span>
 <span><span class="co">#&gt;  [2] "1 GEDC"                                          </span></span>
 <span><span class="co">#&gt;  [3] "2 VERS 7.0"                                      </span></span>
@@ -173,7 +173,7 @@
 <span><span class="co">#&gt;  [5] "2 NAME The 'gedcomS7' package for the R language"</span></span>
 <span><span class="co">#&gt;  [6] "2 CORP Jamie Lendrum"                            </span></span>
 <span><span class="co">#&gt;  [7] "3 EMAIL jalendrum@gmail.com"                     </span></span>
-<span><span class="co">#&gt;  [8] "1 DATE 3 JAN 2025"                               </span></span>
+<span><span class="co">#&gt;  [8] "1 DATE 6 JAN 2025"                               </span></span>
 <span><span class="co">#&gt;  [9] "1 COPR Copyright Jamie Lendrum 2023"             </span></span>
 <span><span class="co">#&gt; [10] "1 LANG en"                                       </span></span>
 <span><span class="co">#&gt; [11] "1 NOTE This file contains my family tree"        </span></span>
