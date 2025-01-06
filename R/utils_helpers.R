@@ -135,3 +135,13 @@ remove_void_xrefs <- function(xrefs){
   xrefs[xrefs != "@VOID@"]
 }
 
+set_xref_prefix_defaults <- function(x){
+  x@records@subm@xref_prefix = "U"
+  x@records@indi@xref_prefix = "I" 
+  x@records@fam@xref_prefix = "F" 
+  x@records@sour@xref_prefix = "S" 
+  x@records@repo@xref_prefix = "R" 
+  x@records@media@xref_prefix = "M" 
+  x@records@note@xref_prefix = "N"
+  x
+}

@@ -26,8 +26,7 @@ GedcomS7(
   repo = list(),
   media = list(),
   note = list(),
-  xref_prefixes = c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media =
-    "M", note = "N")
+  xref_prefixes = character(0)
 )
 }
 \arguments{

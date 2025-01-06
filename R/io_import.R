@@ -131,6 +131,8 @@ parse_records <- function(records_lst){
   x <- parse_gedcom_header(records_lst[[1]])
   records_lst <- records_lst[-1]
   
+  x <- set_xref_prefix_defaults(x)
+  
   # Lambda fn to get a list of records of a particular type
   subset_recs <- \(rec_lst, rec_type){
     recs <- Filter(\(x) grepl(sprintf("^0.* %s", rec_type), x[1]), rec_lst)
@@ -138,7 +140,7 @@ parse_records <- function(records_lst){
     recs
   }
   
-  S7::props(x) <- list(
+  S7::props(x@records) <- list(
     indi = subset_recs(records_lst, "INDI"),
     fam = subset_recs(records_lst, "FAM"),
     sour = subset_recs(records_lst, "SOUR"),
@@ -171,19 +173,7 @@ add_missing_xrefs <- function(gedcom){
 
 validate_gedcom <- function(filepath = file.choose()){
   
-  #pb <- testthat::ProgressReporter$new()
-  #pb$start_context("Header")
-  ged <- read_gedcom(filepath)
+  testthat::test_file("tests/testthat/validate-gedcom-file.R",
+                      reporter = testthat::ProgressReporter)
   
-  #pb$end_context("Header")
-  
-  for(rec_type in names(ged@c_xrefs)){
-    #pb$start_context(rec_type)
-    for(xref in ged@c_xrefs[[rec_type]]){
-      rec <- pull_record(ged, xref)
-    }
-    #pb$end_context(rec_type)
-  }
-  
-  NULL
 }
