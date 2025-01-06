@@ -302,7 +302,7 @@ get_supporting_recs <- function(x,
   if(length(xrefs) == 0) return(character())
   
   tags <- NULL
-  if (inc_note) tags <- c(tags, "NOTE")
+  if (inc_note) tags <- c(tags, "SNOTE")
   if (inc_media) tags <- c(tags, "OBJE")
   if (inc_sour) tags <- c(tags, "SOUR")
   if (inc_repo) tags <- c(tags, "REPO")

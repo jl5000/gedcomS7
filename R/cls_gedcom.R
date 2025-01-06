@@ -150,9 +150,9 @@ GedcomHeader <- S7::new_class(
                                    }),
     creation_date = S7::new_property(S7::class_character | 
                                        S7::new_S3_class("gedcomS7::DateExact"),
-                                     default = date_exact_current(),
                                      getter = function(self) self@creation_date,
                                      setter = function(self, value){
+                                       if(length(value) == 0) value <- date_exact_current()
                                        if(is.character(value)) value <- toupper(value)
                                        self@creation_date <- value
                                        self
