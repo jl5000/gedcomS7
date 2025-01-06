@@ -8,6 +8,13 @@ to_console <- function(label, val, exdent){
       fill = TRUE)
 }
 
+S7::method(print, GEDCOMRecordsRaw) <- function(x, ...){
+  raw_record_summary(x)
+}
+
+S7::method(print, GEDCOMRecords) <- function(x, ...){
+  raw_record_summary(x@RAW)
+}
 
 S7::method(print, GedcomS7) <- function(x, ...){
   
@@ -22,7 +29,7 @@ S7::method(print, GedcomS7) <- function(x, ...){
   if(length(x@subm_xref) == 0){
     subm <- x@subm_xref
   } else {
-    subm <- find_ged_values(x@subm[[x@subm_xref]], "NAME")
+    subm <- find_ged_values(x@records@RAW@SUBM[[x@subm_xref]], "NAME")
   }
   to_console("Submitter:", subm, exdent)
   cat(eol)
@@ -38,14 +45,19 @@ S7::method(print, GedcomS7) <- function(x, ...){
   }
  
   cat(eol)
-  to_console("Submitters:", length(x@records@RAW@SUBM), exdent)
-  to_console("Individuals:", length(x@records@RAW@INDI), exdent)
-  to_console("Families:", length(x@records@RAW@FAM), exdent)
-  to_console("Sources:", length(x@records@RAW@SOUR), exdent)
-  to_console("Repositories:", length(x@records@RAW@REPO), exdent)
-  to_console("Multimedia:", length(x@records@RAW@OBJE), exdent)
-  to_console("Notes:", length(x@records@RAW@SNOTE), exdent)
+  raw_record_summary(x@records@RAW)
 
+}
+
+raw_record_summary <- function(raw){
+  exdent <- 24
+  to_console("Submitters:", length(raw@SUBM), exdent)
+  to_console("Individuals:", length(raw@INDI), exdent)
+  to_console("Families:", length(raw@FAM), exdent)
+  to_console("Sources:", length(raw@SOUR), exdent)
+  to_console("Repositories:", length(raw@REPO), exdent)
+  to_console("Multimedia:", length(raw@OBJE), exdent)
+  to_console("Notes:", length(raw@SNOTE), exdent)
 }
 
 
