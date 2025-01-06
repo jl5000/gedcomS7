@@ -109,9 +109,10 @@ is_alive <- function(x, xref, max_age = 100){
   
   if(length(deaths) > 0){
     # death events exist - Y/date/place/addr
-    death_occured <- grepl("^1 DEAT Y$", unlist(deaths))
-    if(sum(death_occured) > 0) return(FALSE)
-    death_occured <- grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+    death_occured <- c(
+      grepl("^1 DEAT Y$", unlist(deaths)),
+      grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+    )
     if(sum(death_occured) > 0) return(FALSE)
   }
   
