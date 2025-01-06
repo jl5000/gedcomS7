@@ -4,6 +4,8 @@
 #' @inheritParams prop_definitions 
 #' @param facts Events and/or attributes for this family.
 #' A `FamilyEvent()`/`FamilyAttribute()` object, or a list of them.
+#' @param non_events Events that this family did not experience.
+#' A `NonEvent()` object, or a list of them.
 #' @param husb_xref,wife_xref,chil_xrefs The cross-reference identifier(s) of member's individual records.
 #' If the individual does not have a record, then the value "@VOID@" can be used. 
 #' However, you will need to describe the individual by using a named vector (a description can be used

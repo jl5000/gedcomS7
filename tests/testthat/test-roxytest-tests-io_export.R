@@ -26,7 +26,7 @@ test_that("Function write_gedcom() @ L37", {
 })
 
 
-test_that("Function date_diff() @ L148", {
+test_that("Function date_diff() @ L149", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
