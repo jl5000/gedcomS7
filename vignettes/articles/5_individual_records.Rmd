@@ -64,11 +64,11 @@ You can also define a name translation with `PersonalNameTran()` or a list of th
 
 Generally, conflicting names are arranged in order of confidence; the first name is more likely to be correct.
 
-Once added to the Individual record, the property `@c_primary_name` will provide the primary (first) name as a simple character string, and `@c_all_names` will provide all names as a simple character vector.
+Once added to the Individual record, the property `@PRIMARY_NAME` will provide the primary (first) name as a simple character string, and `@ALL_NAMES` will provide all names as a simple character vector.
 
 ```{r}
-anakin@c_primary_name
-anakin@c_all_names
+anakin@PRIMARY_NAME
+anakin@ALL_NAMES
 ```
 
 ## Facts
@@ -150,7 +150,7 @@ When we push this record to the GEDCOM object, it will automatically recognise t
 ```{r}
 skywalkers <- push_record(skywalkers, anakin)
 
-skywalkers@fam[["@F1@"]]
+skywalkers@records@RAW@FAM[["@F1@"]]
 ```
 
 Creating linkages between individuals and families in this way can get quite cumbersome, and so a suite of helper functions have been created that allow you to add a spouse, parents, children, or siblings with a single function call. These create the records and linkages automatically, and you can fill in the details later. To help you keep track, the functions also allow you to specify the sexes and/or names of those being added.
