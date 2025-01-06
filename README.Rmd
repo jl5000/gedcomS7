@@ -82,10 +82,10 @@ joe_bloggs@notes <- "He had a dog called Rover"
 ged <- push_record(ged, joe_bloggs)
 ```
 
-The entire GEDCOM representation can be seen with the `@c_as_ged` property:
+The entire GEDCOM representation can be seen with the `@GEDCOM` property:
 
 ```{r}
-ged@c_as_ged
+ged@GEDCOM
 ```
 The object can be exported to a GEDCOM file:
 

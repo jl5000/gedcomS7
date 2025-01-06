@@ -55,7 +55,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          3 JAN 2025
+#> Creation Date:          6 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -83,7 +83,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          3 JAN 2025
+#> Creation Date:          6 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -128,11 +128,11 @@ joe_bloggs@notes <- "He had a dog called Rover"
 ged <- push_record(ged, joe_bloggs)
 ```
 
-The entire GEDCOM representation can be seen with the `@c_as_ged`
+The entire GEDCOM representation can be seen with the `@GEDCOM`
 property:
 
 ``` r
-ged@c_as_ged
+ged@GEDCOM
 #>  [1] "0 HEAD"                                          
 #>  [2] "1 GEDC"                                          
 #>  [3] "2 VERS 7.0"                                      
@@ -140,7 +140,7 @@ ged@c_as_ged
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 3 JAN 2025"                               
+#>  [8] "1 DATE 6 JAN 2025"                               
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
