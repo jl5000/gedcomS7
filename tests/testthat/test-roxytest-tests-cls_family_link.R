@@ -4,9 +4,9 @@
 
 test_that("Function FamilyLinkSpouse() @ L12", {
   expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
-  expect_snapshot_value(FamilyLinkSpouse("@F123@")@c_as_ged, "json2")
+  expect_snapshot_value(FamilyLinkSpouse("@F123@")@GEDCOM, "json2")
   expect_snapshot_value(FamilyLinkSpouse("@F2@", 
-                                                 notes = list(Note("test")))@c_as_ged, "json2")
+                                                 notes = list(Note("test")))@GEDCOM, "json2")
 })
 
 
@@ -24,6 +24,6 @@ test_that("Function FamilyLinkChild() @ L77", {
                                                  pedigree_phrase = "By people",
                                                  confidence = "CHALLENGED",
                                                  confidence_phrase = "By someone",
-                                                 note_xrefs = c("@242@","@GJFJ@"))@c_as_ged, "json2")
+                                                 note_xrefs = c("@242@","@GJFJ@"))@GEDCOM, "json2")
 })
 

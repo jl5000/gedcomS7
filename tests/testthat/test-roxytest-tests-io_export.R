@@ -7,26 +7,26 @@ test_that("Function write_gedcom() @ L37", {
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
   ged <- read_gedcom(maximal)
-  ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                         note = "N", sour = "S", subm = "U")
+  ged@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+                         SNOTE = "N", SOUR = "S", SUBM = "U")
                                  
   expect_error(write_gedcom(ged, "my_family.txt"), 
                regexp = "Output is not being saved as a GEDCOM file")
                
   roundtrip1 <- write_gedcom(ged, "maximal.ged")
   roundtrip2 <- read_gedcom("maximal.ged")
-  roundtrip2@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-                         note = "N", sour = "S", subm = "U")
+  roundtrip2@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+                         SNOTE = "N", SOUR = "S", SUBM = "U")
   
   expect_identical(
-    ged@c_as_ged,
-    roundtrip2@c_as_ged
+    ged@GEDCOM,
+    roundtrip2@GEDCOM
   )
   file.remove("maximal.ged")
 })
 
 
-test_that("Function date_diff() @ L148", {
+test_that("Function date_diff() @ L149", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
@@ -37,7 +37,7 @@ test_that("Function date_diff() @ L148", {
 })
 
 
-test_that("Function split_gedcom_values() @ L234", {
+test_that("Function split_gedcom_values() @ L237", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

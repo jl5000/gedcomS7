@@ -67,21 +67,21 @@ We'll import a different GEDCOM file which has some records in it:
 ```{r}
 ged_max <- read_gedcom("https://gedcom.io/testfiles/gedcom70/maximal70.ged")
 
-ged_max@xref_prefixes
+ged_max@records@prefixes
 ```
 
 The order that these records appear in the vector will also dictate the order in which records will appear in the exported file.
 
-The `@c_xrefs` property gives a list of record xrefs in the GEDCOM object, split by record type:
+The `@records@XREFS` property gives a list of record xrefs in the GEDCOM object, split by record type:
 
 ```{r}
-ged_max@c_xrefs
+ged_max@records@XREFS
 ```
 
 The next xrefs of each type will therefore be:
 
 ```{r}
-ged_max@c_next_xref
+ged_max@records@XREFS_NEXT
 ```
 
 ### Other identifiers

@@ -43,12 +43,12 @@ SubmitterRecord <- S7::new_class(
                                    chk_input_size(value, min_val = 1)
                                  }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s SUBM", self@xref),
-          sprintf("1 RESN %s", self@c_restrictions),
+          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
           sprintf("1 NAME %s", self@subm_name),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
           sprintf("1 PHON %s", self@phone_numbers),
@@ -57,7 +57,7 @@ SubmitterRecord <- S7::new_class(
           sprintf("1 WWW %s", self@web_pages),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           sprintf("1 LANG %s", self@languages),
-          self@c_ids_as_ged |> increase_level(by = 1),
+          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@updated) |> increase_level(by = 1),

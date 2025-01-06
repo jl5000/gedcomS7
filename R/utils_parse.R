@@ -127,7 +127,7 @@ check_unparsed <- function(lines, parsed){
   
   not_parsed <- setdiff(
     lines,
-    parsed@c_as_ged
+    parsed@GEDCOM
   )
   
   if(length(not_parsed) > 0)

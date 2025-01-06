@@ -87,7 +87,7 @@ GedcomSource <- S7::new_class(
                                         chk_input_size(value, 0, 1, 1)
                                       }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -150,9 +150,9 @@ GedcomHeader <- S7::new_class(
                                    }),
     creation_date = S7::new_property(S7::class_character | 
                                        S7::new_S3_class("gedcomS7::DateExact"),
-                                     default = date_exact_current(),
                                      getter = function(self) self@creation_date,
                                      setter = function(self, value){
+                                       if(length(value) == 0) value <- date_exact_current()
                                        if(is.character(value)) value <- toupper(value)
                                        self@creation_date <- value
                                        self
@@ -206,7 +206,7 @@ GedcomHeader <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     
-    c_hd_as_ged = S7::new_property(
+    GEDCOM_HEAD = S7::new_property(
       S7::class_character, 
       getter = function(self){
         c(
@@ -234,10 +234,111 @@ GedcomHeader <- S7::new_class(
   }
 )
 
+GEDCOMRecordsRaw <- S7::new_class(
+  "GEDCOMRecordsRaw",
+  properties = list(
+    SUBM = S7::class_list,
+    INDI = S7::class_list,
+    FAM = S7::class_list,
+    SOUR = S7::class_list,
+    REPO = S7::class_list,
+    OBJE = S7::class_list,
+    SNOTE = S7::class_list
+  )
+)
+
+GEDCOMRecords <- S7::new_class(
+  "GEDCOMRecords",
+  properties = list(
+    # This serves as both a record of prefixes and order of records
+    prefixes = S7::new_property(S7::class_character,
+                                getter = function(self) self@prefixes,
+                                setter = function(self, value){
+                                  if(length(value) == 0){
+                                    value <- c("U", "I", "F", "S", "R", "M", "N")
+                                    names(value) <- names(GEDCOMRecordsRaw@properties)
+                                  }
+                                    
+                                  self@prefixes <- value
+                                  self
+                                },
+                                validator = function(value){
+                                  num_types <- length(GEDCOMRecordsRaw@properties)
+                                  c(
+                                    chk_input_size(value, num_types, num_types, 0, 6),
+                                    chk_input_choice(names(value), names(GEDCOMRecordsRaw@properties))
+                                  )
+                                }),
+    # List of xrefs for each record type
+    XREFS = S7::new_property(S7::class_character,
+                             getter = function(self){
+                               rec_types <- names(self@prefixes)
+                               rec_xrefs <- lapply(rec_types, \(rec_type) 
+                                                   names(S7::prop(self@RAW, rec_type)))
+                               stats::setNames(rec_xrefs, rec_types)
+                             }),
+    XREFS_PRIV = S7::new_property(S7::class_character,
+                                  getter = function(self){
+                                    rec_types <- names(self@prefixes)
+                                    priv <- lapply(rec_types, \(rec_type)
+                                                   Filter(\(x) sum(grepl("^1 RESN .*PRIVACY", x)) > 0,
+                                                          S7::prop(self@RAW, rec_type)) |> names()
+                                    )
+                                    stats::setNames(priv, rec_types)
+                                  }),
+    XREFS_CONFID = S7::new_property(S7::class_character,
+                                    getter = function(self){
+                                      rec_types <- names(self@prefixes)
+                                      priv <- lapply(rec_types, \(rec_type)
+                                                     Filter(\(x) sum(grepl("^1 RESN .*CONFIDENTIAL", x)) > 0,
+                                                            S7::prop(self@RAW, rec_type)) |> names()
+                                      )
+                                      stats::setNames(priv, rec_types)
+                                    }),
+    XREFS_NEXT = S7::new_property(S7::class_character,
+                                  getter = function(self){
+                                    idx <- integer(length(self@prefixes))
+                                    existing_xrefs <- unname(unlist(self@XREFS))
+                                    for(i in seq_along(idx)){
+                                      ref <- 1
+                                      while(paste0("@", self@prefixes[i], ref, "@") %in% existing_xrefs){
+                                        ref <- ref + 1
+                                      }
+                                      idx[i] <- ref
+                                    }
+                                    
+                                    paste0("@", self@prefixes, idx, "@") |>
+                                      stats::setNames(names(self@prefixes))
+                                  }),
+    RAW = GEDCOMRecordsRaw
+  )
+)
+
 #' Create a GEDCOM object
 #' 
 #' You shouldn't need to use this directly to create new GEDCOM objects. Instead, use
 #' `new_gedcom()` which populates relevant defaults.
+#' 
+#' @details
+#' 
+#' All information about records is contained in the `@records` property.
+#' 
+#' The `@prefixes` property is a named vector containing any alphanumeric string (up to 6 characters long) 
+#' which will precede the number given to identify new records, of which there are currently 7 types:
+#' 
+#' Individual (INDI) 
+#' Family (FAM)
+#' Source (SOUR)
+#' Repository (REPO)
+#' Multimedia (OBJE)
+#' Note (SNOTE)
+#' Submitter (SUBM)
+#' 
+#' This vector must be of a particular length with specific names. For example:
+#' c(SUBM = "U", INDI = "I", FAM = "F", SOUR = "S", REPO = "R", OBJE = "M", SNOTE = "N").
+#' 
+#' The order that these records appear in the vector will also dictate the order in which records 
+#' will appear in the exported file.
 #' 
 #' @inheritParams prop_definitions 
 #' @param gedcom_version The version number of the official specification that this 
@@ -261,14 +362,8 @@ GedcomHeader <- S7::new_class(
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
 #' This happens when the record is pushed to the gedcom object.
-#' @param subm,indi,fam,sour,repo,media,note A named list containing character vector representations
-#' of GEDCOM records. Do not edit these parameters directly.
-#' @param xref_prefixes A named vector containing any alphanumeric string (up to 6 characters long) 
-#' which will precede the number given to identify new records (of which there are 7 types). 
-#' This vector must be of a particular length with specific names. Default value:
-#' c(subm = "U", indi = "I", fam = "F", sour = "S", repo = "R", media = "M", note = "N")
-#' The order that these records appear in the vector will also dictate the order in which records 
-#' will appear in the exported file.
+#' @param records An S7 object whose properties contain information about all records. Do not edit
+#' properties in capitals directly. See Details for more information. 
 #' @returns An S7 object representing a GEDCOM file.
 #' @tests
 #' maximal <- test_path("maximal70.ged")
@@ -276,9 +371,9 @@ GedcomHeader <- S7::new_class(
 #'                                  fileext = ".ged")
 #' ged_raw <- readLines(maximal)
 #' ged_parsed <- read_gedcom(maximal)
-#' ged_parsed@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-#'                                note = "N", sour = "S", subm = "U")
-#' ged_raw2 <- ged_parsed@c_as_ged
+#' ged_parsed@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+#'                                  SNOTE = "N", SOUR = "S", SUBM = "U")
+#' ged_raw2 <- ged_parsed@GEDCOM
 #' 
 #' expect_equal(ged_raw, ged_raw2)
 GedcomS7 <- S7::new_class(
@@ -295,90 +390,23 @@ GedcomS7 <- S7::new_class(
                                           }),
     
     # Records
-    subm = S7::class_list,
-    indi = S7::class_list,
-    fam = S7::class_list,
-    sour = S7::class_list,
-    repo = S7::class_list,
-    media = S7::class_list,
-    note = S7::class_list,
-    
-    # This serves as both a record of prefixes and order of records
-    xref_prefixes = S7::new_property(S7::class_character,
-                                     default = c(subm = "U", indi = "I", fam = "F", sour = "S", 
-                                                 repo = "R", media = "M", note = "N"),
-                                     validator = function(value){
-                                       c(
-                                         chk_input_size(value, 7, 7, 0, 6),
-                                         chk_input_choice(names(value), c("indi","fam","sour","subm",
-                                                                          "repo","media","note"))
-                                       )
-                                     }),
-    
-    # List of xrefs for each record type
-    c_xrefs = S7::new_property(S7::class_list,
-                               getter = function(self){
-                                 rec_types <- names(self@xref_prefixes)
-                                 rec_xrefs <- lapply(rec_types, \(rec_type) names(S7::prop(self, rec_type)))
-                                 stats::setNames(rec_xrefs, rec_types)
-                               }),
-    
-    c_xrefs_private = S7::new_property(
+    records = GEDCOMRecords,
+
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
-        rec_types <- names(self@xref_prefixes)
-        priv <- lapply(rec_types, \(rec_type) 
-                       Filter(\(x) sum(grepl("^1 RESN .*PRIVACY", x)) > 0, 
-                              S7::prop(self, rec_type)) |> names()
-        )
-        stats::setNames(priv, rec_types)
-      }),
-    
-    c_xrefs_confid = S7::new_property(
-      S7::class_character,
-      getter = function(self){
-        rec_types <- names(self@xref_prefixes)
-        conf <- lapply(rec_types, \(rec_type) 
-                       Filter(\(x) sum(grepl("^1 RESN .*CONFIDENTIAL", x)) > 0, 
-                              S7::prop(self, rec_type)) |> names()
-        )
-        stats::setNames(conf, rec_types)
-      }),
-    
-    c_next_xref = S7::new_property(S7::class_character,
-                                   getter = function(self){
-                                     idx <- integer(7L)
-                                     existing_xrefs <- unname(unlist(self@c_xrefs))
-                                     for(i in seq_along(idx)){
-                                       ref <- 1
-                                       while(paste0("@", self@xref_prefixes[i], ref, "@") %in% existing_xrefs){
-                                         ref <- ref + 1
-                                       }
-                                       idx[i] <- ref
-                                     }
-                                     
-                                     paste0("@", self@xref_prefixes, idx, "@") |>
-                                       stats::setNames(names(self@xref_prefixes))
-                                   }),
-    
-    c_as_ged = S7::new_property(
-      S7::class_character, 
-      getter = function(self){
+
+        ged <- self@GEDCOM_HEAD
         
-        hd <- self@c_hd_as_ged
-        tr <- "0 TRLR"
+        for(rec_type in names(self@records@prefixes)){
+          ged <- c(
+            ged,
+            unlist(S7::prop(self@records@RAW, rec_type))
+          )
+        }
         
-        c(
-          hd,
-          unlist(S7::prop(self, names(self@xref_prefixes)[1])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[2])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[3])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[4])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[5])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[6])),
-          unlist(S7::prop(self, names(self@xref_prefixes)[7])),
-          tr
-        ) |> unname() |> 
+        c(ged, "0 TRLR") |> 
+          unname() |>
           prepare_gedcom_lines()
       }
     )
@@ -408,6 +436,7 @@ new_gedcom <- function(my_language = "en"){
            source = sour,
            creation_date = date_exact_current(),
            default_language = my_language)
+
 }
 
 parse_gedcom_header <- function(hd_lines){

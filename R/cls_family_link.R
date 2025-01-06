@@ -6,9 +6,9 @@
 #' @export
 #' @tests
 #' expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
-#' expect_snapshot_value(FamilyLinkSpouse("@F123@")@c_as_ged, "json2")
+#' expect_snapshot_value(FamilyLinkSpouse("@F123@")@GEDCOM, "json2")
 #' expect_snapshot_value(FamilyLinkSpouse("@F2@", 
-#'                                                notes = list(Note("test")))@c_as_ged, "json2")
+#'                                                notes = list(Note("test")))@GEDCOM, "json2")
 FamilyLinkSpouse <- S7::new_class(
   "FamilyLinkSpouse",
   properties = list(
@@ -33,7 +33,7 @@ FamilyLinkSpouse <- S7::new_class(
                                for(inp in value) if(is.character(inp)) return(inp)
                              }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -73,7 +73,7 @@ FamilyLinkSpouse <- S7::new_class(
 #'                                                pedigree_phrase = "By people",
 #'                                                confidence = "CHALLENGED",
 #'                                                confidence_phrase = "By someone",
-#'                                                note_xrefs = c("@242@","@GJFJ@"))@c_as_ged, "json2")
+#'                                                note_xrefs = c("@242@","@GJFJ@"))@GEDCOM, "json2")
 FamilyLinkChild <- S7::new_class(
   "FamilyLinkChild", 
   parent = FamilyLinkSpouse,
@@ -101,7 +101,7 @@ FamilyLinkChild <- S7::new_class(
                                            chk_input_size(value, 0, 1, 1)
                                          }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

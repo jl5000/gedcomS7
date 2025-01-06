@@ -25,7 +25,7 @@ SourceCallNumber <- S7::new_class(
                                        chk_input_size(value, 0, 1, 1)
                                      }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -71,9 +71,9 @@ parse_call_numbers <- function(lines, location){
 #' @returns An S7 object representing a GEDCOM SOURCE_REPOSITORY_CITATION.
 #' @export
 #' @tests
-#' expect_snapshot_value(RepositoryCitation()@c_as_ged, "json2")
+#' expect_snapshot_value(RepositoryCitation()@GEDCOM, "json2")
 #' expect_snapshot_value(RepositoryCitation(notes = "Local library",
-#'                                                 call_numbers = c("ABC","123"))@c_as_ged, "json2")
+#'                                                 call_numbers = c("ABC","123"))@GEDCOM, "json2")
 RepositoryCitation <- S7::new_class(
   "RepositoryCitation",
   properties = list(
@@ -107,7 +107,7 @@ RepositoryCitation <- S7::new_class(
                                       for(inp in value) if(is.character(inp)) return(inp)
                                     }),
 
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -153,13 +153,13 @@ parse_repo_citations <- function(rec_lines){
 #' expect_error(FactsRecorded("BIRT,DEAT"), regexp = "@fact_types is in an invalid format")
 #' expect_error(FactsRecorded("BIRT, DEAT", date_period = "2006"), 
 #'                                   regexp = "@date_period is in an invalid format")
-#' expect_snapshot_value(FactsRecorded("BIRT")@c_as_ged, "json2")
+#' expect_snapshot_value(FactsRecorded("BIRT")@GEDCOM, "json2")
 #' expect_snapshot_value(FactsRecorded("BIRT, DEAT",
-#'                                            date_period = "FROM 2007 TO 2010")@c_as_ged, "json2")
+#'                                            date_period = "FROM 2007 TO 2010")@GEDCOM, "json2")
 #' expect_snapshot_value(FactsRecorded("BIRT, DEAT",
 #'                                            date_period = "FROM 2007 TO 2010",
 #'                                            date_phrase = "sometime",
-#'                                            territory = "somewhere")@c_as_ged, "json2")
+#'                                            territory = "somewhere")@GEDCOM, "json2")
 FactsRecorded <- S7::new_class(
   "FactsRecorded",
   properties = list(
@@ -191,7 +191,7 @@ FactsRecorded <- S7::new_class(
                                    self
                                  }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -310,12 +310,12 @@ SourceRecord <- S7::new_class(
                                         for(inp in value) if(is.character(inp)) return(inp)
                                       }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
           sprintf("0 %s SOUR", self@xref),
-          sprintf("1 RESN %s", self@c_restrictions),
+          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
@@ -329,7 +329,7 @@ SourceRecord <- S7::new_class(
           obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
-          self@c_ids_as_ged |> increase_level(by = 1),
+          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),

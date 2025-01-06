@@ -18,20 +18,20 @@
 #' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
 #'                                  fileext = ".ged")
 #' ged <- read_gedcom(maximal)
-#' ged@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-#'                        note = "N", sour = "S", subm = "U")
+#' ged@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+#'                        SNOTE = "N", SOUR = "S", SUBM = "U")
 #'                                
 #' expect_error(write_gedcom(ged, "my_family.txt"), 
 #'              regexp = "Output is not being saved as a GEDCOM file")
 #'              
 #' roundtrip1 <- write_gedcom(ged, "maximal.ged")
 #' roundtrip2 <- read_gedcom("maximal.ged")
-#' roundtrip2@xref_prefixes <- c(fam = "F", indi = "I", media = "M", repo = "R", 
-#'                        note = "N", sour = "S", subm = "U")
+#' roundtrip2@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
+#'                        SNOTE = "N", SOUR = "S", SUBM = "U")
 #' 
 #' expect_identical(
-#'   ged@c_as_ged,
-#'   roundtrip2@c_as_ged
+#'   ged@GEDCOM,
+#'   roundtrip2@GEDCOM
 #' )
 #' file.remove("maximal.ged")
 write_gedcom <- function(gedcom, 
@@ -53,16 +53,16 @@ write_gedcom <- function(gedcom,
   con <- file(filepath, encoding = "UTF-8", open = "a")
   on.exit(close(con))
   
-  if(!inc_confid) gedcom <- rm_records(gedcom, unlist(gedcom@c_xrefs_confid))
-  if(!inc_private) gedcom <- rm_records(gedcom, unlist(gedcom@c_xrefs_private))
+  if(!inc_confid) gedcom <- rm_records(gedcom, unlist(gedcom@records@XREFS_CONFID))
+  if(!inc_private) gedcom <- rm_records(gedcom, unlist(gedcom@XREFS_PRIV))
   if(!inc_living) gedcom <- rm_living(gedcom)
   
-  lines <- gedcom@c_as_ged
+  lines <- gedcom@GEDCOM
   
   if(!inc_confid) lines <- rm_restricted_structures(lines, "CONFIDENTIAL")
   if(!inc_private) lines <- rm_restricted_structures(lines, "PRIVACY")
   
-  # Moved to c_as_ged property - in order to make the test work
+  # Moved to GEDCOM property - in order to make the test work
   #lines2 <- prepare_gedcom_lines(lines, inc_confid, inc_private)
   
   writeLines(lines, con)
@@ -90,7 +90,7 @@ rm_living <- function(x,
                       max_age = 100) {
   
   remove <- NULL
-  for(xref in x@c_xrefs[["indi"]]) {
+  for(xref in x@records@XREFS[["INDI"]]) {
     if(is_alive(x, xref, max_age))
       remove <- c(remove, xref)
   }
@@ -103,15 +103,16 @@ rm_living <- function(x,
 is_alive <- function(x, xref, max_age = 100){
   check_indi_rec(x, xref)
   
-  rec_lines <- x@indi[[xref]]
+  rec_lines <- x@records@RAW@INDI[[xref]]
   
   deaths <- find_ged_values(rec_lines, "DEAT", return_list = TRUE)
   
   if(length(deaths) > 0){
     # death events exist - Y/date/place/addr
-    death_occured <- grepl("^1 DEAT Y$", unlist(deaths))
-    if(sum(death_occured) > 0) return(FALSE)
-    death_occured <- grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+    death_occured <- c(
+      grepl("^1 DEAT Y$", unlist(deaths)),
+      grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+    )
     if(sum(death_occured) > 0) return(FALSE)
   }
   
@@ -146,8 +147,10 @@ is_alive <- function(x, xref, max_age = 100){
 #' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
 #' expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
 date_diff <- function(date1,
-                      date2 = date_exact_current()@c_as_val,
+                      date2 = NULL,
                       minimise = TRUE) {
+  
+  date2 <- date2 %||% date_exact_current()@GEDCOM_STRING
   
   date1 <- parse_gedcom_date(date1, minimise = !minimise)
   date2 <- parse_gedcom_date(date2, minimise = minimise)

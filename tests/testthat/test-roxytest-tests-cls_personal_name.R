@@ -8,16 +8,16 @@ test_that("Function PersonalNamePieces() @ L22", {
                                           nickname = c("J","Jock"),
                                           surname_prefix = "Mc",
                                           surname = "Bloggs",
-                                          suffix = "Jr")@c_as_ged, "json2")
+                                          suffix = "Jr")@GEDCOM, "json2")
 })
 
 
 test_that("Function PersonalNameTran() @ L79", {
   expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
-                                                 language = "en")@c_as_ged, "json2")
+                                                 language = "en")@GEDCOM, "json2")
   expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
                                                  language = "en",
-                                                 name_pieces = PersonalNamePieces(nickname = "JJ"))@c_as_ged, "json2")
+                                                 name_pieces = PersonalNamePieces(nickname = "JJ"))@GEDCOM, "json2")
 })
 
 
@@ -38,6 +38,6 @@ test_that("Function PersonalName() @ L140", {
                                                                                          language = "it"),
                                             notes = "This is a note",
                                             note_xrefs = c("@IUY@","@733@"),
-                                            citations = c("@S1@","@S3@","@S7@"))@c_as_ged, "json2")
+                                            citations = c("@S1@","@S3@","@S7@"))@GEDCOM, "json2")
 })
 

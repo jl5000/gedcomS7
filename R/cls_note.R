@@ -12,22 +12,22 @@
 #' expect_error(Note(letters[1:2]), regexp = "@text has too many elements")
 #' expect_error(Note("test", translations = TranslationText("Ole")),
 #'              regexp = "Each @translation requires a @language or @media_type")
-#' expect_snapshot_value(Note("test")@c_as_ged, "json2")
-#' expect_snapshot_value(Note("test", language = "en")@c_as_ged, "json2")
+#' expect_snapshot_value(Note("test")@GEDCOM, "json2")
+#' expect_snapshot_value(Note("test", language = "en")@GEDCOM, "json2")
 #' expect_snapshot_value(Note("test", 
 #'                                  language = "en",
 #'                                  translations = TranslationText("test",
-#'                                                                   language = "en"))@c_as_ged, "json2")
+#'                                                                   language = "en"))@GEDCOM, "json2")
 #' expect_snapshot_value(Note("test", 
 #'                                  language = "en",
 #'                                  translations = list(TranslationText("test",
 #'                                                                   language = "en"),
 #'                                                  TranslationText("test2",
-#'                                                                   language = "en")))@c_as_ged, "json2")
+#'                                                                   language = "en")))@GEDCOM, "json2")
 #' expect_snapshot_value(Note("test", 
 #'                                  citations = SourceCitation("@S1@", 
 #'                                                             notes = Note("note text 2", 
-#'                                                                                citations = SourceCitation("@S4@"))))@c_as_ged, 
+#'                                                                                citations = SourceCitation("@S4@"))))@GEDCOM, 
 #'                      "json2")
 #' expect_error(Note("test", 
 #'                         language = "en",
@@ -85,7 +85,7 @@ Note <- S7::new_class(
                                  }),
 
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

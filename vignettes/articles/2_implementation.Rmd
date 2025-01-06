@@ -59,22 +59,22 @@ You can then access properties of these:
 ged@notes[[2]]@language <- "en"
 ```
 
-Some of these properties are also read-only (calculated from other properties), such as `@c_next_xref` and `@c_as_ged`. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how properties are stored is important.
+Some of these properties are also read-only (calculated from other properties), such as `@GEDCOM` and these are indicated by being in all capitals. The exploration of all properties of the GEDCOM object is beyond the scope of this article, however the implementation of how properties are stored is important.
 
 ## The Push/Pull paradigm
 
 A GEDCOM file could contain many thousands of records containing information on individuals, families, notes, sources, etc. Whilst storing each of these records as `S7` objects within the main GEDCOM object is theoretically possible, in practice it very quickly eats up too much memory rendering the idea a non-starter.
 
-For this reason, records are stored in their raw form from the GEDCOM file as lists of character vectors. For example the `@indi` property is a list of individual records. The lines in the GEDCOM file for the first individual are:
+For this reason, records are stored in their raw form from the GEDCOM file as lists of character vectors in the `@RAW` property of the `@records` property. For example, the lines in the GEDCOM file for the first individual are:
 
 ```{r}
-ged@indi[[1]]
+ged@records@RAW@INDI[[1]]
 ```
 
 You can also reference records by their xref:
 
 ```{r}
-ged@indi[["@I1@"]]
+ged@records@RAW@INDI[["@I1@"]]
 ```
 
 If you want to edit a record, you must first Pull it from the GEDCOM object. This takes a copy of the record and parses it into an editable `S7` object.
@@ -93,7 +93,7 @@ john_public@notes <- "John once had a dog called Rover"
 
 ged <- push_record(ged, john_public)
 
-ged@indi[[1]]
+ged@records@RAW@INDI[[1]]
 ```
 
 You should never attempt to modify the records in their character vector form directly from the GEDCOM object - additional checks and automated tasks are carried out to ensure self-consistency during the Push process.

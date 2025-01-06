@@ -70,6 +70,9 @@ Creating an object with no parameters sets the date to today.}
 \item{facts}{Events and/or attributes for this family.
 A \code{FamilyEvent()}/\code{FamilyAttribute()} object, or a list of them.}
 
+\item{non_events}{Events that this family did not experience.
+A \code{NonEvent()} object, or a list of them.}
+
 \item{husb_xref, wife_xref, chil_xrefs}{The cross-reference identifier(s) of member's individual records.
 If the individual does not have a record, then the value "@VOID@" can be used.
 However, you will need to describe the individual by using a named vector (a description can be used

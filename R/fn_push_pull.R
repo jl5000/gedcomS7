@@ -28,16 +28,18 @@
 #' ged <- new_gedcom() |> 
 #'          push_record(IndividualRecord(sex = "M")) |> 
 #'          suppressMessages()
-#' ged@indi[[1]] <- c(ged@indi[[1]], "1 _FRE Wow", "2 _ERR No")
+#' ged@records@RAW@INDI[[1]] <- c(ged@records@RAW@INDI[[1]], "1 _FRE Wow", "2 _ERR No")
 #' expect_warning(pull_record(ged, "@I1@"),
 #'                regexp = "The following lines could not be parsed.+Wow.+No")
 pull_record <- function(x, xref){
   
-  if(!xref %in% unlist(x@c_xrefs))
+  if(!xref %in% unlist(x@records@XREFS))
     stop("The xref is not in the GEDCOM object")
   
-  rec_lines <- c(x@indi, x@fam, x@sour, x@repo,
-                 x@media, x@note, x@subm)[[xref]]
+  rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
+                 x@records@RAW@SOUR, x@records@RAW@REPO, 
+                 x@records@RAW@OBJE, x@records@RAW@SNOTE, 
+                 x@records@RAW@SUBM)[[xref]]
   
   rec_type <- parse_line_tag(rec_lines[1])
   if(!rec_type %in% c("INDI","FAM","SOUR","REPO","SNOTE","OBJE","SUBM"))
@@ -91,8 +93,8 @@ pull_record <- function(x, xref){
 #' ged@add_creation_dates <- TRUE
 #' expect_message(ged <- push_record(ged, IndividualRecord()),
 #'                regexp = "New Individual record added with xref @I1@")
-#' expect_true("1 CHAN" %in% ged@indi[[1]])
-#' expect_true("1 CREA" %in% ged@indi[[1]])
+#' expect_true("1 CHAN" %in% ged@records@RAW@INDI[[1]])
+#' expect_true("1 CREA" %in% ged@records@RAW@INDI[[1]])
 #' 
 #' ged <- new_gedcom()
 #' 
@@ -109,8 +111,8 @@ pull_record <- function(x, xref){
 #'   ged <- push_record(ged, IndividualRecord(fam_links_chil = "@F1@"))
 #' })
 #' 
-#' expect_true("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
-#' expect_true("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
+#' expect_true("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
+#' expect_true("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
 #' 
 #' suppressMessages({
 #'   rec_F1 <- pull_record(ged, "@F1@")
@@ -122,12 +124,12 @@ pull_record <- function(x, xref){
 #'   ged <- push_record(ged, rec_F2)
 #' })
 #' 
-#' expect_true("1 FAMC @F1@" %in% ged@indi[["@I1@"]])
-#' expect_true("1 FAMS @F2@" %in% ged@indi[["@I2@"]])
-#' expect_false("1 FAMC @F1@" %in% ged@indi[["@I2@"]])
-#' expect_false("1 FAMS @F2@" %in% ged@indi[["@I1@"]])
-#' expect_false("1 CHIL @I2@" %in% ged@fam[["@F1@"]])
-#' expect_false("1 HUSB @I1@" %in% ged@fam[["@F2@"]])
+#' expect_true("1 FAMC @F1@" %in% ged@records@RAW@INDI[["@I1@"]])
+#' expect_true("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I2@"]])
+#' expect_false("1 FAMC @F1@" %in% ged@records@RAW@INDI[["@I2@"]])
+#' expect_false("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I1@"]])
+#' expect_false("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
+#' expect_false("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
 push_record <- function(gedcom, record){
   
   check_missing_xrefs(gedcom, record)
@@ -146,17 +148,17 @@ push_record <- function(gedcom, record){
   new_rec <- record@xref == "@GEDCOMS7_ORPHAN@"
   
   if(new_rec)
-    record@xref <- unname(gedcom@c_next_xref[rec_type])
+    record@xref <- unname(gedcom@records@XREFS_NEXT[rec_type])
   
   # Don't do this yet
-  #if(rec_type %in% c("indi","fam")) record <- order_facts(record)
+  #if(rec_type %in% c("INDI","FAM")) record <- order_facts(record)
   
-  lines <- record@c_as_ged
-  S7::prop(gedcom, rec_type)[[record@xref]] <- lines
+  lines <- record@GEDCOM
+  S7::prop(gedcom@records@RAW, rec_type)[[record@xref]] <- lines
   
-  if(rec_type == "indi"){
+  if(rec_type == "INDI"){
     gedcom <- refresh_indi_links(gedcom, record)
-  } else if(rec_type == "fam"){
+  } else if(rec_type == "FAM"){
     gedcom <- refresh_fam_links(gedcom, record)
   }
   
@@ -169,11 +171,11 @@ push_record <- function(gedcom, record){
 
 check_missing_xrefs <- function(gedcom, record){
   
-  lines <- record@c_as_ged
+  lines <- record@GEDCOM
   line_vals <- parse_line_value(lines)
   xref_ptrs <- line_vals[grepl(reg_xref(TRUE), line_vals)]
   xref_ptrs <- remove_void_xrefs(xref_ptrs)
-  missing_xrefs <- setdiff(xref_ptrs, unlist(gedcom@c_xrefs))
+  missing_xrefs <- setdiff(xref_ptrs, unlist(gedcom@records@XREFS))
   
   if(length(missing_xrefs) > 0)
     stop("The following xrefs were not found in the GEDCOM object: ", 
@@ -194,33 +196,33 @@ refresh_fam_links <- function(gedcom, record){
   
   # Ensure these members have the family link
   for(spou in spou_xref){
-    spou_rec <- gedcom@indi[[spou]]
+    spou_rec <- gedcom@records@RAW@INDI[[spou]]
     fams <- find_ged_values(spou_rec, "FAMS")
     if(!record@xref %in% fams){
-      gedcom@indi[[spou]] <- c(
-        gedcom@indi[[spou]],
+      gedcom@records@RAW@INDI[[spou]] <- c(
+        gedcom@records@RAW@INDI[[spou]],
         sprintf("1 FAMS %s", record@xref)
       )
     }
   }
   
   for(chil in chil_xrefs){
-    chil_rec <- gedcom@indi[[chil]]
+    chil_rec <- gedcom@records@RAW@INDI[[chil]]
     famc <- find_ged_values(chil_rec, "FAMC")
     if(!record@xref %in% famc){
-      gedcom@indi[[chil]] <- c(
-        gedcom@indi[[chil]],
+      gedcom@records@RAW@INDI[[chil]] <- c(
+        gedcom@records@RAW@INDI[[chil]],
         sprintf("1 FAMC %s", record@xref)
       )
     }
   }
   
   # Ensure no one else has the family link
-  for(indi in gedcom@c_xrefs[["indi"]]){
+  for(indi in gedcom@records@XREFS[["INDI"]]){
     if(indi %in% c(spou_xref, chil_xrefs)) next
     
-    gedcom@indi[[indi]] <- delete_ged_sections(
-      gedcom@indi[[indi]],
+    gedcom@records@RAW@INDI[[indi]] <- delete_ged_sections(
+      gedcom@records@RAW@INDI[[indi]],
       \(x) grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), x)
     )
 
@@ -238,8 +240,9 @@ refresh_indi_links <- function(gedcom, record){
   # Ensure record@xref is properly reflected in family record membership
 
   for(lnk in record@fam_links_spou){
-    fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
-    fam_rec <- gedcom@fam[[fam_xref]]
+    fam_xref <- lnk@fam_xref
+    if(fam_xref == "@VOID@") next
+    fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     
     fam_husb <- find_ged_values(fam_rec, "HUSB")
     fam_wife <- find_ged_values(fam_rec, "WIFE")
@@ -263,35 +266,36 @@ refresh_indi_links <- function(gedcom, record){
         stop("This individual cannot be a spouse of a family that already has two spouses.")
       }
       
-      gedcom@fam[[fam_xref]] <- c(
-        gedcom@fam[[fam_xref]],
+      gedcom@records@RAW@FAM[[fam_xref]] <- c(
+        gedcom@records@RAW@FAM[[fam_xref]],
         sprintf("1 %s %s", spou_type, record@xref)
       )
     }
   }
   
   for(lnk in record@fam_links_chil){
-    fam_xref <- ifelse(!is.character(lnk), lnk@fam_xref, lnk)
-    fam_rec <- gedcom@fam[[fam_xref]]
+    fam_xref <- lnk@fam_xref
+    if(fam_xref == "@VOID@") next
+    fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")
     
     if(!record@xref %in% fam_chil){
-      gedcom@fam[[fam_xref]] <- c(
-        gedcom@fam[[fam_xref]],
+      gedcom@records@RAW@FAM[[fam_xref]] <- c(
+        gedcom@records@RAW@FAM[[fam_xref]],
         sprintf("1 CHIL %s", record@xref)
       )
     }
   } 
   
   # Ensure this individual (record@xref) appears in no other fam records
-  fam_lnks <- find_ged_values(record@c_as_ged, "FAMS|FAMC")
+  fam_lnks <- find_ged_values(record@GEDCOM, "FAMS|FAMC")
   
-  for(fam in gedcom@c_xrefs[["fam"]]){
+  for(fam in gedcom@records@XREFS[["FAM"]]){
     
     if(fam %in% fam_lnks) next
     
-    gedcom@fam[[fam]] <- delete_ged_sections(
-      gedcom@fam[[fam]],
+    gedcom@records@RAW@FAM[[fam]] <- delete_ged_sections(
+      gedcom@records@RAW@FAM[[fam]],
       \(x) grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), x)
     )
     

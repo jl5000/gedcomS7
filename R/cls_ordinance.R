@@ -90,7 +90,7 @@ Ordinance <- S7::new_class(
                                   )
                                 }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
@@ -209,7 +209,7 @@ SpouseSealing <- S7::new_class(
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
     
-    c_as_ged = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(

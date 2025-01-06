@@ -3,7 +3,7 @@
 # File R/cls_citation.R: @tests
 
 test_that("Function SourceCitation() @ L62", {
-  expect_snapshot_value(SourceCitation()@c_as_ged, "json2")
+  expect_snapshot_value(SourceCitation()@GEDCOM, "json2")
   expect_error(SourceCitation("@1@", date = ""),
                regexp = "A blank @date requires a @date_phrase")
   expect_error(SourceCitation("@1@", fact_phrase = "phrase"),
@@ -32,6 +32,6 @@ test_that("Function SourceCitation() @ L62", {
                                        media_links = MediaLink("@34E@"),
                                        note_xrefs = c("@WER@",
                                                      "@4334@"),
-                                       notes = c("these are","some notes"))@c_as_ged, "json2")
+                                       notes = c("these are","some notes"))@GEDCOM, "json2")
 })
 

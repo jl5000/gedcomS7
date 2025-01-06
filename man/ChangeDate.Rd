@@ -5,7 +5,7 @@
 \title{Create a change date object}
 \usage{
 ChangeDate(
-  date_exact = <object>,
+  date_exact = character(0),
   time = character(0),
   note_xrefs = character(0),
   notes = list()

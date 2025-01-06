@@ -13,7 +13,7 @@
 #'                                  fileext = ".ged")
 #' length_maximal <- length(readLines(maximal))
 #' ged <- read_gedcom(maximal)
-#' expect_equal(length(ged@c_as_ged), length_maximal)
+#' expect_equal(length(ged@GEDCOM), length_maximal)
 read_gedcom <- function(filepath = file.choose()) {
   
   if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
@@ -130,7 +130,7 @@ parse_records <- function(records_lst){
   # parse header
   x <- parse_gedcom_header(records_lst[[1]])
   records_lst <- records_lst[-1]
-  
+
   # Lambda fn to get a list of records of a particular type
   subset_recs <- \(rec_lst, rec_type){
     recs <- Filter(\(x) grepl(sprintf("^0.* %s", rec_type), x[1]), rec_lst)
@@ -138,15 +138,9 @@ parse_records <- function(records_lst){
     recs
   }
   
-  S7::props(x) <- list(
-    indi = subset_recs(records_lst, "INDI"),
-    fam = subset_recs(records_lst, "FAM"),
-    sour = subset_recs(records_lst, "SOUR"),
-    repo = subset_recs(records_lst, "REPO"),
-    media = subset_recs(records_lst, "OBJE"),
-    note = subset_recs(records_lst, "SNOTE"),
-    subm = subset_recs(records_lst, "SUBM")
-  )
+  for(rec_type in names(x@records@prefixes)){
+    S7::prop(x@records@RAW, rec_type) <- subset_recs(records_lst, rec_type)
+  }
   
   x <- add_missing_xrefs(x)
   
@@ -155,35 +149,19 @@ parse_records <- function(records_lst){
 
 add_missing_xrefs <- function(gedcom){
   
-  for(rec_type in names(gedcom@c_xrefs)){
-    for(rec_no in seq_along(S7::prop(gedcom, rec_type))){
-      if(names(S7::prop(gedcom, rec_type))[[rec_no]] != "") next
+  for(rec_type in names(gedcom@records@prefixes)){
+    rec_list <- S7::prop(gedcom@records@RAW, rec_type)
+    for(rec_no in seq_along(rec_list)){
+      if(names(rec_list)[[rec_no]] != "") next
       
-      new_xref <- gedcom@c_next_xref[rec_type]
-      first_line <- S7::prop(gedcom, rec_type)[[rec_no]][1]
-      S7::prop(gedcom, rec_type)[[rec_no]][1] <- sub("^0", paste(0, new_xref), first_line)
-      names(S7::prop(gedcom, rec_type))[rec_no] <- new_xref
+      new_xref <- gedcom@records@XREFS_NEXT[rec_type]
+      first_line <- rec_list[[rec_no]][1]
+      S7::prop(gedcom@records@RAW, rec_type)[[rec_no]][1] <- 
+        sub("^0", paste(0, new_xref), first_line)
+      names(S7::prop(gedcom@records@RAW, rec_type))[rec_no] <- new_xref
     }
   }
   
   gedcom
 }
 
-validate_gedcom <- function(filepath = file.choose()){
-  
-  #pb <- testthat::ProgressReporter$new()
-  #pb$start_context("Header")
-  ged <- read_gedcom(filepath)
-  
-  #pb$end_context("Header")
-  
-  for(rec_type in names(ged@c_xrefs)){
-    #pb$start_context(rec_type)
-    for(xref in ged@c_xrefs[[rec_type]]){
-      rec <- pull_record(ged, xref)
-    }
-    #pb$end_context(rec_type)
-  }
-  
-  NULL
-}
