@@ -150,6 +150,15 @@ ged <- ged |>
 #> New Submitter record added with xref @U1@
 #> New Individual record added with xref @I1@
 #> New Source record added with xref @S1@
+
+ged@records
+#> Submitters:             1
+#> Individuals:            1
+#> Families:               0
+#> Sources:                1
+#> Repositories:           0
+#> Multimedia:             0
+#> Notes:                  0
 ```
 
 Existing records, must be ‘pulled’ from the object, edited, and then

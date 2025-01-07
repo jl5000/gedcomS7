@@ -72,6 +72,8 @@ ged <- ged |>
   push_record(subm_record) |> 
   push_record(indi_record) |> 
   push_record(sour_record)
+
+ged@records
 ```
 
 Existing records, must be 'pulled' from the object, edited, and then 'pushed' back.
