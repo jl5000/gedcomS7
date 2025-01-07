@@ -48,7 +48,7 @@ SubmitterRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s SUBM", self@xref),
-          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
+          sprintf("1 RESN %s", self@RESTRICTIONS),
           sprintf("1 NAME %s", self@subm_name),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
           sprintf("1 PHON %s", self@phone_numbers),

@@ -47,7 +47,7 @@ S7::method(summary, GedcomSource) <- function(x, ...){
 # Header ------------------------------------------------------------------
 
 S7::method(print, GedcomHeader) <- function(x, ...){
-  str(x, max.level = 1)
+  summary(x)
 }
 S7::method(summary, GedcomHeader) <- function(x, ...){
   raw_header_summary(x)
@@ -56,7 +56,7 @@ S7::method(summary, GedcomHeader) <- function(x, ...){
 # Raw ---------------------------------------------------------------------
 
 S7::method(print, GedcomRecordsRaw) <- function(x, ...){
-  raw_record_summary(x)
+  summary(x)
 }
 S7::method(summary, GedcomRecordsRaw) <- function(x, ...){
   raw_record_summary(x)
@@ -65,7 +65,7 @@ S7::method(summary, GedcomRecordsRaw) <- function(x, ...){
 # Records -----------------------------------------------------------------
 
 S7::method(print, GedcomRecords) <- function(x, ...){
-  raw_record_summary(x@RAW)
+  summary(x@RAW)
 }
 S7::method(summary, GedcomRecords) <- function(x, ...){
   raw_record_summary(x@RAW)
@@ -74,7 +74,7 @@ S7::method(summary, GedcomRecords) <- function(x, ...){
 # Gedcom ------------------------------------------------------------------
 
 S7::method(print, GedcomS7) <- function(x, ...){
-  str(x, max.level = 1)
+  summary(x)
 }
 
 S7::method(summary, GedcomS7) <- function(x, ...){

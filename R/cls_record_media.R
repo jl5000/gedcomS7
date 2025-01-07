@@ -131,7 +131,7 @@ MediaRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s OBJE", self@xref),
-          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
+          sprintf("1 RESN %s", self@RESTRICTIONS),
           obj_to_ged(self@files) |> increase_level(by = 1),
           self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),

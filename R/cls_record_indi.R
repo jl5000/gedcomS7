@@ -200,7 +200,7 @@ IndividualRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s INDI", self@xref),
-          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
+          sprintf("1 RESN %s", self@RESTRICTIONS),
           obj_to_ged(self@pers_names, "NAME") |> increase_level(by = 1),
           sprintf("1 SEX %s", self@sex),
           obj_to_ged(self@facts) |> increase_level(by = 1),

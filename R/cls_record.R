@@ -96,7 +96,7 @@ Record <- S7::new_class(
                                  chk_input_size(value, 0, 1)
                                }),
     
-    GEDCOM_RESTRICTIONS = S7::new_property(S7::class_character,
+    RESTRICTIONS = S7::new_property(S7::class_character,
                                     getter = function(self){
                                       restrictions_to_resn(self@confidential, self@locked, self@private)
                                     }),

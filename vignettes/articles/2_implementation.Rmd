@@ -34,9 +34,7 @@ library(gedcomS7)
 
 ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
 
-summary(ged)
-
-ged
+str(ged)
 ```
 
 Properties of the GEDCOM object can be accessed and modified using the `@` operator, e.g.
@@ -84,7 +82,7 @@ If you want to edit a record, you must first Pull it from the GEDCOM object. Thi
 ```{r}
 john_public <- pull_record(ged, "@I1@")
 
-john_public
+str(john_public)
 ```
 
 

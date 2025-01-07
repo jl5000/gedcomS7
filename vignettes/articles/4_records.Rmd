@@ -111,7 +111,8 @@ One of the most important aspects of a record is the provenance of the data with
 Linkages to Source records (known as source citations) are among the most important aspects of a GEDCOM file. They are accessed via the `@citations` property. This takes a list of `SourceCitation()` objects. You can provide a single object, or even a character vector of Source record xrefs, and it will be converted into a list of `SourceCitation()` objects. 
 
 ```{r}
-SourceCitation()
+SourceCitation() |> 
+  str()
 ```
 
 Without providing any information you can see that the default xref is "@VOID@". This is a special xref value which indicates there is no record to link to. In this case, all information should be provided in the object itself, particularly the `@where` property. This is just a default value - if there is a record, you should put the xref here.
@@ -121,7 +122,8 @@ Without providing any information you can see that the default xref is "@VOID@".
 Links to Multimedia records are accessed via the `@media_links` property. Similar to source citations, this can take a character vector of Multimedia record xrefs, a `MediaLink()` object, or a list of them.
 
 ```{r}
-MediaLink()
+MediaLink() |> 
+  str()
 ```
 
 Again, a @VOID@ xref is given by default and if this is retained, a `@title` should be provided (any title given will override the title given in the Multimedia record if one is linked to). The remaining properties allow you to specify a cropped region of an image.

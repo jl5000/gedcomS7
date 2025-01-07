@@ -315,7 +315,7 @@ SourceRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s SOUR", self@xref),
-          sprintf("1 RESN %s", self@GEDCOM_RESTRICTIONS),
+          sprintf("1 RESN %s", self@RESTRICTIONS),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),

@@ -58,7 +58,7 @@ The metadata for the gedcom object (ged@...) can be modified.
 ```{r}
 ged@header@notes <- "This file contains my family tree"
 ged@header@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
-summary(ged)
+ged
 ```
 New records can be created and 'pushed' to the GEDCOM object:
 

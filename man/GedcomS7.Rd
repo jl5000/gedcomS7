@@ -20,33 +20,6 @@ This happens when the record is pushed to the gedcom object.}
 
 \item{add_creation_dates}{Whether to automatically add creation dates when creating records.
 This happens when the record is pushed to the gedcom object.}
-
-\item{gedcom_version}{The version number of the official specification that this
-GEDCOM conforms to. This must include the major and minor version (for example, “7.0”);
-it may include the patch as well (for example, “7.0.1”), but doing so is not required.}
-
-\item{ext_tags}{Not supported.}
-
-\item{source}{A \code{GedcomSource()} object describing the software that has generated the GEDCOM.`}
-
-\item{destination}{An identifier for the system expected to receive this GEDCOM.}
-
-\item{creation_date}{The creation date of the file given either as a formatted GEDCOM string, or a
-\code{DateExact()} object.}
-
-\item{creation_time}{The creation time of the file given either as a formatted GEDCOM string, or a
-\code{Time()} object.}
-
-\item{subm_xref}{The cross-reference identifier of the primary submitter.}
-
-\item{gedcom_copyright}{A copyright statement, as appropriate for the copyright laws applicable to
-this data.}
-
-\item{default_language}{The default language for the entire GEDCOM object.}
-
-\item{default_place_form}{The default form for place names in the GEDCOM object.
-A comma-separated string of jurisdictional titles.
-For example "City, County, State, Country".}
 }
 \value{
 An S7 object representing a GEDCOM file.
