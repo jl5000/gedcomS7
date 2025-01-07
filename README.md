@@ -52,38 +52,71 @@ library(gedcomS7)
 
 ged <- new_gedcom()
 ged
-#> GEDCOM file summary:
-#>  
-#> GEDCOM version:         7.0
-#> Creation Date:          6 JAN 2025
-#> Default Language:       en
-#> Submitter:              <Undefined>
-#> 
-#> Copyright:              <Undefined>
-#> 
-#> Source system:          gedcomS7
-#> Product name:           The 'gedcomS7' package for the R language
-#> Source system version:  <Undefined>
-#> 
-#> Submitters:             0
-#> Individuals:            0
-#> Families:               0
-#> Sources:                0
-#> Repositories:           0
-#> Multimedia:             0
-#> Notes:                  0
+#> <gedcomS7::GedcomS7>
+#>  @ header             : <gedcomS7::GedcomHeader>
+#>  .. @ gedcom_version    : chr "7.0"
+#>  .. @ ext_tags          : chr(0) 
+#>  .. @ source            : <gedcomS7::GedcomSource>
+#>  .. .. @ product_id      : chr "gedcomS7"
+#>  .. .. @ product_name    : chr "The 'gedcomS7' package for the R language"
+#>  .. .. @ product_version : chr(0) 
+#>  .. .. @ business_name   : chr "Jamie Lendrum"
+#>  .. .. @ business_address: NULL
+#>  .. .. @ phone_numbers   : chr(0) 
+#>  .. .. @ emails          : chr "jalendrum@gmail.com"
+#>  .. .. @ faxes           : chr(0) 
+#>  .. .. @ web_pages       : chr(0) 
+#>  .. .. @ data_name       : chr(0) 
+#>  .. .. @ data_pubdate    : chr(0) 
+#>  .. .. @ data_pubtime    : chr(0) 
+#>  .. .. @ data_copyright  : chr(0) 
+#>  .. .. @ GEDCOM          : chr [1:4] "0 SOUR gedcomS7" ...
+#>  .. @ destination       : chr(0) 
+#>  .. @ creation_date     : <gedcomS7::DateExact>
+#>  .. .. @ year         : int 2025
+#>  .. .. @ month        : int 1
+#>  .. .. @ day          : int 7
+#>  .. .. @ GEDCOM_STRING: chr "7 JAN 2025"
+#>  .. .. @ as_date      : Date[1:1], format: "2025-01-07"
+#>  .. @ creation_time     : chr(0) 
+#>  .. @ subm_xref         : chr(0) 
+#>  .. @ gedcom_copyright  : chr(0) 
+#>  .. @ default_language  : chr "en"
+#>  .. @ default_place_form: chr(0) 
+#>  .. @ notes             : list()
+#>  .. @ note_xrefs        : chr(0) 
+#>  .. @ GEDCOM            : chr [1:9] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 SOUR gedcomS7" ...
+#>  @ records            : <gedcomS7::GedcomRecords>
+#>  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"
+#>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
+#>  .. @ XREFS       :List of 7
+#>  .. @ XREFS_PRIV  :List of 7
+#>  .. @ XREFS_CONFID:List of 7
+#>  .. @ XREFS_NEXT  : Named chr [1:7] "@U1@" "@I1@" "@F1@" "@S1@" "@R1@" "@M1@" "@N1@"
+#>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
+#>  .. @ RAW         : <gedcomS7::GedcomRecordsRaw>
+#>  .. .. @ SUBM : list()
+#>  .. .. @ INDI : list()
+#>  .. .. @ FAM  : list()
+#>  .. .. @ SOUR : list()
+#>  .. .. @ REPO : list()
+#>  .. .. @ OBJE : list()
+#>  .. .. @ SNOTE: list()
+#>  @ update_change_dates: logi FALSE
+#>  @ add_creation_dates : logi FALSE
+#>  @ GEDCOM             : chr [1:10] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 SOUR gedcomS7" ...
 ```
 
 The metadata for the gedcom object (ged@…) can be modified.
 
 ``` r
-ged@notes <- "This file contains my family tree"
-ged@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
-ged
+ged@header@notes <- "This file contains my family tree"
+ged@header@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
+summary(ged)
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:         7.0
-#> Creation Date:          6 JAN 2025
+#> Creation Date:          7 JAN 2025
 #> Default Language:       en
 #> Submitter:              <Undefined>
 #> 
@@ -140,7 +173,7 @@ ged@GEDCOM
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 6 JAN 2025"                               
+#>  [8] "1 DATE 7 JAN 2025"                               
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
