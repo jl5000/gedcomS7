@@ -8,40 +8,42 @@ to_console <- function(label, val, exdent){
       fill = TRUE)
 }
 
-S7::method(print, GEDCOMRecordsRaw) <- function(x, ...){
+S7::method(print, GedcomRecordsRaw) <- function(x, ...){
   raw_record_summary(x)
 }
 
-S7::method(print, GEDCOMRecords) <- function(x, ...){
+S7::method(print, GedcomRecords) <- function(x, ...){
   raw_record_summary(x@RAW)
 }
 
-S7::method(print, GedcomS7) <- function(x, ...){
+S7::method(summary, GedcomS7) <- function(x, ...){
   
   eol <- "\n"
   exdent <- 24 # nchar("Source system version:") + 2 = 24
   
+  hd <- x@header
+  
   cat("GEDCOM file summary:")
   cat(eol, eol)
-  to_console("GEDCOM version:", x@gedcom_version, exdent)
-  to_console("Creation Date:", obj_to_val(x@creation_date), exdent)
-  to_console("Default Language:", x@default_language, exdent)
-  if(length(x@subm_xref) == 0){
-    subm <- x@subm_xref
+  to_console("GEDCOM version:", hd@gedcom_version, exdent)
+  to_console("Creation Date:", obj_to_val(hd@creation_date), exdent)
+  to_console("Default Language:", hd@default_language, exdent)
+  if(length(hd@subm_xref) == 0){
+    subm <- hd@subm_xref
   } else {
-    subm <- find_ged_values(x@records@RAW@SUBM[[x@subm_xref]], "NAME")
+    subm <- find_ged_values(x@records@RAW@SUBM[[hd@subm_xref]], "NAME")
   }
   to_console("Submitter:", subm, exdent)
   cat(eol)
-  to_console("Copyright:", x@gedcom_copyright, exdent)
+  to_console("Copyright:", hd@gedcom_copyright, exdent)
   cat(eol)
   
-  if(length(x@source) == 0){
-    to_console("Source system:", x@source, exdent)
+  if(length(hd@source) == 0){
+    to_console("Source system:", hd@source, exdent)
   } else {
-    to_console("Source system:", x@source@product_id, exdent)
-    to_console("Product name:", x@source@product_name, exdent)
-    to_console("Source system version:", x@source@product_version, exdent)
+    to_console("Source system:", hd@source@product_id, exdent)
+    to_console("Product name:", hd@source@product_name, exdent)
+    to_console("Source system version:", hd@source@product_version, exdent)
   }
  
   cat(eol)
@@ -62,5 +64,9 @@ raw_record_summary <- function(raw){
 
 
 S7::method(print, Record) <- function(x, ...){
+  str(x, max.level = 1)
+}
+
+S7::method(print, GedcomS7) <- function(x, ...){
   str(x, max.level = 1)
 }

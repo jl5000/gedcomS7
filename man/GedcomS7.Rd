@@ -5,24 +5,22 @@
 \title{Create a GEDCOM object}
 \usage{
 GedcomS7(
-  gedcom_version = character(0),
-  ext_tags = character(0),
-  source = NULL,
-  destination = character(0),
-  creation_date = character(0),
-  creation_time = character(0),
-  subm_xref = character(0),
-  gedcom_copyright = character(0),
-  default_language = character(0),
-  default_place_form = character(0),
-  notes = list(),
-  note_xrefs = character(0),
+  header = GedcomHeader(),
+  records = GedcomRecords(),
   update_change_dates = FALSE,
-  add_creation_dates = FALSE,
-  records = GEDCOMRecords()
+  add_creation_dates = FALSE
 )
 }
 \arguments{
+\item{records}{An S7 object whose properties contain information about all records. Do not edit
+properties in capitals directly. See Details for more information.}
+
+\item{update_change_dates}{Whether to automatically update change dates when updating records.
+This happens when the record is pushed to the gedcom object.}
+
+\item{add_creation_dates}{Whether to automatically add creation dates when creating records.
+This happens when the record is pushed to the gedcom object.}
+
 \item{gedcom_version}{The version number of the official specification that this
 GEDCOM conforms to. This must include the major and minor version (for example, “7.0”);
 it may include the patch as well (for example, “7.0.1”), but doing so is not required.}
@@ -49,20 +47,6 @@ this data.}
 \item{default_place_form}{The default form for place names in the GEDCOM object.
 A comma-separated string of jurisdictional titles.
 For example "City, County, State, Country".}
-
-\item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,
-or a character vector of notes.}
-
-\item{note_xrefs}{A character vector of relevant note record cross-reference identifiers.}
-
-\item{update_change_dates}{Whether to automatically update change dates when updating records.
-This happens when the record is pushed to the gedcom object.}
-
-\item{add_creation_dates}{Whether to automatically add creation dates when creating records.
-This happens when the record is pushed to the gedcom object.}
-
-\item{records}{An S7 object whose properties contain information about all records. Do not edit
-properties in capitals directly. See Details for more information.}
 }
 \value{
 An S7 object representing a GEDCOM file.

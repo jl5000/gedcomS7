@@ -127,7 +127,6 @@ GedcomSource <- S7::new_class(
 
 GedcomHeader <- S7::new_class(
   "GedcomHeader",
-  abstract = TRUE,
   properties = list(
     gedcom_version = S7::new_property(S7::class_character,
                                       validator = function(value){
@@ -206,7 +205,7 @@ GedcomHeader <- S7::new_class(
                                     chk_input_pattern(value, reg_xref(TRUE))
                                   }),
     
-    GEDCOM_HEAD = S7::new_property(
+    GEDCOM = S7::new_property(
       S7::class_character, 
       getter = function(self){
         c(
@@ -234,8 +233,8 @@ GedcomHeader <- S7::new_class(
   }
 )
 
-GEDCOMRecordsRaw <- S7::new_class(
-  "GEDCOMRecordsRaw",
+GedcomRecordsRaw <- S7::new_class(
+  "GedcomRecordsRaw",
   properties = list(
     SUBM = S7::class_list,
     INDI = S7::class_list,
@@ -247,8 +246,8 @@ GEDCOMRecordsRaw <- S7::new_class(
   )
 )
 
-GEDCOMRecords <- S7::new_class(
-  "GEDCOMRecords",
+GedcomRecords <- S7::new_class(
+  "GedcomRecords",
   properties = list(
     # This serves as both a record of prefixes and order of records
     prefixes = S7::new_property(S7::class_character,
@@ -256,17 +255,17 @@ GEDCOMRecords <- S7::new_class(
                                 setter = function(self, value){
                                   if(length(value) == 0){
                                     value <- c("U", "I", "F", "S", "R", "M", "N")
-                                    names(value) <- names(GEDCOMRecordsRaw@properties)
+                                    names(value) <- names(GedcomRecordsRaw@properties)
                                   }
                                     
                                   self@prefixes <- value
                                   self
                                 },
                                 validator = function(value){
-                                  num_types <- length(GEDCOMRecordsRaw@properties)
+                                  num_types <- length(GedcomRecordsRaw@properties)
                                   c(
                                     chk_input_size(value, num_types, num_types, 0, 6),
-                                    chk_input_choice(names(value), names(GEDCOMRecordsRaw@properties))
+                                    chk_input_choice(names(value), names(GedcomRecordsRaw@properties))
                                   )
                                 }),
     # List of xrefs for each record type
@@ -310,7 +309,7 @@ GEDCOMRecords <- S7::new_class(
                                     paste0("@", self@prefixes, idx, "@") |>
                                       stats::setNames(names(self@prefixes))
                                   }),
-    RAW = GEDCOMRecordsRaw
+    RAW = GedcomRecordsRaw
   )
 )
 
@@ -378,8 +377,9 @@ GEDCOMRecords <- S7::new_class(
 #' expect_equal(ged_raw, ged_raw2)
 GedcomS7 <- S7::new_class(
   "GedcomS7",
-  parent = GedcomHeader,
   properties = list(
+    header = GedcomHeader,
+    records = GedcomRecords,
     update_change_dates = S7::new_property(S7::class_logical, default = FALSE,
                                            validator = function(value){
                                              chk_input_size(value, 1, 1)
@@ -389,14 +389,11 @@ GedcomS7 <- S7::new_class(
                                             chk_input_size(value, 1, 1)
                                           }),
     
-    # Records
-    records = GEDCOMRecords,
-
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
 
-        ged <- self@GEDCOM_HEAD
+        ged <- self@header@GEDCOM
         
         for(rec_type in names(self@records@prefixes)){
           ged <- c(
@@ -432,10 +429,12 @@ new_gedcom <- function(my_language = "en"){
                        business_name = "Jamie Lendrum",
                        emails = "jalendrum@gmail.com")
   
-  GedcomS7(gedcom_version = "7.0",
+  head <- GedcomHeader(gedcom_version = "7.0",
            source = sour,
            creation_date = date_exact_current(),
            default_language = my_language)
+  
+  GedcomS7(header = head)
 
 }
 
@@ -463,7 +462,7 @@ parse_gedcom_header <- function(hd_lines){
     )
   }
   
-  GedcomS7(
+  head <- GedcomHeader(
     gedcom_version = find_ged_values(hd_lines, c("HEAD","GEDC","VERS")),
     ext_tags = find_ged_values(hd_lines, c("HEAD","SCHMA","TAG")),
     source = sour,
@@ -477,6 +476,8 @@ parse_gedcom_header <- function(hd_lines){
     notes = parse_notes(hd_lines, "HEAD"),
     note_xrefs = find_ged_values(hd_lines, c("HEAD","SNOTE"))
   )
+  
+  GedcomS7(header = head)
   
 }
 
