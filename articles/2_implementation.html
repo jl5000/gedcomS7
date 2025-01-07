@@ -119,27 +119,7 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span></span>
 <span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/remarriage1.ged"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
-<span><span class="co">#&gt; GEDCOM file summary:</span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          7 JAN 2025</span></span>
-<span><span class="co">#&gt; Default Language:       &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Copyright:              &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Source system:          &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Submitters:             0</span></span>
-<span><span class="co">#&gt; Individuals:            3</span></span>
-<span><span class="co">#&gt; Families:               2</span></span>
-<span><span class="co">#&gt; Sources:                0</span></span>
-<span><span class="co">#&gt; Repositories:           0</span></span>
-<span><span class="co">#&gt; Multimedia:             0</span></span>
-<span><span class="co">#&gt; Notes:                  0</span></span>
-<span></span>
-<span><span class="va">ged</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::GedcomS7&gt;</span></span>
 <span><span class="co">#&gt;  @ header             : &lt;gedcomS7::GedcomHeader&gt;</span></span>
 <span><span class="co">#&gt;  .. @ gedcom_version    : chr "7.0"</span></span>
@@ -164,14 +144,40 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
 <span><span class="co">#&gt;  .. @ XREFS       :List of 7</span></span>
+<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ INDI : chr [1:3] "@I1@" "@I2@" "@I3@"</span></span>
+<span><span class="co">#&gt;  .. .. $ FAM  : chr [1:2] "@F1@" "@F2@"</span></span>
+<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_PRIV  :List of 7</span></span>
+<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ INDI : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ FAM  : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_CONFID:List of 7</span></span>
+<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ INDI : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ FAM  : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_NEXT  : Named chr [1:7] "@U1@" "@I4@" "@F3@" "@S1@" "@R1@" "@M1@" "@N1@"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
 <span><span class="co">#&gt;  .. @ RAW         : &lt;gedcomS7::GedcomRecordsRaw&gt;</span></span>
 <span><span class="co">#&gt;  .. .. @ SUBM : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ INDI :List of 3</span></span>
+<span><span class="co">#&gt;  .. .. .. $ @I1@: chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" "1 FAMS @F1@" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. $ @I2@: chr [1:4] "0 @I2@ INDI" "1 NAME Jane /Doe/" "1 SEX F" "1 FAMS @F1@"</span></span>
+<span><span class="co">#&gt;  .. .. .. $ @I3@: chr [1:5] "0 @I3@ INDI" "1 NAME Mary /Roe/" "1 DEAT" "2 DATE 1 MAR 1914" ...</span></span>
 <span><span class="co">#&gt;  .. .. @ FAM  :List of 2</span></span>
+<span><span class="co">#&gt;  .. .. .. $ @F1@: chr [1:9] "0 @F1@ FAM" "1 HUSB @I1@" "1 WIFE @I2@" "1 MARR" ...</span></span>
+<span><span class="co">#&gt;  .. .. .. $ @F2@: chr [1:5] "0 @F2@ FAM" "1 HUSB @I1@" "1 WIFE @I3@" "1 MARR" ...</span></span>
 <span><span class="co">#&gt;  .. .. @ SOUR : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ REPO : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ OBJE : Named list()</span></span>
@@ -252,42 +258,70 @@ object. This takes a copy of the record and parses it into an editable
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">john_public</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">john_public</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">john_public</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::IndividualRecord&gt;</span></span>
-<span><span class="co">#&gt;  @ xref               : chr "@I1@"</span></span>
-<span><span class="co">#&gt;  @ confidential       : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ locked             : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ private            : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ user_ids           : chr(0) </span></span>
-<span><span class="co">#&gt;  @ unique_ids         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ ext_ids            : chr(0) </span></span>
-<span><span class="co">#&gt;  @ note_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ notes              : list()</span></span>
-<span><span class="co">#&gt;  @ citations          : list()</span></span>
-<span><span class="co">#&gt;  @ media_links        : list()</span></span>
-<span><span class="co">#&gt;  @ created            : NULL</span></span>
-<span><span class="co">#&gt;  @ updated            : NULL</span></span>
-<span><span class="co">#&gt;  @ GEDCOM_RESTRICTIONS: chr(0) </span></span>
-<span><span class="co">#&gt;  @ GEDCOM_IDENTIFIERS : chr(0) </span></span>
-<span><span class="co">#&gt;  @ pers_names         :List of 1</span></span>
-<span><span class="co">#&gt;  @ sex                : chr "M"</span></span>
-<span><span class="co">#&gt;  @ facts              : list()</span></span>
-<span><span class="co">#&gt;  @ non_events         : list()</span></span>
-<span><span class="co">#&gt;  @ ordinances         : list()</span></span>
-<span><span class="co">#&gt;  @ fam_links_chil     : list()</span></span>
-<span><span class="co">#&gt;  @ fam_links_spou     :List of 2</span></span>
-<span><span class="co">#&gt;  @ subm_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ associations       : list()</span></span>
-<span><span class="co">#&gt;  @ alia_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ anci_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ desi_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ PRIMARY_NAME       : chr "John Q Public"</span></span>
-<span><span class="co">#&gt;  @ ALL_NAMES          : chr "John Q Public"</span></span>
-<span><span class="co">#&gt;  @ BIRTH_DATE         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ BIRTH_PLACE        : chr(0) </span></span>
-<span><span class="co">#&gt;  @ DEATH_DATE         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ DEATH_PLACE        : chr(0) </span></span>
-<span><span class="co">#&gt;  @ GEDCOM             : chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ xref              : chr "@I1@"</span></span>
+<span><span class="co">#&gt;  @ confidential      : logi FALSE</span></span>
+<span><span class="co">#&gt;  @ locked            : logi FALSE</span></span>
+<span><span class="co">#&gt;  @ private           : logi FALSE</span></span>
+<span><span class="co">#&gt;  @ user_ids          : chr(0) </span></span>
+<span><span class="co">#&gt;  @ unique_ids        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ ext_ids           : chr(0) </span></span>
+<span><span class="co">#&gt;  @ note_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ notes             : list()</span></span>
+<span><span class="co">#&gt;  @ citations         : list()</span></span>
+<span><span class="co">#&gt;  @ media_links       : list()</span></span>
+<span><span class="co">#&gt;  @ created           : NULL</span></span>
+<span><span class="co">#&gt;  @ updated           : NULL</span></span>
+<span><span class="co">#&gt;  @ RESTRICTIONS      : chr(0) </span></span>
+<span><span class="co">#&gt;  @ GEDCOM_IDENTIFIERS: chr(0) </span></span>
+<span><span class="co">#&gt;  @ pers_names        :List of 1</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;gedcomS7::PersonalName&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ pers_name        : chr "John Q /Public/"</span></span>
+<span><span class="co">#&gt;  ..  ..@ name_type        : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ type_phrase      : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ name_pieces      : &lt;gedcomS7::PersonalNamePieces&gt;</span></span>
+<span><span class="co">#&gt;  .. .. .. @ prefix        : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ given         : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ nickname      : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ surname_prefix: chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ surname       : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ suffix        : chr(0) </span></span>
+<span><span class="co">#&gt;  .. .. .. @ GEDCOM        : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ name_translations: list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ notes            : list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ note_xrefs       : chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ citations        : list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM_STRING    : chr "John Q /Public/"</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM           : chr "0 NAME John Q /Public/"</span></span>
+<span><span class="co">#&gt;  @ sex               : chr "M"</span></span>
+<span><span class="co">#&gt;  @ facts             : list()</span></span>
+<span><span class="co">#&gt;  @ non_events        : list()</span></span>
+<span><span class="co">#&gt;  @ ordinances        : list()</span></span>
+<span><span class="co">#&gt;  @ fam_links_chil    : list()</span></span>
+<span><span class="co">#&gt;  @ fam_links_spou    :List of 2</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;gedcomS7::FamilyLinkSpouse&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ fam_xref  : chr "@F1@"</span></span>
+<span><span class="co">#&gt;  ..  ..@ note_xrefs: chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ notes     : list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM    : chr "0 FAMS @F1@"</span></span>
+<span><span class="co">#&gt;  .. $ : &lt;gedcomS7::FamilyLinkSpouse&gt;</span></span>
+<span><span class="co">#&gt;  ..  ..@ fam_xref  : chr "@F2@"</span></span>
+<span><span class="co">#&gt;  ..  ..@ note_xrefs: chr(0) </span></span>
+<span><span class="co">#&gt;  ..  ..@ notes     : list()</span></span>
+<span><span class="co">#&gt;  ..  ..@ GEDCOM    : chr "0 FAMS @F2@"</span></span>
+<span><span class="co">#&gt;  @ subm_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ associations      : list()</span></span>
+<span><span class="co">#&gt;  @ alia_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ anci_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ desi_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ PRIMARY_NAME      : chr "John Q Public"</span></span>
+<span><span class="co">#&gt;  @ ALL_NAMES         : chr "John Q Public"</span></span>
+<span><span class="co">#&gt;  @ BIRTH_DATE        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ BIRTH_PLACE       : chr(0) </span></span>
+<span><span class="co">#&gt;  @ DEATH_DATE        : chr(0) </span></span>
+<span><span class="co">#&gt;  @ DEATH_PLACE       : chr(0) </span></span>
+<span><span class="co">#&gt;  @ GEDCOM            : chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" ...</span></span></code></pre></div>
 <p>We can edit a property and Push it back to the GEDCOM object:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">john_public</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="st">"John once had a dog called Rover"</span></span>

@@ -102,9 +102,8 @@
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          6 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:          7 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:       en</span></span>
-<span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Copyright:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -121,15 +120,14 @@
 <span><span class="co">#&gt; Notes:                  0</span></span></code></pre></div>
 <p>The metadata for the gedcom object (ged@…) can be modified.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="st">"This file contains my family tree"</span></span>
-<span><span class="va">ged</span><span class="op">@</span><span class="va">gedcom_copyright</span> <span class="op">&lt;-</span> <span class="st">"Copyright Jamie Lendrum 2023"</span></span>
+<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="st">"This file contains my family tree"</span></span>
+<span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">gedcom_copyright</span> <span class="op">&lt;-</span> <span class="st">"Copyright Jamie Lendrum 2023"</span></span>
 <span><span class="va">ged</span></span>
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
-<span><span class="co">#&gt; Creation Date:          6 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:          7 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:       en</span></span>
-<span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Copyright:              Copyright Jamie Lendrum 2023</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -157,7 +155,16 @@
 <span>  <span class="fu"><a href="reference/push_record.html">push_record</a></span><span class="op">(</span><span class="va">sour_record</span><span class="op">)</span></span>
 <span><span class="co">#&gt; New Submitter record added with xref @U1@</span></span>
 <span><span class="co">#&gt; New Individual record added with xref @I1@</span></span>
-<span><span class="co">#&gt; New Source record added with xref @S1@</span></span></code></pre></div>
+<span><span class="co">#&gt; New Source record added with xref @S1@</span></span>
+<span></span>
+<span><span class="va">ged</span><span class="op">@</span><span class="va">records</span></span>
+<span><span class="co">#&gt; Submitters:             1</span></span>
+<span><span class="co">#&gt; Individuals:            1</span></span>
+<span><span class="co">#&gt; Families:               0</span></span>
+<span><span class="co">#&gt; Sources:                1</span></span>
+<span><span class="co">#&gt; Repositories:           0</span></span>
+<span><span class="co">#&gt; Multimedia:             0</span></span>
+<span><span class="co">#&gt; Notes:                  0</span></span></code></pre></div>
 <p>Existing records, must be ‘pulled’ from the object, edited, and then ‘pushed’ back.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">joe_bloggs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
@@ -173,7 +180,7 @@
 <span><span class="co">#&gt;  [5] "2 NAME The 'gedcomS7' package for the R language"</span></span>
 <span><span class="co">#&gt;  [6] "2 CORP Jamie Lendrum"                            </span></span>
 <span><span class="co">#&gt;  [7] "3 EMAIL jalendrum@gmail.com"                     </span></span>
-<span><span class="co">#&gt;  [8] "1 DATE 6 JAN 2025"                               </span></span>
+<span><span class="co">#&gt;  [8] "1 DATE 7 JAN 2025"                               </span></span>
 <span><span class="co">#&gt;  [9] "1 COPR Copyright Jamie Lendrum 2023"             </span></span>
 <span><span class="co">#&gt; [10] "1 LANG en"                                       </span></span>
 <span><span class="co">#&gt; [11] "1 NOTE This file contains my family tree"        </span></span>
