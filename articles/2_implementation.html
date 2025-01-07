@@ -119,77 +119,72 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span></span>
 <span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/remarriage1.ged"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
+<span><span class="co">#&gt; GEDCOM file summary:</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; GEDCOM version:         7.0</span></span>
+<span><span class="co">#&gt; Creation Date:          7 JAN 2025</span></span>
+<span><span class="co">#&gt; Default Language:       &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; Submitter:              &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Copyright:              &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Source system:          &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Submitters:             0</span></span>
+<span><span class="co">#&gt; Individuals:            3</span></span>
+<span><span class="co">#&gt; Families:               2</span></span>
+<span><span class="co">#&gt; Sources:                0</span></span>
+<span><span class="co">#&gt; Repositories:           0</span></span>
+<span><span class="co">#&gt; Multimedia:             0</span></span>
+<span><span class="co">#&gt; Notes:                  0</span></span>
+<span></span>
+<span><span class="va">ged</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::GedcomS7&gt;</span></span>
-<span><span class="co">#&gt;  @ gedcom_version     : chr "7.0"</span></span>
-<span><span class="co">#&gt;  @ ext_tags           : chr(0) </span></span>
-<span><span class="co">#&gt;  @ source             : NULL</span></span>
-<span><span class="co">#&gt;  @ destination        : chr(0) </span></span>
-<span><span class="co">#&gt;  @ creation_date      : &lt;gedcomS7::DateExact&gt;</span></span>
-<span><span class="co">#&gt;  .. @ year         : int 2025</span></span>
-<span><span class="co">#&gt;  .. @ month        : int 1</span></span>
-<span><span class="co">#&gt;  .. @ day          : int 6</span></span>
-<span><span class="co">#&gt;  .. @ GEDCOM_STRING: chr "6 JAN 2025"</span></span>
-<span><span class="co">#&gt;  .. @ as_date      : Date[1:1], format: "2025-01-06"</span></span>
-<span><span class="co">#&gt;  @ creation_time      : chr(0) </span></span>
-<span><span class="co">#&gt;  @ subm_xref          : chr(0) </span></span>
-<span><span class="co">#&gt;  @ gedcom_copyright   : chr(0) </span></span>
-<span><span class="co">#&gt;  @ default_language   : chr(0) </span></span>
-<span><span class="co">#&gt;  @ default_place_form : chr(0) </span></span>
-<span><span class="co">#&gt;  @ notes              : list()</span></span>
-<span><span class="co">#&gt;  @ note_xrefs         : chr(0) </span></span>
-<span><span class="co">#&gt;  @ GEDCOM_HEAD        : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 6 JAN 2025"</span></span>
-<span><span class="co">#&gt;  @ update_change_dates: logi FALSE</span></span>
-<span><span class="co">#&gt;  @ add_creation_dates : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ records            : &lt;gedcomS7::GEDCOMRecords&gt;</span></span>
+<span><span class="co">#&gt;  @ header             : &lt;gedcomS7::GedcomHeader&gt;</span></span>
+<span><span class="co">#&gt;  .. @ gedcom_version    : chr "7.0"</span></span>
+<span><span class="co">#&gt;  .. @ ext_tags          : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ source            : NULL</span></span>
+<span><span class="co">#&gt;  .. @ destination       : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ creation_date     : &lt;gedcomS7::DateExact&gt;</span></span>
+<span><span class="co">#&gt;  .. .. @ year         : int 2025</span></span>
+<span><span class="co">#&gt;  .. .. @ month        : int 1</span></span>
+<span><span class="co">#&gt;  .. .. @ day          : int 7</span></span>
+<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "7 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-07"</span></span>
+<span><span class="co">#&gt;  .. @ creation_time     : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ subm_xref         : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ gedcom_copyright  : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ default_language  : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ default_place_form: chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ notes             : list()</span></span>
+<span><span class="co">#&gt;  .. @ note_xrefs        : chr(0) </span></span>
+<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 7 JAN 2025"</span></span>
+<span><span class="co">#&gt;  @ records            : &lt;gedcomS7::GedcomRecords&gt;</span></span>
 <span><span class="co">#&gt;  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
 <span><span class="co">#&gt;  .. @ XREFS       :List of 7</span></span>
-<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ INDI : chr [1:3] "@I1@" "@I2@" "@I3@"</span></span>
-<span><span class="co">#&gt;  .. .. $ FAM  : chr [1:2] "@F1@" "@F2@"</span></span>
-<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_PRIV  :List of 7</span></span>
-<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ INDI : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ FAM  : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_CONFID:List of 7</span></span>
-<span><span class="co">#&gt;  .. .. $ SUBM : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ INDI : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ FAM  : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ SOUR : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ REPO : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ OBJE : chr(0) </span></span>
-<span><span class="co">#&gt;  .. .. $ SNOTE: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ XREFS_NEXT  : Named chr [1:7] "@U1@" "@I4@" "@F3@" "@S1@" "@R1@" "@M1@" "@N1@"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
-<span><span class="co">#&gt;  .. @ RAW         : &lt;gedcomS7::GEDCOMRecordsRaw&gt;</span></span>
+<span><span class="co">#&gt;  .. @ RAW         : &lt;gedcomS7::GedcomRecordsRaw&gt;</span></span>
 <span><span class="co">#&gt;  .. .. @ SUBM : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ INDI :List of 3</span></span>
-<span><span class="co">#&gt;  .. .. .. $ @I1@: chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" "1 FAMS @F1@" ...</span></span>
-<span><span class="co">#&gt;  .. .. .. $ @I2@: chr [1:4] "0 @I2@ INDI" "1 NAME Jane /Doe/" "1 SEX F" "1 FAMS @F1@"</span></span>
-<span><span class="co">#&gt;  .. .. .. $ @I3@: chr [1:5] "0 @I3@ INDI" "1 NAME Mary /Roe/" "1 DEAT" "2 DATE 1 MAR 1914" ...</span></span>
 <span><span class="co">#&gt;  .. .. @ FAM  :List of 2</span></span>
-<span><span class="co">#&gt;  .. .. .. $ @F1@: chr [1:9] "0 @F1@ FAM" "1 HUSB @I1@" "1 WIFE @I2@" "1 MARR" ...</span></span>
-<span><span class="co">#&gt;  .. .. .. $ @F2@: chr [1:5] "0 @F2@ FAM" "1 HUSB @I1@" "1 WIFE @I3@" "1 MARR" ...</span></span>
 <span><span class="co">#&gt;  .. .. @ SOUR : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ REPO : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ OBJE : Named list()</span></span>
 <span><span class="co">#&gt;  .. .. @ SNOTE: Named list()</span></span>
-<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 6 JAN 2025" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ update_change_dates: logi FALSE</span></span>
+<span><span class="co">#&gt;  @ add_creation_dates : logi FALSE</span></span>
+<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 7 JAN 2025" ...</span></span></code></pre></div>
 <p>Properties of the GEDCOM object can be accessed and modified using
 the <code>@</code> operator, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">default_language</span></span>
+<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">default_language</span></span>
 <span><span class="co">#&gt; character(0)</span></span>
-<span><span class="va">ged</span><span class="op">@</span><span class="va">default_language</span> <span class="op">&lt;-</span> <span class="st">"en"</span></span></code></pre></div>
+<span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">default_language</span> <span class="op">&lt;-</span> <span class="st">"en"</span></span></code></pre></div>
 <p>This ease of modification of specific properties of a GEDCOM object
 wasn’t possible with the <code>tidyged</code> package.</p>
 <p>Properties which don’t have values are either empty vectors, empty
@@ -202,8 +197,8 @@ only requires its first property. For example, the <code>@notes</code>
 property can take a simple character vector of notes, and these will be
 converted to a list of <code><a href="../reference/Note.html">Note()</a></code> objects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"This is a note"</span>, <span class="st">"This is another note"</span><span class="op">)</span></span>
-<span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span></span>
+<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"This is a note"</span>, <span class="st">"This is another note"</span><span class="op">)</span></span>
+<span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; &lt;gedcomS7::Note&gt;</span></span>
 <span><span class="co">#&gt;  @ text        : chr "This is a note"</span></span>
@@ -223,7 +218,7 @@ converted to a list of <code><a href="../reference/Note.html">Note()</a></code> 
 <span><span class="co">#&gt;  @ GEDCOM      : chr "0 NOTE This is another note"</span></span></code></pre></div>
 <p>You can then access properties of these:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">notes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">@</span><span class="va">language</span> <span class="op">&lt;-</span> <span class="st">"en"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">@</span><span class="va">language</span> <span class="op">&lt;-</span> <span class="st">"en"</span></span></code></pre></div>
 <p>Some of these properties are also read-only (calculated from other
 properties), such as <code>@GEDCOM</code> and these are indicated by
 being in all capitals. The exploration of all properties of the GEDCOM

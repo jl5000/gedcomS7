@@ -56,21 +56,10 @@ new_gedcom() which populates relevant defaults."></head><body>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GedcomS7</span><span class="op">(</span></span>
-<span>  gedcom_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  ext_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  source <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  creation_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  creation_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  subm_xref <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  gedcom_copyright <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  default_language <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  default_place_form <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  notes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  note_xrefs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  header <span class="op">=</span> <span class="fu">GedcomHeader</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  records <span class="op">=</span> <span class="fu">GedcomRecords</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  update_change_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  add_creation_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  records <span class="op">=</span> <span class="fu">GEDCOMRecords</span><span class="op">(</span><span class="op">)</span></span>
+<span>  add_creation_dates <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,7 +67,22 @@ new_gedcom() which populates relevant defaults."></head><body>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-gedcom-version">gedcom_version<a class="anchor" aria-label="anchor" href="#arg-gedcom-version"></a></dt>
+<dl><dt id="arg-records">records<a class="anchor" aria-label="anchor" href="#arg-records"></a></dt>
+<dd><p>An S7 object whose properties contain information about all records. Do not edit
+properties in capitals directly. See Details for more information.</p></dd>
+
+
+<dt id="arg-update-change-dates">update_change_dates<a class="anchor" aria-label="anchor" href="#arg-update-change-dates"></a></dt>
+<dd><p>Whether to automatically update change dates when updating records.
+This happens when the record is pushed to the gedcom object.</p></dd>
+
+
+<dt id="arg-add-creation-dates">add_creation_dates<a class="anchor" aria-label="anchor" href="#arg-add-creation-dates"></a></dt>
+<dd><p>Whether to automatically add creation dates when creating records.
+This happens when the record is pushed to the gedcom object.</p></dd>
+
+
+<dt id="arg-gedcom-version">gedcom_version<a class="anchor" aria-label="anchor" href="#arg-gedcom-version"></a></dt>
 <dd><p>The version number of the official specification that this
 GEDCOM conforms to. This must include the major and minor version (for example, “7.0”);
 it may include the patch as well (for example, “7.0.1”), but doing so is not required.</p></dd>
@@ -123,30 +127,6 @@ this data.</p></dd>
 <dd><p>The default form for place names in the GEDCOM object.
 A comma-separated string of jurisdictional titles.
 For example "City, County, State, Country".</p></dd>
-
-
-<dt id="arg-notes">notes<a class="anchor" aria-label="anchor" href="#arg-notes"></a></dt>
-<dd><p>Associated notes. This can either be a <code><a href="Note.html">Note()</a></code> object, a list of them,
-or a character vector of notes.</p></dd>
-
-
-<dt id="arg-note-xrefs">note_xrefs<a class="anchor" aria-label="anchor" href="#arg-note-xrefs"></a></dt>
-<dd><p>A character vector of relevant note record cross-reference identifiers.</p></dd>
-
-
-<dt id="arg-update-change-dates">update_change_dates<a class="anchor" aria-label="anchor" href="#arg-update-change-dates"></a></dt>
-<dd><p>Whether to automatically update change dates when updating records.
-This happens when the record is pushed to the gedcom object.</p></dd>
-
-
-<dt id="arg-add-creation-dates">add_creation_dates<a class="anchor" aria-label="anchor" href="#arg-add-creation-dates"></a></dt>
-<dd><p>Whether to automatically add creation dates when creating records.
-This happens when the record is pushed to the gedcom object.</p></dd>
-
-
-<dt id="arg-records">records<a class="anchor" aria-label="anchor" href="#arg-records"></a></dt>
-<dd><p>An S7 object whose properties contain information about all records. Do not edit
-properties in capitals directly. See Details for more information.</p></dd>
 
 </dl></div>
     <div class="section level2">
