@@ -73,3 +73,12 @@ Time <- S7::new_class(
     if(length(self@fraction) == 1 && length(self@second) == 0)
       return("@fraction requires @second")
   })
+
+
+S7::method(print, Time) <- function(x, ...){
+  summary(x)
+}
+
+S7::method(summary, Time) <- function(x, ...){
+  cat(x@GEDCOM_STRING)
+}

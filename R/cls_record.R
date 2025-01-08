@@ -147,3 +147,16 @@ parse_common_record_elements <- function(rec, rec_lines){
   rec
   
 }
+
+
+# S7::method(print, Record) <- function(x, ...){
+#   summary(x)
+# }
+# 
+# print_record_summary <- function(x){
+#   exdent <- 24
+#   to_console("Restrictions:", x@RESTRICTIONS, exdent)
+#   
+#   
+#   
+# }

@@ -82,7 +82,7 @@ If you want to edit a record, you must first Pull it from the GEDCOM object. Thi
 ```{r}
 john_public <- pull_record(ged, "@I1@")
 
-str(john_public)
+str(john_public, max.level = 1)
 ```
 
 
