@@ -12,6 +12,8 @@ GedcomS7(
 )
 }
 \arguments{
+\item{header}{An S7 object whose properties contain information about the GEDCOM object as a whole.}
+
 \item{records}{An S7 object whose properties contain information about all records. Do not edit
 properties in capitals directly. See Details for more information.}
 

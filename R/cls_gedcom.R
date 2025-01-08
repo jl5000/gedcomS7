@@ -366,11 +366,11 @@ GedcomRecords <- S7::new_class(
 #' The order that these records appear in the vector will also dictate the order in which records 
 #' will appear in the exported file.
 #' 
-#' @inheritParams prop_definitions 
 #' @param update_change_dates Whether to automatically update change dates when updating records.
 #' This happens when the record is pushed to the gedcom object.
 #' @param add_creation_dates Whether to automatically add creation dates when creating records.
 #' This happens when the record is pushed to the gedcom object.
+#' @param header An S7 object whose properties contain information about the GEDCOM object as a whole.
 #' @param records An S7 object whose properties contain information about all records. Do not edit
 #' properties in capitals directly. See Details for more information. 
 #' @returns An S7 object representing a GEDCOM file.
@@ -509,8 +509,8 @@ raw_source_summary <- function(sour){
 S7::method(print, GedcomSource) <- function(x, ...){
   str(x, max.level = 1)
 }
-S7::method(summary, GedcomSource) <- function(x, ...){
-  raw_source_summary(x)
+S7::method(summary, GedcomSource) <- function(object, ...){
+  raw_source_summary(object)
 }
 
 # Header ------------------------------------------------------------------
@@ -529,8 +529,8 @@ raw_header_summary <- function(hd){
 S7::method(print, GedcomHeader) <- function(x, ...){
   summary(x)
 }
-S7::method(summary, GedcomHeader) <- function(x, ...){
-  raw_header_summary(x)
+S7::method(summary, GedcomHeader) <- function(object, ...){
+  raw_header_summary(object)
 }
 
 # Raw records ----------------------------------------------------------------
@@ -549,15 +549,15 @@ raw_record_summary <- function(raw){
 S7::method(print, GedcomRecordsRaw) <- function(x, ...){
   summary(x)
 }
-S7::method(summary, GedcomRecordsRaw) <- function(x, ...){
-  raw_record_summary(x)
+S7::method(summary, GedcomRecordsRaw) <- function(object, ...){
+  raw_record_summary(object)
 }
 
 S7::method(print, GedcomRecords) <- function(x, ...){
   summary(x@RAW)
 }
-S7::method(summary, GedcomRecords) <- function(x, ...){
-  raw_record_summary(x@RAW)
+S7::method(summary, GedcomRecords) <- function(object, ...){
+  raw_record_summary(object@RAW)
 }
 
 # Gedcom ------------------------------------------------------------------
@@ -566,13 +566,13 @@ S7::method(print, GedcomS7) <- function(x, ...){
   summary(x)
 }
 
-S7::method(summary, GedcomS7) <- function(x, ...){
+S7::method(summary, GedcomS7) <- function(object, ...){
   exdent <- 24 # nchar("Source system version:") + 2 = 24
   
   cat("GEDCOM file summary:")
   cat("\n", "\n")
-  raw_header_summary(x@header)
+  raw_header_summary(object@header)
   cat("\n")
-  raw_record_summary(x@records@RAW)
+  raw_record_summary(object@records@RAW)
 }
 

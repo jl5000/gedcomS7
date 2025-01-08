@@ -79,6 +79,6 @@ S7::method(print, Time) <- function(x, ...){
   summary(x)
 }
 
-S7::method(summary, Time) <- function(x, ...){
-  cat(x@GEDCOM_STRING)
+S7::method(summary, Time) <- function(object, ...){
+  cat(object@GEDCOM_STRING)
 }
