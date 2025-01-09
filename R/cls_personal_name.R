@@ -21,6 +21,7 @@
 #'                                         suffix = "Jr")@GEDCOM, "json2")
 PersonalNamePieces <- S7::new_class(
   "PersonalNamePieces",
+  parent = GedcomS7class,
   properties = list(
     prefix = S7::new_property(S7::class_character,
                               validator = function(value){
@@ -78,6 +79,7 @@ PersonalNamePieces <- S7::new_class(
 #'                                                name_pieces = PersonalNamePieces(nickname = "JJ"))@GEDCOM, "json2")
 PersonalNameTran <- S7::new_class(
   "PersonalNameTran",
+  parent = GedcomS7class,
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  validator = function(value){
@@ -139,6 +141,7 @@ PersonalNameTran <- S7::new_class(
 #'                                           citations = c("@S1@","@S3@","@S7@"))@GEDCOM, "json2")
 PersonalName <- S7::new_class(
   "PersonalName",
+  parent = GedcomS7class,
   properties = list(
     pers_name = S7::new_property(S7::class_character,
                                  getter = function(self) self@pers_name,

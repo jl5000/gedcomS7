@@ -8,6 +8,7 @@
 #' @export
 SourceCallNumber <- S7::new_class(
   "SourceCallNumber",
+  parent = GedcomS7class,
   properties = list(
     call_number = S7::new_property(S7::class_character,
                                     validator = function(value){
@@ -76,6 +77,7 @@ parse_call_numbers <- function(lines, location){
 #'                                                 call_numbers = c("ABC","123"))@GEDCOM, "json2")
 RepositoryCitation <- S7::new_class(
   "RepositoryCitation",
+  parent = GedcomS7class,
   properties = list(
     repo_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){
@@ -162,6 +164,7 @@ parse_repo_citations <- function(rec_lines){
 #'                                            territory = "somewhere")@GEDCOM, "json2")
 FactsRecorded <- S7::new_class(
   "FactsRecorded",
+  parent = GedcomS7class,
   properties = list(
     fact_types = S7::new_property(S7::class_character,
                                   validator = function(value){

@@ -11,6 +11,7 @@
 #'                                                notes = list(Note("test")))@GEDCOM, "json2")
 FamilyLinkSpouse <- S7::new_class(
   "FamilyLinkSpouse",
+  parent = GedcomS7class,
   properties = list(
     fam_xref = S7::new_property(S7::class_character,
                                 validator = function(value){

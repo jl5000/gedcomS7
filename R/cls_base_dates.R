@@ -1,5 +1,5 @@
 
-DateClass <- S7::new_class("DateClass", abstract = TRUE)
+DateClass <- S7::new_class("DateClass", parent = GedcomS7class, abstract = TRUE)
 
 
 #' Create a GEDCOM Exact Date object
@@ -536,9 +536,7 @@ parse_date_value <- function(lines, location = NULL, sorting = FALSE){
   dt
 }
 
-S7::method(print, DateClass) <- function(x, ...){
-  summary(x)
-}
+
 S7::method(summary, DateClass) <- function(object, ...){
   date_str <- object@GEDCOM_STRING
   

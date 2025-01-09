@@ -8,6 +8,7 @@
 #' @export
 Ordinance <- S7::new_class(
   "Ordinance",
+  parent = GedcomS7class,
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 validator = function(value){
@@ -138,6 +139,7 @@ Ordinance <- S7::new_class(
 #' @export
 SpouseSealing <- S7::new_class(
   "SpouseSealing",
+  parent = GedcomS7class,
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 getter = function(self) "SLGS"),

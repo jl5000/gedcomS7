@@ -28,6 +28,7 @@
 #'                                                                    where = "Page 2"))@GEDCOM, "json2") 
 Association <- S7::new_class(
   "Association",
+  parent = GedcomS7class,
   properties = list(
     indi_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){

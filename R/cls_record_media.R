@@ -30,6 +30,7 @@
 #'                        "json2")
 MediaFile <- S7::new_class(
   "MediaFile",
+  parent = GedcomS7class,
   properties = list(
     location = S7::new_property(S7::class_character,
                                 validator = function(value){

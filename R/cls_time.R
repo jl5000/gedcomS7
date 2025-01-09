@@ -24,6 +24,7 @@
 #' expect_equal(Time(14, 28, utc = FALSE)@GEDCOM_STRING, "14:28")
 Time <- S7::new_class(
   "Time",
+  parent = GedcomS7class,
   properties = list(
     hour = S7::new_property(S7::class_numeric,
                             validator = function(value){
@@ -74,10 +75,6 @@ Time <- S7::new_class(
       return("@fraction requires @second")
   })
 
-
-S7::method(print, Time) <- function(x, ...){
-  summary(x)
-}
 
 S7::method(summary, Time) <- function(object, ...){
   cat(object@GEDCOM_STRING)

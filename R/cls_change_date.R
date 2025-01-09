@@ -12,6 +12,7 @@
 #'                                           time = "11:04:56")@GEDCOM, "json2")
 CreationDate <- S7::new_class(
   "CreationDate",
+  parent = GedcomS7class,
   properties = list(
     date_exact = S7::new_property(S7::class_character | 
                                     S7::new_S3_class("gedcomS7::DateExact"),

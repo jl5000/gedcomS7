@@ -61,6 +61,7 @@
 #'                                      notes = c("these are","some notes"))@GEDCOM, "json2")
 SourceCitation <- S7::new_class(
   "SourceCitation",
+  parent = GedcomS7class,
   properties = list(
     sour_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                  validator = function(value){

@@ -1,4 +1,12 @@
 
+# Must appear first before other classes
+GedcomS7class <- S7::new_class("GedcomS7class", abstract = TRUE)
+
+S7::method(print, GedcomS7class) <- function(x, ...){
+  summary(x)
+}
+
+
 #' Create an address object
 #' 
 #' @param full A full address as it would appear on a mailing label, with lines separated
@@ -35,6 +43,7 @@
 #'                                     postal_code = "81309")@GEDCOM, "json2")
 Address <- S7::new_class(
   "Address",
+  parent = GedcomS7class,
   properties = list(
     full = S7::new_property(S7::class_character,
                             validator = function(value){
@@ -107,9 +116,6 @@ parse_address <- function(lines, location = NULL){
   )
 }
 
-S7::method(print, Address) <- function(x, ...){
-  summary(x)
-}
 
 S7::method(summary, Address) <- function(object, ...){
   cat(object@GEDCOM_STRING)

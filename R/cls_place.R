@@ -40,6 +40,7 @@
 #'                                   notes = "Thing 1")@GEDCOM, "json2")
 Place <- S7::new_class(
   "Place",
+  parent = GedcomS7class,
   properties = list(
     place_name = S7::new_property(S7::class_character,
                                   validator = function(value){

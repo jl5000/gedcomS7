@@ -18,6 +18,7 @@
 #' @returns An S7 object representing a GEDCOM HEAD.SOUR.
 GedcomSource <- S7::new_class(
   "GedcomSource",
+  parent = GedcomS7class,
   properties = list(
     product_id = S7::new_property(S7::class_character,
                                   validator = function(value){
@@ -152,6 +153,7 @@ GedcomSource <- S7::new_class(
 #' @returns An S7 object representing a GEDCOM header.
 GedcomHeader <- S7::new_class(
   "GedcomHeader",
+  parent = GedcomS7class,
   properties = list(
     gedcom_version = S7::new_property(S7::class_character,
                                       validator = function(value){
@@ -261,6 +263,7 @@ GedcomHeader <- S7::new_class(
 
 GedcomRecordsRaw <- S7::new_class(
   "GedcomRecordsRaw",
+  parent = GedcomS7class,
   properties = list(
     SUBM = S7::class_list,
     INDI = S7::class_list,
@@ -275,6 +278,7 @@ GedcomRecordsRaw <- S7::new_class(
 
 GedcomRecords <- S7::new_class(
   "GedcomRecords",
+  parent = GedcomS7class,
   properties = list(
     # This serves as both a record of prefixes and order of records
     prefixes = S7::new_property(S7::class_character,
@@ -387,6 +391,7 @@ GedcomRecords <- S7::new_class(
 #' expect_equal(ged_raw, ged_raw2)
 GedcomS7 <- S7::new_class(
   "GedcomS7",
+  parent = GedcomS7class,
   properties = list(
     header = GedcomHeader,
     records = GedcomRecords,
@@ -506,9 +511,6 @@ raw_source_summary <- function(sour){
   }
 }
 
-S7::method(print, GedcomSource) <- function(x, ...){
-  str(x, max.level = 1)
-}
 S7::method(summary, GedcomSource) <- function(object, ...){
   raw_source_summary(object)
 }
@@ -526,9 +528,6 @@ raw_header_summary <- function(hd){
   raw_source_summary(hd@source)
 }
 
-S7::method(print, GedcomHeader) <- function(x, ...){
-  summary(x)
-}
 S7::method(summary, GedcomHeader) <- function(object, ...){
   raw_header_summary(object)
 }
@@ -546,25 +545,15 @@ raw_record_summary <- function(raw){
   to_console("Notes:", length(raw@SNOTE), exdent)
 }
 
-S7::method(print, GedcomRecordsRaw) <- function(x, ...){
-  summary(x)
-}
 S7::method(summary, GedcomRecordsRaw) <- function(object, ...){
   raw_record_summary(object)
 }
 
-S7::method(print, GedcomRecords) <- function(x, ...){
-  summary(x@RAW)
-}
 S7::method(summary, GedcomRecords) <- function(object, ...){
   raw_record_summary(object@RAW)
 }
 
 # Gedcom ------------------------------------------------------------------
-
-S7::method(print, GedcomS7) <- function(x, ...){
-  summary(x)
-}
 
 S7::method(summary, GedcomS7) <- function(object, ...){
   exdent <- 24 # nchar("Source system version:") + 2 = 24

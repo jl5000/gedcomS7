@@ -28,6 +28,7 @@
 #'                                        top = 5, left = 200)@GEDCOM, "json2")
 MediaLink <- S7::new_class(
   "MediaLink",
+  parent = GedcomS7class,
   properties = list(
     media_xref = S7::new_property(S7::class_character, default = "@VOID@",
                                   validator = function(value){

@@ -24,6 +24,7 @@
 #'                                       citations = "@S98@")@GEDCOM, "json2")
 NonEvent <- S7::new_class(
   "NonEvent",
+  parent = GedcomS7class,
   properties = list(
     event_type = S7::new_property(S7::class_character,
                                   validator = function(value){

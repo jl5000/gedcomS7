@@ -41,6 +41,7 @@
 #'              regexp = "@translations contains an invalid object not of class TranslationText")
 Note <- S7::new_class(
   "Note",
+  parent = GedcomS7class,
   properties = list(
     text = S7::new_property(S7::class_character,
                             validator = function(value){

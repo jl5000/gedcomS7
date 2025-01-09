@@ -20,6 +20,7 @@
 #' }
 Record <- S7::new_class(
   "Record", 
+  parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
     xref = S7::new_property(S7::class_character, default = "@GEDCOMS7_ORPHAN@",

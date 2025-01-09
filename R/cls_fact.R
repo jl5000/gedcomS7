@@ -1,6 +1,7 @@
 
 Fact <- S7::new_class(
   "Fact",
+  parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
     # Not part of detail, but want them to appear first
