@@ -2,7 +2,7 @@
 
 # File R/cls_record_fam.R: @tests
 
-test_that("Function FamilyRecord() @ L36", {
+test_that("Function FamilyRecord() @ L40", {
   fct <- list(FamilyEvent("MARR", husb_age = "22y", wife_age = "28y 6m",
                              date = "22 AUG 1907", place = "Church"))
   nevent <- list(NonEvent("DIV"))
@@ -19,5 +19,9 @@ test_that("Function FamilyRecord() @ L36", {
                                      unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
                                      ext_ids = stats::setNames(letters, LETTERS)[1:5],
                                      user_ids = month.abb[1:6])@GEDCOM_IDENTIFIERS, "json2")
+  expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 3),
+                            chil_xrefs = c("@1@","@2@"))@NUM_CHILDREN, 3)
+  expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 2),
+                            chil_xrefs = c("@1@","@2@","@3@"))@NUM_CHILDREN, 3)
 })
 

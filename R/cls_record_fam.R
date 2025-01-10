@@ -174,3 +174,18 @@ parse_record_fam <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+
+S7::method(summary, FamilyRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+  to_console("Husband:", object@husb_xref, exdent)
+  to_console("Wife:", object@wife_xref, exdent)
+  to_console("Children:", object@NUM_CHILDREN, exdent)
+  to_console("Marr. Date:", object@MARRIAGE_DATE, exdent)
+  to_console("Marr. Place:", object@MARRIAGE_PLACE, exdent)
+  to_console("Facts:", length(object@facts), exdent)
+  cat("\n")
+
+  print_record_summary(object)
+}

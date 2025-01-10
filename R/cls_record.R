@@ -150,14 +150,18 @@ parse_common_record_elements <- function(rec, rec_lines){
 }
 
 
-# S7::method(print, Record) <- function(x, ...){
-#   summary(x)
-# }
-# 
-# print_record_summary <- function(x){
-#   exdent <- 24
-#   to_console("Restrictions:", x@RESTRICTIONS, exdent)
-#   
-#   
-#   
-# }
+
+
+print_record_summary <- function(x){
+  exdent <- 15
+  to_console("Citations:", length(x@citations), exdent)
+  to_console("Media Links:", length(x@media_links), exdent)
+  to_console("Notes:", length(x@notes) + length(x@note_xrefs), exdent)
+  cat("\n")
+  to_console("User IDs:", toString(paste(names(x@user_ids), x@user_ids, sep = " = ")), exdent)
+  to_console("Unique IDs:", toString(x@unique_ids), exdent)
+  to_console("External IDs:", toString(paste(names(x@ext_ids), x@ext_ids, sep = "/")), exdent)
+  to_console("Restrictions:", x@RESTRICTIONS, exdent)
+  if(!is.null(x@created)) summary(x@created)
+  if(!is.null(x@updated)) summary(x@updated)
+}

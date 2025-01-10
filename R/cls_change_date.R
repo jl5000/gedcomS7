@@ -115,7 +115,7 @@ parse_change_date <- function(rec_lines){
 }
 
 S7::method(summary, CreationDate) <- function(object, ...){
-  exdent <- 10
+  exdent <- 15
   date_str <- obj_to_val(object@date_exact)
   if(length(object@time) == 1) 
     date_str <- paste(date_str, obj_to_val(object@time))
@@ -124,7 +124,7 @@ S7::method(summary, CreationDate) <- function(object, ...){
 }
 
 S7::method(summary, ChangeDate) <- function(object, ...){
-  exdent <- 10
+  exdent <- 15
   date_str <- obj_to_val(object@date_exact)
   if(length(object@time) == 1) 
     date_str <- paste(date_str, obj_to_val(object@time))

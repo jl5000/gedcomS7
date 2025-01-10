@@ -118,5 +118,5 @@ parse_address <- function(lines, location = NULL){
 
 
 S7::method(summary, Address) <- function(object, ...){
-  cat(object@GEDCOM_STRING)
+  to_console("Address:", object@GEDCOM_STRING, 15)
 }

@@ -246,3 +246,25 @@ parse_record_indi <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+
+S7::method(summary, IndividualRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+  to_console("Names:", toString(object@ALL_NAMES), exdent)
+  to_console("Sex:", object@sex, exdent)
+  to_console("Birth Date:", object@BIRTH_DATE, exdent)
+  to_console("Birth Place:", object@BIRTH_PLACE, exdent)
+  to_console("Death Date:", object@DEATH_DATE, exdent)
+  to_console("Death Place:", object@DEATH_PLACE, exdent)
+  to_console("Facts:", length(object@facts), exdent)
+  cat("\n")
+  to_console("Family Links:", sprintf("%s (as child), %s (as spouse)",
+                                      length(object@fam_links_chil), length(object@fam_links_spou)), 
+             exdent)
+  to_console("Indiv. Links:", sprintf("%s (associations), %s (aliases)",
+                                      length(object@associations), length(object@alia_xrefs)), 
+             exdent)
+  
+  print_record_summary(object)
+}
