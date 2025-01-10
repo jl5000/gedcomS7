@@ -33,6 +33,10 @@
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = stats::setNames(letters, LETTERS)[1:5],
 #'                                    user_ids = month.abb[1:6])@GEDCOM_IDENTIFIERS, "json2")
+#' expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 3),
+#'                           chil_xrefs = c("@1@","@2@"))@NUM_CHILDREN, 3)
+#' expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 2),
+#'                           chil_xrefs = c("@1@","@2@","@3@"))@NUM_CHILDREN, 3)
 FamilyRecord <- S7::new_class(
   "FamilyRecord", 
   parent = Record,
@@ -95,6 +99,19 @@ FamilyRecord <- S7::new_class(
                                     validator = function(value){
                                       for(inp in value) if(is.character(inp)) return(inp)
                                     }),
+    
+    NUM_CHILDREN = S7::new_property(
+      S7::class_integer,
+      getter = function(self){
+        nchi <- 0
+        for(fact in self@facts){
+          if(fact@fact_type == "NCHI"){
+            nchi <- as.integer(fact@fact_val)
+            break
+          }
+        }
+        max(nchi, length(self@chil_xrefs))
+      }),
     
     MARRIAGE_DATE = S7::new_property(
       S7::class_character,
