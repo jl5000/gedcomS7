@@ -116,3 +116,14 @@ parse_notes <- function(lines, location = NULL){
   })
   
 }
+
+
+S7::method(summary, Note) <- function(object, ...){
+  exdent <- 16
+  to_console("Note:", object@text, exdent)
+  cat("\n")
+  to_console("Language:", object@language, exdent)
+  to_console("Format:", object@media_type, exdent)
+  to_console("Translations:", length(object@translations), exdent)
+  to_console("Citations:", length(object@citations), exdent)
+}
