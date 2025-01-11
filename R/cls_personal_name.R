@@ -273,3 +273,34 @@ parse_personal_names <- function(rec_lines){
     )
   })
 }
+
+S7::method(summary, PersonalName) <- function(object, ...){
+  exdent <- 17
+  to_console("Personal Name:", object@pers_name, exdent)
+  name_type <- object@name_type
+  if(length(object@type_phrase) == 1)
+    name_type <- sprintf("%s (%s)", name_type, object@type_phrase)
+  
+  to_console("Name Type:", name_type, exdent)
+    
+  cat("\n")
+  to_console("Translations:", length(object@name_translations), exdent)
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
+
+S7::method(summary, PersonalNameTran) <- function(object, ...){
+  exdent <- 17
+  to_console("Translated Name:", object@pers_name, exdent)
+  to_console("Language:", object@language, exdent)
+}
+
+S7::method(summary, PersonalNamePieces) <- function(object, ...){
+  exdent <- 17
+  to_console("Prefix:", object@prefix, exdent)
+  to_console("Given:", object@given, exdent)
+  to_console("Nickname:", object@nickname, exdent)
+  to_console("Surname Prefix:", object@surname_prefix, exdent)
+  to_console("Surname:", object@surname, exdent)
+  to_console("Suffix:", object@suffix, exdent)
+}
