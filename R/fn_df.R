@@ -28,7 +28,7 @@ df_indi <- function(x, xrefs = NULL){
     sex = vapply(rec_list, \(lines) chronify(find_ged_values(lines, "SEX")), FUN.VALUE = character(1)),
     birth_date = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("BIRT","DATE"))), FUN.VALUE = character(1)),
     birth_place = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("BIRT","PLAC"))), FUN.VALUE = character(1)),
-    is_alive = vapply(names(rec_list), \(xref) is_alive(x, xref), FUN.VALUE = logical(1)),
+    is_alive = vapply(rec_list, \(lines) is_alive(lines), FUN.VALUE = logical(1)),
     death_date = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("DEAT","DATE"))), FUN.VALUE = character(1)),
     death_place = vapply(rec_list, \(lines) chronify(find_ged_values(lines, c("DEAT","PLAC"))), FUN.VALUE = character(1)),
     fam_as_child = vapply(names(rec_list), \(xref) get_fam_as_child(x, xref, "BIRTH") |> 
