@@ -89,3 +89,16 @@ parse_record_note <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+S7::method(summary, NoteRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+  to_console("Note:", object@text, exdent)
+  cat("\n")
+  to_console("Language:", object@language, exdent)
+  to_console("Format:", object@media_type, exdent)
+  to_console("Translations:", length(object@translations), exdent)
+  to_console("Citations:", length(object@citations), exdent)
+  cat("\n")
+  print_record_summary(object)
+}
