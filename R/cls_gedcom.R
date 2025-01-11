@@ -501,13 +501,16 @@ parse_gedcom_header <- function(hd_lines){
 # Source ------------------------------------------------------------------
 
 raw_source_summary <- function(sour){
-  exdent <- 24
+  exdent <- 20
   if(length(sour) == 0){
     to_console("Source system:", sour, exdent)
   } else {
-    to_console("Source system:", sour@product_id, exdent)
-    to_console("Product name:", sour@product_name, exdent)
-    to_console("Source system version:", sour@product_version, exdent)
+    sour_str <- sour@product_id
+    if(length(sour@product_version) == 1)
+      sour_str <- sprintf("%s (%s)", sour_str, sour@product_version)
+      
+    to_console("Source:", sour_str, exdent)
+    to_console("Source name:", sour@product_name, exdent)
   }
 }
 
@@ -518,14 +521,13 @@ S7::method(summary, GedcomSource) <- function(object, ...){
 # Header ------------------------------------------------------------------
 
 raw_header_summary <- function(hd){
-  exdent <- 24
+  exdent <- 20
   to_console("GEDCOM version:", hd@gedcom_version, exdent)
   to_console("Creation Date:", obj_to_val(hd@creation_date), exdent)
   to_console("Default Language:", hd@default_language, exdent)
+  raw_source_summary(hd@source)
   cat("\n")
   to_console("Copyright:", hd@gedcom_copyright, exdent)
-  cat("\n")
-  raw_source_summary(hd@source)
 }
 
 S7::method(summary, GedcomHeader) <- function(object, ...){
@@ -535,7 +537,7 @@ S7::method(summary, GedcomHeader) <- function(object, ...){
 # Raw records ----------------------------------------------------------------
 
 raw_record_summary <- function(raw){
-  exdent <- 24
+  exdent <- 20
   to_console("Submitters:", length(raw@SUBM), exdent)
   to_console("Individuals:", length(raw@INDI), exdent)
   to_console("Families:", length(raw@FAM), exdent)
@@ -556,7 +558,7 @@ S7::method(summary, GedcomRecords) <- function(object, ...){
 # Gedcom ------------------------------------------------------------------
 
 S7::method(summary, GedcomS7) <- function(object, ...){
-  exdent <- 24 # nchar("Source system version:") + 2 = 24
+  exdent <- 20
   
   cat("GEDCOM file summary:")
   cat("\n", "\n")
