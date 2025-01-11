@@ -177,6 +177,11 @@ IndividualRecord <- S7::new_class(
         character()
       }),
     
+    IS_ALIVE = S7::new_property(
+      S7::class_logical,
+      getter = function(self) is_alive(self@GEDCOM)
+    ),
+    
     DEATH_DATE = S7::new_property(
       S7::class_character,
       getter = function(self){
@@ -255,8 +260,11 @@ S7::method(summary, IndividualRecord) <- function(object, ...){
   to_console("Sex:", object@sex, exdent)
   to_console("Birth Date:", object@BIRTH_DATE, exdent)
   to_console("Birth Place:", object@BIRTH_PLACE, exdent)
-  to_console("Death Date:", object@DEATH_DATE, exdent)
-  to_console("Death Place:", object@DEATH_PLACE, exdent)
+  to_console("Alive:", object@IS_ALIVE, exdent)
+  if(!object@IS_ALIVE){
+    to_console("Death Date:", object@DEATH_DATE, exdent)
+    to_console("Death Place:", object@DEATH_PLACE, exdent)
+  }
   to_console("Facts:", length(object@facts), exdent)
   cat("\n")
   to_console("Family Links:", sprintf("%s (as child), %s (as spouse)",

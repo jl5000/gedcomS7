@@ -91,7 +91,8 @@ rm_living <- function(x,
   
   remove <- NULL
   for(xref in x@records@XREFS[["INDI"]]) {
-    if(is_alive(x, xref, max_age))
+    rec_lines <- x@records@RAW@INDI[[xref]]
+    if(is_alive(rec_lines, max_age))
       remove <- c(remove, xref)
   }
   
@@ -100,11 +101,8 @@ rm_living <- function(x,
   x
 }
 
-is_alive <- function(x, xref, max_age = 100){
-  check_indi_rec(x, xref)
-  
-  rec_lines <- x@records@RAW@INDI[[xref]]
-  
+is_alive <- function(rec_lines, max_age = 100){
+
   deaths <- find_ged_values(rec_lines, "DEAT", return_list = TRUE)
   
   if(length(deaths) > 0){
