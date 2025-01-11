@@ -86,3 +86,35 @@ parse_record_subm <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+
+S7::method(summary, SubmitterRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+  to_console("Submitter:", object@subm_name, exdent)
+  to_console("Languages:", toString(object@languages), exdent)
+  if(!is.null(object@address)) 
+    to_console("Address:", object@address@full, exdent)
+  
+  for(i in seq_along(object@phone_numbers)){
+    if(i == 1) intro <- "Phone Numbers:" else intro <- ""
+    to_console(intro, object@phone_numbers[i], exdent)
+  }
+  for(i in seq_along(object@faxes)){
+    if(i == 1) intro <- "Fax Numbers:" else intro <- ""
+    to_console(intro, object@faxes[i], exdent)
+  }
+  for(i in seq_along(object@emails)){
+    if(i == 1) intro <- "Emails:" else intro <- ""
+    to_console(intro, object@emails[i], exdent)
+  }
+  for(i in seq_along(object@web_pages)){
+    if(i == 1) intro <- "Web Pages:" else intro <- ""
+    to_console(intro, object@web_pages[i], exdent)
+  }
+  cat("\n")
+  to_console("Media Links:", length(object@media_links), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  cat("\n")
+  print_record_summary(object)
+}
