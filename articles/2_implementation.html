@@ -129,9 +129,9 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. @ creation_date     : &lt;gedcomS7::DateExact&gt;</span></span>
 <span><span class="co">#&gt;  .. .. @ year         : int 2025</span></span>
 <span><span class="co">#&gt;  .. .. @ month        : int 1</span></span>
-<span><span class="co">#&gt;  .. .. @ day          : int 10</span></span>
-<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "10 JAN 2025"</span></span>
-<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-10"</span></span>
+<span><span class="co">#&gt;  .. .. @ day          : int 11</span></span>
+<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "11 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-11"</span></span>
 <span><span class="co">#&gt;  .. @ creation_time     : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ subm_xref         : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ gedcom_copyright  : chr(0) </span></span>
@@ -139,7 +139,7 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. @ default_place_form: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ notes             : list()</span></span>
 <span><span class="co">#&gt;  .. @ note_xrefs        : chr(0) </span></span>
-<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 10 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 11 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ records            : &lt;gedcomS7::GedcomRecords&gt;</span></span>
 <span><span class="co">#&gt;  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
@@ -184,7 +184,7 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. .. @ SNOTE: Named list()</span></span>
 <span><span class="co">#&gt;  @ update_change_dates: logi FALSE</span></span>
 <span><span class="co">#&gt;  @ add_creation_dates : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 10 JAN 2025" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 11 JAN 2025" ...</span></span></code></pre></div>
 <p>Properties of the GEDCOM object can be accessed and modified using
 the <code>@</code> operator, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -289,6 +289,7 @@ object. This takes a copy of the record and parses it into an editable
 <span><span class="co">#&gt;  @ ALL_NAMES         : chr "John Q Public"</span></span>
 <span><span class="co">#&gt;  @ BIRTH_DATE        : chr(0) </span></span>
 <span><span class="co">#&gt;  @ BIRTH_PLACE       : chr(0) </span></span>
+<span><span class="co">#&gt;  @ IS_ALIVE          : logi TRUE</span></span>
 <span><span class="co">#&gt;  @ DEATH_DATE        : chr(0) </span></span>
 <span><span class="co">#&gt;  @ DEATH_PLACE       : chr(0) </span></span>
 <span><span class="co">#&gt;  @ GEDCOM            : chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" ...</span></span></code></pre></div>
