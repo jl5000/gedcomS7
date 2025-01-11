@@ -175,3 +175,32 @@ parse_record_media <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+S7::method(summary, MediaRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+
+  for(i in seq_along(object@files)){
+    if(i == 1) intro <- "Files:" else intro <- ""
+    to_console(intro, object@files[[i]]@location, exdent)
+  }
+  cat("\n")
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  cat("\n")
+  print_record_summary(object)
+}
+
+S7::method(summary, MediaFile) <- function(object, ...){
+  exdent <- 15
+  to_console("Location:", object@location, exdent)
+  to_console("Title:", object@title, exdent)
+  to_console("Format:", object@media_type, exdent)
+  
+  medium <- object@medium
+  if(length(object@medium_phrase) == 1)
+    medium <- sprintf("%s (%s)", medium, object@medium_phrase)
+    
+  to_console("Medium:", medium, exdent)
+  
+}

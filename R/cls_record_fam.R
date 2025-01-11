@@ -186,6 +186,9 @@ S7::method(summary, FamilyRecord) <- function(object, ...){
   to_console("Marr. Place:", object@MARRIAGE_PLACE, exdent)
   to_console("Facts:", length(object@facts), exdent)
   cat("\n")
-
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Media Links:", length(object@media_links), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  cat("\n")
   print_record_summary(object)
 }

@@ -273,6 +273,9 @@ S7::method(summary, IndividualRecord) <- function(object, ...){
   to_console("Indiv. Links:", sprintf("%s (associations), %s (aliases)",
                                       length(object@associations), length(object@alia_xrefs)), 
              exdent)
-  
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Media Links:", length(object@media_links), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  cat("\n")
   print_record_summary(object)
 }
