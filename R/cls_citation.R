@@ -211,3 +211,22 @@ parse_citations <- function(lines, location = NULL){
   })
   
 }
+
+
+S7::method(summary, SourceCitation) <- function(object, ...){
+  exdent <- 15
+  to_console("Source XREF:", object@sour_xref, exdent)
+  to_console("Where:", object@where, exdent)
+  to_console("Date:", obj_to_val(object@date), exdent)
+  fact_type <- object@fact_type
+  fact_type <- names(val_fact_types(TRUE))[fact_type == val_fact_types(TRUE)]
+  to_console_value_with_phrase("Fact:", 
+                               fact_type, object@fact_phrase, 
+                               exdent)
+  to_console_value_with_phrase("Role:", 
+                               object@role, object@role_phrase, 
+                               exdent)
+  cat("\n")
+  to_console("Media Links:", length(object@media_links), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
