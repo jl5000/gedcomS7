@@ -364,3 +364,61 @@ parse_record_sour <- function(rec_lines){
   
   parse_common_record_elements(rec, rec_lines)
 }
+
+S7::method(summary, SourceCallNumber) <- function(object, ...){
+  exdent <- 15
+  to_console("Call Number:", object@call_number, exdent)
+  med <- object@medium
+  if(length(object@medium_phrase) == 1)
+    med <- sprintf("%s (%s)", med, object@medium_phrase)
+  
+  to_console("Medium:", med, exdent)
+}
+
+S7::method(summary, RepositoryCitation) <- function(object, ...){
+  exdent <- 15
+  to_console("Repos. XREF:", toString(object@repo_xref), exdent)
+  for(i in seq_along(object@call_numbers)){
+    if(i == 1) intro <- "Call Numbers:" else intro <- ""
+    to_console(intro, object@call_numbers[[i]]@call_number, exdent)
+  }
+  cat("\n")
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
+
+S7::method(summary, FactsRecorded) <- function(object, ...){
+  exdent <- 15
+  to_console("Facts:", toString(object@fact_types), exdent)
+  per <- object@date_period
+  if(length(object@date_phrase) == 1)
+    per <- sprintf("%s (%s)", per, object@date_phrase)
+  
+  to_console("Period:", per, exdent)
+  
+  if(!is.null(object@territory)) 
+    to_console("Territory:", object@territory@GEDCOM_STRING, exdent)
+}
+
+S7::method(summary, SourceRecord) <- function(object, ...){
+  exdent <- 15
+  to_console("XREF:", object@xref, exdent)
+  to_console("Full Title:", object@full_title, exdent)
+  to_console("Short Title:", object@short_title, exdent)
+  to_console("Originator:", object@originator, exdent)
+  to_console("Agency:", object@agency, exdent)
+  to_console("Ref. Info:", object@publication_facts, exdent)
+  
+  facts <- NULL
+  for(fct in object@facts_recorded){
+    facts <- toString(c(facts, fct@fact_types))
+  }
+  to_console("Facts:", facts, exdent)
+  
+  cat("\n")
+  to_console("Repos. Links:", length(object@repo_citations), exdent)
+  to_console("Media Links:", length(object@media_links), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  to_console("Data Notes:", length(object@data_notes) + length(object@data_note_xrefs), exdent)
+  cat("\n")
+  print_record_summary(object)
+}

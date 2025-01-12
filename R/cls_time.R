@@ -77,5 +77,5 @@ Time <- S7::new_class(
 
 
 S7::method(summary, Time) <- function(object, ...){
-  cat(object@GEDCOM_STRING)
+  to_console("Time:", object@GEDCOM_STRING, 15)
 }
