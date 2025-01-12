@@ -112,3 +112,16 @@ parse_associations <- function(rec_lines, location = NULL){
     )
   })
 }
+
+S7::method(summary, Association) <- function(object, ...){
+  exdent <- 15
+  to_console_value_with_phrase("Association:", 
+                               object@indi_xref, object@indi_phrase, 
+                               exdent)
+  to_console_value_with_phrase("Relation:", 
+                               object@relation_is, object@relation_phrase, 
+                               exdent)
+  cat("\n")
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
