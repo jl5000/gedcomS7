@@ -90,7 +90,7 @@ add_parents <- function(x,
   
   # Create new family record if necessary
   if(length(famc_xref) == 0){
-    famc_xref <- x@records@XREFS_NEXT["FAM"]
+    famc_xref <- x@records@XREFS_NEXT[["FAM"]]
     
     famc_rec <- FamilyRecord(
       chil_xrefs = xref
@@ -196,7 +196,7 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL){
   check_indi_rec(x, xref)
   if(!is.null(fam_xref)) check_fam_rec(x, fam_xref)
   
-  spou_xref <- x@records@XREFS_NEXT["INDI"]
+  spou_xref <- x@records@XREFS_NEXT[["INDI"]]
   
   spou_rec <- IndividualRecord(
     sex = sex
@@ -260,7 +260,7 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
   famc_xref <- get_fam_as_child(x, xref, "BIRTH")
   
   if(length(famc_xref) == 0){
-    famc_xref <- x@records@XREFS_NEXT["FAM"]
+    famc_xref <- x@records@XREFS_NEXT[["FAM"]]
     
     famc_rec <- FamilyRecord(
       chil_xrefs = xref

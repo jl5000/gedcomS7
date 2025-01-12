@@ -154,7 +154,7 @@ add_missing_xrefs <- function(gedcom){
     for(rec_no in seq_along(rec_list)){
       if(names(rec_list)[[rec_no]] != "") next
       
-      new_xref <- gedcom@records@XREFS_NEXT[rec_type]
+      new_xref <- gedcom@records@XREFS_NEXT[[rec_type]]
       first_line <- rec_list[[rec_no]][1]
       S7::prop(gedcom@records@RAW, rec_type)[[rec_no]][1] <- 
         sub("^0", paste(0, new_xref), first_line)

@@ -148,7 +148,7 @@ push_record <- function(gedcom, record){
   new_rec <- record@xref == "@GEDCOMS7_ORPHAN@"
   
   if(new_rec)
-    record@xref <- unname(gedcom@records@XREFS_NEXT[rec_type])
+    record@xref <- gedcom@records@XREFS_NEXT[[rec_type]]
   
   # Don't do this yet
   #if(rec_type %in% c("INDI","FAM")) record <- order_facts(record)
