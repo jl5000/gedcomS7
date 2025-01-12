@@ -145,3 +145,12 @@ parse_place <- function(lines, location = NULL){
   )
   
 }
+
+S7::method(summary, Place) <- function(object, ...){
+  exdent <- 15
+  to_console("Place:", object@place_name, exdent)
+  cat("\n")
+  to_console("Translations:", length(object@place_translations), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+  to_console("External IDs:", toString(paste(names(object@ext_ids), object@ext_ids, sep = "/")), exdent)
+}
