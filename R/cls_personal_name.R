@@ -277,12 +277,9 @@ parse_personal_names <- function(rec_lines){
 S7::method(summary, PersonalName) <- function(object, ...){
   exdent <- 17
   to_console("Personal Name:", object@pers_name, exdent)
-  name_type <- object@name_type
-  if(length(object@type_phrase) == 1)
-    name_type <- sprintf("%s (%s)", name_type, object@type_phrase)
-  
-  to_console("Name Type:", name_type, exdent)
-    
+  to_console_value_with_phrase("Name Type:", 
+                               object@name_type, object@type_phrase, 
+                               exdent)
   cat("\n")
   to_console("Translations:", length(object@name_translations), exdent)
   to_console("Citations:", length(object@citations), exdent)

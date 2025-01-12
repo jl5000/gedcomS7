@@ -116,18 +116,18 @@ parse_change_date <- function(rec_lines){
 
 S7::method(summary, CreationDate) <- function(object, ...){
   exdent <- 15
-  date_str <- obj_to_val(object@date_exact)
-  if(length(object@time) == 1) 
-    date_str <- paste(date_str, obj_to_val(object@time))
-  
-  to_console("Created:", date_str, exdent)
+  to_console_value_with_phrase("Created:", 
+                               obj_to_val(object@date_exact), 
+                               obj_to_val(object@time),
+                               exdent,
+                               "%s %s")
 }
 
 S7::method(summary, ChangeDate) <- function(object, ...){
   exdent <- 15
-  date_str <- obj_to_val(object@date_exact)
-  if(length(object@time) == 1) 
-    date_str <- paste(date_str, obj_to_val(object@time))
-  
-  to_console("Changed:", date_str, exdent)
+  to_console_value_with_phrase("Changed:", 
+                               obj_to_val(object@date_exact), 
+                               obj_to_val(object@time),
+                               exdent,
+                               "%s %s")
 }

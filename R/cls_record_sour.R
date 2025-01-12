@@ -368,20 +368,15 @@ parse_record_sour <- function(rec_lines){
 S7::method(summary, SourceCallNumber) <- function(object, ...){
   exdent <- 15
   to_console("Call Number:", object@call_number, exdent)
-  med <- object@medium
-  if(length(object@medium_phrase) == 1)
-    med <- sprintf("%s (%s)", med, object@medium_phrase)
-  
-  to_console("Medium:", med, exdent)
+  to_console_value_with_phrase("Medium:", 
+                               object@medium, object@medium_phrase, 
+                               exdent)
 }
 
 S7::method(summary, RepositoryCitation) <- function(object, ...){
   exdent <- 15
   to_console("Repos. XREF:", toString(object@repo_xref), exdent)
-  for(i in seq_along(object@call_numbers)){
-    if(i == 1) intro <- "Call Numbers:" else intro <- ""
-    to_console(intro, object@call_numbers[[i]]@call_number, exdent)
-  }
+  to_console_list("Call Numbers:", object@call_numbers, exdent, prop = "call_number")
   cat("\n")
   to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
 }
@@ -389,11 +384,9 @@ S7::method(summary, RepositoryCitation) <- function(object, ...){
 S7::method(summary, FactsRecorded) <- function(object, ...){
   exdent <- 15
   to_console("Facts:", toString(object@fact_types), exdent)
-  per <- object@date_period
-  if(length(object@date_phrase) == 1)
-    per <- sprintf("%s (%s)", per, object@date_phrase)
-  
-  to_console("Period:", per, exdent)
+  to_console_value_with_phrase("Period:", 
+                               object@date_period, object@date_phrase, 
+                               exdent)
   
   if(!is.null(object@territory)) 
     to_console("Territory:", object@territory@GEDCOM_STRING, exdent)

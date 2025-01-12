@@ -143,3 +143,25 @@ to_console <- function(label, val, exdent){
               exdent = exdent), 
       fill = TRUE)
 }
+
+to_console_value_with_phrase <- function(label, 
+                                         value, 
+                                         phrase, 
+                                         exdent, 
+                                         pattern = "%s (%s)"){
+  if(length(phrase) == 1)
+    value <- sprintf(pattern, value, phrase)
+  
+  to_console(label, value, exdent)
+}
+
+to_console_list <- function(label, values, exdent, prop = NULL){
+  for(i in seq_along(values)){
+    if(i == 1) intro <- label else intro <- ""
+    if(is.null(prop)){
+      to_console(intro, values[i], exdent)
+    } else {
+      to_console(intro, S7::prop(values[[i]], prop), exdent)
+    }
+  }
+}

@@ -96,22 +96,10 @@ S7::method(summary, SubmitterRecord) <- function(object, ...){
   if(!is.null(object@address)) 
     to_console("Address:", object@address@full, exdent)
   
-  for(i in seq_along(object@phone_numbers)){
-    if(i == 1) intro <- "Phone Numbers:" else intro <- ""
-    to_console(intro, object@phone_numbers[i], exdent)
-  }
-  for(i in seq_along(object@faxes)){
-    if(i == 1) intro <- "Fax Numbers:" else intro <- ""
-    to_console(intro, object@faxes[i], exdent)
-  }
-  for(i in seq_along(object@emails)){
-    if(i == 1) intro <- "Emails:" else intro <- ""
-    to_console(intro, object@emails[i], exdent)
-  }
-  for(i in seq_along(object@web_pages)){
-    if(i == 1) intro <- "Web Pages:" else intro <- ""
-    to_console(intro, object@web_pages[i], exdent)
-  }
+  to_console_list("Phone Numbers:", object@phone_numbers, exdent)
+  to_console_list("Fax Numbers:", object@faxes, exdent)
+  to_console_list("Emails:", object@emails, exdent)
+  to_console_list("Web Pages:", object@web_pages, exdent)
   cat("\n")
   to_console("Media Links:", length(object@media_links), exdent)
   to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)

@@ -505,11 +505,9 @@ raw_source_summary <- function(sour){
   if(length(sour) == 0){
     to_console("Source system:", sour, exdent)
   } else {
-    sour_str <- sour@product_id
-    if(length(sour@product_version) == 1)
-      sour_str <- sprintf("%s (%s)", sour_str, sour@product_version)
-      
-    to_console("Source:", sour_str, exdent)
+    to_console_value_with_phrase("Source:", 
+                                 sour@product_id, sour@product_version, 
+                                 exdent)
     to_console("Source name:", sour@product_name, exdent)
   }
 }

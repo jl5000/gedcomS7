@@ -143,43 +143,23 @@ S7::method(summary, FamilyFact) <- function(object, ...){
   exdent <- 15
   fact_type <- object@fact_type
   fact_type <- names(val_fact_types(TRUE))[fact_type == val_fact_types(TRUE)]
-  if(length(object@fact_desc) == 1)
-    fact_type <- sprintf("%s (%s)", fact_type, object@fact_desc)
-  
-  to_console("Fact Type:", fact_type, exdent)
+  to_console_value_with_phrase("Fact Type:", 
+                               fact_type, object@fact_desc, 
+                               exdent)
   if(length(object@fact_val) == 1) to_console("Value:", object@fact_val, exdent)
-  husb_age <- object@husb_age
-  if(length(object@husb_age_phrase) == 1)
-    husb_age <- sprintf("%s (%s)", husb_age, object@husb_age_phrase)
-  
-  to_console("Husband Age:", husb_age, exdent)
-  
-  wife_age <- object@wife_age
-  if(length(object@wife_age_phrase) == 1)
-    wife_age <- sprintf("%s (%s)", wife_age, object@wife_age_phrase)
-  
-  to_console("Wife Age:", wife_age, exdent)
+  to_console_value_with_phrase("Husband Age:", 
+                               object@husb_age, object@husb_age_phrase, 
+                               exdent)
+  to_console_value_with_phrase("Wife Age:", 
+                               object@wife_age, object@wife_age_phrase, 
+                               exdent)
   to_console("Cause:", object@cause, exdent)
   to_console("Date:", object@FACT_DATE, exdent)
   to_console("Location:", object@FACT_LOCATION, exdent)
-  
-  for(i in seq_along(object@phone_numbers)){
-    if(i == 1) intro <- "Phone Numbers:" else intro <- ""
-    to_console(intro, object@phone_numbers[i], exdent)
-  }
-  for(i in seq_along(object@faxes)){
-    if(i == 1) intro <- "Fax Numbers:" else intro <- ""
-    to_console(intro, object@faxes[i], exdent)
-  }
-  for(i in seq_along(object@emails)){
-    if(i == 1) intro <- "Emails:" else intro <- ""
-    to_console(intro, object@emails[i], exdent)
-  }
-  for(i in seq_along(object@web_pages)){
-    if(i == 1) intro <- "Web Pages:" else intro <- ""
-    to_console(intro, object@web_pages[i], exdent)
-  }
-  
+  to_console_list("Phone Numbers:", object@phone_numbers, exdent)
+  to_console_list("Fax Numbers:", object@faxes, exdent)
+  to_console_list("Emails:", object@emails, exdent)
+  to_console_list("Web Pages:", object@web_pages, exdent)
   cat("\n")
   to_console("Associations:", length(object@associations), exdent)
   to_console("Citations:", length(object@citations), exdent)

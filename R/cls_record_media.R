@@ -179,11 +179,7 @@ parse_record_media <- function(rec_lines){
 S7::method(summary, MediaRecord) <- function(object, ...){
   exdent <- 15
   to_console("XREF:", object@xref, exdent)
-
-  for(i in seq_along(object@files)){
-    if(i == 1) intro <- "Files:" else intro <- ""
-    to_console(intro, object@files[[i]]@location, exdent)
-  }
+  to_console_list("Files:", object@files, exdent, prop = "location")
   cat("\n")
   to_console("Citations:", length(object@citations), exdent)
   to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
@@ -196,11 +192,7 @@ S7::method(summary, MediaFile) <- function(object, ...){
   to_console("Location:", object@location, exdent)
   to_console("Title:", object@title, exdent)
   to_console("Format:", object@media_type, exdent)
-  
-  medium <- object@medium
-  if(length(object@medium_phrase) == 1)
-    medium <- sprintf("%s (%s)", medium, object@medium_phrase)
-    
-  to_console("Medium:", medium, exdent)
-  
+  to_console_value_with_phrase("Medium:", 
+                               object@medium, object@medium_phrase, 
+                               exdent)
 }

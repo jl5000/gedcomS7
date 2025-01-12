@@ -546,5 +546,5 @@ S7::method(summary, DateClass) <- function(object, ...){
                                                        date_str, object@date_phrase)
   }
   
-  cat(date_str)
+  to_console("Date:", date_str, 10)
 }
