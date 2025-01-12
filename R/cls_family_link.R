@@ -152,3 +152,24 @@ parse_family_links <- function(rec_lines, as_spouse = TRUE){
     lnk
   })
 }
+
+
+S7::method(summary, FamilyLinkSpouse) <- function(object, ...){
+  exdent <- 15
+  chil_link <- S7::S7_inherits(object, FamilyLinkChild)
+  if(chil_link) link_type <- "as child" else link_type <- "as spouse"
+  to_console_value_with_phrase("Family XREF:", 
+                               object@fam_xref, link_type, 
+                               exdent)
+  
+  if(chil_link){
+    to_console_value_with_phrase("Pedigree:", 
+                                 object@pedigree, object@pedigree_phrase, 
+                                 exdent)
+    to_console_value_with_phrase("Confidence:", 
+                                 object@confidence, object@confidence_phrase, 
+                                 exdent)
+  }
+  cat("\n")
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
