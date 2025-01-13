@@ -80,19 +80,18 @@
 <h2 id="creating-new-objects">Creating new objects<a class="anchor" aria-label="anchor" href="#creating-new-objects"></a>
 </h2>
 <p>The easiest way to create a GEDCOM object is to import an existing
-GEDCOM file. When you <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> or use <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
-on a GEDCOM object it provides a brief summary of the file. The example
-below imports the smallest legal GEDCOM file:</p>
+GEDCOM file. The example below imports the smallest legal GEDCOM
+file:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jl5000.github.io/gedcomS7/">gedcomS7</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_gedcom.html">read_gedcom</a></span><span class="op">(</span><span class="st">"https://gedcom.io/testfiles/gedcom70/minimal70.ged"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ged</span><span class="op">)</span></span>
+<span><span class="va">ged</span></span>
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:     7.0</span></span>
-<span><span class="co">#&gt; Creation Date:      12 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:      13 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:   &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; Source system:      &lt;Undefined&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -114,7 +113,7 @@ below imports the smallest legal GEDCOM file:</p>
 <span><span class="co">#&gt; GEDCOM file summary:</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; GEDCOM version:     7.0</span></span>
-<span><span class="co">#&gt; Creation Date:      12 JAN 2025</span></span>
+<span><span class="co">#&gt; Creation Date:      13 JAN 2025</span></span>
 <span><span class="co">#&gt; Default Language:   en</span></span>
 <span><span class="co">#&gt; Source:             gedcomS7</span></span>
 <span><span class="co">#&gt; Source name:        The 'gedcomS7' package for the R language</span></span>
@@ -153,9 +152,9 @@ with file extension .ged.</p>
 <span><span class="co">#&gt;  .. @ creation_date     : &lt;gedcomS7::DateExact&gt;</span></span>
 <span><span class="co">#&gt;  .. .. @ year         : int 2025</span></span>
 <span><span class="co">#&gt;  .. .. @ month        : int 1</span></span>
-<span><span class="co">#&gt;  .. .. @ day          : int 12</span></span>
-<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "12 JAN 2025"</span></span>
-<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-12"</span></span>
+<span><span class="co">#&gt;  .. .. @ day          : int 13</span></span>
+<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "13 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-13"</span></span>
 <span><span class="co">#&gt;  .. @ creation_time     : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ subm_xref         : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ gedcom_copyright  : chr(0) </span></span>
@@ -163,7 +162,7 @@ with file extension .ged.</p>
 <span><span class="co">#&gt;  .. @ default_place_form: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ notes             : list()</span></span>
 <span><span class="co">#&gt;  .. @ note_xrefs        : chr(0) </span></span>
-<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 12 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 13 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ records            : &lt;gedcomS7::GedcomRecords&gt;</span></span>
 <span><span class="co">#&gt;  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
@@ -182,7 +181,7 @@ with file extension .ged.</p>
 <span><span class="co">#&gt;  .. .. @ SNOTE: Named list()</span></span>
 <span><span class="co">#&gt;  @ update_change_dates: logi FALSE</span></span>
 <span><span class="co">#&gt;  @ add_creation_dates : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ GEDCOM             : chr [1:5] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 12 JAN 2025" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM             : chr [1:5] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 13 JAN 2025" ...</span></span></code></pre></div>
 <p>The properties of the main GEDCOM object are either:</p>
 <ul>
 <li>Properties of the header in the <code>@header</code> property

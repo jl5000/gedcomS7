@@ -129,9 +129,9 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. @ creation_date     : &lt;gedcomS7::DateExact&gt;</span></span>
 <span><span class="co">#&gt;  .. .. @ year         : int 2025</span></span>
 <span><span class="co">#&gt;  .. .. @ month        : int 1</span></span>
-<span><span class="co">#&gt;  .. .. @ day          : int 12</span></span>
-<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "12 JAN 2025"</span></span>
-<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-12"</span></span>
+<span><span class="co">#&gt;  .. .. @ day          : int 13</span></span>
+<span><span class="co">#&gt;  .. .. @ GEDCOM_STRING: chr "13 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. .. @ as_date      : Date[1:1], format: "2025-01-13"</span></span>
 <span><span class="co">#&gt;  .. @ creation_time     : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ subm_xref         : chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ gedcom_copyright  : chr(0) </span></span>
@@ -139,7 +139,7 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. @ default_place_form: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ notes             : list()</span></span>
 <span><span class="co">#&gt;  .. @ note_xrefs        : chr(0) </span></span>
-<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 12 JAN 2025"</span></span>
+<span><span class="co">#&gt;  .. @ GEDCOM            : chr [1:4] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 13 JAN 2025"</span></span>
 <span><span class="co">#&gt;  @ records            : &lt;gedcomS7::GedcomRecords&gt;</span></span>
 <span><span class="co">#&gt;  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"</span></span>
 <span><span class="co">#&gt;  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...</span></span>
@@ -184,7 +184,7 @@ package, using the updated GEDCOM 7.0 specification.</p>
 <span><span class="co">#&gt;  .. .. @ SNOTE: Named list()</span></span>
 <span><span class="co">#&gt;  @ update_change_dates: logi FALSE</span></span>
 <span><span class="co">#&gt;  @ add_creation_dates : logi FALSE</span></span>
-<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 12 JAN 2025" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ GEDCOM             : chr [1:33] "0 HEAD" "1 GEDC" "2 VERS 7.0" "1 DATE 13 JAN 2025" ...</span></span></code></pre></div>
 <p>Properties of the GEDCOM object can be accessed and modified using
 the <code>@</code> operator, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -204,22 +204,22 @@ property can take a simple character vector of notes, and these will be
 converted to a list of <code><a href="../reference/Note.html">Note()</a></code> objects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"This is a note"</span>, <span class="st">"This is another note"</span><span class="op">)</span></span>
-<span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; Note:           This is a note</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Language:       &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; Format:         &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; Translations:   0</span></span>
-<span><span class="co">#&gt; Citations:      0</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; Note:           This is another note</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Language:       &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; Format:         &lt;Undefined&gt;</span></span>
-<span><span class="co">#&gt; Translations:   0</span></span>
-<span><span class="co">#&gt; Citations:      0</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ : &lt;gedcomS7::Note&gt;</span></span>
+<span><span class="co">#&gt;   ..@ text        : chr "This is a note"</span></span>
+<span><span class="co">#&gt;   ..@ language    : chr(0) </span></span>
+<span><span class="co">#&gt;   ..@ media_type  : chr(0) </span></span>
+<span><span class="co">#&gt;   ..@ translations: list()</span></span>
+<span><span class="co">#&gt;   ..@ citations   : list()</span></span>
+<span><span class="co">#&gt;   ..@ GEDCOM      : chr "0 NOTE This is a note"</span></span>
+<span><span class="co">#&gt;  $ : &lt;gedcomS7::Note&gt;</span></span>
+<span><span class="co">#&gt;   ..@ text        : chr "This is another note"</span></span>
+<span><span class="co">#&gt;   ..@ language    : chr(0) </span></span>
+<span><span class="co">#&gt;   ..@ media_type  : chr(0) </span></span>
+<span><span class="co">#&gt;   ..@ translations: list()</span></span>
+<span><span class="co">#&gt;   ..@ citations   : list()</span></span>
+<span><span class="co">#&gt;   ..@ GEDCOM      : chr "0 NOTE This is another note"</span></span></code></pre></div>
 <p>You can then access properties of these:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">@</span><span class="va">language</span> <span class="op">&lt;-</span> <span class="st">"en"</span></span></code></pre></div>
@@ -310,6 +310,58 @@ object. This takes a copy of the record and parses it into an editable
 vector form directly from the GEDCOM object - additional checks and
 automated tasks are carried out to ensure self-consistency during the
 Push process.</p>
+</div>
+<div class="section level2">
+<h2 id="viewing-gedcoms7-objects">Viewing <code>gedcomS7</code> objects<a class="anchor" aria-label="anchor" href="#viewing-gedcoms7-objects"></a>
+</h2>
+<p>There are two ways to view the contents of a <code>gedcomS7</code>
+object - the most comprehensive is to use <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> (as above)
+which will show you every property the object has. The alternative is to
+use <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> or <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, both of which will
+provide a brief summary of the file (not every property may be
+displayed). For example:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ged</span></span>
+<span><span class="co">#&gt; GEDCOM file summary:</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; GEDCOM version:     7.0</span></span>
+<span><span class="co">#&gt; Creation Date:      13 JAN 2025</span></span>
+<span><span class="co">#&gt; Default Language:   en</span></span>
+<span><span class="co">#&gt; Source system:      &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Copyright:          &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Submitters:         0</span></span>
+<span><span class="co">#&gt; Individuals:        3</span></span>
+<span><span class="co">#&gt; Families:           2</span></span>
+<span><span class="co">#&gt; Sources:            0</span></span>
+<span><span class="co">#&gt; Repositories:       0</span></span>
+<span><span class="co">#&gt; Multimedia:         0</span></span>
+<span><span class="co">#&gt; Notes:              0</span></span>
+<span><span class="va">ged</span><span class="op">@</span><span class="va">header</span><span class="op">@</span><span class="va">notes</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Note:           This is a note</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Language:       &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; Format:         &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; Translations:   0</span></span>
+<span><span class="co">#&gt; Citations:      0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; Note:           This is another note</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Language:       en</span></span>
+<span><span class="co">#&gt; Format:         &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; Translations:   0</span></span>
+<span><span class="co">#&gt; Citations:      0</span></span>
+<span><span class="va">john_public</span><span class="op">@</span><span class="va">pers_names</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Personal Name:   John Q /Public/</span></span>
+<span><span class="co">#&gt; Name Type:       &lt;Undefined&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Translations:    0</span></span>
+<span><span class="co">#&gt; Citations:       0</span></span>
+<span><span class="co">#&gt; Notes:           0</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
