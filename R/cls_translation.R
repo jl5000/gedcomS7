@@ -60,3 +60,11 @@ parse_translations <- function(lines, location = NULL){
     )
   })
 }
+
+S7::method(summary, TranslationText) <- function(object, ...){
+  exdent <- 15
+  to_console("Translation:", object@text, exdent)
+  cat("\n")
+  to_console("Language:", object@language, exdent)
+  to_console("Format:", object@media_type, exdent)
+}

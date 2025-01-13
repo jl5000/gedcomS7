@@ -103,3 +103,9 @@ parse_media_links <- function(lines, location = NULL){
   })
   
 }
+
+S7::method(summary, MediaLink) <- function(object, ...){
+  exdent <- 15
+  to_console("Multimedia XREF:", object@media_xref, exdent)
+  to_console("Title:", object@title, exdent)
+}

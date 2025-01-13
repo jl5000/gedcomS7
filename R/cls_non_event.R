@@ -105,3 +105,16 @@ parse_non_events <- function(rec_lines){
     )
   })
 }
+
+S7::method(summary, NonEvent) <- function(object, ...){
+  exdent <- 15
+  fact_type <- object@event_type
+  fact_type <- names(val_fact_types(TRUE))[fact_type == val_fact_types(TRUE)]
+  to_console("Non Event:", fact_type, exdent)
+  to_console_value_with_phrase("Period:", 
+                               obj_to_val(object@date_period), object@date_phrase, 
+                               exdent)
+  cat("\n")
+  to_console("Citations:", length(object@citations), exdent)
+  to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
+}
