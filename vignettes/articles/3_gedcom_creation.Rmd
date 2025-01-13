@@ -11,14 +11,14 @@ knitr::opts_chunk$set(
 
 ## Creating new objects
 
-The easiest way to create a GEDCOM object is to import an existing GEDCOM file. When you `print()` or use `summary()` on a GEDCOM object it provides a brief summary of the file. The example below imports the smallest legal GEDCOM file:
+The easiest way to create a GEDCOM object is to import an existing GEDCOM file. The example below imports the smallest legal GEDCOM file:
 
 ```{r}
 library(gedcomS7)
 
 ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/minimal70.ged")
 
-summary(ged)
+ged
 ```
 
 A GEDCOM object can also be created using the `new_gedcom()` function:
