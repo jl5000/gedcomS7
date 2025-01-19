@@ -7,9 +7,9 @@ testthat::test_that("test header", {
 
 ged <- read_gedcom(filepath)
 
-for(rec_type in names(ged@c_xrefs)){
+for(rec_type in names(ged@records@XREFS)){
   testthat::test_that(paste("test records", rec_type), {
-    for(xref in ged@c_xrefs[[rec_type]]){
+    for(xref in ged@records@XREFS[[rec_type]]){
       testthat::expect_no_error(
         suppressWarnings(pull_record(ged, xref))
       )
