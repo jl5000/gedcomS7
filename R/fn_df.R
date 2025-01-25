@@ -33,14 +33,14 @@ df_recs <- function(rec_list, extract_fn){
   
   pb <- NULL
   if(length(rec_list) > prog_threshold)
-    pb <- txtProgressBar(max = length(rec_list), style = 3)
+    pb <- utils::txtProgressBar(max = length(rec_list), style = 3)
   
   rows <- lapply(
     rec_list, \(lines){
       df <- extract_fn(lines) |> 
         extract_generic_values(lines)
       
-      if(!is.null(pb)) setTxtProgressBar(pb, pb$getVal() + 1)
+      if(!is.null(pb)) utils::setTxtProgressBar(pb, pb$getVal() + 1)
       
       as.data.frame(df)
     }

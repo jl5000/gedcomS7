@@ -25,7 +25,7 @@ The sex of the individual can be specified with the `sex` property, which is a s
 
 ## Names
 
-A quick and dirty way of adding names is with a character vector, but this is just for use in quick demonstrations and should not be used for serious genealogical recording (enclosing forward slashes are GEDCOM's way of indicating a surname):
+A quick and dirty way of adding names is with a character vector (enclosing forward slashes are GEDCOM's way of indicating a surname):
 
 ```{r}
 anakin@pers_names <- c("Anakin /Skywalker/", "Darth Vader")

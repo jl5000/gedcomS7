@@ -1,4 +1,4 @@
-# Function split_gedcom_values() @ L237
+# Function split_gedcom_values() @ L235
 
     {
       "type": "character",
