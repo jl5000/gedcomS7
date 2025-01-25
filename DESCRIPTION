@@ -7,7 +7,11 @@ Authors@R:
            email = "jalendrum@gmail.com", 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0734-4768"))
-Description: Import, create and edit family tree GEDCOM files.
+Description: Import, create, edit and export family tree GEDCOM files.
+    Genealogical Data Communication (GEDCOM) is a flat text file 
+    format which contains many nested data structures representing 
+    genealogical records. This package automates away the complexity in 
+    constructing these files, representing them as S7 objects.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd", "roxytest::testthat_roclet"))
