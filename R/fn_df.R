@@ -10,31 +10,47 @@ get_records <- function(x, xrefs, rec_type){
   rec_list <- rec_list[xrefs]
 }
 
-df_generic_record_info <- function(rec_list){
+extract_generic_values <- function(df, lines){
+  
+  df$unique_ids <- find_ged_values(lines, "UID") |> 
+    paste(collapse = ";")
+  exids <- parse_vals_and_types(lines, "EXID")
+  df$ext_ids <- paste(names(exids), exids, sep = "/", collapse = ";") |> 
+    chronify()
+  refns <- parse_vals_and_types(lines, "REFN")
+  df$user_ids <- paste(names(refns), refns, sep = "=", collapse = ";") |> 
+    chronify()
+  df$locked <- sum(grepl("^1 RESN .*LOCKED", lines)) > 0
+  df$private <- sum(grepl("^1 RESN .*PRIVACY", lines)) > 0
+  df$confidential <- sum(grepl("^1 RESN .*CONFIDENTIAL", lines)) > 0
+  df$last_modified <- chronify(find_ged_values(lines, c("CHAN","DATE")))
+  
+  df
+}
+
+df_recs <- function(rec_list, extract_fn){
+  prog_threshold <- 200
+  
+  pb <- NULL
+  if(length(rec_list) > prog_threshold)
+    pb <- txtProgressBar(max = length(rec_list), style = 3)
   
   rows <- lapply(
     rec_list, \(lines){
-      df <- list()
-      df$unique_ids = find_ged_values(lines, "UID") |> 
-        paste(collapse = ";")
-      exids = parse_vals_and_types(lines, "EXID")
-      df$ext_ids = paste(names(exids), exids, sep = "/", collapse = ";") |> 
-        chronify()
-      refns = parse_vals_and_types(lines, "REFN")
-      df$user_ids = paste(names(refns), refns, sep = "=", collapse = ";") |> 
-        chronify()
-      df$locked = sum(grepl("^1 RESN .*LOCKED", lines)) > 0
-      df$private = sum(grepl("^1 RESN .*PRIVACY", lines)) > 0
-      df$confidential = sum(grepl("^1 RESN .*CONFIDENTIAL", lines)) > 0
-      df$last_modified = chronify(find_ged_values(lines, c("CHAN","DATE")))
+      df <- extract_fn(lines) |> 
+        extract_generic_values(lines)
+      
+      if(!is.null(pb)) setTxtProgressBar(pb, pb$getVal() + 1)
       
       as.data.frame(df)
     }
   )
   
   df <- do.call(rbind, rows)
-  rownames(df) <- NULL
-  df
+  
+  if(!is.null(pb)) close(pb)
+  
+  cbind(xref = rownames(df), data.frame(df, row.names=NULL))
 }
 
 #' Summarise records of a particular type in a dataframe
@@ -49,29 +65,24 @@ df_indi <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "INDI")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      xref <- parse_line_xref(lines[1])
-      df$name <- chronify(find_ged_values(lines, "NAME"))
-      df$sex <- chronify(find_ged_values(lines, "SEX"))
-      df$birth_date = chronify(find_ged_values(lines, c("BIRT","DATE")))
-      df$birth_place = chronify(find_ged_values(lines, c("BIRT","PLAC")))
-      df$is_alive = is_alive(lines)
-      df$death_date = chronify(find_ged_values(lines, c("DEAT","DATE")))
-      df$death_place = chronify(find_ged_values(lines, c("DEAT","PLAC")))
-      df$fam_as_child = get_fam_as_child(x, xref, "BIRTH") |> 
-                              paste(collapse = ";")
-      df$fam_as_spouse = get_fam_as_spouse(x, xref) |> 
-                               paste(collapse = ";")
-      as.data.frame(df)
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    xref <- parse_line_xref(lines[1])
+    df$name <- chronify(find_ged_values(lines, "NAME"))
+    df$sex <- chronify(find_ged_values(lines, "SEX"))
+    df$birth_date <- chronify(find_ged_values(lines, c("BIRT","DATE")))
+    df$birth_place <- chronify(find_ged_values(lines, c("BIRT","PLAC")))
+    df$is_alive <- is_alive(lines)
+    df$death_date <- chronify(find_ged_values(lines, c("DEAT","DATE")))
+    df$death_place <- chronify(find_ged_values(lines, c("DEAT","PLAC")))
+    df$fam_as_child <- get_fam_as_child(x, xref, "BIRTH") |> 
+      paste(collapse = ";")
+    df$fam_as_spouse <- get_fam_as_spouse(x, xref) |> 
+      paste(collapse = ";")
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -80,24 +91,18 @@ df_fam <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "FAM")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$husb_xref = chronify(find_ged_values(lines, "HUSB"))
-      df$wife_xref = chronify(find_ged_values(lines, "WIFE"))
-      df$chil_xref = find_ged_values(lines, "CHIL") |>
-        paste(collapse = ";")
-      df$marr_date = chronify(find_ged_values(lines, c("MARR","DATE")))
-      df$marr_place = chronify(find_ged_values(lines, c("MARR","PLAC")))
-      
-      as.data.frame(df)
-    }
-  )
-  
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  extract_rec_values <- \(lines){
+    df <- list()
+    df$husb_xref <- chronify(find_ged_values(lines, "HUSB"))
+    df$wife_xref <- chronify(find_ged_values(lines, "WIFE"))
+    df$chil_xref <- find_ged_values(lines, "CHIL") |>
+      paste(collapse = ";")
+    df$marr_date <- chronify(find_ged_values(lines, c("MARR","DATE")))
+    df$marr_place <- chronify(find_ged_values(lines, c("MARR","PLAC")))
+    df
+  }
+
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -106,20 +111,16 @@ df_sour <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SOUR")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$originator = chronify(find_ged_values(lines, "AUTH"))
-      df$title = chronify(find_ged_values(lines, "TITL"))
-      df$repo_xref = find_ged_values(lines, "REPO") |>
-        paste(collapse = ";")
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    df$originator <- chronify(find_ged_values(lines, "AUTH"))
+    df$title <- chronify(find_ged_values(lines, "TITL"))
+    df$repo_xref <- find_ged_values(lines, "REPO") |>
+      paste(collapse = ";")
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -128,18 +129,14 @@ df_repo <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "REPO")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$name = chronify(find_ged_values(lines, "NAME"))
-      df$address = chronify(find_ged_values(lines, "ADDR"))
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    df$name <- chronify(find_ged_values(lines, "NAME"))
+    df$address <- chronify(find_ged_values(lines, "ADDR"))
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -148,19 +145,15 @@ df_media <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "OBJE")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$num_files = length(find_ged_values(lines, "FILE"))
-      df$paths = find_ged_values(lines, "FILE") |>
-        paste(collapse = ";")
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    df$num_files <- length(find_ged_values(lines, "FILE"))
+    df$paths <- find_ged_values(lines, "FILE") |>
+      paste(collapse = ";")
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -169,17 +162,18 @@ df_note <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SNOTE")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$language = chronify(find_ged_values(lines, "LANG"))
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    txt <- parse_line_value(lines)
+    if(nchar(txt) > 50) 
+      txt <- paste0(substr(txt, 1, 47), "...")
+    
+    df$text <- txt
+    df$language <- chronify(find_ged_values(lines, "LANG"))
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' @rdname df_indi
@@ -188,18 +182,14 @@ df_subm <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SUBM")
   if(length(rec_list) == 0) return(NULL)
   
-  rows <- lapply(
-    rec_list, \(lines){
-      df <- list()
-      df$name = chronify(find_ged_values(lines, "NAME"))
-      df$address = chronify(find_ged_values(lines, "ADDR"))
-    }
-  )
+  extract_rec_values <- \(lines){
+    df <- list()
+    df$name <- chronify(find_ged_values(lines, "NAME"))
+    df$address <- chronify(find_ged_values(lines, "ADDR"))
+    df
+  }
   
-  df <- do.call(rbind, rows)
-  df <- cbind(xref = rownames(df), data.frame(df, row.names=NULL))
-  
-  cbind(df, df_generic_record_info(rec_list))
+  df_recs(rec_list, extract_rec_values)
 }
 
 #' Summarise an individual's attributes/events in a dataframe
