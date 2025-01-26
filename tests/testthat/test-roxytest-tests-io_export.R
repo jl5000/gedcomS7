@@ -12,9 +12,10 @@ test_that("Function write_gedcom() @ L37", {
                                  
   expect_error(write_gedcom(ged, "my_family.txt"), 
                regexp = "Output is not being saved as a GEDCOM file")
-               
-  roundtrip1 <- write_gedcom(ged, "maximal.ged")
-  roundtrip2 <- read_gedcom("maximal.ged")
+  
+  maximal <- withr::local_tempfile(fileext = ".ged")
+  roundtrip1 <- write_gedcom(ged, maximal)
+  roundtrip2 <- read_gedcom(maximal)
   roundtrip2@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
                          SNOTE = "N", SOUR = "S", SUBM = "U")
   
@@ -22,7 +23,6 @@ test_that("Function write_gedcom() @ L37", {
     ged@GEDCOM,
     roundtrip2@GEDCOM
   )
-  file.remove("maximal.ged")
 })
 
 

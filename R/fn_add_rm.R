@@ -359,8 +359,8 @@ rm_records <- function(x, xrefs, void_refs = TRUE){
       S7::prop(x@records@RAW, rec_type)[[xref]] <- NULL
       
       # Delete the pointers to it
-      S7::prop(x@records@RAW, rec_type) <- lapply(S7::prop(x@records@RAW, rec_type), \(lines) 
-                                      rm_xref_ptrs(lines, xref, void_refs))
+      S7::prop(x@records@RAW, rec_type) <- S7::prop(x@records@RAW, rec_type) |> 
+        lapply(\(lines) rm_xref_ptrs(lines, xref, void_refs))
     }
   }
   x
