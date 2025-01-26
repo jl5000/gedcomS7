@@ -54,7 +54,7 @@ write_gedcom <- function(gedcom,
   on.exit(close(con))
   
   if(!inc_confid) gedcom <- rm_records(gedcom, unlist(gedcom@records@XREFS_CONFID))
-  if(!inc_private) gedcom <- rm_records(gedcom, unlist(gedcom@XREFS_PRIV))
+  if(!inc_private) gedcom <- rm_records(gedcom, unlist(gedcom@records@XREFS_PRIV))
   if(!inc_living) gedcom <- rm_living(gedcom)
   
   lines <- gedcom@GEDCOM
