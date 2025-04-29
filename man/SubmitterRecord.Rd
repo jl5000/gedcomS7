@@ -28,6 +28,9 @@ SubmitterRecord(
 )
 }
 \arguments{
+\item{XREF}{The cross-reference identifier for this record. You should not edit this at all
+as maintenance of these is done automatically.}
+
 \item{confidential}{A logical value indicating whether the associated record/fact should be
 treated as confidential. This allows them to be excluded on export.}
 

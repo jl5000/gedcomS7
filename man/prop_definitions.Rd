@@ -112,7 +112,7 @@ in the corresponding phrase parameter.}
 \item{state_time}{The ordinance time given either as a formatted GEDCOM string, or a
 \code{Time} object.}
 
-\item{xref}{The cross-reference identifier for this record. You should not edit this at all
+\item{XREF}{The cross-reference identifier for this record. You should not edit this at all
 as maintenance of these is done automatically.}
 
 \item{fam_xref}{The cross-reference identifier of a family record.}
