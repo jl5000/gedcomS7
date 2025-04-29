@@ -49,7 +49,7 @@ The `gedcomS7` package creates xrefs automatically when creating and pushing new
 
 ```{r}
 new_person <- IndividualRecord()
-new_person@xref
+new_person@XREF
 ```
 
 This is a special xref which indicates to the code that this is a new record and not an existing one. It is important you do not change it.

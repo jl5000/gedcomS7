@@ -1,5 +1,5 @@
 ---
-title: "Individual Records"
+title: "Records for defining people and relationships"
 ---
 
 ```{r, include = FALSE}
@@ -11,7 +11,9 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Information about people are stored in Individual records.
+Information about people and relationships between them are stored in Individual records and Family records. We will focus on Individual records first, and then move on to Family records.
+
+## Individuals
 
 ```{r}
 library(gedcomS7)
@@ -23,7 +25,7 @@ anakin <- IndividualRecord(
 
 The sex of the individual can be specified with the `sex` property, which is a single letter: M(ale), F(emale), (Interse)X, or U(nknown). If no sex is specified, a value of "U" is used.
 
-## Names
+### Names
 
 A quick and dirty way of adding names is with a character vector (enclosing forward slashes are GEDCOM's way of indicating a surname):
 
@@ -62,7 +64,7 @@ All names should preferably be provided by a set of name pieces, specifying the 
 
 You can also define a name translation with `PersonalNameTran()` or a list of them. There are also opportunities to record notes and source citations for each name defined.
 
-Generally, conflicting names are arranged in order of confidence; the first name is more likely to be correct.
+Generally, names are arranged in order of importance; the first name is their primary name (usually birth name).
 
 Once added to the Individual record, the property `@PRIMARY_NAME` will provide the primary (first) name as a simple character string, and `@ALL_NAMES` will provide all names as a simple character vector.
 
@@ -71,7 +73,7 @@ anakin@PRIMARY_NAME
 anakin@ALL_NAMES
 ```
 
-## Facts
+### Facts
 
 Attributes and events associated with an individual, such as birth and death, are accessed with the `@facts` property. This can be assigned an `IndividualEvent()` or `IndividualAttribute()` object (or a list of them). These objects allow you to define a fact, together with associated date, cause, place/address, and the age of the individual when the fact applied (among other aspects).
 
@@ -129,10 +131,7 @@ skywalkers <- new_gedcom() |>
 df_indi_facts(skywalkers, "@I1@")
 ```
 
-
-## Links to other records
-
-### Family records
+### Family relationships
 
 One of the most important linkages in an Individual record are with Family records. An individual can either be linked to a family as a spouse or as a child.
 
@@ -153,7 +152,27 @@ skywalkers <- push_record(skywalkers, anakin)
 skywalkers@records@RAW@FAM[["@F1@"]]
 ```
 
-Creating linkages between individuals and families in this way can get quite cumbersome, and so a suite of helper functions have been created that allow you to add a spouse, parents, children, or siblings with a single function call. These create the records and linkages automatically, and you can fill in the details later. To help you keep track, the functions also allow you to specify the sexes and/or names of those being added.
+Creating linkages between individuals and families in this way can get quite cumbersome, so a suite of helper functions to define multiple relationships at once are described in the next section.
+
+## Families
+
+### Members
+
+The key properties of a Family record are for defining the members of the family (`@husb_xref`, `@wife_xref`, `@chil_xrefs`). These are usually given as xref links to Individual records. If they do not have an Individual record then a value of "@VOID@" can be used. However, you will need to provide this as a named vector describing the person, e.g.
+
+```{r}
+leia_han <- FamilyRecord()
+
+leia_han@chil_xrefs <- c("Ben Solo" = "@VOID@")
+```
+
+A named vector can be used even if an xref to an Individual record is provided.
+
+The Family records do not need to describe traditional marriage unions - they can describe non-marital relationships and same-sex relationships. Children also do not have to be biological. The parameter names are a legacy from previous versions of the GEDCOM specification, which have not yet been updated.
+
+### Automation
+
+A suite of helper functions have been created that allow you to add a spouse, parents, children, or siblings with a single function call. These create the records and linkages automatically, and you can fill in the details later. To help you keep track, the functions also allow you to specify the sexes and/or names of those being added.
 
 As an example, we will add a spouse and two children for Anakin:
 
@@ -164,19 +183,30 @@ skywalkers <- skywalkers |>
   add_children("@F1@", sexes = "MF", chil_names = c("Luke", "Leia"))
 ```
 
-These functions allow for quite a lot of automation. The `add_spouse()` function automatically creates an Individual record for Padme with her sex and name, and if there was no existing Family record it would have created that as well. The `add_children()` function creates an Individual record for each of the sexes defined. Names can be optionally provided; if no surnames are included in any names (indicated by forward slashes) then they will be taken from the father (or mother if there is no father).
+These functions allow for quite a lot of automation. The `add_spouse()` function automatically creates an Individual record for Padme with her sex and name, and if there was no existing Family record it would have created that as well. The `add_children()` function creates an Individual record for each of the sexes defined. Names can be optionally provided; if no surnames are included in any names (indicated by forward slashes) then they will be taken from the father (or mother if there is no father). The `add_parents()` and `add_siblings()` functions work in a similar way.
 
-The `df_indi()` function provides a dataframe summary of all Individual records in a GEDCOM object:
+### Facts
+
+Like Individual records, Family records can also have attributes and events associated with them, through the `@facts` property. This can be assigned a `FamilyEvent()` or `FamilyAttribute()` object (or a list of them).
+
+The full list of fact types that can be created are given below:
 
 ```{r}
-df_indi(skywalkers)
+val_family_attribute_types(inc_generic = TRUE)
+val_family_event_types(inc_generic = TRUE)
 ```
+
+There are some types of fact; census and residence, that can apply for Individuals and Families. It is highly recommended you do not use these facts for families, only for individuals. It may intuitively be more efficient to define an event for an entire family, but other GEDCOM parsers can have difficulty with this, and defining these facts for each individual separately is recommended. Despite the name, Family records are actually more about the union of two people, rather than the family unit as a whole, and so the remaining events are related to marriages and divorces.
+
+Like Individual records, events that didn't happen to a family can be defined through the `@non_events` property.
+
+## Links to other records
 
 ### Individual records
 
 An alternative way of recording the alter ego of Anakin Skywalker would have been to create a separate Individual record for Darth Vader, and link them together. This is achievable via the `@alia_xrefs` property. Whether you include a one-way, or mutual link is up to you.
 
-Individuals may also have associations with others that aren't necessarily familial. You can record these with the `@associations` property. This property takes an `Association()` object or a list of them.
+Individuals and families may also have associations with individuals that aren't necessarily familial. You can record these with the `@associations` property. This property takes an `Association()` object or a list of them.
 
 This object has a void xref pointer by default, as the person may not have an Individual record, and if this is the case (as in the examples below), an `@indi_phrase` must be given containing their name. A `@relation_is` value is mandatory.
 
@@ -205,6 +235,6 @@ val_roles()
 
 You can also link to Submitter records in the following ways:
 
-* Those that have contributed information about the individual (`@subm_xrefs`); 
+* Those that have contributed information about the individual/family (`@subm_xrefs`); 
 * Those that have an interest in the individual's ancestors (`@anci_xrefs`);
 * Those that have an interest in the individual's descendants (`@desi_xrefs`).
