@@ -5,7 +5,7 @@
 \title{Create an individual record object}
 \usage{
 IndividualRecord(
-  xref = "@GEDCOMS7_ORPHAN@",
+  XREF = "@GEDCOMS7_ORPHAN@",
   confidential = FALSE,
   locked = FALSE,
   private = FALSE,
@@ -33,9 +33,6 @@ IndividualRecord(
 )
 }
 \arguments{
-\item{xref}{The cross-reference identifier for this record. You should not edit this at all
-as maintenance of these is done automatically.}
-
 \item{confidential}{A logical value indicating whether the associated record/fact should be
 treated as confidential. This allows them to be excluded on export.}
 

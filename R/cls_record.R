@@ -23,7 +23,7 @@ Record <- S7::new_class(
   parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
-    xref = S7::new_property(S7::class_character, default = "@GEDCOMS7_ORPHAN@",
+    XREF = S7::new_property(S7::class_character, default = "@GEDCOMS7_ORPHAN@",
                             validator = function(value){
                               c(
                                 chk_input_size(value, 1, 1),

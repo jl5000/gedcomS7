@@ -20,13 +20,13 @@
 #' fct <- list(FamilyEvent("MARR", husb_age = "22y", wife_age = "28y 6m",
 #'                            date = "22 AUG 1907", place = "Church"))
 #' nevent <- list(NonEvent("DIV"))
-#' expect_snapshot_value(FamilyRecord(xref = "@F2@",
+#' expect_snapshot_value(FamilyRecord(XREF = "@F2@",
 #'                                        facts = fct, non_events = nevent,
 #'                                        husb_xref = "@I8@", wife_xref = "@I9@",
 #'                                        chil_xrefs = c("@I98@", Eldest = "@I67@"),
 #'                                        locked = TRUE,
 #'                                        citations = c("@S34@","@S65@"))@GEDCOM, "json2")
-#' expect_error(FamilyRecord("REF"), regexp = "@xref is in an invalid format")
+#' expect_error(FamilyRecord("REF"), regexp = "@XREF is in an invalid format")
 #' expect_error(FamilyRecord(unique_ids = letters), regexp = "@unique_ids is in an invalid format")
 #' expect_error(FamilyRecord(ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
 #' expect_snapshot_value(FamilyRecord("@1@",
@@ -135,7 +135,7 @@ FamilyRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s FAM", self@xref),
+          sprintf("0 %s FAM", self@XREF),
           sprintf("1 RESN %s", self@RESTRICTIONS),
           obj_to_ged(self@facts) |> increase_level(by = 1),
           obj_to_ged(self@non_events) |> increase_level(by = 1),
@@ -161,7 +161,7 @@ FamilyRecord <- S7::new_class(
 parse_record_fam <- function(rec_lines){
   
   rec <- FamilyRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     facts = parse_facts_fam(rec_lines),
     non_events = parse_non_events(rec_lines),
     husb_xref = parse_vals_and_types(rec_lines, "HUSB"),
@@ -178,7 +178,7 @@ parse_record_fam <- function(rec_lines){
 
 S7::method(summary, FamilyRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console("Husband:", object@husb_xref, exdent)
   to_console("Wife:", object@wife_xref, exdent)
   to_console("Children:", object@NUM_CHILDREN, exdent)

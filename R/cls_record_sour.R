@@ -317,7 +317,7 @@ SourceRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SOUR", self@xref),
+          sprintf("0 %s SOUR", self@XREF),
           sprintf("1 RESN %s", self@RESTRICTIONS),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
@@ -349,7 +349,7 @@ SourceRecord <- S7::new_class(
 parse_record_sour <- function(rec_lines){
   
   rec <- SourceRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     facts_recorded = parse_events_recorded(rec_lines),
     agency = find_ged_values(rec_lines, c("DATA","AGNC")),
     data_note_xrefs = find_ged_values(rec_lines, c("DATA","SNOTE")),
@@ -394,7 +394,7 @@ S7::method(summary, FactsRecorded) <- function(object, ...){
 
 S7::method(summary, SourceRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console("Full Title:", object@full_title, exdent)
   to_console("Short Title:", object@short_title, exdent)
   to_console("Originator:", object@originator, exdent)

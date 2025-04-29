@@ -204,7 +204,7 @@ IndividualRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s INDI", self@xref),
+          sprintf("0 %s INDI", self@XREF),
           sprintf("1 RESN %s", self@RESTRICTIONS),
           obj_to_ged(self@pers_names, "NAME") |> increase_level(by = 1),
           sprintf("1 SEX %s", self@sex),
@@ -234,7 +234,7 @@ IndividualRecord <- S7::new_class(
 parse_record_indi <- function(rec_lines){
   
   rec <- IndividualRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     sex = find_ged_values(rec_lines, "SEX"),
     pers_names = parse_personal_names(rec_lines),
     facts = parse_facts_indi(rec_lines),
@@ -255,7 +255,7 @@ parse_record_indi <- function(rec_lines){
 
 S7::method(summary, IndividualRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console("Names:", toString(object@ALL_NAMES), exdent)
   to_console("Sex:", object@sex, exdent)
   to_console("Birth Date:", object@BIRTH_DATE, exdent)

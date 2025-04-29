@@ -139,22 +139,22 @@ push_record <- function(gedcom, record){
   }
   
   if(gedcom@add_creation_dates){
-    if(length(record@created) == 0 && record@xref == "@GEDCOMS7_ORPHAN@"){
+    if(length(record@created) == 0 && record@XREF == "@GEDCOMS7_ORPHAN@"){
       record@created <- CreationDate()
     }
   }
   
   rec_type <- get_record_type(record)
-  new_rec <- record@xref == "@GEDCOMS7_ORPHAN@"
+  new_rec <- record@XREF == "@GEDCOMS7_ORPHAN@"
   
   if(new_rec)
-    record@xref <- gedcom@records@XREFS_NEXT[[rec_type]]
+    record@XREF <- gedcom@records@XREFS_NEXT[[rec_type]]
   
   # Don't do this yet
   #if(rec_type %in% c("INDI","FAM")) record <- order_facts(record)
   
   lines <- record@GEDCOM
-  S7::prop(gedcom@records@RAW, rec_type)[[record@xref]] <- lines
+  S7::prop(gedcom@records@RAW, rec_type)[[record@XREF]] <- lines
   
   if(rec_type == "INDI"){
     gedcom <- refresh_indi_links(gedcom, record)
@@ -163,7 +163,7 @@ push_record <- function(gedcom, record){
   }
   
   if(new_rec)
-    message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@xref)
+    message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@XREF)
   
   gedcom
 }
@@ -198,10 +198,10 @@ refresh_fam_links <- function(gedcom, record){
   for(spou in spou_xref){
     spou_rec <- gedcom@records@RAW@INDI[[spou]]
     fams <- find_ged_values(spou_rec, "FAMS")
-    if(!record@xref %in% fams){
+    if(!record@XREF %in% fams){
       gedcom@records@RAW@INDI[[spou]] <- c(
         gedcom@records@RAW@INDI[[spou]],
-        sprintf("1 FAMS %s", record@xref)
+        sprintf("1 FAMS %s", record@XREF)
       )
     }
   }
@@ -209,10 +209,10 @@ refresh_fam_links <- function(gedcom, record){
   for(chil in chil_xrefs){
     chil_rec <- gedcom@records@RAW@INDI[[chil]]
     famc <- find_ged_values(chil_rec, "FAMC")
-    if(!record@xref %in% famc){
+    if(!record@XREF %in% famc){
       gedcom@records@RAW@INDI[[chil]] <- c(
         gedcom@records@RAW@INDI[[chil]],
-        sprintf("1 FAMC %s", record@xref)
+        sprintf("1 FAMC %s", record@XREF)
       )
     }
   }
@@ -223,7 +223,7 @@ refresh_fam_links <- function(gedcom, record){
     
     gedcom@records@RAW@INDI[[indi]] <- delete_ged_sections(
       gedcom@records@RAW@INDI[[indi]],
-      \(x) grep(sprintf("^1 (FAMC|FAMS) %s$", record@xref), x)
+      \(x) grep(sprintf("^1 (FAMC|FAMS) %s$", record@XREF), x)
     )
 
   }
@@ -237,7 +237,7 @@ refresh_indi_links <- function(gedcom, record){
   # Ensure members of family records are correct
   
   # Go through each family link
-  # Ensure record@xref is properly reflected in family record membership
+  # Ensure record@XREF is properly reflected in family record membership
 
   for(lnk in record@fam_links_spou){
     fam_xref <- lnk@fam_xref
@@ -248,7 +248,7 @@ refresh_indi_links <- function(gedcom, record){
     fam_wife <- find_ged_values(fam_rec, "WIFE")
     fam_spou <- c(fam_husb, fam_wife)
     
-    if(!record@xref %in% fam_spou){
+    if(!record@XREF %in% fam_spou){
       if(length(fam_spou) == 0){
         # use sex as determinant
         if(record@sex == "F"){
@@ -268,7 +268,7 @@ refresh_indi_links <- function(gedcom, record){
       
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 %s %s", spou_type, record@xref)
+        sprintf("1 %s %s", spou_type, record@XREF)
       )
     }
   }
@@ -279,15 +279,15 @@ refresh_indi_links <- function(gedcom, record){
     fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")
     
-    if(!record@xref %in% fam_chil){
+    if(!record@XREF %in% fam_chil){
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 CHIL %s", record@xref)
+        sprintf("1 CHIL %s", record@XREF)
       )
     }
   } 
   
-  # Ensure this individual (record@xref) appears in no other fam records
+  # Ensure this individual (record@XREF) appears in no other fam records
   fam_lnks <- find_ged_values(record@GEDCOM, "FAMS|FAMC")
   
   for(fam in gedcom@records@XREFS[["FAM"]]){
@@ -296,7 +296,7 @@ refresh_indi_links <- function(gedcom, record){
     
     gedcom@records@RAW@FAM[[fam]] <- delete_ged_sections(
       gedcom@records@RAW@FAM[[fam]],
-      \(x) grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@xref), x)
+      \(x) grep(sprintf("^1 (HUSB|WIFE|CHIL) %s$", record@XREF), x)
     )
     
   }

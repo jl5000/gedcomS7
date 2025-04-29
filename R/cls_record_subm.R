@@ -47,7 +47,7 @@ SubmitterRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SUBM", self@xref),
+          sprintf("0 %s SUBM", self@XREF),
           sprintf("1 RESN %s", self@RESTRICTIONS),
           sprintf("1 NAME %s", self@subm_name),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
@@ -74,7 +74,7 @@ SubmitterRecord <- S7::new_class(
 parse_record_subm <- function(rec_lines){
   
   rec <- SubmitterRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     subm_name = find_ged_values(rec_lines, "NAME"),
     address = parse_address(rec_lines),
     phone_numbers = find_ged_values(rec_lines, "PHON"),
@@ -90,7 +90,7 @@ parse_record_subm <- function(rec_lines){
 
 S7::method(summary, SubmitterRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console("Submitter:", object@subm_name, exdent)
   to_console("Languages:", toString(object@languages), exdent)
   if(!is.null(object@address)) 

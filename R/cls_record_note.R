@@ -53,7 +53,7 @@ NoteRecord <- S7::new_class(
       S7::class_data.frame,
       getter = function(self){
         c(
-          sprintf("0 %s SNOTE %s", self@xref, self@text),
+          sprintf("0 %s SNOTE %s", self@XREF, self@text),
           sprintf("1 RESN %s", self@RESTRICTIONS), # coming soon
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
@@ -80,7 +80,7 @@ NoteRecord <- S7::new_class(
 parse_record_note <- function(rec_lines){
   
   rec <- NoteRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     text = parse_line_value(rec_lines[1]),
     media_type = find_ged_values(rec_lines, "MIME"),
     language = find_ged_values(rec_lines, "LANG"),
@@ -92,7 +92,7 @@ parse_record_note <- function(rec_lines){
 
 S7::method(summary, NoteRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console("Note:", object@text, exdent)
   cat("\n")
   to_console("Language:", object@language, exdent)

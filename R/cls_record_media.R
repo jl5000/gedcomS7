@@ -131,7 +131,7 @@ MediaRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s OBJE", self@xref),
+          sprintf("0 %s OBJE", self@XREF),
           sprintf("1 RESN %s", self@RESTRICTIONS),
           obj_to_ged(self@files) |> increase_level(by = 1),
           self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
@@ -169,7 +169,7 @@ parse_media_files <- function(rec_lines){
 parse_record_media <- function(rec_lines){
   
   rec <- MediaRecord(
-    xref = parse_line_xref(rec_lines[1]),
+    XREF = parse_line_xref(rec_lines[1]),
     files = parse_media_files(rec_lines)
   )
   
@@ -178,7 +178,7 @@ parse_record_media <- function(rec_lines){
 
 S7::method(summary, MediaRecord) <- function(object, ...){
   exdent <- 15
-  to_console("XREF:", object@xref, exdent)
+  to_console("XREF:", object@XREF, exdent)
   to_console_list("Files:", object@files, exdent, prop = "location")
   cat("\n")
   to_console("Citations:", length(object@citations), exdent)

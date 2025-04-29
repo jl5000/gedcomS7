@@ -6,13 +6,13 @@ test_that("Function FamilyRecord() @ L40", {
   fct <- list(FamilyEvent("MARR", husb_age = "22y", wife_age = "28y 6m",
                              date = "22 AUG 1907", place = "Church"))
   nevent <- list(NonEvent("DIV"))
-  expect_snapshot_value(FamilyRecord(xref = "@F2@",
+  expect_snapshot_value(FamilyRecord(XREF = "@F2@",
                                          facts = fct, non_events = nevent,
                                          husb_xref = "@I8@", wife_xref = "@I9@",
                                          chil_xrefs = c("@I98@", Eldest = "@I67@"),
                                          locked = TRUE,
                                          citations = c("@S34@","@S65@"))@GEDCOM, "json2")
-  expect_error(FamilyRecord("REF"), regexp = "@xref is in an invalid format")
+  expect_error(FamilyRecord("REF"), regexp = "@XREF is in an invalid format")
   expect_error(FamilyRecord(unique_ids = letters), regexp = "@unique_ids is in an invalid format")
   expect_error(FamilyRecord(ext_ids = LETTERS), regexp = "@ext_ids has too few elements")
   expect_snapshot_value(FamilyRecord("@1@",
