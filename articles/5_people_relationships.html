@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/5_people_relationships.html">Records for defining people and relationships</a></li>
     <li><a class="dropdown-item" href="../articles/6_supporting_records.html">Records for evidence and supporting information</a></li>
     <li><a class="dropdown-item" href="../articles/7_dates.html">Date types</a></li>
+    <li><a class="dropdown-item" href="../articles/8_finding_records.html">Finding related records</a></li>
   </ul>
 </li>
       </ul>
@@ -356,6 +357,22 @@ This can be assigned a <code><a href="../reference/FamilyEvent.html">FamilyEvent
 <span><span class="co">#&gt;              "ENGA"              "MARB"              "MARC"              "MARL" </span></span>
 <span><span class="co">#&gt;            Marriage Marriage settlement         Other event </span></span>
 <span><span class="co">#&gt;              "MARR"              "MARS"              "EVEN"</span></span></code></pre></div>
+<p>Alternatively, the <code><a href="../reference/fact_rules_df.html">fact_rules_df()</a></code> function provides a
+dataframe of all fact types and the rules surrounding the population of
+the <code>@fact_val</code> and <code>@fact_desc</code> properties. You
+can filter this table by providing a search string to the function:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fact_rules_df.html">fact_rules_df</a></span><span class="op">(</span><span class="st">"eve|chr"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               fact_name fact_type individual family      fact fact_val_required</span></span>
+<span><span class="co">#&gt; 9           Christening       CHR       TRUE  FALSE     Event             FALSE</span></span>
+<span><span class="co">#&gt; 10    Adult christening      CHRA       TRUE  FALSE     Event             FALSE</span></span>
+<span><span class="co">#&gt; 23          Other event      EVEN       TRUE   TRUE     Event              TRUE</span></span>
+<span><span class="co">#&gt; 35 Academic achievement      EDUC       TRUE  FALSE Attribute              TRUE</span></span>
+<span><span class="co">#&gt;    fact_val fact_desc_required</span></span>
+<span><span class="co">#&gt; 9         Y              FALSE</span></span>
+<span><span class="co">#&gt; 10        Y              FALSE</span></span>
+<span><span class="co">#&gt; 23      Any               TRUE</span></span>
+<span><span class="co">#&gt; 35      Any              FALSE</span></span></code></pre></div>
 <p>There are some types of fact; census and residence, that can apply
 for Individuals and Families. It is highly recommended you do not use
 these facts for families, only for individuals. It may intuitively be
@@ -388,7 +405,7 @@ that aren’t necessarily familial. You can record these with the
 have an Individual record, and if this is the case (as in the examples
 below), an <code>@indi_phrase</code> must be given containing their
 name. A <code>@relation_is</code> value is mandatory.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anakin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">skywalkers</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">anakin</span><span class="op">@</span><span class="va">associations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -404,7 +421,7 @@ name. A <code>@relation_is</code> value is mandatory.</p>
 <p>The <code>@relation_is</code> property must take one of the following
 values. If it is “OTHER”, then a <code>@relation_phrase</code> must be
 given.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lookups.html">val_roles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              Child Religious official             Father             Friend </span></span>
 <span><span class="co">#&gt;             "CHIL"           "CLERGY"             "FATH"           "FRIEND" </span></span>
