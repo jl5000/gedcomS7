@@ -147,3 +147,25 @@ Now, when we get the supporting records, it not only retrieves the record direct
 ```{r}
 get_supporting_recs(three_gen, "@I1@")
 ```
+
+## Pattern matching
+
+Finally, the `get_records_by_pattern()` function retrieves all records where a value matches a given regular expression (case insensitive).
+
+```{r}
+get_records_by_pattern(three_gen, "library")
+get_records_by_pattern(three_gen, "son")
+```
+
+By default, this returns the xrefs only. If you want to see why the records were matched, set `return_context = TRUE` and it will return all the lines where a match occurred:
+
+```{r}
+get_records_by_pattern(three_gen, "son", return_context = TRUE)
+```
+
+You can then refine your pattern to include word boundaries etc.
+
+```{r}
+get_records_by_pattern(three_gen, "\\bson\\b", return_context = TRUE)
+```
+
