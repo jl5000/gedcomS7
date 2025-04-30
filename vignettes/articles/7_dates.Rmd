@@ -70,7 +70,7 @@ Providing only one date gives a semi-infinite period.
 
 ## Date ranges
 
-Date ranges can be defined using `date_range()`. Unlike `date_period()`, they describe when an event occurred rather than a duration.
+Date ranges can be defined using `DateRange()`. Unlike `DatePeriod()`, they describe when an event occurred rather than a duration.
 
 ```{r}
 DateRange(start_date = DateGregorian(1956, 7, 26),
