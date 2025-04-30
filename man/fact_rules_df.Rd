@@ -4,7 +4,10 @@
 \alias{fact_rules_df}
 \title{Property requirements for fact objects.}
 \usage{
-fact_rules_df()
+fact_rules_df(type = NULL)
+}
+\arguments{
+\item{type}{A character string to filter the table.}
 }
 \value{
 A dataframe detailing the property requirements for each type of fact.

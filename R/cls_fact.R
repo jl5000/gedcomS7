@@ -242,10 +242,12 @@ Fact <- S7::new_class(
 
 
 #' Property requirements for fact objects.
+#' 
+#' @param type A character string to filter the table.
 #'
 #' @returns A dataframe detailing the property requirements for each type of fact.
 #' @export
-fact_rules_df <- function(){
+fact_rules_df <- function(type = NULL){
   
   all_df <- data.frame(fact_name = names(val_fact_types(TRUE)),
                        fact_type = unname(val_fact_types(TRUE)))
@@ -271,6 +273,10 @@ fact_rules_df <- function(){
   all_df$fact_val <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
                             "Any", all_df$fact_val)
   all_df$fact_desc_required <- all_df$fact_type %in% c("FACT", "EVEN", "IDNO")
+  
+  if(!is.null(type)){
+    all_df <- all_df[grepl(type, all_df$fact_name, ignore.case = TRUE),] 
+  }
   
   all_df
 }
