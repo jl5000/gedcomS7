@@ -7,7 +7,8 @@ articles:
   articles/3_gedcom_creation: 3_gedcom_creation.html
   articles/4_records: 4_records.html
   articles/5_people_relationships: 5_people_relationships.html
-last_built: 2025-04-29T14:18Z
+  articles/6_supporting_records: 6_supporting_records.html
+last_built: 2025-04-30T07:52Z
 urls:
   reference: https://jl5000.github.io/gedcomS7/reference
   article: https://jl5000.github.io/gedcomS7/articles
