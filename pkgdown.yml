@@ -8,7 +8,8 @@ articles:
   articles/4_records: 4_records.html
   articles/5_people_relationships: 5_people_relationships.html
   articles/6_supporting_records: 6_supporting_records.html
-last_built: 2025-04-30T07:52Z
+  articles/7_dates: 7_dates.html
+last_built: 2025-04-30T08:10Z
 urls:
   reference: https://jl5000.github.io/gedcomS7/reference
   article: https://jl5000.github.io/gedcomS7/articles
