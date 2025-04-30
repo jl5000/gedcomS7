@@ -282,7 +282,7 @@ get_indi_cousins <- function(x,
 #' Identify all supporting records for a set of records
 #' 
 #' This function gets all supporting records (and onwards dependencies) for a set of records. Supporting records
-#' are note, multimedia, source, and repository records, i.e. those providing supporting evidence and comments.
+#' are note, multimedia, source, submitter and repository records, i.e. those providing supporting evidence and comments.
 #'
 #' @param x A gedcom object.
 #' @param xrefs The xrefs of records to get supporting records for.
@@ -290,6 +290,7 @@ get_indi_cousins <- function(x,
 #' @param inc_media Whether to include Multimedia records.
 #' @param inc_sour Whether to include Source records.
 #' @param inc_repo Whether to include Repository records.
+#' @param inc_subm Whether to include Submitter records.
 #'
 #' @inherit get_fam_as_child return
 #' @export
@@ -298,7 +299,8 @@ get_supporting_recs <- function(x,
                                 inc_note = TRUE,
                                 inc_media = TRUE,
                                 inc_sour = TRUE,
-                                inc_repo = TRUE){
+                                inc_repo = TRUE,
+                                inc_subm = TRUE){
   if(length(xrefs) == 0) return(character())
   
   tags <- NULL
@@ -306,11 +308,12 @@ get_supporting_recs <- function(x,
   if (inc_media) tags <- c(tags, "OBJE")
   if (inc_sour) tags <- c(tags, "SOUR")
   if (inc_repo) tags <- c(tags, "REPO")
+  if (inc_subm) tags <- c(tags, "SUBM")
   if(length(tags) == 0) return(character())
   
   vals <- lapply(xrefs, \(xref){
     rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
-                   x@records@RAW@SOUR, x@records@RAW@REPO, 
+                   x@records@RAW@SOUR, x@records@RAW@REPO, x@records@RAW@SUBM,
                    x@records@RAW@OBJE, x@records@RAW@SNOTE)[[xref]]
     
     tgs <- parse_line_tag(rec_lines)
@@ -322,7 +325,7 @@ get_supporting_recs <- function(x,
 
   unique(
     c(links,
-      get_supporting_recs(x, links, inc_note, inc_media, inc_sour, inc_repo))
+      get_supporting_recs(x, links, inc_note, inc_media, inc_sour, inc_repo, inc_subm))
   )
 }
 

@@ -10,7 +10,8 @@ get_supporting_recs(
   inc_note = TRUE,
   inc_media = TRUE,
   inc_sour = TRUE,
-  inc_repo = TRUE
+  inc_repo = TRUE,
+  inc_subm = TRUE
 )
 }
 \arguments{
@@ -25,11 +26,13 @@ get_supporting_recs(
 \item{inc_sour}{Whether to include Source records.}
 
 \item{inc_repo}{Whether to include Repository records.}
+
+\item{inc_subm}{Whether to include Submitter records.}
 }
 \value{
 A character vector of xrefs.
 }
 \description{
 This function gets all supporting records (and onwards dependencies) for a set of records. Supporting records
-are note, multimedia, source, and repository records, i.e. those providing supporting evidence and comments.
+are note, multimedia, source, submitter and repository records, i.e. those providing supporting evidence and comments.
 }
