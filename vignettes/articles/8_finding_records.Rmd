@@ -22,15 +22,10 @@ main_person <- IndividualRecord(pers_names = "Main Person", sex = "M")
 
 three_gen <- new_gedcom() |> 
   push_record(main_person) |> 
-  # Parents are @I2@ and @I3@ in family @F1@
   add_parents("@I1@", fath_name = "Parent 1", moth_name = "Parent 2") |> 
-  # Spouse one is @I4@ in family @F2@
   add_spouse("@I1@", spou_name = "Spouse 1") |> 
-  # Spouse two is @I5@ in family @F3@
   add_spouse("@I1@", spou_name = "Spouse 2") |> 
-  # Sons are @I6@ and @I7@
   add_children("@F2@", sexes = "MM", chil_names = c("Son 1", "Son 2")) |> 
-  # Daughters are @I8@ and @I9@
   add_children("@F3@", sexes = "FF", chil_names = c("Daughter 1", "Daughter 2")) 
 ```
 ![](example.png)
@@ -48,13 +43,21 @@ main_person <- "@I1@"
 xref_to_name <- \(x) unlist(lapply(x, \(xref) pull_record(three_gen, xref)@PRIMARY_NAME))
 
 get_indi_partners(three_gen, main_person) |> xref_to_name()
+
 get_indi_parents(three_gen, main_person) |> xref_to_name()
+
 get_indi_children(three_gen, main_person) |> xref_to_name()
+
 get_indi_siblings(three_gen, "@I6@") |> xref_to_name()
+
 get_indi_siblings(three_gen, "@I6@", inc_half = TRUE) |> xref_to_name()
+
 get_fam_as_child(three_gen, main_person)
+
 get_fam_as_spouse(three_gen, main_person)
+
 get_fam_partners(three_gen, "@F1@")
+
 get_fam_children(three_gen, "@F2@")
 ```
 
@@ -79,7 +82,7 @@ get_fam_children(three_gen, "@F3@", pedigrees = "BIRTH") |> xref_to_name()
 get_fam_children(three_gen, "@F3@", pedigrees = "ADOPTED") |> xref_to_name()
 ```
 
-## Branches
+## Distant relations
 
 One of the more sophisticated features of `gedcomS7` is the ability to manipulate entire branches of your tree. 
 
@@ -123,10 +126,9 @@ supporting_media <- MediaRecord(
   )
 supporting_repo <- RepositoryRecord(repo_name = "Library")
 # Source record is itself linked to the Media and Repository records
-# (they don't have these xrefs yet but they will be assigned them when pushed)
 supporting_sour <- SourceRecord(
-  media_links = "@M1@",
-  repo_citations = "@R1@"
+  media_links = three_gen@records@XREFS_NEXT["OBJE"],
+  repo_citations = three_gen@records@XREFS_NEXT["REPO"]
 )
 
 three_gen <- three_gen |> 
