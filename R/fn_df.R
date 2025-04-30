@@ -10,7 +10,7 @@ get_records <- function(x, xrefs, rec_type){
   rec_list <- rec_list[xrefs]
 }
 
-extract_generic_values <- function(df, lines){
+mutate_generic_values <- function(df, lines){
   
   df$unique_ids <- find_ged_values(lines, "UID") |> 
     paste(collapse = ";")
@@ -38,7 +38,7 @@ df_recs <- function(rec_list, extract_fn){
   rows <- lapply(
     rec_list, \(lines){
       df <- extract_fn(lines) |> 
-        extract_generic_values(lines)
+        mutate_generic_values(lines)
       
       if(!is.null(pb)) utils::setTxtProgressBar(pb, pb$getVal() + 1)
       
