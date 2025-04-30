@@ -25,6 +25,12 @@ DateExact(1956, 12, 8)
 DateExact(2008, 4, 1)
 ```
 
+As well as the GEDCOM formatted strings (printed above and also accessed through the `@GEDCOM_STRING` property), this date object can also be expressed as a date type:
+
+```{r}
+DateExact(2008, 4, 1)@as_date
+```
+
 ## Calendar dates
 
 Calendar dates are the most common type of date used. They can not only be used to create specific dates like `DateExact()`, they underpin the other date types described below. They can be created using `DateGregorian()`:
@@ -80,3 +86,27 @@ DateRange(end_date = DateGregorian(1956, 9, 15))
 ```
 
 It's important to note that approximate dates cannot be used in date ranges or date periods. 
+
+## Date values
+
+Date values can be defined with `DateValue()` and are a higher level of date expression than the elementary values given above. A calendar/approximate/range/period date can be used in conjunction with a date phrase (free text) and time. Instead of being single values, they are GEDCOM substructures:
+
+```{r}
+my_date <- DateValue(
+  date = DateGregorian(year = 1999, month = 4, day = 5),
+  date_phrase = "Someone's birthday",
+  time = Time(hour = 13, minute = 28, second = 57)
+)
+
+my_date
+
+my_date@GEDCOM
+```
+
+It's also possible to only define a DateValue through a phrase:
+
+```{r}
+DateValue(date = "", date_phrase = "March 14th")@GEDCOM
+```
+
+A `DateSorting()` object is similar to `DateValue()` but it can only take Calendar dates as it is used for sorting.
