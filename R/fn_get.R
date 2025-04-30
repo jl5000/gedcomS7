@@ -477,3 +477,33 @@ pedigree_in_set <- function(pedigree, set){
   }
   pedigree %in% set
 }
+
+#' Identify all records that contain a pattern
+#'
+#' @inheritParams get_fam_as_child
+#' @param pattern A regular expression. Case is ignored.
+#' @param return_context Whether to return a named list of matching lines in
+#' the GEDCOM (TRUE) or just the xrefs (FALSE, default).
+#'
+#' @returns Either a vector of matching xrefs, or a named list of matching GEDCOM lines.
+#' @export
+get_records_by_pattern <- function(x, pattern, return_context = FALSE){
+  
+  rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
+                 x@records@RAW@SOUR, x@records@RAW@REPO, x@records@RAW@SUBM,
+                 x@records@RAW@OBJE, x@records@RAW@SNOTE)
+  
+  rec_lines_filt <- Filter(
+    \(lines) any(grepl(pattern, parse_line_value(lines), ignore.case = TRUE)), 
+    rec_lines
+  )
+  
+  if(return_context)
+    return(
+      lapply(rec_lines_filt, 
+             \(lines) grep(pattern, lines, ignore.case = TRUE, value = TRUE) 
+      )
+    )
+  
+  names(rec_lines_filt)
+}
