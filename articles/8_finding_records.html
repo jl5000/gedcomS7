@@ -96,15 +96,10 @@ spouses, each resulting in two children.</p>
 <span></span>
 <span><span class="va">three_gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_gedcom.html">new_gedcom</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/push_record.html">push_record</a></span><span class="op">(</span><span class="va">main_person</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Parents are @I2@ and @I3@ in family @F1@</span></span>
 <span>  <span class="fu"><a href="../reference/add_parents.html">add_parents</a></span><span class="op">(</span><span class="st">"@I1@"</span>, fath_name <span class="op">=</span> <span class="st">"Parent 1"</span>, moth_name <span class="op">=</span> <span class="st">"Parent 2"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Spouse one is @I4@ in family @F2@</span></span>
 <span>  <span class="fu"><a href="../reference/add_spouse.html">add_spouse</a></span><span class="op">(</span><span class="st">"@I1@"</span>, spou_name <span class="op">=</span> <span class="st">"Spouse 1"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Spouse two is @I5@ in family @F3@</span></span>
 <span>  <span class="fu"><a href="../reference/add_spouse.html">add_spouse</a></span><span class="op">(</span><span class="st">"@I1@"</span>, spou_name <span class="op">=</span> <span class="st">"Spouse 2"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Sons are @I6@ and @I7@</span></span>
 <span>  <span class="fu"><a href="../reference/add_children.html">add_children</a></span><span class="op">(</span><span class="st">"@F2@"</span>, sexes <span class="op">=</span> <span class="st">"MM"</span>, chil_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Son 1"</span>, <span class="st">"Son 2"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Daughters are @I8@ and @I9@</span></span>
 <span>  <span class="fu"><a href="../reference/add_children.html">add_children</a></span><span class="op">(</span><span class="st">"@F3@"</span>, sexes <span class="op">=</span> <span class="st">"FF"</span>, chil_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Daughter 1"</span>, <span class="st">"Daughter 2"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; New Individual record added with xref @I1@</span></span>
 <span><span class="co">#&gt; New Family record added with xref @F1@</span></span>
@@ -136,20 +131,28 @@ records into the people’s names.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/get_indi_partners.html">get_indi_partners</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="va">main_person</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">xref_to_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Spouse 1" "Spouse 2"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_indi_parents.html">get_indi_parents</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="va">main_person</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">xref_to_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Parent 1" "Parent 2"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_indi_children.html">get_indi_children</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="va">main_person</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">xref_to_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Son 1"      "Son 2"      "Daughter 1" "Daughter 2"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_indi_siblings.html">get_indi_siblings</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"@I6@"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">xref_to_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Son 2"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_indi_siblings.html">get_indi_siblings</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"@I6@"</span>, inc_half <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">xref_to_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Son 2"      "Daughter 1" "Daughter 2"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_fam_as_child.html">get_fam_as_child</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="va">main_person</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "@F1@"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_fam_as_spouse.html">get_fam_as_spouse</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="va">main_person</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "@F2@" "@F3@"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_fam_partners.html">get_fam_partners</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"@F1@"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "@I2@" "@I3@"</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/get_fam_children.html">get_fam_children</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"@F2@"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "@I6@" "@I7@"</span></span></code></pre></div>
 <p>Many functions include a <code>pedigrees</code> parameter which
@@ -178,7 +181,7 @@ makes:</p>
 <span><span class="co">#&gt; [1] "Adopted child"</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="branches">Branches<a class="anchor" aria-label="anchor" href="#branches"></a>
+<h2 id="distant-relations">Distant relations<a class="anchor" aria-label="anchor" href="#distant-relations"></a>
 </h2>
 <p>One of the more sophisticated features of <code>gedcomS7</code> is
 the ability to manipulate entire branches of your tree.</p>
@@ -225,10 +228,9 @@ Person.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="va">supporting_repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RepositoryRecord.html">RepositoryRecord</a></span><span class="op">(</span>repo_name <span class="op">=</span> <span class="st">"Library"</span><span class="op">)</span></span>
 <span><span class="co"># Source record is itself linked to the Media and Repository records</span></span>
-<span><span class="co"># (they don't have these xrefs yet but they will be assigned them when pushed)</span></span>
 <span><span class="va">supporting_sour</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SourceRecord.html">SourceRecord</a></span><span class="op">(</span></span>
-<span>  media_links <span class="op">=</span> <span class="st">"@M1@"</span>,</span>
-<span>  repo_citations <span class="op">=</span> <span class="st">"@R1@"</span></span>
+<span>  media_links <span class="op">=</span> <span class="va">three_gen</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">XREFS_NEXT</span><span class="op">[</span><span class="st">"OBJE"</span><span class="op">]</span>,</span>
+<span>  repo_citations <span class="op">=</span> <span class="va">three_gen</span><span class="op">@</span><span class="va">records</span><span class="op">@</span><span class="va">XREFS_NEXT</span><span class="op">[</span><span class="st">"REPO"</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">three_gen</span> <span class="op">&lt;-</span> <span class="va">three_gen</span> <span class="op">|&gt;</span> </span>
@@ -249,6 +251,39 @@ the downstream dependencies of the repository and media records.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_supporting_recs.html">get_supporting_recs</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "@S1@" "@R1@" "@M1@"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="pattern-matching">Pattern matching<a class="anchor" aria-label="anchor" href="#pattern-matching"></a>
+</h2>
+<p>Finally, the <code><a href="../reference/get_records_by_pattern.html">get_records_by_pattern()</a></code> function retrieves
+all records where a value matches a given regular expression (case
+insensitive).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_records_by_pattern.html">get_records_by_pattern</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"library"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "@R1@"</span></span>
+<span><span class="fu"><a href="../reference/get_records_by_pattern.html">get_records_by_pattern</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"son"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "@I1@" "@I6@" "@I7@"</span></span></code></pre></div>
+<p>By default, this returns the xrefs only. If you want to see why the
+records were matched, set <code>return_context = TRUE</code> and it will
+return all the lines where a match occurred:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_records_by_pattern.html">get_records_by_pattern</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"son"</span>, return_context <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`@I1@`</span></span>
+<span><span class="co">#&gt; [1] "1 NAME Main Person"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`@I6@`</span></span>
+<span><span class="co">#&gt; [1] "1 NAME Son 1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`@I7@`</span></span>
+<span><span class="co">#&gt; [1] "1 NAME Son 2"</span></span></code></pre></div>
+<p>You can then refine your pattern to include word boundaries etc.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_records_by_pattern.html">get_records_by_pattern</a></span><span class="op">(</span><span class="va">three_gen</span>, <span class="st">"\\bson\\b"</span>, return_context <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`@I6@`</span></span>
+<span><span class="co">#&gt; [1] "1 NAME Son 1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`@I7@`</span></span>
+<span><span class="co">#&gt; [1] "1 NAME Son 2"</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

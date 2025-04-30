@@ -313,6 +313,11 @@ object. This takes a copy of the record and parses it into an editable
 vector form directly from the GEDCOM object - additional checks and
 automated tasks are carried out to ensure self-consistency during the
 Push process.</p>
+<p>Removing records can be achieved with <code><a href="../reference/rm_records.html">rm_records()</a></code>. By
+default, any references to this record from other records will be
+replaced with a “<span class="citation">@VOID</span>@” reference. If
+this is not chosen, then references will be removed altogether
+(potentially losing supplementary information).</p>
 </div>
 <div class="section level2">
 <h2 id="viewing-gedcoms7-objects">Viewing <code>gedcomS7</code> objects<a class="anchor" aria-label="anchor" href="#viewing-gedcoms7-objects"></a>

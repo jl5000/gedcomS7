@@ -102,6 +102,12 @@ it is formatted correctly.</p>
 <span><span class="co">#&gt; Date:     8 DEC 1956</span></span>
 <span><span class="fu"><a href="../reference/DateExact.html">DateExact</a></span><span class="op">(</span><span class="fl">2008</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     1 APR 2008</span></span></code></pre></div>
+<p>As well as the GEDCOM formatted strings (printed above and also
+accessed through the <code>@GEDCOM_STRING</code> property), this date
+object can also be expressed as a date type:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/DateExact.html">DateExact</a></span><span class="op">(</span><span class="fl">2008</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span><span class="op">@</span><span class="va">as_date</span></span>
+<span><span class="co">#&gt; [1] "2008-04-01"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="calendar-dates">Calendar dates<a class="anchor" aria-label="anchor" href="#calendar-dates"></a>
@@ -110,7 +116,7 @@ it is formatted correctly.</p>
 only be used to create specific dates like <code><a href="../reference/DateExact.html">DateExact()</a></code>,
 they underpin the other date types described below. They can be created
 using <code><a href="../reference/DateGregorian.html">DateGregorian()</a></code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span>, month <span class="op">=</span> <span class="fl">4</span>, day <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     5 APR 1999</span></span>
 <span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span>, month <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
@@ -119,7 +125,7 @@ using <code><a href="../reference/DateGregorian.html">DateGregorian()</a></code>
 <span><span class="co">#&gt; Date:     1999</span></span></code></pre></div>
 <p>Years before the Common Era can be defined using the <code>bce</code>
 parameter:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">105</span>, bce <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     105 BCE</span></span></code></pre></div>
 <p>No other calendars apart from the Gregorian calendar are supported by
@@ -131,7 +137,7 @@ the package.</p>
 <p>Approximate dates (i.e. those expressing uncertainty) use the
 qualifiers ‘about’, ‘calculated’, or ‘estimated’ in conjunction with a
 <code><a href="../reference/DateGregorian.html">DateGregorian()</a></code> object:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span>, month <span class="op">=</span> <span class="fl">4</span>, day <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/DateApprox.html">DateApprox</a></span><span class="op">(</span>about <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     ABT 5 APR 1999</span></span>
 <span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span>, month <span class="op">=</span> <span class="fl">4</span>, day <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/DateApprox.html">DateApprox</a></span><span class="op">(</span>calc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -144,7 +150,7 @@ qualifiers ‘about’, ‘calculated’, or ‘estimated’ in conjunction with
 </h2>
 <p>Date periods can take one or two <code><a href="../reference/DateGregorian.html">DateGregorian()</a></code>
 objects:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/DatePeriod.html">DatePeriod</a></span><span class="op">(</span>start_date <span class="op">=</span> <span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span><span class="fl">1956</span>, <span class="fl">7</span>, <span class="fl">26</span><span class="op">)</span>,</span>
 <span>           end_date <span class="op">=</span> <span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span><span class="fl">1956</span>, <span class="fl">9</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     FROM 26 JUL 1956 TO 15 SEP 1956</span></span>
@@ -160,7 +166,7 @@ objects:</p>
 <p>Date ranges can be defined using <code><a href="../reference/DateRange.html">DateRange()</a></code>. Unlike
 <code><a href="../reference/DatePeriod.html">DatePeriod()</a></code>, they describe when an event occurred rather
 than a duration.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/DateRange.html">DateRange</a></span><span class="op">(</span>start_date <span class="op">=</span> <span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span><span class="fl">1956</span>, <span class="fl">7</span>, <span class="fl">26</span><span class="op">)</span>,</span>
 <span>           end_date <span class="op">=</span> <span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span><span class="fl">1956</span>, <span class="fl">9</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     BET 26 JUL 1956 AND 15 SEP 1956</span></span>
@@ -170,6 +176,35 @@ than a duration.</p>
 <span><span class="co">#&gt; Date:     BEF 15 SEP 1956</span></span></code></pre></div>
 <p>It’s important to note that approximate dates cannot be used in date
 ranges or date periods.</p>
+</div>
+<div class="section level2">
+<h2 id="date-values">Date values<a class="anchor" aria-label="anchor" href="#date-values"></a>
+</h2>
+<p>Date values can be defined with <code><a href="../reference/DateValue.html">DateValue()</a></code> and are a
+higher level of date expression than the elementary values given above.
+A calendar/approximate/range/period date can be used in conjunction with
+a date phrase (free text) and time. Instead of being single values, they
+are GEDCOM substructures:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DateValue.html">DateValue</a></span><span class="op">(</span></span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span>, month <span class="op">=</span> <span class="fl">4</span>, day <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  date_phrase <span class="op">=</span> <span class="st">"Someone's birthday"</span>,</span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="../reference/Time.html">Time</a></span><span class="op">(</span>hour <span class="op">=</span> <span class="fl">13</span>, minute <span class="op">=</span> <span class="fl">28</span>, second <span class="op">=</span> <span class="fl">57</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_date</span></span>
+<span><span class="co">#&gt; Date:     5 APR 1999 13:28:57Z (Someone's birthday)</span></span>
+<span></span>
+<span><span class="va">my_date</span><span class="op">@</span><span class="va">GEDCOM</span></span>
+<span><span class="co">#&gt; [1] "0 DATE 5 APR 1999"           "1 TIME 13:28:57Z"           </span></span>
+<span><span class="co">#&gt; [3] "1 PHRASE Someone's birthday"</span></span></code></pre></div>
+<p>It’s also possible to only define a DateValue through a phrase:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/DateValue.html">DateValue</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">""</span>, date_phrase <span class="op">=</span> <span class="st">"March 14th"</span><span class="op">)</span><span class="op">@</span><span class="va">GEDCOM</span></span>
+<span><span class="co">#&gt; [1] "0 DATE"              "1 PHRASE March 14th"</span></span></code></pre></div>
+<p>A <code><a href="../reference/DateSorting.html">DateSorting()</a></code> object is similar to
+<code><a href="../reference/DateValue.html">DateValue()</a></code> but it can only take Calendar dates as it is
+used for sorting.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
