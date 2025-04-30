@@ -20,9 +20,9 @@ mutate_generic_values <- function(df, lines){
   refns <- parse_vals_and_types(lines, "REFN")
   df$user_ids <- paste(names(refns), refns, sep = "=", collapse = ";") |> 
     chronify()
-  df$locked <- sum(grepl("^1 RESN .*LOCKED", lines)) > 0
-  df$private <- sum(grepl("^1 RESN .*PRIVACY", lines)) > 0
-  df$confidential <- sum(grepl("^1 RESN .*CONFIDENTIAL", lines)) > 0
+  df$locked <- any(grepl("^1 RESN .*LOCKED", lines))
+  df$private <- any(grepl("^1 RESN .*PRIVACY", lines))
+  df$confidential <- any(grepl("^1 RESN .*CONFIDENTIAL", lines))
   df$last_modified <- chronify(find_ged_values(lines, c("CHAN","DATE")))
   
   df

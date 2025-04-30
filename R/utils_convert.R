@@ -53,7 +53,7 @@ obj_to_val <- function(obj){
 }
 
 restrictions_to_resn <- function(confidential, locked, private){
-  if(sum(confidential, locked, private) == 0)
+  if(!any(confidential, locked, private))
     return(character())
   
   conf <- rep("CONFIDENTIAL", confidential)

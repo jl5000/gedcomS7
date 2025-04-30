@@ -311,7 +311,7 @@ GedcomRecords <- S7::new_class(
                                   getter = function(self){
                                     rec_types <- names(self@prefixes)
                                     priv <- lapply(rec_types, \(rec_type)
-                                                   Filter(\(x) sum(grepl("^1 RESN .*PRIVACY", x)) > 0,
+                                                   Filter(\(x) any(grepl("^1 RESN .*PRIVACY", x)),
                                                           S7::prop(self@RAW, rec_type)) |> names()
                                     )
                                     stats::setNames(priv, rec_types)
@@ -320,7 +320,7 @@ GedcomRecords <- S7::new_class(
                                     getter = function(self){
                                       rec_types <- names(self@prefixes)
                                       priv <- lapply(rec_types, \(rec_type)
-                                                     Filter(\(x) sum(grepl("^1 RESN .*CONFIDENTIAL", x)) > 0,
+                                                     Filter(\(x) any(grepl("^1 RESN .*CONFIDENTIAL", x)),
                                                             S7::prop(self@RAW, rec_type)) |> names()
                                       )
                                       stats::setNames(priv, rec_types)

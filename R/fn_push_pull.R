@@ -64,7 +64,7 @@ pull_record <- function(x, xref){
       # Check facts
       locked_facts <- vapply(rec@facts, \(fct) fct@locked, FUN.VALUE = logical(1))
       
-      if(sum(locked_facts) > 0)
+      if(any(locked_facts))
         warning(paste("The following facts are locked. Ensure you have the record owner's permission before editing it and pushing it back to the GEDCOM object:",
                       toString(which(locked_facts)))) 
     }

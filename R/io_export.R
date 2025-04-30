@@ -111,7 +111,7 @@ is_alive <- function(rec_lines, max_age = 100){
       grepl("^1 DEAT Y$", unlist(deaths)),
       grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
     )
-    if(sum(death_occured) > 0) return(FALSE)
+    if(any(death_occured)) return(FALSE)
   }
   
   dobs <- find_ged_values(rec_lines, c("BIRT","DATE"))

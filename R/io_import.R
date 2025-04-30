@@ -74,7 +74,7 @@ validate_lines <- function(lines){
     vals <- parse_line_value(lines)
     uids <- vals[uid_rows]
     dupes <- duplicated(uids)
-    if(sum(dupes) > 0)
+    if(any(dupes))
       stop("Some UIDs are duplicated: ", toString(unique(uids[dupes])))
   }
   
