@@ -98,6 +98,8 @@ ged@records@RAW@INDI[[1]]
 
 You should never attempt to modify the records in their character vector form directly from the GEDCOM object - additional checks and automated tasks are carried out to ensure self-consistency during the Push process.
 
+Removing records can be achieved with `rm_records()`. By default, any references to this record from other records will be replaced with a "@VOID@" reference. If this is not chosen, then references will be removed altogether (potentially losing supplementary information).
+
 ## Viewing `gedcomS7` objects
 
 There are two ways to view the contents of a `gedcomS7` object - the most comprehensive is to use `str()` (as above) which will show you every property the object has. The alternative is to use `print()` or `summary()`, both of which will provide a brief summary of the object (not every property may be displayed). For example:
