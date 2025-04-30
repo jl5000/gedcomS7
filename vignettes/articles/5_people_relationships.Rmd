@@ -114,6 +114,8 @@ anakin@facts <- append(
 )
 ```
 
+
+
 You can also assert that an individual never experienced an event via the `@non_events` property. This takes a `NonEvent()` object or a list of them.
 
 ```{r}
@@ -194,6 +196,12 @@ The full list of fact types that can be created are given below:
 ```{r}
 val_family_attribute_types(inc_generic = TRUE)
 val_family_event_types(inc_generic = TRUE)
+```
+
+Alternatively, the `fact_rules_df()` function provides a dataframe of all fact types and the rules surrounding the population of the `@fact_val` and `@fact_desc` properties. You can filter this table by providing a search string to the function:
+
+```{r}
+fact_rules_df("eve|chr")
 ```
 
 There are some types of fact; census and residence, that can apply for Individuals and Families. It is highly recommended you do not use these facts for families, only for individuals. It may intuitively be more efficient to define an event for an entire family, but other GEDCOM parsers can have difficulty with this, and defining these facts for each individual separately is recommended. Despite the name, Family records are actually more about the union of two people, rather than the family unit as a whole, and so the remaining events are related to marriages and divorces.
