@@ -103,7 +103,7 @@ Submitters are people who have contributed information to the GEDCOM file. The m
 
 ```{r}
 informant <- SubmitterRecord(
-  name = "Joe Bloggs",
+  subm_name = "Joe Bloggs",
   address = Address("2599 Priory Road; Wells; Somerset; England; BA5 1SH")
 )
 ```
