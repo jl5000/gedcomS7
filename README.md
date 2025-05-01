@@ -4,6 +4,9 @@
 # gedcomS7
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/jl5000/gedcomS7/graph/badge.svg)](https://app.codecov.io/gh/jl5000/gedcomS7)
 <!-- badges: end -->
 
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files.
@@ -54,23 +57,21 @@ ged <- new_gedcom()
 ged
 #> GEDCOM file summary:
 #>  
-#> GEDCOM version:         7.0
-#> Creation Date:          7 JAN 2025
-#> Default Language:       en
+#> GEDCOM version:     7.0
+#> Creation Date:      2 MAY 2025
+#> Default Language:   en
+#> Source:             gedcomS7
+#> Source name:        The 'gedcomS7' package for the R language
 #> 
-#> Copyright:              <Undefined>
+#> Copyright:          <Undefined>
 #> 
-#> Source system:          gedcomS7
-#> Product name:           The 'gedcomS7' package for the R language
-#> Source system version:  <Undefined>
-#> 
-#> Submitters:             0
-#> Individuals:            0
-#> Families:               0
-#> Sources:                0
-#> Repositories:           0
-#> Multimedia:             0
-#> Notes:                  0
+#> Submitters:         0
+#> Individuals:        0
+#> Families:           0
+#> Sources:            0
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
 ```
 
 The metadata for the gedcom object (ged@…) can be modified.
@@ -81,23 +82,21 @@ ged@header@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
 ged
 #> GEDCOM file summary:
 #>  
-#> GEDCOM version:         7.0
-#> Creation Date:          7 JAN 2025
-#> Default Language:       en
+#> GEDCOM version:     7.0
+#> Creation Date:      2 MAY 2025
+#> Default Language:   en
+#> Source:             gedcomS7
+#> Source name:        The 'gedcomS7' package for the R language
 #> 
-#> Copyright:              Copyright Jamie Lendrum 2023
+#> Copyright:          Copyright Jamie Lendrum 2023
 #> 
-#> Source system:          gedcomS7
-#> Product name:           The 'gedcomS7' package for the R language
-#> Source system version:  <Undefined>
-#> 
-#> Submitters:             0
-#> Individuals:            0
-#> Families:               0
-#> Sources:                0
-#> Repositories:           0
-#> Multimedia:             0
-#> Notes:                  0
+#> Submitters:         0
+#> Individuals:        0
+#> Families:           0
+#> Sources:            0
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
 ```
 
 New records can be created and ‘pushed’ to the GEDCOM object:
@@ -117,13 +116,13 @@ ged <- ged |>
 #> New Source record added with xref @S1@
 
 ged@records
-#> Submitters:             1
-#> Individuals:            1
-#> Families:               0
-#> Sources:                1
-#> Repositories:           0
-#> Multimedia:             0
-#> Notes:                  0
+#> Submitters:         1
+#> Individuals:        1
+#> Families:           0
+#> Sources:            1
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
 ```
 
 Existing records, must be ‘pulled’ from the object, edited, and then
@@ -147,7 +146,7 @@ ged@GEDCOM
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 7 JAN 2025"                               
+#>  [8] "1 DATE 2 MAY 2025"                               
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
