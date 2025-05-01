@@ -28,7 +28,6 @@
 #' @param fact_desc A further classification of the fact. This is required for generic
 #' events or attributes. See `fact_rules_df()` for the set of rules surrounding the 
 #' need for this.
-#' 
 #' @param medium A value from `val_medium_types()`. If "OTHER" is selected then a `@medium_phrase`
 #' must be given.
 #' @param medium_phrase A free text description of the medium. This is mandatory if `@medium` is

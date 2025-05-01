@@ -4,6 +4,10 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param location An absolute or relative URL to the file.
+#' @param medium A value from `val_medium_types()`. If "OTHER" is selected then a `@medium_phrase`
+#' must be given. This should describe the original medium from which it was derived. So
+#' if it is a digital image scanned from a physical photograph, it should be "PHOTO"
+#' instead of "ELECTRONIC".
 #' 
 #' @returns An S7 object representing a GEDCOM multimedia file substructure.
 #' @export

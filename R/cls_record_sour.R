@@ -3,6 +3,7 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param call_number The call number.
+#' 
 #' @returns An S7 object representing the CALN substructure of a GEDCOM 
 #' SOURCE_REPOSITORY_CITATION.
 #' @export

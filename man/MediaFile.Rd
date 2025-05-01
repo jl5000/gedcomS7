@@ -21,7 +21,9 @@ MediaFile(
 \item{media_type}{The media type as defined in RFC 2045.}
 
 \item{medium}{A value from \code{val_medium_types()}. If "OTHER" is selected then a \verb{@medium_phrase}
-must be given.}
+must be given. This should describe the original medium from which it was derived. So
+if it is a digital image scanned from a physical photograph, it should be "PHOTO"
+instead of "ELECTRONIC".}
 
 \item{medium_phrase}{A free text description of the medium. This is mandatory if \verb{@medium} is
 "OTHER".}
