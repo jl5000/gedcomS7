@@ -30,7 +30,7 @@ There are also two special records that appear at the beginning and end of a fil
 A sample file looks like this:
 
 ```{r}
-sample_file <- readLines("https://gedcom.io/testfiles/gedcom70/remarriage1.ged")
+sample_file <- readLines("remarriage1.ged")
 sample_file
 ```
 

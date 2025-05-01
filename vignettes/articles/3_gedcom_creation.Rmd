@@ -16,7 +16,7 @@ The easiest way to create a GEDCOM object is to import an existing GEDCOM file. 
 ```{r}
 library(gedcomS7)
 
-ged <- read_gedcom("https://gedcom.io/testfiles/gedcom70/minimal70.ged")
+ged <- read_gedcom("minimal70.ged")
 
 ged
 ```
