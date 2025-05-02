@@ -61,6 +61,16 @@ df_recs <- function(rec_list, extract_fn){
 #'
 #' @returns A dataframe summarising a record on each row.
 #' @export
+#' @tests
+#' maximal <- test_path("maximal70.ged")
+#' ged <- read_gedcom(maximal)
+#' indi_df <- df_indi(ged)
+#' expect_equal(nrow(indi_df), 4)
+#' expect_equal(indi_df$name[2], "Maiden Name")
+#' expect_equal(indi_df$sex[3], "X")
+#' expect_equal(indi_df$birth_date[1], "1 JAN 2000")
+#' expect_equal(indi_df$death_date[1], "28 MAR 2022")
+#' expect_equal(indi_df$fam_as_child[4], "@F1@")
 df_indi <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "INDI")
   if(length(rec_list) == 0) return(NULL)
