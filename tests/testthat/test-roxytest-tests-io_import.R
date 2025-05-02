@@ -2,12 +2,29 @@
 
 # File R/io_import.R: @tests
 
-test_that("Function read_gedcom() @ L17", {
+test_that("Function read_gedcom() @ L37", {
   maximal <- test_path("maximal70.ged")
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
-  length_maximal <- length(readLines(maximal))
+  lines <- readLines(maximal)
   ged <- read_gedcom(maximal)
-  expect_equal(length(ged@GEDCOM), length_maximal)
+  expect_equal(length(ged@GEDCOM), length(lines))
+  expect_warning(read_gedcom(maximal, lines), regexp = "Both filepath and lines")
+  expect_error(read_gedcom("file.txt"), regexp = "GEDCOM file should have")
+  expect_error(read_gedcom(lines = lines[-1]), 
+               regexp = "The file does not start with a HEAD record")
+  expect_error(read_gedcom(lines = lines[-length(lines)]), 
+               regexp = "The file does not end with a TRLR record")
+  bad_lines1 <- lines
+  bad_lines1[5] <- "1TAG Hello"
+  expect_error(read_gedcom(lines = bad_lines1),
+               regexp = "The following lines are invalid:\n5: 1TAG Hello")
+  bad_lines2 <- lines
+  bad_lines2[c(10,13)] <- "1 DATE JULIAN date is not allowed"
+  expect_error(read_gedcom(lines = bad_lines2),
+               regexp = "Non-Gregorian dates are not supported. See line 10, 13")
+  missing_xref <- sub("0 @I1@ INDI", "0 INDI", lines)
+  expect_true(all(read_gedcom(lines = lines)@GEDCOM == 
+                  read_gedcom(lines = missing_xref)@GEDCOM))
 })
 

@@ -4,10 +4,14 @@
 \alias{read_gedcom}
 \title{Import a GEDCOM file}
 \usage{
-read_gedcom(filepath = file.choose())
+read_gedcom(filepath = NULL, lines = NULL)
 }
 \arguments{
-\item{filepath}{The full filepath of the GEDCOM file.}
+\item{filepath}{The full filepath of the GEDCOM file. If this and the \code{lines}
+parameter are both NULL then you will be prompted to select a file.}
+
+\item{lines}{If the filepath is not provided then a character vector of
+GEDCOM lines can be provided.}
 }
 \value{
 A gedcom S7 object.

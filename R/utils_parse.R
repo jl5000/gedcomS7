@@ -130,6 +130,10 @@ check_unparsed <- function(lines, parsed){
     parsed@GEDCOM
   )
   
+  # Exception - remove instances where a missing xref would have been added,
+  # meaning the lines won't be identical anyway
+  not_parsed <- grep("^0 [A-Z]+$", not_parsed, value = TRUE, invert = TRUE)
+  
   if(length(not_parsed) > 0)
     warning("The following lines could not be parsed:\n", 
             paste(not_parsed, collapse = "\n"))
