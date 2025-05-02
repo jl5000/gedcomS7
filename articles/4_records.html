@@ -221,7 +221,7 @@ unique identifier</a> (UUID). These can be generated with
 <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>, e.g.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "31827495-baae-4443-941f-5c75e960af55"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "985de042-ac36-45e8-a1ab-c23a3479989f"</span></span></code></pre></div>
 <p>The <code>@ext_ids</code> must take the form of a named vector where
 the names are the URI defining the identifier. For example, to include
 the reference to an individual’s <a href="https://www.findagrave.com" class="external-link">Find a Grave’s</a> page, you would
@@ -402,9 +402,9 @@ creation/change dates depending on the values of
 <span><span class="co"># Extract record with creation/change dates added</span></span>
 <span><span class="va">new_record</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pull_record.html">pull_record</a></span><span class="op">(</span><span class="va">ged</span>, <span class="st">"@I1@"</span><span class="op">)</span></span>
 <span><span class="va">new_record</span><span class="op">@</span><span class="va">created</span></span>
-<span><span class="co">#&gt; Created:       1 MAY 2025</span></span>
+<span><span class="co">#&gt; Created:       2 MAY 2025</span></span>
 <span><span class="va">new_record</span><span class="op">@</span><span class="va">updated</span></span>
-<span><span class="co">#&gt; Changed:       1 MAY 2025</span></span></code></pre></div>
+<span><span class="co">#&gt; Changed:       2 MAY 2025</span></span></code></pre></div>
 <p>You can add a time and/or notes to these dates, but that’s probably
 overkill.</p>
 </div>
