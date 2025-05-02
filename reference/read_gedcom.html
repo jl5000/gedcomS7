@@ -55,7 +55,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_gedcom</span><span class="op">(</span>filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.choose.html" class="external-link">file.choose</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_gedcom</span><span class="op">(</span>filepath <span class="op">=</span> <span class="cn">NULL</span>, lines <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,7 +63,13 @@
 
 
 <dl><dt id="arg-filepath">filepath<a class="anchor" aria-label="anchor" href="#arg-filepath"></a></dt>
-<dd><p>The full filepath of the GEDCOM file.</p></dd>
+<dd><p>The full filepath of the GEDCOM file. If this and the <code>lines</code>
+parameter are both NULL then you will be prompted to select a file.</p></dd>
+
+
+<dt id="arg-lines">lines<a class="anchor" aria-label="anchor" href="#arg-lines"></a></dt>
+<dd><p>If the filepath is not provided then a character vector of
+GEDCOM lines can be provided.</p></dd>
 
 </dl></div>
     <div class="section level2">
