@@ -106,9 +106,18 @@ test_that("Function add_spouse() @ L195", {
 })
 
 
-test_that("Function rm_xref_ptrs() @ L389", {
-  lines <- readLines(test_path("maximal70.ged"))
-  lines1 <- lines[391:399]
+test_that("Function rm_xref_ptrs() @ L398", {
+  lines1 <- NonEvent(
+    "NATU", 
+    date_period = "FROM 1700 TO 1800", 
+    date_phrase = "No date phrase", 
+    note_xrefs = "@N1@", 
+    notes = "Note text", 
+    citations = list(
+      SourceCitation("@S1@", where = "1"),
+      SourceCitation("@S1@", where = "2")
+    )
+  )@GEDCOM
   void_lines <- rm_xref_ptrs(lines1, "@S1@", TRUE)
   expect_equal(parse_line_value(void_lines)[6], "@VOID@")
   expect_equal(parse_line_value(void_lines)[8], "@VOID@")
