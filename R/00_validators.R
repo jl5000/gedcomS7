@@ -139,14 +139,13 @@ chk_input_date_cpts <- function(year, month, day, bce = FALSE){
     return("Year must be defined")
   
   if(bce){
-    if(length(year) == 0 || length(month) + length(day) > 0)
+    if(length(month) + length(day) > 0)
       return("BCE date must contain year only")
   }
   
   if (length(month) < length(day))
     return("Day is defined without a month")
   
-  if(length(year) == 0) year <- 2000
   if(length(month) == 0) month <- 10
   if(length(day) == 0) day <- 10
   if(nchar(day) == 1) day <- paste0(0, day)
