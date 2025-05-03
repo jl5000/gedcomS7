@@ -2,7 +2,8 @@
 test_ged <- function(){
   
   indi <- IndividualRecord(pers_names = "Joe /Bloggs/", sex = "M",
-                           facts = IndividualEvent("BIRT", date = "20 MAR 1967"))
+                           facts = IndividualEvent("BIRT", date = "20 MAR 1967",
+                                                   place = "California, USA"))
   suppressMessages(
     new_gedcom() |> 
       push_record(indi) |> 

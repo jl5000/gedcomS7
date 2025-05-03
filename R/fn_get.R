@@ -73,6 +73,7 @@ get_fam_partners <- function(x, xref){
 #' @export
 #' @tests
 #' expect_equal(get_fam_children(test_ged(), "@F1@"), "@I1@")
+#' expect_equal(get_fam_children(test_ged(), "@F1@", "BIRTH"), "@I1@")
 #' expect_equal(get_fam_children(test_ged(), "@F2@"), c("@I5@", "@I6@"))
 get_fam_children <- function(x, 
                               xref,
@@ -383,6 +384,18 @@ get_unused_recs <- function(x){
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(sort(get_descendants(test_ged(), "@I2@")), 
+#'              c("@I1@", "@I5@", "@I6@"))
+#' expect_equal(sort(get_descendants(test_ged(), "@I2@", 
+#'                                   inc_indi = TRUE)), 
+#'              c("@I1@", "@I2@" ,"@I5@", "@I6@"))
+#' expect_equal(sort(get_descendants(test_ged(), "@I2@", 
+#'                                   inc_part = TRUE)), 
+#'              c("@I1@", "@I3@", "@I4@", "@I5@", "@I6@"))
+#' expect_equal(sort(get_descendants(test_ged(), "@I2@", 
+#'                                   inc_fam = TRUE)), 
+#'              c("@F1@", "@F2@", "@I1@", "@I5@", "@I6@"))
 get_descendants <- function(x, 
                             xref,
                             inc_indi = FALSE,
@@ -504,6 +517,9 @@ pedigree_in_set <- function(pedigree, set){
 #'
 #' @returns Either a vector of matching xrefs, or a named list of matching GEDCOM lines.
 #' @export
+#' @tests
+#' expect_equal(get_records_by_pattern(test_ged(), "California"), "@I1@")
+#' expect_equal(get_records_by_pattern(test_ged(), "Mother"), "@I3@")
 get_records_by_pattern <- function(x, pattern, return_context = FALSE){
   
   rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
