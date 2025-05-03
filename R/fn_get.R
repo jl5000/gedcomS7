@@ -240,6 +240,7 @@ get_indi_parents_fathmoth <- function(x,
 #' @inherit get_fam_as_child return
 #' @export
 #' @tests
+#' expect_equal(get_indi_siblings(test_ged(), "@I1@"), character())
 #' expect_equal(get_indi_siblings(test_ged(), "@I5@"), "@I6@")
 #' expect_equal(get_indi_siblings(test_ged(), "@I6@"), "@I5@")
 #' expect_equal(get_indi_siblings(test_ged(), "@I6@", inc_half = TRUE), "@I5@")
@@ -463,6 +464,19 @@ get_descendants <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(sort(get_ancestors(test_ged(), "@I5@")),
+#'              c("@I1@","@I2@","@I3@","@I4@"))
+#' expect_equal(sort(get_ancestors(test_ged(), "@I5@", inc_indi = TRUE)),
+#'              c("@I1@","@I2@","@I3@","@I4@","@I5@"))
+#' expect_equal(sort(get_ancestors(test_ged(), "@I5@", inc_sibs = TRUE)),
+#'              c("@I1@","@I2@","@I3@","@I4@"))
+#' expect_equal(sort(get_ancestors(test_ged(), "@I5@", 
+#'                                 inc_indi = TRUE,
+#'                                 inc_sibs = TRUE)),
+#'              c("@I1@","@I2@","@I3@","@I4@","@I5@","@I6@"))
+#' expect_equal(sort(get_ancestors(test_ged(), "@I5@", inc_fam = TRUE)),
+#'              c("@F1@","@F2@","@I1@","@I2@","@I3@","@I4@"))
 get_ancestors <- function(x, 
                           xref,
                           inc_indi = FALSE,
@@ -526,6 +540,8 @@ pedigree_in_set <- function(pedigree, set){
 #' @tests
 #' expect_equal(get_records_by_pattern(test_ged(), "California"), "@I1@")
 #' expect_equal(get_records_by_pattern(test_ged(), "Mother"), "@I3@")
+#' expect_equal(get_records_by_pattern(test_ged(), "Mother", TRUE), 
+#'              list("@I3@" = "1 NAME Mother /Bloggs/"))
 get_records_by_pattern <- function(x, pattern, return_context = FALSE){
   
   rec_lines <- c(x@records@RAW@INDI, x@records@RAW@FAM, 
