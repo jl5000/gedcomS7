@@ -4,7 +4,11 @@
 \alias{reg_date_value}
 \title{Construct the regex pattern for DATE_VALUE values}
 \usage{
-reg_date_value()
+reg_date_value(strict = TRUE)
+}
+\arguments{
+\item{strict}{Whether to check whether the days are actually valid
+or just check that days are any one or two digit number.}
 }
 \value{
 Either a single regex string or a vector of them.

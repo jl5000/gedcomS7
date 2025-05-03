@@ -37,16 +37,25 @@ regex_combn <- function(reg1, reg2) {
   paste(rep(reg1, each = length(reg2)), reg2, sep = "")
 }
 
-reg_day <- function() {
-  paste(1:31, collapse = "|") |> group_it()
+reg_day <- function(strict = TRUE) {
+  if(strict){
+    days <- paste(1:31, collapse = "|")
+  } else {
+    days <- "\\d{1,2}"
+  }
+  group_it(days)
 }
 
 reg_month <- function() {
-  paste0(toupper(month.abb), collapse = "|") |> group_it()
+  # strict option not enabled for reg_month() because allowing
+  # any three capital letters will confuse date parsing functions
+  # with things like ABT and CAL
+  months <- paste(toupper(month.abb), collapse = "|")
+  group_it(months)
 }
 
 reg_year <- function() {
-  "\\d{1,4}" |> group_it()
+  group_it("\\d{1,4}")
 }
 
 #' @tests
@@ -125,22 +134,26 @@ reg_role_in_event <- function(){
 #' @param only Whether to allow strings of only date_exact. If FALSE,
 #' the regular expression accepts patterns where text can come before or after
 #' the date_exact().
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns A regex string
 #' @keywords internal
 #' @tests
 #' expect_equal(grepl(reg_date_exact(), "14 JAN 2005"), TRUE)
 #' expect_equal(grepl(reg_date_exact(), "14 JAM 2005"), FALSE)
+#' expect_equal(grepl(reg_date_exact(strict = FALSE), "32 JAN 2005"), TRUE)
 #' expect_equal(grepl(reg_date_exact(), "JAN 2005"), FALSE)
 #' expect_equal(grepl(reg_date_exact(), "14 JAN 2005/06"), FALSE)
 #' expect_equal(grepl(reg_date_exact(), "5 JUL 2005"), TRUE)
+#' expect_equal(grepl(reg_date_exact(strict = FALSE), "35 JUL 2005"), TRUE)
 #' expect_equal(grepl(reg_date_exact(), "8 NOV 1956/57"), FALSE)
 #' expect_equal(grepl(reg_date_exact(), "2005"), FALSE)
 #' expect_equal(grepl(reg_date_exact(), "15 NOV 125"), TRUE)
 #' expect_equal(grepl(reg_date_exact(), "JAN 1901/58"), FALSE)
 #' expect_equal(grepl(reg_date_exact(), "5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date_exact(), " 5 JUL 2005"), FALSE)
-reg_date_exact <- function(only = TRUE) {
-  reg <- paste(reg_day(), reg_month(), reg_year())
+reg_date_exact <- function(only = TRUE, strict = TRUE) {
+  reg <- paste(reg_day(strict), reg_month(), reg_year())
   if(only) reg <- anchor_it(reg)
   reg
 }
@@ -157,6 +170,8 @@ reg_date_exact <- function(only = TRUE) {
 #' @param only Whether to allow strings of only date. If FALSE,
 #' the regular expression accepts patterns where text can come before or after
 #' the date().
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
@@ -169,16 +184,16 @@ reg_date_exact <- function(only = TRUE) {
 #' expect_equal(grepl(reg_date(), "15 NOV 125"), TRUE)
 #' expect_equal(grepl(reg_date(), "5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date(), " 5 JUL 2005"), FALSE)
-reg_date <- function(flatten = TRUE, only = TRUE) {
-  reg_date_gregorian(flatten, only)
+reg_date <- function(flatten = TRUE, only = TRUE, strict = TRUE) {
+  reg_date_gregorian(flatten, only, strict)
 }
 
 
-reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
+reg_date_gregorian <- function(flatten = TRUE, only = TRUE, strict = TRUE) {
   combos <- c(reg_year(),
               paste(reg_year(), "BCE"),
               paste(reg_month(), reg_year()),
-              paste(reg_day(), reg_month(), reg_year()))
+              paste(reg_day(strict), reg_month(), reg_year()))
   
   if(only) combos <- anchor_it(combos)
   if(flatten) combos <- paste(combos, collapse = "|")
@@ -192,6 +207,8 @@ reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
@@ -207,11 +224,11 @@ reg_date_gregorian <- function(flatten = TRUE, only = TRUE) {
 #' expect_equal(grepl(reg_date_period(), " TO JAN 1901"), FALSE)
 #' expect_equal(grepl(reg_date_period(), "FROM 5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date_period(), " TO 5 JUL 2005"), FALSE)
-reg_date_period <- function(flatten = TRUE) {
-  combos <- c(paste("FROM", reg_date(FALSE,FALSE)),
-              paste("TO", reg_date(FALSE,FALSE)),
-              regex_combn(paste("FROM", reg_date(FALSE,FALSE)), 
-                          paste(" TO", reg_date(FALSE,FALSE))),
+reg_date_period <- function(flatten = TRUE, strict = TRUE) {
+  combos <- c(paste("FROM", reg_date(FALSE,FALSE,strict)),
+              paste("TO", reg_date(FALSE,FALSE,strict)),
+              regex_combn(paste("FROM", reg_date(FALSE,FALSE,strict)), 
+                          paste(" TO", reg_date(FALSE,FALSE,strict))),
               "") #date period can be the empty string
   if (flatten) {
     combos |> anchor_it() |> paste(collapse = "|")
@@ -226,6 +243,8 @@ reg_date_period <- function(flatten = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
@@ -240,11 +259,11 @@ reg_date_period <- function(flatten = TRUE) {
 #' expect_equal(grepl(reg_date_range(), " AFT JAN 1901"), FALSE)
 #' expect_equal(grepl(reg_date_range(), "BEF 5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date_range(), " AFT 5 JUL 2005"), FALSE)
-reg_date_range <- function(flatten = TRUE) {
-  combos <- c(paste("BEF", reg_date(FALSE,FALSE)),
-              paste("AFT", reg_date(FALSE,FALSE)),
-              regex_combn(paste("BET", reg_date(FALSE,FALSE)), 
-                          paste(" AND", reg_date(FALSE,FALSE))))
+reg_date_range <- function(flatten = TRUE, strict = TRUE) {
+  combos <- c(paste("BEF", reg_date(FALSE,FALSE,strict)),
+              paste("AFT", reg_date(FALSE,FALSE,strict)),
+              regex_combn(paste("BET", reg_date(FALSE,FALSE,strict)), 
+                          paste(" AND", reg_date(FALSE,FALSE,strict))))
   if (flatten) {
     combos |> anchor_it() |> paste(collapse = "|")
   } else {
@@ -258,6 +277,8 @@ reg_date_range <- function(flatten = TRUE) {
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
 #' do not, then they are anchored with ^ and $ and separated with | (OR).
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
@@ -272,10 +293,10 @@ reg_date_range <- function(flatten = TRUE) {
 #' expect_equal(grepl(reg_date_approximated(), " EST JAN 1901"), FALSE)
 #' expect_equal(grepl(reg_date_approximated(), "CAL 5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date_approximated(), " CAL 5 JUL 2005"), FALSE)
-reg_date_approximated <- function(flatten = TRUE) {
-  combos <- c(paste("ABT", reg_date(FALSE,FALSE)),
-              paste("CAL", reg_date(FALSE,FALSE)),
-              paste("EST", reg_date(FALSE,FALSE)))
+reg_date_approximated <- function(flatten = TRUE, strict = TRUE) {
+  combos <- c(paste("ABT", reg_date(FALSE,FALSE,strict)),
+              paste("CAL", reg_date(FALSE,FALSE,strict)),
+              paste("EST", reg_date(FALSE,FALSE,strict)))
   if (flatten) {
     combos |> anchor_it() |> paste(collapse = "|")
   } else {
@@ -285,6 +306,8 @@ reg_date_approximated <- function(flatten = TRUE) {
 
 #' Construct the regex pattern for DATE_VALUE values
 #'
+#' @param strict Whether to check whether the days are actually valid
+#' or just check that days are any one or two digit number.
 #' @returns Either a single regex string or a vector of them.
 #' @keywords internal
 #' @tests
@@ -312,12 +335,12 @@ reg_date_approximated <- function(flatten = TRUE) {
 #' expect_equal(grepl(reg_date_value(), "CAL 15 NOV 1925/"), FALSE)
 #' expect_equal(grepl(reg_date_value(), "14TH JAN 1901"), FALSE)
 #' expect_equal(grepl(reg_date_value(), "ABT 5  JUL 2005"), FALSE)
-reg_date_value <- function() {
+reg_date_value <- function(strict = TRUE) {
   
-  c(reg_date(FALSE,FALSE),
-    reg_date_period(FALSE),
-    reg_date_range(FALSE),
-    reg_date_approximated(FALSE)) |> 
+  c(reg_date(FALSE,FALSE,strict),
+    reg_date_period(FALSE,strict),
+    reg_date_range(FALSE,strict),
+    reg_date_approximated(FALSE,strict)) |> 
     anchor_it() |> 
     paste(collapse = "|")
 }

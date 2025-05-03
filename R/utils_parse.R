@@ -38,6 +38,7 @@ parse_vals_and_types <- function(lines, val_tag){
 #' expect_equal(parse_gedcom_date("TO 23 JUN 2001"), as.Date(NA_character_))
 #' expect_equal(parse_gedcom_date("AFT 1600", FALSE), as.Date(NA_character_))
 #' expect_equal(parse_gedcom_date("FROM FEB 1900", FALSE), as.Date(NA_character_))
+#' expect_equal(parse_gedcom_date("34 JAN 2000"), as.Date(NA_character_))
 #' expect_equal(parse_gedcom_date("2005"), as.Date("2005-01-01"))
 #' expect_equal(parse_gedcom_date("2005", FALSE), as.Date("2005-12-31"))
 #' expect_equal(parse_gedcom_date("JUL 1989"), as.Date("1989-07-01"))
@@ -52,13 +53,15 @@ parse_gedcom_date <- function(date_string, minimise = TRUE){
   if(minimise){
     if(grepl("^(BEF|TO) ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE)), 
+    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE,
+                                                                       strict = FALSE)), 
                        "\\1", date_string)
   } else {
     if(grepl("^(AFT|FROM) ", date_string) &&
        !grepl(" TO ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_gregorian(only = FALSE)), 
+    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_gregorian(only = FALSE,
+                                                                  strict = FALSE)), 
                        "\\1", date_string)
   }
   

@@ -2,11 +2,12 @@
 
 # File R/utils_parse.R: @tests
 
-test_that("Function parse_gedcom_date() @ L49", {
+test_that("Function parse_gedcom_date() @ L50", {
   expect_equal(parse_gedcom_date("BEF 1980"), as.Date(NA_character_))
   expect_equal(parse_gedcom_date("TO 23 JUN 2001"), as.Date(NA_character_))
   expect_equal(parse_gedcom_date("AFT 1600", FALSE), as.Date(NA_character_))
   expect_equal(parse_gedcom_date("FROM FEB 1900", FALSE), as.Date(NA_character_))
+  expect_equal(parse_gedcom_date("34 JAN 2000"), as.Date(NA_character_))
   expect_equal(parse_gedcom_date("2005"), as.Date("2005-01-01"))
   expect_equal(parse_gedcom_date("2005", FALSE), as.Date("2005-12-31"))
   expect_equal(parse_gedcom_date("JUL 1989"), as.Date("1989-07-01"))
@@ -18,7 +19,7 @@ test_that("Function parse_gedcom_date() @ L49", {
 })
 
 
-test_that("Function parse_gedcom_age() @ L110", {
+test_that("Function parse_gedcom_age() @ L113", {
   expect_equal(parse_gedcom_age("16y"), 16)
   expect_equal(parse_gedcom_age("16y 6m"), 16.5)
   expect_equal(parse_gedcom_age("73d"), 73/365)

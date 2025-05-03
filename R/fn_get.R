@@ -164,6 +164,7 @@ get_indi_children <- function(x,
 #' expect_equal(get_indi_parents(test_ged(), "@I1@"), c("@I2@", "@I3@"))
 #' expect_equal(get_indi_parents(test_ged(), "@I5@"), c("@I1@", "@I4@"))
 #' expect_equal(get_indi_parents(test_ged(), "@I6@"), c("@I1@", "@I4@"))
+#' expect_equal(get_indi_parents(test_ged(), "@I2@"), character())
 get_indi_parents <- function(x, 
                              xref,
                              pedigrees = NULL){
@@ -186,6 +187,8 @@ get_indi_parents <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(get_indi_mothers(test_ged(), "@I1@"), "@I3@")
 get_indi_mothers <- function(x,
                              xref,
                              pedigrees = NULL){
@@ -199,6 +202,8 @@ get_indi_mothers <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(get_indi_fathers(test_ged(), "@I1@"), "@I2@")
 get_indi_fathers <- function(x,
                              xref,
                              pedigrees = NULL){
@@ -237,6 +242,7 @@ get_indi_parents_fathmoth <- function(x,
 #' @tests
 #' expect_equal(get_indi_siblings(test_ged(), "@I5@"), "@I6@")
 #' expect_equal(get_indi_siblings(test_ged(), "@I6@"), "@I5@")
+#' expect_equal(get_indi_siblings(test_ged(), "@I6@", inc_half = TRUE), "@I5@")
 get_indi_siblings <- function(x, 
                               xref,
                               pedigrees = NULL,

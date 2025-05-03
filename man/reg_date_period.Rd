@@ -4,13 +4,16 @@
 \alias{reg_date_period}
 \title{Construct the regex pattern for DATE_PERIOD values}
 \usage{
-reg_date_period(flatten = TRUE)
+reg_date_period(flatten = TRUE, strict = TRUE)
 }
 \arguments{
 \item{flatten}{A logical value which determines whether a single regex string should be
 returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 The vector output is used if the regexes need to be combined with other regexes. If they
 do not, then they are anchored with ^ and $ and separated with | (OR).}
+
+\item{strict}{Whether to check whether the days are actually valid
+or just check that days are any one or two digit number.}
 }
 \value{
 Either a single regex string or a vector of them.

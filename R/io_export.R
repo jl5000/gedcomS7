@@ -144,6 +144,7 @@ is_alive <- function(rec_lines, max_age = 100){
 #' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016"), 4, tolerance = 0.01)
 #' expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
 #' expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
+#' expect_equal(date_diff("34 JAN 2000"), -1)
 date_diff <- function(date1,
                       date2 = NULL,
                       minimise = TRUE) {
@@ -179,6 +180,10 @@ prepare_gedcom_lines <- function(lines){
 #' @returns Nothing. If applicable, the function will result in a warning if
 #' inappropriate mentions of xrefs are found.
 #' @keywords internal
+#' @tests
+#' expect_null(check_for_xref_mentions("1 SNOTE @S1@"))
+#' expect_warning(check_for_xref_mentions("1 NOTE @S1@ is an xref"),
+#'                regexp = "The following line numbers")
 check_for_xref_mentions <- function(lines){
   
   # Check for xrefs mentioned beyond pointers

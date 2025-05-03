@@ -26,7 +26,7 @@ test_that("Function write_gedcom() @ L37", {
 })
 
 
-test_that("Function date_diff() @ L147", {
+test_that("Function date_diff() @ L148", {
   expect_equal(date_diff("1900", "2000"), 99, tolerance = 0.01)
   expect_equal(date_diff("1900", "2000", minimise = FALSE), 101, tolerance = 0.01)
   expect_equal(date_diff("800", "2020"), 1219, tolerance = 0.01)
@@ -34,10 +34,18 @@ test_that("Function date_diff() @ L147", {
   expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016"), 4, tolerance = 0.01)
   expect_equal(date_diff("BET JAN 2000 AND 2007", "FROM 2012 TO 8 MAY 2016", minimise = FALSE), 16.35, tolerance = 0.01)
   expect_equal(date_diff("ABT 1932", "CAL 2000"), 67, tolerance = 0.01)
+  expect_equal(date_diff("34 JAN 2000"), -1)
 })
 
 
-test_that("Function split_gedcom_values() @ L235", {
+test_that("Function check_for_xref_mentions() @ L187", {
+  expect_null(check_for_xref_mentions("1 SNOTE @S1@"))
+  expect_warning(check_for_xref_mentions("1 NOTE @S1@ is an xref"),
+                 regexp = "The following line numbers")
+})
+
+
+test_that("Function split_gedcom_values() @ L240", {
   test1 <- c(
   "0 TEMP",
   "1 TAG This is a line\nthen this\nand this\nalso this"

@@ -4,7 +4,7 @@
 \alias{reg_date}
 \title{Construct a regular expression for DATE values}
 \usage{
-reg_date(flatten = TRUE, only = TRUE)
+reg_date(flatten = TRUE, only = TRUE, strict = TRUE)
 }
 \arguments{
 \item{flatten}{A logical value which determines whether a single regex string should be
@@ -15,6 +15,9 @@ do not, then they are anchored with ^ and $ and separated with | (OR).}
 \item{only}{Whether to allow strings of only date. If FALSE,
 the regular expression accepts patterns where text can come before or after
 the date().}
+
+\item{strict}{Whether to check whether the days are actually valid
+or just check that days are any one or two digit number.}
 }
 \value{
 Either a single regex string or a vector of them.
