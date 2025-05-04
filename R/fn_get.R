@@ -366,6 +366,8 @@ get_supporting_recs <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(get_unused_recs(test_ged()), "@F3@")
 get_unused_recs <- function(x){
   
   ged <- x@GEDCOM

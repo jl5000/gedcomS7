@@ -10,7 +10,10 @@ test_ged <- function(){
       add_parents("@I1@", moth_name = "Mother /Bloggs/", 
                   fath_name = "Father /Bloggs/") |> 
       add_spouse("@I1@", sex = "F", spou_name = "Jess /Bloggs/") |> 
-      add_children("@F2@", sexes = "MF", chil_names = c("Son","Daughter"))
+      add_children("@F2@", sexes = "MF", chil_names = c("Son","Daughter")) |> 
+      push_record(FamilyRecord(unique_ids = "f511d543-43c2-4642-b7dd-31c1a2a6bbc2",
+                               user_ids = c("My ID" = "1234"),
+                               ext_ids = c("http://www.website.com" = "page1"))) # unused family
   )
   
   

@@ -2,6 +2,17 @@
 
 # File R/fn_df.R: @tests
 
+test_that("Function df_fam() @ L106", {
+  fam_df <- df_fam(test_ged())
+  expect_equal(nrow(fam_df), 3)
+  expect_equal(fam_df$husb_xref[1], "@I2@")
+  expect_equal(fam_df$wife_xref[2], "@I4@")
+  expect_equal(fam_df$unique_ids[3], "f511d543-43c2-4642-b7dd-31c1a2a6bbc2")
+  expect_equal(fam_df$user_ids[3], "My ID=1234")
+  expect_equal(fam_df$ext_ids[3], "http://www.website.com/page1")
+})
+
+
 test_that("Function df_indi() @ L72", {
   indi_df <- df_indi(test_ged())
   expect_equal(nrow(indi_df), 6)

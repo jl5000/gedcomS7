@@ -95,6 +95,14 @@ df_indi <- function(x, xrefs = NULL){
 
 #' @rdname df_indi
 #' @export
+#' @tests
+#' fam_df <- df_fam(test_ged())
+#' expect_equal(nrow(fam_df), 3)
+#' expect_equal(fam_df$husb_xref[1], "@I2@")
+#' expect_equal(fam_df$wife_xref[2], "@I4@")
+#' expect_equal(fam_df$unique_ids[3], "f511d543-43c2-4642-b7dd-31c1a2a6bbc2")
+#' expect_equal(fam_df$user_ids[3], "My ID=1234")
+#' expect_equal(fam_df$ext_ids[3], "http://www.website.com/page1")
 df_fam <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "FAM")
   if(length(rec_list) == 0) return(NULL)

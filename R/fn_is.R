@@ -16,6 +16,7 @@ is_note_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[
 is_subm_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Submitter"]]]]
 
 #' @tests
+#' expect_error(get_record_type(1), regexp = "Unrecognised record")
 #' expect_equal(get_record_type(IndividualRecord()), "INDI")
 #' expect_equal(get_record_type(FamilyRecord()), "FAM")
 #' expect_equal(get_record_type(SourceRecord()), "SOUR")
