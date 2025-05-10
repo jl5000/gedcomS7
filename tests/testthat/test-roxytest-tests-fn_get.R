@@ -49,7 +49,7 @@ test_that("Function get_indi_siblings() @ L247", {
 
 
 test_that("Function get_unused_recs() @ L371", {
-  expect_equal(get_unused_recs(test_ged()), "@F3@")
+  expect_equal(get_unused_recs(test_ged()), c("@U2@","@F3@","@N1@"))
 })
 
 

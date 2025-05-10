@@ -174,13 +174,19 @@ df_media <- function(x, xrefs = NULL){
 
 #' @rdname df_indi
 #' @export
+#' @tests
+#' note_df <- df_note(test_ged())
+#' expect_equal(note_df$text[1], "This is a note")
+#' expect_equal(note_df$text[2], "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...")
+#' expect_equal(note_df$language[1], "en")
+#' expect_equal(note_df$language[2], "es")
 df_note <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SNOTE")
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
     df <- list()
-    txt <- parse_line_value(lines)
+    txt <- parse_line_value(lines[1])
     if(nchar(txt) > 50) 
       txt <- paste0(substr(txt, 1, 47), "...")
     
@@ -194,6 +200,10 @@ df_note <- function(x, xrefs = NULL){
 
 #' @rdname df_indi
 #' @export
+#' @tests
+#' subm_df <- df_subm(test_ged())
+#' expect_equal(subm_df$name[1], "Submitter 1")
+#' expect_equal(subm_df$address[2], "Another road")
 df_subm <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SUBM")
   if(length(rec_list) == 0) return(NULL)

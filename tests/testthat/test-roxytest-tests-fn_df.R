@@ -2,16 +2,8 @@
 
 # File R/fn_df.R: @tests
 
-test_that("Function df_fam() @ L106", {
-  fam_df <- df_fam(test_ged())
-  expect_equal(nrow(fam_df), 3)
-  expect_equal(fam_df$husb_xref[1], "@I2@")
-  expect_equal(fam_df$wife_xref[2], "@I4@")
-  expect_equal(fam_df$unique_ids[3], "f511d543-43c2-4642-b7dd-31c1a2a6bbc2")
-  expect_equal(fam_df$user_ids[3], "My ID=1234")
-  expect_equal(fam_df$ext_ids[3], "http://www.website.com/page1")
-})
-
+c("test_that(\"Function df_fam() @ L106\", {\n  fam_df <- df_fam(test_ged())\n  expect_equal(nrow(fam_df), 3)\n  expect_equal(fam_df$husb_xref[1], \"@I2@\")\n  expect_equal(fam_df$wife_xref[2], \"@I4@\")\n  expect_equal(fam_df$unique_ids[3], \"f511d543-43c2-4642-b7dd-31c1a2a6bbc2\")\n  expect_equal(fam_df$user_ids[3], \"My ID=1234\")\n  expect_equal(fam_df$ext_ids[3], \"http://www.website.com/page1\")\n})\n", "test_that(\"Function df_fam() @ L106\", {\n  note_df <- df_note(test_ged())\n  expect_equal(note_df$text[1], \"This is a note\")\n  expect_equal(note_df$text[2], \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...\")\n  expect_equal(note_df$language[1], \"en\")\n  expect_equal(note_df$language[2], \"es\")\n})\n", 
+"test_that(\"Function df_fam() @ L106\", {\n  subm_df <- df_subm(test_ged())\n  expect_equal(subm_df$name[1], \"Submitter 1\")\n  expect_equal(subm_df$address[2], \"Another road\")\n})\n")
 
 test_that("Function df_indi() @ L72", {
   indi_df <- df_indi(test_ged())
@@ -24,7 +16,7 @@ test_that("Function df_indi() @ L72", {
 })
 
 
-test_that("Function df_indi_facts() @ L227", {
+test_that("Function df_indi_facts() @ L237", {
   fact_df <- df_indi_facts(test_ged(), "@I1@")
   expect_equal(fact_df$type[1], "Birth")
   expect_equal(fact_df$type[4], "Other attribute")
@@ -36,7 +28,7 @@ test_that("Function df_indi_facts() @ L227", {
 })
 
 
-test_that("Function df_fam_facts() @ L263", {
+test_that("Function df_fam_facts() @ L273", {
   fact_df <- df_fam_facts(test_ged(), "@F1@")
   expect_equal(fact_df$type[1], "Marriage")
   expect_equal(fact_df$date[1], "MAR 1965")
