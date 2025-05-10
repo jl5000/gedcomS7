@@ -23,3 +23,25 @@ test_that("Function df_indi() @ L72", {
   expect_equal(indi_df$fam_as_child[6], "@F2@")
 })
 
+
+test_that("Function df_indi_facts() @ L227", {
+  fact_df <- df_indi_facts(test_ged(), "@I1@")
+  expect_equal(fact_df$type[1], "Birth")
+  expect_equal(fact_df$type[4], "Other attribute")
+  expect_equal(fact_df$val[2], "5 ft 10, brown hair, brown eyes")
+  expect_equal(fact_df$desc[4], "Disability")
+  expect_equal(fact_df$date[3], "8 APR 2018")
+  expect_equal(fact_df$place[1], "California, USA")
+  expect_equal(fact_df$age[3], "51y")
+})
+
+
+test_that("Function df_fam_facts() @ L263", {
+  fact_df <- df_fam_facts(test_ged(), "@F1@")
+  expect_equal(fact_df$type[1], "Marriage")
+  expect_equal(fact_df$date[1], "MAR 1965")
+  expect_equal(fact_df$place[1], "London, England")
+  expect_equal(fact_df$husb_age[1], "28y")
+  expect_equal(fact_df$wife_age[1], "25y")
+})
+
