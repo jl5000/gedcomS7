@@ -53,13 +53,13 @@ df_recs <- function(rec_list, extract_fn){
   cbind(xref = rownames(df), data.frame(df, row.names=NULL))
 }
 
-#' Summarise records of a particular type in a dataframe
+#' Summarise Individual records in a dataframe
 #'
 #' @param x A gedcom object.
 #' @param xrefs A vector of xrefs to summarise. If this is left NULL,
 #' all relevant xrefs will be used.
 #'
-#' @returns A dataframe summarising a record on each row.
+#' @returns A dataframe summarising an Individual record on each row.
 #' @export
 #' @tests
 #' indi_df <- df_indi(test_ged())
@@ -93,7 +93,11 @@ df_indi <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Family records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Family record on each row.
 #' @export
 #' @tests
 #' fam_df <- df_fam(test_ged())
@@ -121,8 +125,13 @@ df_fam <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Source records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Source record on each row.
 #' @export
+#' @tests
 df_sour <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SOUR")
   if(length(rec_list) == 0) return(NULL)
@@ -139,8 +148,13 @@ df_sour <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Repository records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Repository record on each row.
 #' @export
+#' @tests
 df_repo <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "REPO")
   if(length(rec_list) == 0) return(NULL)
@@ -155,8 +169,13 @@ df_repo <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Multimedia records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Multimedia record on each row.
 #' @export
+#' @tests
 df_media <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "OBJE")
   if(length(rec_list) == 0) return(NULL)
@@ -172,7 +191,11 @@ df_media <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Note records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Note record on each row.
 #' @export
 #' @tests
 #' note_df <- df_note(test_ged())
@@ -198,7 +221,11 @@ df_note <- function(x, xrefs = NULL){
   df_recs(rec_list, extract_rec_values)
 }
 
-#' @rdname df_indi
+#' Summarise Submitter records in a dataframe
+#'
+#' @inheritParams df_indi
+#'
+#' @returns A dataframe summarising a Submitter record on each row.
 #' @export
 #' @tests
 #' subm_df <- df_subm(test_ged())
