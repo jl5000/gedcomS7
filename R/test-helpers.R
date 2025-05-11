@@ -35,16 +35,28 @@ test_ged <- function(){
                                   address = "Another road")) |> 
       push_record(NoteRecord(text = "This is a note", language = "en")) |> 
       push_record(NoteRecord(text = paste(rep_len("a", 51), collapse = ""), 
-                             language = "es"))
+                             language = "es")) |> 
+      push_record(RepositoryRecord(repo_name = "Library", address = "Library Road")) |> 
+      push_record(MediaRecord(files = MediaFile(location = "path/goes/here",
+                                                media_type = "audio/mp3"))) |> 
+      push_record(SourceRecord(originator = "An author",
+                               full_title = "An Interesting Book",
+                               repo_citations = "@R1@")) |> 
+      push_record(SourceRecord(originator = "J.R. Hartley",
+                               full_title = "The Yellow Pages",
+                               media_links = "@M1@"))
+      
     
     ged@header@subm_xref <- "@U1@"
     spouse <- pull_record(ged, "@I4@")
     spouse@facts <- IndividualEvent("CHRA", date = "1998", note_xrefs = "@N2@")
+    spouse@citations = "@S1@"
     ged <- push_record(ged, spouse)
     parents <- pull_record(ged, "@F1@")
     parents@facts <- FamilyEvent("MARR", date = "MAR 1965",
                                  place = "London, England",
                                  husb_age = "28y", wife_age = "25y")
+    parents@citations = "@S2@"
     ged <- push_record(ged, parents)
   })
   

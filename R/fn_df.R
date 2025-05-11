@@ -132,6 +132,10 @@ df_fam <- function(x, xrefs = NULL){
 #' @returns A dataframe summarising a Source record on each row.
 #' @export
 #' @tests
+#' sour_df <- df_sour(test_ged())
+#' expect_equal(sour_df$originator[1], "An author")
+#' expect_equal(sour_df$title[2], "The Yellow Pages")
+#' expect_equal(sour_df$repo_xref[1], "@R1@")
 df_sour <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "SOUR")
   if(length(rec_list) == 0) return(NULL)
@@ -155,6 +159,9 @@ df_sour <- function(x, xrefs = NULL){
 #' @returns A dataframe summarising a Repository record on each row.
 #' @export
 #' @tests
+#' repo_df <- df_repo(test_ged())
+#' expect_equal(repo_df$name[1], "Library")
+#' expect_equal(repo_df$address[1], "Library Road")
 df_repo <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "REPO")
   if(length(rec_list) == 0) return(NULL)
@@ -176,6 +183,9 @@ df_repo <- function(x, xrefs = NULL){
 #' @returns A dataframe summarising a Multimedia record on each row.
 #' @export
 #' @tests
+#' media_df <- df_media(test_ged())
+#' expect_equal(media_df$num_files[1], 1)
+#' expect_equal(media_df$paths[1], "path/goes/here")
 df_media <- function(x, xrefs = NULL){
   rec_list <- get_records(x, xrefs, "OBJE")
   if(length(rec_list) == 0) return(NULL)

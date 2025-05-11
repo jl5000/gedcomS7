@@ -24,7 +24,29 @@ test_that("Function df_fam() @ L110", {
 })
 
 
-test_that("Function df_note() @ L206", {
+test_that("Function df_sour() @ L139", {
+  sour_df <- df_sour(test_ged())
+  expect_equal(sour_df$originator[1], "An author")
+  expect_equal(sour_df$title[2], "The Yellow Pages")
+  expect_equal(sour_df$repo_xref[1], "@R1@")
+})
+
+
+test_that("Function df_repo() @ L165", {
+  repo_df <- df_repo(test_ged())
+  expect_equal(repo_df$name[1], "Library")
+  expect_equal(repo_df$address[1], "Library Road")
+})
+
+
+test_that("Function df_media() @ L189", {
+  media_df <- df_media(test_ged())
+  expect_equal(media_df$num_files[1], 1)
+  expect_equal(media_df$paths[1], "path/goes/here")
+})
+
+
+test_that("Function df_note() @ L216", {
   note_df <- df_note(test_ged())
   expect_equal(note_df$text[1], "This is a note")
   expect_equal(note_df$text[2], "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...")
@@ -33,14 +55,14 @@ test_that("Function df_note() @ L206", {
 })
 
 
-test_that("Function df_subm() @ L234", {
+test_that("Function df_subm() @ L244", {
   subm_df <- df_subm(test_ged())
   expect_equal(subm_df$name[1], "Submitter 1")
   expect_equal(subm_df$address[2], "Another road")
 })
 
 
-test_that("Function df_indi_facts() @ L264", {
+test_that("Function df_indi_facts() @ L274", {
   fact_df <- df_indi_facts(test_ged(), "@I1@")
   expect_equal(fact_df$type[1], "Birth")
   expect_equal(fact_df$type[4], "Other attribute")
@@ -52,7 +74,7 @@ test_that("Function df_indi_facts() @ L264", {
 })
 
 
-test_that("Function df_fam_facts() @ L300", {
+test_that("Function df_fam_facts() @ L310", {
   fact_df <- df_fam_facts(test_ged(), "@F1@")
   expect_equal(fact_df$type[1], "Marriage")
   expect_equal(fact_df$date[1], "MAR 1965")
