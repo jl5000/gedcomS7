@@ -319,6 +319,14 @@ get_indi_cousins <- function(x,
 #'
 #' @inherit get_fam_as_child return
 #' @export
+#' @tests
+#' expect_equal(get_supporting_recs(test_ged(), NULL), character())
+#' expect_equal(get_supporting_recs(test_ged(), "@S1@",F,F,F,F,F), character())
+#' expect_equal(get_supporting_recs(test_ged(), "@U1@"), character())
+#' expect_equal(get_supporting_recs(test_ged(), "@S1@"), "@R1@")
+#' expect_equal(get_supporting_recs(test_ged(), "@I4@"), c("@N2@","@S1@","@R1@"))
+#' expect_equal(get_supporting_recs(test_ged(), "@I4@", inc_note = FALSE), 
+#'              c("@S1@","@R1@"))
 get_supporting_recs <- function(x, 
                                 xrefs,
                                 inc_note = TRUE,
