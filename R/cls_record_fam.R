@@ -59,24 +59,9 @@ FamilyRecord <- S7::new_class(
                                   validator = function(value){
                                     for(inp in value) if(is.character(inp)) return(inp)
                                   }),
-    husb_xref = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    wife_xref = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    chil_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
+    husb_xref = prop_xref(NULL, 0, 1),
+    wife_xref = prop_xref(NULL, 0, 1),
+    chil_xrefs = prop_xref(),
     associations = S7::new_property(S7::class_list,
                                     getter = function(self) self@associations,
                                     setter = function(self, value){
@@ -86,10 +71,7 @@ FamilyRecord <- S7::new_class(
                                     validator = function(value){
                                       for(inp in value) if(is.character(inp)) return(inp)
                                     }),
-    subm_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
+    subm_xrefs = prop_xref(),
     spouse_sealings = S7::new_property(S7::class_list,
                                        getter = function(self) self@spouse_sealings,
                                        setter = function(self, value){

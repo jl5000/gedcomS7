@@ -133,3 +133,53 @@
 #' 
 #' @keywords internal
 NULL
+
+prop_anything <- function(){
+  S7::new_property(S7::class_character,
+                   validator = function(value){
+                     chk_input_size(value, min_val = 1)
+                   })
+}
+prop_notes <- function(){
+  S7::new_property(S7::class_list,
+                   getter = function(self) self@notes,
+                   setter = function(self, value){
+                     self@notes <- as.S7class_list(value, gedcomS7::Note)
+                     self
+                   },
+                   validator = function(value){
+                     for(inp in value) if(is.character(inp)) return(inp)
+                   })
+}
+prop_media_links <- function(){
+  S7::new_property(S7::class_list,
+                   getter = function(self) self@media_links,
+                   setter = function(self, value){
+                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
+                     self
+                   },
+                   validator = function(value){
+                     for(inp in value) if(is.character(inp)) return(inp)
+                   })
+}
+prop_xref <- function(default = NULL, min_size = NULL, max_size = NULL){
+  S7::new_property(S7::class_character, default = default,
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, min_size, max_size),
+                       chk_input_pattern(value, reg_xref(TRUE))
+                     )
+                   })
+}
+prop_uuids <- function(){
+  S7::new_property(S7::class_character,
+                   validator = function(value){
+                     chk_input_pattern(value, reg_uuid(TRUE))
+                   })
+}
+prop_logical <- function(default = FALSE){
+  S7::new_property(S7::class_logical, default = default,
+                   validator = function(value){
+                     chk_input_size(value, 1, 1)
+                   })
+}

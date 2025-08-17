@@ -23,30 +23,12 @@ PersonalNamePieces <- S7::new_class(
   "PersonalNamePieces",
   parent = GedcomS7class,
   properties = list(
-    prefix = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
-    given = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, min_val = 1)
-                             }),
-    nickname = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  chk_input_size(value, min_val = 1)
-                                }),
-    surname_prefix = S7::new_property(S7::class_character,
-                                      validator = function(value){
-                                        chk_input_size(value, min_val = 1)
-                                      }),
-    surname = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, min_val = 1)
-                               }),
-    suffix = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
+    prefix = prop_anything(),
+    given = prop_anything(),
+    nickname = prop_anything(),
+    surname_prefix = prop_anything(),
+    surname = prop_anything(),
+    suffix = prop_anything(),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -179,19 +161,8 @@ PersonalName <- S7::new_class(
                                          validator = function(value){
                                            for(inp in value) if(is.character(inp)) return(inp)
                                          }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
+    notes = prop_notes(),
+    note_xrefs = prop_xref(),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){

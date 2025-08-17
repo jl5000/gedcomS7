@@ -123,10 +123,7 @@ DateGregorian <- S7::new_class(
                                chk_whole_number(value)
                              )
                            }),
-    bce = S7::new_property(S7::class_logical, default = FALSE,
-                           validator = function(value){
-                             chk_input_size(value, 1, 1)
-                           }),
+    bce = prop_logical(default = FALSE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -186,18 +183,9 @@ DateApprox <- S7::new_class(
                                      chk_input_pattern(value, reg_date_gregorian())
                                    )
                                  }),
-    about = S7::new_property(S7::class_logical, default = TRUE,
-                             validator = function(value){
-                               chk_input_size(value, 1, 1)
-                             }),
-    calc = S7::new_property(S7::class_logical, default = FALSE,
-                            validator = function(value){
-                              chk_input_size(value, 1, 1)
-                            }),
-    est = S7::new_property(S7::class_logical, default = FALSE,
-                           validator = function(value){
-                             chk_input_size(value, 1, 1)
-                           }),
+    about = prop_logical(default = TRUE),
+    calc = prop_logical(default = FALSE),
+    est = prop_logical(default = FALSE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,

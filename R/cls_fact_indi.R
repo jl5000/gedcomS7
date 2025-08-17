@@ -64,13 +64,7 @@ IndividualEvent <- S7::new_class(
   "IndividualEvent",
   parent = IndividualFact,
   properties = list(
-    fam_xref = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  )
-                                }),
+    fam_xref = prop_xref(NULL, 0, 1),
     adop_parent = S7::new_property(S7::class_character,
                                    validator = function(value){
                                      c(

@@ -51,10 +51,7 @@ Time <- S7::new_class(
                                 validator = function(value){
                                   chk_whole_number(value)
                                 }),
-    utc = S7::new_property(S7::class_logical, default = TRUE,
-                           validator = function(value){
-                             chk_input_size(value, 1, 1)
-                           }),
+    utc = prop_logical(default = TRUE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,

@@ -50,22 +50,10 @@ Fact <- S7::new_class(
                                  self@address <- as.S7class(value, gedcomS7::Address)
                                  self
                                }),
-    phone_numbers = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, min_val = 1)
-                                     }),
-    emails = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
-    faxes = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, min_val = 1)
-                             }),
-    web_pages = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, min_val = 1)
-                                 }),
+    phone_numbers = prop_anything(),
+    emails = prop_anything(),
+    faxes = prop_anything(),
+    web_pages = prop_anything(),
     agency = S7::new_property(S7::class_character,
                               validator = function(value){
                                 chk_input_size(value, 0, 1, 1)
@@ -78,18 +66,9 @@ Fact <- S7::new_class(
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
                              }),
-    confidential = S7::new_property(S7::class_logical, default = FALSE,
-                                    validator = function(value){
-                                      chk_input_size(value, 1, 1)
-                                    }),
-    locked = S7::new_property(S7::class_logical, default = FALSE,
-                              validator = function(value){
-                                chk_input_size(value, 1, 1)
-                              }),
-    private = S7::new_property(S7::class_logical, default = FALSE,
-                               validator = function(value){
-                                 chk_input_size(value, 1, 1)
-                               }),
+    confidential = prop_logical(default = FALSE),
+    locked = prop_logical(default = FALSE),
+    private = prop_logical(default = FALSE),
     date_sort = S7::new_property(S7::class_character | 
                                    S7::new_S3_class("gedcomS7::DateSorting"),
                                  validator = function(value){
@@ -107,19 +86,8 @@ Fact <- S7::new_class(
                                     validator = function(value){
                                       for(inp in value) if(is.character(inp)) return(inp)
                                     }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    note_xrefs = prop_xref(),
+    notes = prop_notes(),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
@@ -129,19 +97,8 @@ Fact <- S7::new_class(
                                  validator = function(value){
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
-    media_links = S7::new_property(S7::class_list,
-                                   getter = function(self) self@media_links,
-                                   setter = function(self, value){
-                                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
-    unique_ids = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_uuid(TRUE))
-                                  }),
+    media_links = prop_media_links(),
+    unique_ids = prop_uuids(),
     
     RESTRICTIONS = S7::new_property(S7::class_character,
                                     getter = function(self){

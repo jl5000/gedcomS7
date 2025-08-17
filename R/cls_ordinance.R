@@ -61,19 +61,8 @@ Ordinance <- S7::new_class(
                                 chk_input_pattern(value, reg_time())
                               )
                             }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    note_xrefs = prop_xref(),
+    notes = prop_notes(),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
@@ -83,13 +72,7 @@ Ordinance <- S7::new_class(
                                  validator = function(value){
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
-    fam_xref = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  )
-                                }),
+    fam_xref = prop_xref(NULL, 0, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -188,19 +171,8 @@ SpouseSealing <- S7::new_class(
                                       chk_input_pattern(value, reg_time())
                                     )
                                   }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    note_xrefs = prop_xref(),
+    notes = prop_notes(),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){

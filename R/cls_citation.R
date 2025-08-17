@@ -63,13 +63,7 @@ SourceCitation <- S7::new_class(
   "SourceCitation",
   parent = GedcomS7class,
   properties = list(
-    sour_xref = S7::new_property(S7::class_character, default = "@VOID@",
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 1, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
+    sour_xref = prop_xref("@VOID@", 1, 1),
     where = S7::new_property(S7::class_character,
                              validator = function(value){
                                chk_input_size(value, 0, 1, 1)
@@ -125,28 +119,9 @@ SourceCitation <- S7::new_class(
                                      chk_input_choice(value, val_certainty())
                                    )
                                  }),
-    media_links = S7::new_property(S7::class_list,
-                                   getter = function(self) self@media_links,
-                                   setter = function(self, value){
-                                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    media_links = prop_media_links(),
+    note_xrefs = prop_xref(),
+    notes = prop_notes(),
     
     GEDCOM = S7::new_property(
       S7::class_character,

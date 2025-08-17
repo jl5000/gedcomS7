@@ -87,19 +87,8 @@ RepositoryCitation <- S7::new_class(
                                      chk_input_pattern(value, reg_xref(TRUE))
                                    )
                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
+    notes = prop_notes(),
+    note_xrefs = prop_xref(),
     call_numbers = S7::new_property(S7::class_list,
                                     getter = function(self) self@call_numbers,
                                     setter = function(self, value){
@@ -265,19 +254,8 @@ SourceRecord <- S7::new_class(
                               validator = function(value){
                                 chk_input_size(value, 0, 1, 1)
                               }),
-    data_note_xrefs = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_pattern(value, reg_xref(TRUE))
-                                       }),
-    data_notes = S7::new_property(S7::class_list,
-                                  getter = function(self) self@data_notes,
-                                  setter = function(self, value){
-                                    self@data_notes <- as.S7class_list(value, gedcomS7::Note)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
+    data_note_xrefs = prop_xref(),
+    data_notes = prop_notes(),
     originator = S7::new_property(S7::class_character,
                                   validator = function(value){
                                     chk_input_size(value, 0, 1, 1)

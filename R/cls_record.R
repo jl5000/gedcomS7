@@ -23,33 +23,12 @@ Record <- S7::new_class(
   parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
-    XREF = S7::new_property(S7::class_character, default = "@GEDCOMS7_ORPHAN@",
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1),
-                                chk_input_pattern(value, reg_xref(TRUE))
-                              )
-                            }),
-    confidential = S7::new_property(S7::class_logical, default = FALSE,
-                                    validator = function(value){
-                                      chk_input_size(value, 1, 1)
-                                    }),
-    locked = S7::new_property(S7::class_logical, default = FALSE,
-                              validator = function(value){
-                                chk_input_size(value, 1, 1)
-                              }),
-    private = S7::new_property(S7::class_logical, default = FALSE,
-                               validator = function(value){
-                                 chk_input_size(value, 1, 1)
-                               }),
-    user_ids = S7::new_property(S7::class_character, # potentially named
-                                validator = function(value){
-                                  chk_input_size(value, min_val = 1)
-                                }), 
-    unique_ids = S7::new_property(S7::class_character, # not named
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_uuid(TRUE))
-                                  }), 
+    XREF = prop_xref(default = "@GEDCOMS7_ORPHAN@", 1, 1),
+    confidential = prop_logical(default = FALSE),
+    locked = prop_logical(default = FALSE),
+    private = prop_logical(default = FALSE),
+    user_ids = prop_anything(), # potentially named
+    unique_ids = prop_uuids(), # not named
     ext_ids = S7::new_property(S7::class_character, # definitely named
                                validator = function(value){
                                  c(
@@ -57,19 +36,8 @@ Record <- S7::new_class(
                                    chk_input_size(names(value), length(value), length(value), 1)
                                  )
                                }), 
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    note_xrefs = prop_xref(),
+    notes = prop_notes(),
     citations = S7::new_property(S7::class_list,
                                  getter = function(self) self@citations,
                                  setter = function(self, value){
@@ -79,15 +47,7 @@ Record <- S7::new_class(
                                  validator = function(value){
                                    for(inp in value) if(is.character(inp)) return(inp)
                                  }),
-    media_links = S7::new_property(S7::class_list,
-                                   getter = function(self) self@media_links,
-                                   setter = function(self, value){
-                                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
+    media_links = prop_media_links(),
     created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
                                validator = function(value){
                                  chk_input_size(value, 0, 1)

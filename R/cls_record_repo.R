@@ -22,22 +22,10 @@ RepositoryRecord <- S7::new_class(
                                  self@address <- as.S7class(value, gedcomS7::Address)
                                  self
                                }),
-    phone_numbers = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, min_val = 1)
-                                     }),
-    emails = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
-    faxes = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, min_val = 1)
-                             }),
-    web_pages = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, min_val = 1)
-                                 }),
+    phone_numbers = prop_anything(),
+    emails = prop_anything(),
+    faxes = prop_anything(),
+    web_pages = prop_anything(),
     
     GEDCOM = S7::new_property(
       S7::class_character,
