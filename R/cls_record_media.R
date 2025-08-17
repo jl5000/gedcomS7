@@ -36,39 +36,12 @@ MediaFile <- S7::new_class(
   "MediaFile",
   parent = GedcomS7class,
   properties = list(
-    location = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  chk_input_size(value, 1, 1, 1)
-                                }),
-    title = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, 0, 1, 1)
-                             }),
-    media_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 1, 1, 1)
-                                      #chk_input_choice(value, val_multimedia_formats()), TODO
-                                    )
-                                  }),
-    medium = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 0, 1),
-                                  chk_input_choice(value, val_medium_types())
-                                )
-                              }),
-    medium_phrase = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, 0, 1, 1)
-                                     }),
-    media_alt = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, min_val = 1)
-                                     #chk_input_choice(names(value), val_multimedia_formats())
-                                   )
-                                 }),
+    location = prop_char(1, 1, 1),
+    title = prop_char(0, 1, 1),
+    media_type = prop_char(1, 1, 1),
+    medium = prop_char(0, 1, choices = val_medium_types()),
+    medium_phrase = prop_char(0, 1, 1),
+    media_alt = prop_char(min_char = 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

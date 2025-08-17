@@ -43,47 +43,11 @@ Note <- S7::new_class(
   "Note",
   parent = GedcomS7class,
   properties = list(
-    text = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 1, 1, 1)
-                            }),
-    language = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1, 1)
-                                  )
-                                }),
-    media_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_choice(value, c("text/plain","text/html"))
-                                    )
-                                  }),
-    translations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@translations,
-                                    setter = function(self, value){
-                                      self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                      
-                                      for(tran in value){
-                                        if(length(tran@language) + length(tran@media_type) == 0)
-                                          return("Each @translation requires a @language or @media_type to be defined.")
-                                      }
-                                    }),
-    # Using S3 because of recursion
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    text = prop_char(1, 1, 1),
+    language = prop_char(0, 1, 1),
+    media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
+    translations = prop_translations(),
+    citations = prop_citations(),
 
     
     GEDCOM = S7::new_property(

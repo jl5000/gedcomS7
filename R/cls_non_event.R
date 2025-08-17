@@ -26,13 +26,7 @@ NonEvent <- S7::new_class(
   "NonEvent",
   parent = GedcomS7class,
   properties = list(
-    event_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 1, 1),
-                                      chk_input_choice(value, val_event_types(FALSE))
-                                    )
-                                  }),
+    event_type = prop_char(1, 1, choices = val_event_types(FALSE)),
     date_period = S7::new_property(S7::class_character | 
                                      S7::new_S3_class("gedcomS7::DatePeriod"),
                                    validator = function(value){
@@ -41,21 +35,10 @@ NonEvent <- S7::new_class(
                                        chk_input_pattern(value, reg_date_period())
                                      )
                                    }),
-    date_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    note_xrefs = prop_xref(),
+    date_phrase = prop_char(0, 1, 1),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    citations = prop_citations(),
     
     GEDCOM = S7::new_property(
       S7::class_character,

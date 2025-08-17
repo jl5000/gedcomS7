@@ -12,10 +12,7 @@ IndividualFact <- S7::new_class(
                                chk_input_pattern(value, reg_age_at_event())
                              )
                            }),
-    age_phrase = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  })
+    age_phrase = prop_char(0, 1, 1)
   )
 )
 
@@ -64,18 +61,9 @@ IndividualEvent <- S7::new_class(
   "IndividualEvent",
   parent = IndividualFact,
   properties = list(
-    fam_xref = prop_xref(NULL, 0, 1),
-    adop_parent = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     c(
-                                       chk_input_size(value, 0, 1),
-                                       chk_input_choice(value, val_adoptive_parents())
-                                     )
-                                   }),
-    adop_parent_phrase = S7::new_property(S7::class_character,
-                                          validator = function(value){
-                                            chk_input_size(value, 0, 1, 1)
-                                          }),
+    fam_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    adop_parent = prop_char(0, 1, choices = val_adoptive_parents()),
+    adop_parent_phrase = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

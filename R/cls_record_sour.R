@@ -11,10 +11,7 @@ SourceCallNumber <- S7::new_class(
   "SourceCallNumber",
   parent = GedcomS7class,
   properties = list(
-    call_number = S7::new_property(S7::class_character,
-                                    validator = function(value){
-                                      chk_input_size(value, 1, 1, 1)
-                                    }),
+    call_number = prop_char(1, 1, 1),
     medium = S7::new_property(S7::class_character,
                               validator = function(value){
                                 c(
@@ -22,10 +19,7 @@ SourceCallNumber <- S7::new_class(
                                   chk_input_choice(value, val_medium_types())
                                 )
                               }),
-    medium_phrase = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, 0, 1, 1)
-                                     }),
+    medium_phrase = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -88,7 +82,7 @@ RepositoryCitation <- S7::new_class(
                                    )
                                  }),
     notes = prop_notes(),
-    note_xrefs = prop_xref(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     call_numbers = S7::new_property(S7::class_list,
                                     getter = function(self) self@call_numbers,
                                     setter = function(self, value){
@@ -173,16 +167,8 @@ FactsRecorded <- S7::new_class(
                                        chk_input_pattern(value, reg_date_period())
                                      )
                                    }),
-    date_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    territory = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
-                                 getter = function(self) self@territory,
-                                 setter = function(self, value){
-                                   self@territory <- as.S7class(value, gedcomS7::Place)
-                                   self
-                                 }),
+    date_phrase = prop_char(0, 1, 1),
+    territory = prop_place("territory"),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -250,28 +236,13 @@ SourceRecord <- S7::new_class(
                                       validator = function(value){
                                         for(inp in value) if(is.character(inp)) return(inp)
                                       }),
-    agency = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, 0, 1, 1)
-                              }),
-    data_note_xrefs = prop_xref(),
-    data_notes = prop_notes(),
-    originator = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  }),
-    full_title = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  }),
-    short_title = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    publication_facts = S7::new_property(S7::class_character,
-                                         validator = function(value){
-                                           chk_input_size(value, 0, 1, 1)
-                                         }),
+    agency = prop_char(0, 1, 1),
+    data_note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    data_notes = prop_notes("data_notes"),
+    originator = prop_char(0, 1, 1),
+    full_title = prop_char(0, 1, 1),
+    short_title = prop_char(0, 1, 1),
+    publication_facts = prop_char(0, 1, 1),
     # NOTE I've made the cardinality of this {0,M} to match source citation
     source_text = S7::new_property(S7::class_list,
                                    getter = function(self) self@source_text,

@@ -20,27 +20,9 @@ DateExact <- S7::new_class(
   "DateExact", 
   parent = DateClass,
   properties = list(
-    year = S7::new_property(S7::class_numeric,
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1, 1),
-                                chk_whole_number(value)
-                              )
-                            }),
-    month = S7::new_property(S7::class_numeric,
-                             validator = function(value){
-                               c(
-                                 chk_input_size(value, 1, 1, 1, 12),
-                                 chk_whole_number(value)
-                               )
-                             }),
-    day = S7::new_property(S7::class_numeric,
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 1, 1, 1, 31),
-                               chk_whole_number(value)
-                             )
-                           }),
+    year = prop_whole(1, 1, 1),
+    month = prop_whole(1, 1, 1, 12),
+    day = prop_whole(1, 1, 1, 31),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -102,27 +84,9 @@ DateGregorian <- S7::new_class(
   "DateGregorian", 
   parent = DateClass,
   properties = list(
-    year = S7::new_property(S7::class_numeric,
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1, 1),
-                                chk_whole_number(value)
-                              )
-                            }),
-    month = S7::new_property(S7::class_numeric,
-                             validator = function(value){
-                               c(
-                                 chk_input_size(value, 0, 1, 1, 12),
-                                 chk_whole_number(value)
-                               )
-                             }),
-    day = S7::new_property(S7::class_numeric,
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 0, 1, 1, 31),
-                               chk_whole_number(value)
-                             )
-                           }),
+    year = prop_whole(1, 1, 1),
+    month = prop_whole(0, 1, 1, 12),
+    day = prop_whole(0, 1, 1, 31),
     bce = prop_logical(default = FALSE),
     
     GEDCOM_STRING = S7::new_property(
@@ -169,20 +133,7 @@ DateApprox <- S7::new_class(
   "DateApprox", 
   parent = DateClass,
   properties = list(
-    date_greg = S7::new_property(S7::class_character | 
-                                   S7::new_S3_class("gedcomS7::DateGregorian"),
-                                 getter = function(self) self@date_greg,
-                                 setter = function(self, value){
-                                   if(is.character(value)) value <- toupper(value)
-                                   self@date_greg <- value
-                                   self
-                                 },
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 1, 1),
-                                     chk_input_pattern(value, reg_date_gregorian())
-                                   )
-                                 }),
+    date_greg = prop_date_greg(min_size = 1, "date_greg"),
     about = prop_logical(default = TRUE),
     calc = prop_logical(default = FALSE),
     est = prop_logical(default = FALSE),
@@ -251,34 +202,8 @@ DatePeriod <- S7::new_class(
   "DatePeriod", 
   parent = DateClass,
   properties = list(
-    start_date = S7::new_property(S7::class_character |
-                                    S7::new_S3_class("gedcomS7::DateGregorian"),
-                                  getter = function(self) self@start_date,
-                                  setter = function(self, value){
-                                    if(is.character(value)) value <- toupper(value)
-                                    self@start_date <- value
-                                    self
-                                  },
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_pattern(value, reg_date_gregorian())
-                                    )
-                                  }),
-    end_date = S7::new_property(S7::class_character |
-                                  S7::new_S3_class("gedcomS7::DateGregorian"),
-                                getter = function(self) self@end_date,
-                                setter = function(self, value){
-                                  if(is.character(value)) value <- toupper(value)
-                                  self@end_date <- value
-                                  self
-                                },
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, reg_date_gregorian())
-                                  )
-                                }),
+    start_date = prop_date_greg(min_size = 0, "start_date"),
+    end_date = prop_date_greg(min_size = 0, "end_date"),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -405,18 +330,8 @@ DateValue <- S7::new_class(
                                 chk_input_pattern(value, reg_date_value())
                               )
                             }),
-    date_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    time = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::Time"),
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_time())
-                              )
-                            }),
+    date_phrase = prop_char(0, 1, 1),
+    time = prop_time(),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) obj_to_val(self@date)),
@@ -462,32 +377,9 @@ DateSorting <- S7::new_class(
   "DateSorting",
   parent = DateClass,
   properties = list(
-    date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::DateGregorian"),
-                            getter = function(self) self@date,
-                            setter = function(self, value){
-                              if(is.character(value)) value <- toupper(value)
-                              self@date <- value
-                              self
-                            },
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1),
-                                chk_input_pattern(value, reg_date_gregorian())
-                              )
-                            }),
-    date_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    time = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::Time"),
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_time())
-                              )
-                            }),
+    date = prop_date_greg(min_size = 1),
+    date_phrase = prop_char(0, 1, 1),
+    time = prop_time(),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                                 getter = function(self) obj_to_val(self@date)),

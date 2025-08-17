@@ -63,19 +63,9 @@ SourceCitation <- S7::new_class(
   "SourceCitation",
   parent = GedcomS7class,
   properties = list(
-    sour_xref = prop_xref("@VOID@", 1, 1),
-    where = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, 0, 1, 1)
-                             }),
-    date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::DateValue"),
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_date_value())
-                              )
-                            }),
+    sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    where = prop_char(0, 1, 1),
+    date = prop_date_value(),
     source_text = S7::new_property(S7::class_list,
                                    getter = function(self) self@source_text,
                                    setter = function(self, value){
@@ -85,28 +75,10 @@ SourceCitation <- S7::new_class(
                                    validator = function(value){
                                      for(inp in value) if(is.character(inp)) return(inp)
                                    }),
-    fact_type = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_choice(value, val_fact_types())
-                                   )
-                                 }),
-    fact_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    role = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_choice(value, val_roles())
-                              )
-                            }),
-    role_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
+    fact_type = prop_char(0, 1, choices = val_fact_types()),
+    fact_phrase = prop_char(0, 1, 1),
+    role = prop_char(0, 1, choices = val_roles()),
+    role_phrase = prop_char(0, 1, 1),
     certainty = S7::new_property(S7::class_character,
                                  getter = function(self) self@certainty,
                                  setter = function(self, value){
@@ -120,7 +92,7 @@ SourceCitation <- S7::new_class(
                                    )
                                  }),
     media_links = prop_media_links(),
-    note_xrefs = prop_xref(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
     
     GEDCOM = S7::new_property(

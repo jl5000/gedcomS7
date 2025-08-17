@@ -59,19 +59,11 @@ FamilyRecord <- S7::new_class(
                                   validator = function(value){
                                     for(inp in value) if(is.character(inp)) return(inp)
                                   }),
-    husb_xref = prop_xref(NULL, 0, 1),
-    wife_xref = prop_xref(NULL, 0, 1),
-    chil_xrefs = prop_xref(),
-    associations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@associations,
-                                    setter = function(self, value){
-                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
-    subm_xrefs = prop_xref(),
+    husb_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    wife_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    chil_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    associations = prop_associations(),
+    subm_xrefs = prop_char(pattern = reg_xref(TRUE)),
     spouse_sealings = S7::new_property(S7::class_list,
                                        getter = function(self) self@spouse_sealings,
                                        setter = function(self, value){

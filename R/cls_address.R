@@ -45,38 +45,14 @@ Address <- S7::new_class(
   "Address",
   parent = GedcomS7class,
   properties = list(
-    full = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 1, 1, 1)
-                            }),
-    city = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 0, 1, 1)
-                            }),
-    state = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, 0, 1, 1)
-                             }),
-    postal_code = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    country = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1, 1)
-                               }),
-    adr1 = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 0, 1, 1)
-                            }),
-    adr2 = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 0, 1, 1)
-                            }),
-    adr3 = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 0, 1, 1)
-                            }),
+    full = prop_char(1, 1, 1),
+    city = prop_char(0, 1, 1),
+    state = prop_char(0, 1, 1),
+    postal_code = prop_char(0, 1, 1),
+    country = prop_char(0, 1, 1),
+    adr1 = prop_char(0, 1, 1),
+    adr2 = prop_char(0, 1, 1),
+    adr3 = prop_char(0, 1, 1),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@full),

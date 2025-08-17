@@ -63,13 +63,7 @@ IndividualRecord <- S7::new_class(
                                   validator = function(value){
                                     for(inp in value) if(is.character(inp)) return(inp)
                                   }),
-    sex = S7::new_property(S7::class_character, default = "U",
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 0, 1),
-                               chk_input_choice(value, val_sexes())
-                             )
-                           }),
+    sex = prop_char(0, 1, choices = val_sexes(), default = "U"),
     facts = S7::new_property(S7::class_list,
                              getter = function(self) self@facts,
                              setter = function(self, value){
@@ -115,19 +109,11 @@ IndividualRecord <- S7::new_class(
                                       validator = function(value){
                                         for(inp in value) if(is.character(inp)) return(inp)
                                       }),
-    subm_xrefs = prop_xref(),
-    associations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@associations,
-                                    setter = function(self, value){
-                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
-    alia_xrefs = prop_xref(),
-    anci_xrefs = prop_xref(),
-    desi_xrefs = prop_xref(),
+    subm_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    associations = prop_associations(),
+    alia_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    anci_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    desi_xrefs = prop_char(pattern = reg_xref(TRUE)),
     
     PRIMARY_NAME = S7::new_property(
       S7::class_character,

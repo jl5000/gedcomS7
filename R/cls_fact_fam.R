@@ -4,28 +4,10 @@ FamilyFact <- S7::new_class(
   parent = Fact,
   abstract = TRUE,
   properties = list(
-    husb_age = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, reg_age_at_event())
-                                  )
-                                }),
-    husb_age_phrase = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_size(value, 0, 1, 1)
-                                       }),
-    wife_age = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, reg_age_at_event())
-                                  )
-                                }),
-    wife_age_phrase = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_size(value, 0, 1, 1)
-                                       }),
+    husb_age = prop_char(0, 1, pattern = reg_age_at_event()),
+    husb_age_phrase = prop_char(0, 1, 1),
+    wife_age = prop_char(0, 1, pattern = reg_age_at_event()),
+    wife_age_phrase = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

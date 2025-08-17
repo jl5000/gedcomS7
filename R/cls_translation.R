@@ -16,23 +16,9 @@ TranslationText <- S7::new_class(
   "TranslationText",
   parent = GedcomS7class,
   properties = list(
-    text = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 1, 1, 1)
-                            }),
-    language = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1, 1)
-                                  )
-                                }),
-    media_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_choice(value, c("text/plain","text/html"))
-                                    )
-                                  }),
+    text = prop_char(1, 1, 1),
+    language = prop_char(0, 1, 1),
+    media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
     
     GEDCOM = S7::new_property(
       S7::class_character,

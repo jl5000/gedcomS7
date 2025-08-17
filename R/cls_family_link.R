@@ -13,8 +13,8 @@ FamilyLinkSpouse <- S7::new_class(
   "FamilyLinkSpouse",
   parent = GedcomS7class,
   properties = list(
-    fam_xref = prop_xref(NULL, 1, 1),
-    note_xrefs = prop_xref(),
+    fam_xref = prop_char(1, 1, pattern = reg_xref(TRUE)),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
     
     GEDCOM = S7::new_property(
@@ -62,28 +62,10 @@ FamilyLinkChild <- S7::new_class(
   "FamilyLinkChild", 
   parent = FamilyLinkSpouse,
   properties = list(
-    pedigree = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_choice(value, val_pedigree_types())
-                                  )
-                                }),
-    pedigree_phrase = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_size(value, 0, 1, 1)
-                                       }),
-    confidence = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_choice(value, val_confidence_types())
-                                    )
-                                  }),
-    confidence_phrase = S7::new_property(S7::class_character,
-                                         validator = function(value){
-                                           chk_input_size(value, 0, 1, 1)
-                                         }),
+    pedigree = prop_char(0, 1, choices = val_pedigree_types()),
+    pedigree_phrase = prop_char(0, 1, 1),
+    confidence = prop_char(0, 1, choices = val_confidence_types()),
+    confidence_phrase = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

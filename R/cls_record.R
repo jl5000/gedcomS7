@@ -23,12 +23,12 @@ Record <- S7::new_class(
   parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
-    XREF = prop_xref(default = "@GEDCOMS7_ORPHAN@", 1, 1),
+    XREF = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@GEDCOMS7_ORPHAN@"),
     confidential = prop_logical(default = FALSE),
     locked = prop_logical(default = FALSE),
     private = prop_logical(default = FALSE),
-    user_ids = prop_anything(), # potentially named
-    unique_ids = prop_uuids(), # not named
+    user_ids = prop_char(min_char = 1), # potentially named
+    unique_ids = prop_char(pattern = reg_uuid(TRUE)), # not named
     ext_ids = S7::new_property(S7::class_character, # definitely named
                                validator = function(value){
                                  c(
@@ -36,17 +36,9 @@ Record <- S7::new_class(
                                    chk_input_size(names(value), length(value), length(value), 1)
                                  )
                                }), 
-    note_xrefs = prop_xref(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    citations = prop_citations(),
     media_links = prop_media_links(),
     created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
                                validator = function(value){

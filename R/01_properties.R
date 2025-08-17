@@ -134,17 +134,23 @@
 #' @keywords internal
 NULL
 
-prop_anything <- function(){
-  S7::new_property(S7::class_character,
+prop_citations <- function(default_prop_name = "citations"){
+  S7::new_property(S7::class_list,
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     # Using S3 because of recursion in cls_note
+                     S7::prop(self, default_prop_name) <- as.S7class_list(value, gedcomS7::SourceCitation)
+                     self
+                   },
                    validator = function(value){
-                     chk_input_size(value, min_val = 1)
+                     for(inp in value) if(is.character(inp)) return(inp)
                    })
 }
-prop_notes <- function(){
+prop_notes <- function(default_prop_name = "notes"){
   S7::new_property(S7::class_list,
-                   getter = function(self) self@notes,
+                   getter = function(self) S7::prop(self, default_prop_name),
                    setter = function(self, value){
-                     self@notes <- as.S7class_list(value, gedcomS7::Note)
+                     S7::prop(self, default_prop_name) <- as.S7class_list(value, gedcomS7::Note)
                      self
                    },
                    validator = function(value){
@@ -162,24 +168,140 @@ prop_media_links <- function(){
                      for(inp in value) if(is.character(inp)) return(inp)
                    })
 }
-prop_xref <- function(default = NULL, min_size = NULL, max_size = NULL){
-  S7::new_property(S7::class_character, default = default,
-                   validator = function(value){
-                     c(
-                       chk_input_size(value, min_size, max_size),
-                       chk_input_pattern(value, reg_xref(TRUE))
-                     )
-                   })
-}
-prop_uuids <- function(){
-  S7::new_property(S7::class_character,
-                   validator = function(value){
-                     chk_input_pattern(value, reg_uuid(TRUE))
-                   })
-}
 prop_logical <- function(default = FALSE){
   S7::new_property(S7::class_logical, default = default,
                    validator = function(value){
                      chk_input_size(value, 1, 1)
+                   })
+}
+prop_address <- function(default_prop_name = "address"){
+  S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     S7::prop(self, default_prop_name) <- as.S7class(value, gedcomS7::Address)
+                     self
+                   })
+}
+prop_place <- function(default_prop_name = "place"){
+  S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     S7::prop(self, default_prop_name) <- as.S7class(value, gedcomS7::Place)
+                     self
+                   })
+}
+prop_date_value <- function(default_prop_name = "date"){
+  S7::new_property(S7::class_character | 
+                     S7::new_S3_class("gedcomS7::DateValue"),
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     if(is.character(value)) value <- toupper(value)
+                     S7::prop(self, default_prop_name) <- value
+                     self
+                   },
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, 0, 1),
+                       chk_input_pattern(value, reg_date_value())
+                     )
+                   })
+}
+prop_date_greg <- function(min_size, default_prop_name = "date"){
+  S7::new_property(S7::class_character | 
+                     S7::new_S3_class("gedcomS7::DateGregorian"),
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     if(is.character(value)) value <- toupper(value)
+                     S7::prop(self, default_prop_name) <- value
+                     self
+                   },
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, min_size, 1),
+                       chk_input_pattern(value, reg_date_gregorian())
+                     )
+                   })
+}
+prop_date_exact <- function(min_size, default_prop_name = "date_exact",
+                            default_to_current_date = FALSE){
+  S7::new_property(S7::class_character | 
+                     S7::new_S3_class("gedcomS7::DateExact"),
+                   getter = function(self) S7::prop(self, default_prop_name),
+                   setter = function(self, value){
+                     if(length(value) == 0 && default_to_current_date) 
+                       value <- date_exact_current()
+                     
+                     if(is.character(value)) value <- toupper(value)
+                     S7::prop(self, default_prop_name) <- value
+                     self
+                   },
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, min_size, 1),
+                       chk_input_pattern(value, reg_date_exact())
+                     )
+                   })
+}
+prop_time <- function(){
+  S7::new_property(S7::class_character | 
+                     S7::new_S3_class("gedcomS7::Time"),
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, 0, 1),
+                       chk_input_pattern(value, reg_time())
+                     )
+                   })
+}
+prop_translations <- function(){
+  S7::new_property(S7::class_list,
+                   getter = function(self) self@translations,
+                   setter = function(self, value){
+                     self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
+                     self
+                   },
+                   validator = function(value){
+                     for(inp in value) if(is.character(inp)) return(inp)
+                     
+                     for(tran in value){
+                       if(length(tran@language) + length(tran@media_type) == 0)
+                         return("Each @translation requires a @language or @media_type to be defined.")
+                     }
+                   })
+}
+prop_associations <- function(){
+  S7::new_property(S7::class_list,
+                   getter = function(self) self@associations,
+                   setter = function(self, value){
+                     self@associations <- as.S7class_list(value, gedcomS7::Association)
+                     self
+                   },
+                   validator = function(value){
+                     for(inp in value) if(is.character(inp)) return(inp)
+                   })
+}
+prop_char <- function(min_size = NULL, 
+                      max_size = NULL, 
+                      min_char = NULL, 
+                      max_char = NULL,
+                      choices = NULL,
+                      pattern = NULL,
+                      default = NULL){
+  
+  S7::new_property(S7::class_character, default = default,
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, min_size, max_size, min_char, max_char),
+                       chk_input_choice(value, choices),
+                       chk_input_pattern(value, pattern)
+                     )
+                   })
+}
+prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val = NULL){
+  S7::new_property(S7::class_numeric,
+                   validator = function(value){
+                     c(
+                       chk_input_size(value, min_size, max_size, min_val, max_val),
+                       chk_whole_number(value)
+                     )
                    })
 }

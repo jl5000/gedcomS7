@@ -30,39 +30,12 @@ MediaLink <- S7::new_class(
   "MediaLink",
   parent = GedcomS7class,
   properties = list(
-    media_xref = prop_xref(default = "@VOID@", 1, 1),
-    title = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, 0, 1, 1)
-                             }),
-    top = S7::new_property(S7::class_numeric,
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 0, 1, 0),
-                               chk_whole_number(value)
-                             )
-                           }),
-    left = S7::new_property(S7::class_numeric,
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1, 0),
-                                chk_whole_number(value)
-                              )
-                            }),
-    height = S7::new_property(S7::class_numeric,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 0, 1, 1),
-                                  chk_whole_number(value)
-                                )
-                              }),
-    width = S7::new_property(S7::class_numeric,
-                             validator = function(value){
-                               c(
-                                 chk_input_size(value, 0, 1, 1),
-                                 chk_whole_number(value)
-                               )
-                             }),
+    media_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    title = prop_char(0, 1, 1),
+    top = prop_whole(0, 1, 0),
+    left = prop_whole(0, 1, 0),
+    height = prop_whole(0, 1, 1),
+    width = prop_whole(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

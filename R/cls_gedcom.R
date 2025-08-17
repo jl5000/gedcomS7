@@ -20,62 +20,19 @@ GedcomSource <- S7::new_class(
   "GedcomSource",
   parent = GedcomS7class,
   properties = list(
-    product_id = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 1, 1, 1)
-                                  }),
-    product_name = S7::new_property(S7::class_character,
-                                    validator = function(value){
-                                      chk_input_size(value, 0, 1, 1)
-                                    }),
-    product_version = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_size(value, 0, 1, 1)
-                                       }),
-    business_name = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, 0, 1, 1)
-                                     }),
-    business_address = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
-                                        getter = function(self) self@business_address,
-                                        setter = function(self, value){
-                                          self@business_address <- as.S7class(value, gedcomS7::Address)
-                                          self
-                                        }),
-    phone_numbers = prop_anything(),
-    emails = prop_anything(),
-    faxes = prop_anything(),
-    web_pages = prop_anything(),
-    data_name = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 0, 1, 1)
-                                 }),
-    data_pubdate = S7::new_property(S7::class_character | 
-                                      S7::new_S3_class("gedcomS7::DateExact"),
-                                    getter = function(self) self@data_pubdate,
-                                    setter = function(self, value){
-                                      if(is.character(value)) value <- toupper(value)
-                                      self@data_pubdate <- value
-                                      self
-                                    },
-                                    validator = function(value){
-                                      c(
-                                        chk_input_size(value, 0, 1),
-                                        chk_input_pattern(value, reg_date_exact())
-                                      )
-                                    }),
-    data_pubtime = S7::new_property(S7::class_character | 
-                                      S7::new_S3_class("gedcomS7::Time"),
-                                    validator = function(value){
-                                      c(
-                                        chk_input_size(value, 0, 1),
-                                        chk_input_pattern(value, reg_time())
-                                      )
-                                    }),
-    data_copyright = S7::new_property(S7::class_character,
-                                      validator = function(value){
-                                        chk_input_size(value, 0, 1, 1)
-                                      }),
+    product_id = prop_char(1, 1, 1),
+    product_name = prop_char(0, 1, 1),
+    product_version = prop_char(0, 1, 1),
+    business_name = prop_char(0, 1, 1),
+    business_address = prop_address("business_address"),
+    phone_numbers = prop_char(min_char = 1),
+    emails = prop_char(min_char = 1),
+    faxes = prop_char(min_char = 1),
+    web_pages = prop_char(min_char = 1),
+    data_name = prop_char(0, 1, 1),
+    data_pubdate = prop_date_exact(min_size = 0, "data_pubdate"),
+    data_pubtime = prop_time(),
+    data_copyright = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -143,65 +100,21 @@ GedcomHeader <- S7::new_class(
   "GedcomHeader",
   parent = GedcomS7class,
   properties = list(
-    gedcom_version = S7::new_property(S7::class_character,
-                                      validator = function(value){
-                                        c(
-                                          chk_input_size(value, 1, 1),
-                                          chk_input_pattern(value, "^\\d+\\.\\d+(\\.\\d+)?$")
-                                        )
-                                      }),
-    ext_tags = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  #chk_input_size(value, 0, 0), # extension tags not supported
-                                }),
+    gedcom_version = prop_char(1, 1, pattern = "^\\d+\\.\\d+(\\.\\d+)?$"),
+    ext_tags = prop_char(), # extension tags not supported
     source = S7::new_property(NULL | S7::new_S3_class("gedcomS7::GedcomSource"),
                               validator = function(value){
                                 chk_input_size(value, 0, 1)
                               }),
-    destination = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    creation_date = S7::new_property(S7::class_character | 
-                                       S7::new_S3_class("gedcomS7::DateExact"),
-                                     getter = function(self) self@creation_date,
-                                     setter = function(self, value){
-                                       if(length(value) == 0) value <- date_exact_current()
-                                       if(is.character(value)) value <- toupper(value)
-                                       self@creation_date <- value
-                                       self
-                                     },
-                                     validator = function(value){
-                                       c(
-                                         chk_input_size(value, 0, 1),
-                                         chk_input_pattern(value, reg_date_exact())
-                                       )
-                                     }),
-    creation_time = S7::new_property(S7::class_character | 
-                                       S7::new_S3_class("gedcomS7::Time"),
-                                     validator = function(value){
-                                       c(
-                                         chk_input_size(value, 0, 1),
-                                         chk_input_pattern(value, reg_time())
-                                       )
-                                     }),
-    subm_xref = prop_xref(NULL, 0, 1),
-    gedcom_copyright = S7::new_property(S7::class_character,
-                                        validator = function(value){
-                                          chk_input_size(value, 0, 1, 1)
-                                        }),
-    default_language = S7::new_property(S7::class_character,
-                                        validator = function(value){
-                                          c(
-                                            chk_input_size(value, 0, 1, 1)
-                                          )
-                                        }),
-    default_place_form = S7::new_property(S7::class_character,
-                                          validator = function(value){
-                                            chk_input_size(value, 0, 1, 1)
-                                          }),
+    destination = prop_char(0, 1, 1),
+    creation_date = prop_date_exact(min_size = 0, "creation_date", TRUE),
+    creation_time = prop_time(),
+    subm_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    gedcom_copyright = prop_char(0, 1, 1),
+    default_language = prop_char(0, 1, 1),
+    default_place_form = prop_char(0, 1, 1),
     notes = prop_notes(),
-    note_xrefs = prop_xref(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     
     GEDCOM = S7::new_property(
       S7::class_character, 

@@ -12,20 +12,12 @@ RepositoryRecord <- S7::new_class(
   "RepositoryRecord", 
   parent = Record,
   properties = list(
-    repo_name = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 1, 1, 1)
-                                 }),
-    address = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
-                               getter = function(self) self@address,
-                               setter = function(self, value){
-                                 self@address <- as.S7class(value, gedcomS7::Address)
-                                 self
-                               }),
-    phone_numbers = prop_anything(),
-    emails = prop_anything(),
-    faxes = prop_anything(),
-    web_pages = prop_anything(),
+    repo_name = prop_char(1, 1, 1),
+    address = prop_address(),
+    phone_numbers = prop_char(min_char = 1),
+    emails = prop_char(min_char = 1),
+    faxes = prop_char(min_char = 1),
+    web_pages = prop_char(min_char = 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

@@ -10,69 +10,17 @@ Ordinance <- S7::new_class(
   "Ordinance",
   parent = GedcomS7class,
   properties = list( 
-    ord_type = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 1, 1),
-                                    chk_input_choice(value, val_individual_ordinance_types())
-                                  )
-                                }),
-    date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::DateValue"),
-                            getter = function(self) self@date,
-                            setter = function(self, value){
-                              if(is.character(value)) value <- toupper(value)
-                              self@date <- value
-                              self
-                            },
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_date_value())
-                              )
-                            }),
-    temple_name = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    place = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
-                             getter = function(self) self@place,
-                             setter = function(self, value){
-                               self@place <- as.S7class(value, gedcomS7::Place)
-                               self
-                             }),
-    ord_state = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 0, 1)
-                                 }),
-    state_date = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::DateExact"), 
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_pattern(value, reg_date_exact())
-                                    )
-                                  }),
-    state_time = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::Time"),
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_time())
-                              )
-                            }),
-    note_xrefs = prop_xref(),
+    ord_type = prop_char(1, 1, choices = val_individual_ordinance_types()),
+    date = prop_date_value(),
+    temple_name = prop_char(0, 1, 1),
+    place = prop_place(),
+    ord_state = prop_char(0, 1),
+    state_date = prop_date_exact(min_size = 0, "state_date"),
+    state_time = prop_time(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
-    fam_xref = prop_xref(NULL, 0, 1),
+    citations = prop_citations(),
+    fam_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -126,62 +74,15 @@ SpouseSealing <- S7::new_class(
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 getter = function(self) "SLGS"),
-    date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::DateValue"),
-                            getter = function(self) self@date,
-                            setter = function(self, value){
-                              if(is.character(value)) value <- toupper(value)
-                              self@date <- value
-                              self
-                            },
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_date_value())
-                              )
-                            }),
-    temple_name = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    place = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
-                             getter = function(self) self@place,
-                             setter = function(self, value){
-                               self@place <- as.S7class(value, gedcomS7::Place)
-                               self
-                             }),
-    ord_state = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 0, 1)
-                                   chk_input_choice(value, val_ordinance_states("SLGS"))
-                                 }),
-    state_date = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::DateExact"), 
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_pattern(value, reg_date_exact())
-                                    )
-                                  }),
-    state_time = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::Time"),
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_pattern(value, reg_time())
-                                    )
-                                  }),
-    note_xrefs = prop_xref(),
+    date = prop_date_value(),
+    temple_name = prop_char(0, 1, 1),
+    place = prop_place(),
+    ord_state = prop_char(0, 1, choices = val_ordinance_states("SLGS")),
+    state_date = prop_date_exact(min_size = 0, "state_date"),
+    state_time = prop_time(),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_notes(),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    citations = prop_citations(),
     
     GEDCOM = S7::new_property(
       S7::class_character,
