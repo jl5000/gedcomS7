@@ -37,8 +37,8 @@ NonEvent <- S7::new_class(
                                    }),
     date_phrase = prop_char(0, 1, 1),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
-    citations = prop_citations(),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,

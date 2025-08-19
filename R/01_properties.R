@@ -134,59 +134,22 @@
 #' @keywords internal
 NULL
 
-prop_citations <- function(default_prop_name = "citations"){
+prop_S7list <- function(prop_name, S7_class){
   S7::new_property(S7::class_list,
-                   getter = function(self) S7::prop(self, default_prop_name),
+                   getter = function(self) S7::prop(self, prop_name),
                    setter = function(self, value){
-                     # Using S3 because of recursion in cls_note
-                     S7::prop(self, default_prop_name) <- as.S7class_list(value, gedcomS7::SourceCitation)
+                     S7::prop(self, prop_name) <- as.S7class_list(value, S7_class)
                      self
                    },
                    validator = function(value){
                      for(inp in value) if(is.character(inp)) return(inp)
                    })
 }
-prop_notes <- function(default_prop_name = "notes"){
-  S7::new_property(S7::class_list,
-                   getter = function(self) S7::prop(self, default_prop_name),
+prop_S7obj <- function(prop_name, S7_class){
+  S7::new_property(NULL | S7::new_S3_class(paste0("gedcomS7::", deparse(substitute(S7_class)))),
+                   getter = function(self) S7::prop(self, prop_name),
                    setter = function(self, value){
-                     S7::prop(self, default_prop_name) <- as.S7class_list(value, gedcomS7::Note)
-                     self
-                   },
-                   validator = function(value){
-                     for(inp in value) if(is.character(inp)) return(inp)
-                   })
-}
-prop_media_links <- function(){
-  S7::new_property(S7::class_list,
-                   getter = function(self) self@media_links,
-                   setter = function(self, value){
-                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
-                     self
-                   },
-                   validator = function(value){
-                     for(inp in value) if(is.character(inp)) return(inp)
-                   })
-}
-prop_logical <- function(default = FALSE){
-  S7::new_property(S7::class_logical, default = default,
-                   validator = function(value){
-                     chk_input_size(value, 1, 1)
-                   })
-}
-prop_address <- function(default_prop_name = "address"){
-  S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
-                   getter = function(self) S7::prop(self, default_prop_name),
-                   setter = function(self, value){
-                     S7::prop(self, default_prop_name) <- as.S7class(value, gedcomS7::Address)
-                     self
-                   })
-}
-prop_place <- function(default_prop_name = "place"){
-  S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
-                   getter = function(self) S7::prop(self, default_prop_name),
-                   setter = function(self, value){
-                     S7::prop(self, default_prop_name) <- as.S7class(value, gedcomS7::Place)
+                     S7::prop(self, prop_name) <- as.S7class(value, S7_class)
                      self
                    })
 }
@@ -256,7 +219,7 @@ prop_translations <- function(){
   S7::new_property(S7::class_list,
                    getter = function(self) self@translations,
                    setter = function(self, value){
-                     self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
+                     self@translations <- as.S7class_list(value, TranslationText)
                      self
                    },
                    validator = function(value){
@@ -266,17 +229,6 @@ prop_translations <- function(){
                        if(length(tran@language) + length(tran@media_type) == 0)
                          return("Each @translation requires a @language or @media_type to be defined.")
                      }
-                   })
-}
-prop_associations <- function(){
-  S7::new_property(S7::class_list,
-                   getter = function(self) self@associations,
-                   setter = function(self, value){
-                     self@associations <- as.S7class_list(value, gedcomS7::Association)
-                     self
-                   },
-                   validator = function(value){
-                     for(inp in value) if(is.character(inp)) return(inp)
                    })
 }
 prop_char <- function(min_size = NULL, 
@@ -303,5 +255,11 @@ prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val
                        chk_input_size(value, min_size, max_size, min_val, max_val),
                        chk_whole_number(value)
                      )
+                   })
+}
+prop_logical <- function(default = FALSE){
+  S7::new_property(S7::class_logical, default = default,
+                   validator = function(value){
+                     chk_input_size(value, 1, 1)
                    })
 }

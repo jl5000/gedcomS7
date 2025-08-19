@@ -47,7 +47,7 @@ Note <- S7::new_class(
     language = prop_char(0, 1, 1),
     media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
     translations = prop_translations(),
-    citations = prop_citations(),
+    citations = prop_S7list("citations", SourceCitation),
 
     
     GEDCOM = S7::new_property(

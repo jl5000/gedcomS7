@@ -18,8 +18,8 @@ Fact <- S7::new_class(
     fact_desc = prop_char(0, 1, 1),
     
     date = prop_date_value(),
-    place = prop_place(),
-    address = prop_address(),
+    place = prop_S7obj("place", Place),
+    address = prop_S7obj("address", Address),
     phone_numbers = prop_char(min_char = 1),
     emails = prop_char(min_char = 1),
     faxes = prop_char(min_char = 1),
@@ -38,11 +38,11 @@ Fact <- S7::new_class(
                                      chk_input_pattern(value, reg_date_gregorian())
                                    )
                                  }),
-    associations = prop_associations(),
+    associations = prop_S7list("associations", Association),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
-    citations = prop_citations(),
-    media_links = prop_media_links(),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
+    media_links = prop_S7list("media_links", MediaLink),
     unique_ids = prop_char(pattern = reg_uuid(TRUE)),
     
     RESTRICTIONS = S7::new_property(S7::class_character,

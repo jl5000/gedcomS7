@@ -43,7 +43,7 @@ ChangeDate <- S7::new_class(
   parent = CreationDate,
   properties = list(
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
+    notes = prop_S7list("notes", Note),
     
     GEDCOM = S7::new_property(
       S7::class_character,

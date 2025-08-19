@@ -13,13 +13,13 @@ Ordinance <- S7::new_class(
     ord_type = prop_char(1, 1, choices = val_individual_ordinance_types()),
     date = prop_date_value(),
     temple_name = prop_char(0, 1, 1),
-    place = prop_place(),
+    place = prop_S7obj("place", Place),
     ord_state = prop_char(0, 1),
     state_date = prop_date_exact(min_size = 0, "state_date"),
     state_time = prop_time(),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
-    citations = prop_citations(),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
     fam_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     
     GEDCOM = S7::new_property(
@@ -76,13 +76,13 @@ SpouseSealing <- S7::new_class(
                                 getter = function(self) "SLGS"),
     date = prop_date_value(),
     temple_name = prop_char(0, 1, 1),
-    place = prop_place(),
+    place = prop_S7obj("place", Place),
     ord_state = prop_char(0, 1, choices = val_ordinance_states("SLGS")),
     state_date = prop_date_exact(min_size = 0, "state_date"),
     state_time = prop_time(),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
-    citations = prop_citations(),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,

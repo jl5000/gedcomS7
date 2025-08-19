@@ -24,7 +24,7 @@ GedcomSource <- S7::new_class(
     product_name = prop_char(0, 1, 1),
     product_version = prop_char(0, 1, 1),
     business_name = prop_char(0, 1, 1),
-    business_address = prop_address("business_address"),
+    business_address = prop_S7obj("business_address", Address),
     phone_numbers = prop_char(min_char = 1),
     emails = prop_char(min_char = 1),
     faxes = prop_char(min_char = 1),
@@ -102,10 +102,7 @@ GedcomHeader <- S7::new_class(
   properties = list(
     gedcom_version = prop_char(1, 1, pattern = "^\\d+\\.\\d+(\\.\\d+)?$"),
     ext_tags = prop_char(), # extension tags not supported
-    source = S7::new_property(NULL | S7::new_S3_class("gedcomS7::GedcomSource"),
-                              validator = function(value){
-                                chk_input_size(value, 0, 1)
-                              }),
+    source = prop_S7obj("source", GedcomSource),
     destination = prop_char(0, 1, 1),
     creation_date = prop_date_exact(min_size = 0, "creation_date", TRUE),
     creation_time = prop_time(),
@@ -113,7 +110,7 @@ GedcomHeader <- S7::new_class(
     gedcom_copyright = prop_char(0, 1, 1),
     default_language = prop_char(0, 1, 1),
     default_place_form = prop_char(0, 1, 1),
-    notes = prop_notes(),
+    notes = prop_S7list("notes", Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     
     GEDCOM = S7::new_property(

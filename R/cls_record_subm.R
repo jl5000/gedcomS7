@@ -13,7 +13,7 @@ SubmitterRecord <- S7::new_class(
   parent = Record,
   properties = list(
     subm_name = prop_char(1, 1, 1),
-    address = prop_address(),
+    address = prop_S7obj("address", Address),
     phone_numbers = prop_char(min_char = 1),
     emails = prop_char(min_char = 1),
     faxes = prop_char(min_char = 1),

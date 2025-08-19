@@ -96,7 +96,7 @@ MediaRecord <- S7::new_class(
     files = S7::new_property(S7::class_list,
                              getter = function(self) self@files,
                              setter = function(self, value){
-                               self@files <- as.S7class_list(value, gedcomS7::MediaFile)
+                               self@files <- as.S7class_list(value, MediaFile)
                                self
                              },
                              validator = function(value){

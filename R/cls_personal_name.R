@@ -65,10 +65,7 @@ PersonalNameTran <- S7::new_class(
   properties = list(
     pers_name = prop_char(1, 1, 1),
     language = prop_char(1, 1, 1),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1)
-                                   }),
+    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -131,22 +128,11 @@ PersonalName <- S7::new_class(
                                  }),
     name_type = prop_char(0, 1, choices = val_name_types()),
     type_phrase = prop_char(0, 1, 1),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1)
-                                   }),
-    name_translations = S7::new_property(S7::class_list,
-                                         getter = function(self) self@name_translations,
-                                         setter = function(self, value){
-                                           self@name_translations <- as.S7class_list(value, gedcomS7::PersonalNameTran)
-                                           self
-                                         },
-                                         validator = function(value){
-                                           for(inp in value) if(is.character(inp)) return(inp)
-                                         }),
-    notes = prop_notes(),
+    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
+    name_translations = prop_S7list("name_translations", PersonalNameTran),
+    notes = prop_S7list("notes", Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    citations = prop_citations(),
+    citations = prop_S7list("citations", SourceCitation),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@pers_name),

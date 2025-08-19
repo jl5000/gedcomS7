@@ -37,17 +37,11 @@ Record <- S7::new_class(
                                  )
                                }), 
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
-    citations = prop_citations(),
-    media_links = prop_media_links(),
-    created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1)
-                               }),
-    updated = S7::new_property(NULL | S7::new_S3_class("gedcomS7::ChangeDate"),
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1)
-                               }),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
+    media_links = prop_S7list("media_links", MediaLink),
+    created = prop_S7obj("created", CreationDate),
+    updated = prop_S7obj("updated", ChangeDate),
     
     RESTRICTIONS = S7::new_property(S7::class_character,
                                     getter = function(self){

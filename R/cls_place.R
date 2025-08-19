@@ -61,7 +61,7 @@ Place <- S7::new_class(
                                  )
                                }),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
+    notes = prop_S7list("notes", Note),
     
     LATITUDE = S7::new_property(S7::class_character,
                            getter = function(self){

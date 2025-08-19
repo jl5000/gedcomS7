@@ -66,15 +66,7 @@ SourceCitation <- S7::new_class(
     sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
     where = prop_char(0, 1, 1),
     date = prop_date_value(),
-    source_text = S7::new_property(S7::class_list,
-                                   getter = function(self) self@source_text,
-                                   setter = function(self, value){
-                                     self@source_text <- as.S7class_list(value, gedcomS7::TranslationText)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
+    source_text = prop_S7list("source_text", TranslationText),
     fact_type = prop_char(0, 1, choices = val_fact_types()),
     fact_phrase = prop_char(0, 1, 1),
     role = prop_char(0, 1, choices = val_roles()),
@@ -91,9 +83,9 @@ SourceCitation <- S7::new_class(
                                      chk_input_choice(value, val_certainty())
                                    )
                                  }),
-    media_links = prop_media_links(),
+    media_links = prop_S7list("media_links", MediaLink),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_notes(),
+    notes = prop_S7list("notes", Note),
     
     GEDCOM = S7::new_property(
       S7::class_character,

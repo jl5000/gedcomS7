@@ -5,13 +5,7 @@ IndividualFact <- S7::new_class(
   parent = Fact,
   abstract = TRUE,
   properties = list(
-    age = S7::new_property(S7::class_character,
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 0, 1),
-                               chk_input_pattern(value, reg_age_at_event())
-                             )
-                           }),
+    age = prop_char(0, 1, pattern = reg_age_at_event()),
     age_phrase = prop_char(0, 1, 1)
   )
 )
