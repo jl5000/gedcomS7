@@ -153,38 +153,6 @@ prop_S7obj <- function(prop_name, S7_class){
                      self
                    })
 }
-prop_date_value <- function(default_prop_name = "date"){
-  S7::new_property(S7::class_character | 
-                     S7::new_S3_class("gedcomS7::DateValue"),
-                   getter = function(self) S7::prop(self, default_prop_name),
-                   setter = function(self, value){
-                     if(is.character(value)) value <- toupper(value)
-                     S7::prop(self, default_prop_name) <- value
-                     self
-                   },
-                   validator = function(value){
-                     c(
-                       chk_input_size(value, 0, 1),
-                       chk_input_pattern(value, reg_date_value())
-                     )
-                   })
-}
-prop_date_greg <- function(min_size, default_prop_name = "date"){
-  S7::new_property(S7::class_character | 
-                     S7::new_S3_class("gedcomS7::DateGregorian"),
-                   getter = function(self) S7::prop(self, default_prop_name),
-                   setter = function(self, value){
-                     if(is.character(value)) value <- toupper(value)
-                     S7::prop(self, default_prop_name) <- value
-                     self
-                   },
-                   validator = function(value){
-                     c(
-                       chk_input_size(value, min_size, 1),
-                       chk_input_pattern(value, reg_date_gregorian())
-                     )
-                   })
-}
 prop_date_exact <- function(min_size, default_prop_name = "date_exact",
                             default_to_current_date = FALSE){
   S7::new_property(S7::class_character | 
@@ -211,6 +179,7 @@ prop_char <- function(min_size = NULL,
                       max_char = NULL,
                       choices = NULL,
                       pattern = NULL,
+                      names_required = FALSE,
                       default = NULL,
                       S7class_name = NULL){
   
@@ -225,10 +194,17 @@ prop_char <- function(min_size = NULL,
     
   S7::new_property(classes, default = default,
                    validator = function(value){
+                     if(names_required){
+                       names_test <- chk_input_size(names(value), length(value), length(value), 1)
+                     } else {
+                       names_test <- NULL
+                     }
+                       
                      c(
                        chk_input_size(value, min_size, max_size, min_char, max_char),
                        chk_input_choice(value, choices),
-                       chk_input_pattern(value, pattern)
+                       chk_input_pattern(value, pattern),
+                       names_test
                      )
                    })
 }

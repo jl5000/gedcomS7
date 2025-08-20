@@ -29,13 +29,7 @@ Record <- S7::new_class(
     private = prop_bool(default = FALSE),
     user_ids = prop_char(min_char = 1), # potentially named
     unique_ids = prop_char(pattern = reg_uuid(TRUE)), # not named
-    ext_ids = S7::new_property(S7::class_character, # definitely named
-                               validator = function(value){
-                                 c(
-                                   chk_input_size(value, min_val = 1),
-                                   chk_input_size(names(value), length(value), length(value), 1)
-                                 )
-                               }), 
+    ext_ids = prop_char(min_char = 1, names_required = TRUE), # definitely named
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),
     citations = prop_S7list("citations", SourceCitation),

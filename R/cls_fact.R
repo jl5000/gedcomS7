@@ -17,7 +17,7 @@ Fact <- S7::new_class(
                                 }),
     fact_desc = prop_char(0, 1, 1),
     
-    date = prop_date_value(),
+    date = prop_char(0, 1, pattern = reg_date_value(), S7class_name = "DateValue"),
     place = prop_S7obj("place", Place),
     address = prop_S7obj("address", Address),
     phone_numbers = prop_char(min_char = 1),

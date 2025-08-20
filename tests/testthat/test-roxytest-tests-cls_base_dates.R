@@ -50,8 +50,8 @@ test_that("Function DatePeriod() @ L201", {
   expect_equal(DatePeriod()@GEDCOM_STRING, "")
   expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
   expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
-  expect_equal(DatePeriod("2 jul 1989")@GEDCOM_STRING, "FROM 2 JUL 1989")
-  expect_equal(DatePeriod(end_date = "2 Jul 1989")@GEDCOM_STRING, "TO 2 JUL 1989")
+  expect_equal(DatePeriod("2 JUL 1989")@GEDCOM_STRING, "FROM 2 JUL 1989")
+  expect_equal(DatePeriod(end_date = "2 JUL 1989")@GEDCOM_STRING, "TO 2 JUL 1989")
   expect_equal(
     DatePeriod(
       start_date = DateGregorian(1995, 6, 1)

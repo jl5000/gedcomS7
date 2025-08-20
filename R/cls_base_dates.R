@@ -133,7 +133,7 @@ DateApprox <- S7::new_class(
   "DateApprox", 
   parent = DateClass,
   properties = list(
-    date_greg = prop_date_greg(min_size = 1, "date_greg"),
+    date_greg = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
     about = prop_bool(default = TRUE),
     calc = prop_bool(default = FALSE),
     est = prop_bool(default = FALSE),
@@ -163,8 +163,8 @@ DateApprox <- S7::new_class(
 #' expect_equal(DatePeriod()@GEDCOM_STRING, "")
 #' expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
 #' expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
-#' expect_equal(DatePeriod("2 jul 1989")@GEDCOM_STRING, "FROM 2 JUL 1989")
-#' expect_equal(DatePeriod(end_date = "2 Jul 1989")@GEDCOM_STRING, "TO 2 JUL 1989")
+#' expect_equal(DatePeriod("2 JUL 1989")@GEDCOM_STRING, "FROM 2 JUL 1989")
+#' expect_equal(DatePeriod(end_date = "2 JUL 1989")@GEDCOM_STRING, "TO 2 JUL 1989")
 #' expect_equal(
 #'   DatePeriod(
 #'     start_date = DateGregorian(1995, 6, 1)
@@ -202,8 +202,8 @@ DatePeriod <- S7::new_class(
   "DatePeriod", 
   parent = DateClass,
   properties = list(
-    start_date = prop_date_greg(min_size = 0, "start_date"),
-    end_date = prop_date_greg(min_size = 0, "end_date"),
+    start_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
+    end_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -377,7 +377,7 @@ DateSorting <- S7::new_class(
   "DateSorting",
   parent = DateClass,
   properties = list(
-    date = prop_date_greg(min_size = 1),
+    date = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
     date_phrase = prop_char(0, 1, 1),
     time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     

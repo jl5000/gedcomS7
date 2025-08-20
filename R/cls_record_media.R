@@ -93,16 +93,7 @@ MediaRecord <- S7::new_class(
   "MediaRecord", 
   parent = Record,
   properties = list(
-    files = S7::new_property(S7::class_list,
-                             getter = function(self) self@files,
-                             setter = function(self, value){
-                               self@files <- as.S7class_list(value, MediaFile)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                               chk_input_size(value, 1)
-                             }),
+    files = prop_S7list("files", MediaFile),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -123,6 +114,9 @@ MediaRecord <- S7::new_class(
   validator = function(self){
     if(length(self@media_links) > 0)
       return("This record does not use @media_links")
+    
+    if(length(self@files) < 1)
+      return("At least one file must be defined")
   }
 )
 

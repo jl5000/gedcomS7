@@ -11,7 +11,7 @@ Ordinance <- S7::new_class(
   parent = GedcomS7class,
   properties = list( 
     ord_type = prop_char(1, 1, choices = val_individual_ordinance_types()),
-    date = prop_date_value(),
+    date = prop_char(0, 1, pattern = reg_date_value(), S7class_name = "DateValue"),
     temple_name = prop_char(0, 1, 1),
     place = prop_S7obj("place", Place),
     ord_state = prop_char(0, 1),
@@ -74,7 +74,7 @@ SpouseSealing <- S7::new_class(
   properties = list( 
     ord_type = S7::new_property(S7::class_character,
                                 getter = function(self) "SLGS"),
-    date = prop_date_value(),
+    date = prop_char(0, 1, pattern = reg_date_value(), S7class_name = "DateValue"),
     temple_name = prop_char(0, 1, 1),
     place = prop_S7obj("place", Place),
     ord_state = prop_char(0, 1, choices = val_ordinance_states("SLGS")),

@@ -45,21 +45,9 @@ Place <- S7::new_class(
     place_name = prop_char(1, 1, 1),
     place_form = prop_char(0, 1, 1),
     language = prop_char(0, 1, 1),
-    place_translations = S7::new_property(S7::class_character,
-                                          validator = function(value){
-                                            c(
-                                              chk_input_size(value, min_val = 1),
-                                              chk_input_size(names(value), length(value), length(value), 1)
-                                            )
-                                          }),
+    place_translations = prop_char(min_char = 1, names_required = TRUE),
     lat_long = prop_char(0, 1, pattern = sprintf("^%s %s$", reg_latitude(), reg_longitude())),
-    ext_ids = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 c(
-                                   chk_input_size(value, min_val = 1),
-                                   chk_input_size(names(value), length(value), length(value), 1)
-                                 )
-                               }),
+    ext_ids = prop_char(min_char = 1, names_required = TRUE),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),
     

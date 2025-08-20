@@ -27,7 +27,7 @@ test_that("Function IndividualEvent() @ L54", {
   expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y", age = "73y 4m",
                                         age_phrase = "old")@GEDCOM, "json2")
   expect_snapshot_value(IndividualEvent("ADOP", fact_val = "Y",
-                                         date = "jan 1980",
+                                         date = "JAN 1980",
                                          fact_desc = "More info on adoption",
                                          fam_xref = "@123@",
                                          adop_parent = "WIFE",
