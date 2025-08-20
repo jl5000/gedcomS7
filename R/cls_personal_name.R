@@ -114,18 +114,7 @@ PersonalName <- S7::new_class(
   "PersonalName",
   parent = GedcomS7class,
   properties = list(
-    pers_name = S7::new_property(S7::class_character,
-                                 getter = function(self) self@pers_name,
-                                 setter = function(self, value){
-                                   if(!grepl("/", value))
-                                     warning("Did you forget to enclose the surname in forward slashes?: ", value)
-                                   
-                                   self@pers_name <- value
-                                   self
-                                 },
-                                 validator = function(value){
-                                   chk_input_size(value, 1, 1, 1)
-                                 }),
+    pers_name = prop_char(1, 1, 1),
     name_type = prop_char(0, 1, choices = val_name_types()),
     type_phrase = prop_char(0, 1, 1),
     name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
@@ -154,6 +143,9 @@ PersonalName <- S7::new_class(
   ),
   
   validator = function(self){
+    if(!grepl("/", self@pers_name))
+      warning("Did you forget to enclose the surname in forward slashes?: ", self@pers_name)
+    
     c(
       chk_input_phrase(self@type_phrase, "@type_phrase",
                        self@name_type, "@name_type", "OTHER"),
