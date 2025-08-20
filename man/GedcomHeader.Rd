@@ -9,7 +9,7 @@ GedcomHeader(
   ext_tags = character(0),
   source = NULL,
   destination = character(0),
-  creation_date = character(0),
+  creation_date = <object>,
   creation_time = character(0),
   subm_xref = character(0),
   gedcom_copyright = character(0),

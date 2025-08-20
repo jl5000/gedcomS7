@@ -7,14 +7,17 @@
 #' @tests
 #' expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
 #' expect_error(CreationDate(time = "123:34:45"), regexp = "@time is in an invalid format.")
-#' expect_snapshot_value(CreationDate(date_exact = "1 jan 2005")@GEDCOM, "json2")
+#' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005")@GEDCOM, "json2")
 #' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005",
 #'                                           time = "11:04:56")@GEDCOM, "json2")
 CreationDate <- S7::new_class(
   "CreationDate",
   parent = GedcomS7class,
   properties = list(
-    date_exact = prop_date_exact(min_size = 1, "date_exact", TRUE),
+    date_exact = prop_char(1, 1, 
+                           pattern = reg_date_exact(),
+                           default = date_exact_current(),
+                           S7class_name = "DateExact"),
     time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     
     GEDCOM = S7::new_property(

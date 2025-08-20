@@ -30,7 +30,7 @@ GedcomSource <- S7::new_class(
     faxes = prop_char(min_char = 1),
     web_pages = prop_char(min_char = 1),
     data_name = prop_char(0, 1, 1),
-    data_pubdate = prop_date_exact(min_size = 0, "data_pubdate"),
+    data_pubdate = prop_char(0, 1, pattern = reg_date_exact(), S7class_name = "DateExact"),
     data_pubtime = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     data_copyright = prop_char(0, 1, 1),
     
@@ -104,7 +104,10 @@ GedcomHeader <- S7::new_class(
     ext_tags = prop_char(), # extension tags not supported
     source = prop_S7obj("source", GedcomSource),
     destination = prop_char(0, 1, 1),
-    creation_date = prop_date_exact(min_size = 0, "creation_date", TRUE),
+    creation_date = prop_char(0, 1, 
+                              pattern = reg_date_exact(),
+                              default = date_exact_current(),
+                              S7class_name = "DateExact"),
     creation_time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     subm_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     gedcom_copyright = prop_char(0, 1, 1),

@@ -153,26 +153,6 @@ prop_S7obj <- function(prop_name, S7_class){
                      self
                    })
 }
-prop_date_exact <- function(min_size, default_prop_name = "date_exact",
-                            default_to_current_date = FALSE){
-  S7::new_property(S7::class_character | 
-                     S7::new_S3_class("gedcomS7::DateExact"),
-                   getter = function(self) S7::prop(self, default_prop_name),
-                   setter = function(self, value){
-                     if(length(value) == 0 && default_to_current_date) 
-                       value <- date_exact_current()
-                     
-                     if(is.character(value)) value <- toupper(value)
-                     S7::prop(self, default_prop_name) <- value
-                     self
-                   },
-                   validator = function(value){
-                     c(
-                       chk_input_size(value, min_size, 1),
-                       chk_input_pattern(value, reg_date_exact())
-                     )
-                   })
-}
 prop_char <- function(min_size = NULL, 
                       max_size = NULL, 
                       min_char = NULL, 
