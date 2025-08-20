@@ -205,41 +205,25 @@ prop_date_exact <- function(min_size, default_prop_name = "date_exact",
                      )
                    })
 }
-prop_time <- function(){
-  S7::new_property(S7::class_character | 
-                     S7::new_S3_class("gedcomS7::Time"),
-                   validator = function(value){
-                     c(
-                       chk_input_size(value, 0, 1),
-                       chk_input_pattern(value, reg_time())
-                     )
-                   })
-}
-prop_translations <- function(){
-  S7::new_property(S7::class_list,
-                   getter = function(self) self@translations,
-                   setter = function(self, value){
-                     self@translations <- as.S7class_list(value, TranslationText)
-                     self
-                   },
-                   validator = function(value){
-                     for(inp in value) if(is.character(inp)) return(inp)
-                     
-                     for(tran in value){
-                       if(length(tran@language) + length(tran@media_type) == 0)
-                         return("Each @translation requires a @language or @media_type to be defined.")
-                     }
-                   })
-}
 prop_char <- function(min_size = NULL, 
                       max_size = NULL, 
                       min_char = NULL, 
                       max_char = NULL,
                       choices = NULL,
                       pattern = NULL,
-                      default = NULL){
+                      default = NULL,
+                      S7class_name = NULL){
   
-  S7::new_property(S7::class_character, default = default,
+  if(is.null(S7class_name)){
+    classes <- S7::class_character
+  } else {
+    classes <- S7::new_union(
+      S7::class_character, 
+      S7::new_S3_class(paste0("gedcomS7::", S7class_name))
+    )
+  }
+    
+  S7::new_property(classes, default = default,
                    validator = function(value){
                      c(
                        chk_input_size(value, min_size, max_size, min_char, max_char),
@@ -257,7 +241,7 @@ prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val
                      )
                    })
 }
-prop_logical <- function(default = FALSE){
+prop_bool <- function(default = FALSE){
   S7::new_property(S7::class_logical, default = default,
                    validator = function(value){
                      chk_input_size(value, 1, 1)

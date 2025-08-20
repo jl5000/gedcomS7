@@ -134,14 +134,7 @@ FactsRecorded <- S7::new_class(
                            pattern = sprintf("^(%s)(, (%s))*$", 
                                              paste(val_fact_types(), collapse = "|"),
                                              paste(val_fact_types(), collapse = "|"))),
-    date_period = S7::new_property(S7::class_character | 
-                                     S7::new_S3_class("gedcomS7::DatePeriod"),
-                                   validator = function(value){
-                                     c(
-                                       chk_input_size(value, 0, 1),
-                                       chk_input_pattern(value, reg_date_period())
-                                     )
-                                   }),
+    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_name = "DatePeriod"),
     date_phrase = prop_char(0, 1, 1),
     territory = prop_S7obj("territory", Place),
     

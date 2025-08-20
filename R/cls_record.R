@@ -24,9 +24,9 @@ Record <- S7::new_class(
   abstract = TRUE,
   properties = list(
     XREF = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@GEDCOMS7_ORPHAN@"),
-    confidential = prop_logical(default = FALSE),
-    locked = prop_logical(default = FALSE),
-    private = prop_logical(default = FALSE),
+    confidential = prop_bool(default = FALSE),
+    locked = prop_bool(default = FALSE),
+    private = prop_bool(default = FALSE),
     user_ids = prop_char(min_char = 1), # potentially named
     unique_ids = prop_char(pattern = reg_uuid(TRUE)), # not named
     ext_ids = S7::new_property(S7::class_character, # definitely named

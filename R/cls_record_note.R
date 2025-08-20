@@ -11,7 +11,8 @@
 #' expect_snapshot_value(NoteRecord("@N4@",
 #'                                         text = "The note goes something like this",
 #'                                         language = "en")@GEDCOM, "json2")
-#' expect_error(NoteRecord("test", translations = TranslationText("Woohoo")),
+#' expect_error(NoteRecord("@N4@", text = "test",
+#'                        translations = TranslationText("Woohoo")),
 #'              regexp = "Each @translation requires a @language or @media_type")
 NoteRecord <- S7::new_class(
   "NoteRecord", 
@@ -20,7 +21,7 @@ NoteRecord <- S7::new_class(
     text = prop_char(1, 1, 1),
     media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
     language = prop_char(0, 1, 1),
-    translations = prop_translations(),
+    translations = prop_S7list("translations", TranslationText),
     
     GEDCOM = S7::new_property(
       S7::class_data.frame,
@@ -47,6 +48,11 @@ NoteRecord <- S7::new_class(
     
     if(length(self@media_links) > 0)
       return("This record does not use @media_links")
+    
+    for(tran in self@translations){
+      if(length(tran@language) + length(tran@media_type) == 0)
+        return("Each @translation requires a @language or @media_type to be defined.")
+    }
   }
 )
 

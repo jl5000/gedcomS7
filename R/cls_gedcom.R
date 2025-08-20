@@ -31,7 +31,7 @@ GedcomSource <- S7::new_class(
     web_pages = prop_char(min_char = 1),
     data_name = prop_char(0, 1, 1),
     data_pubdate = prop_date_exact(min_size = 0, "data_pubdate"),
-    data_pubtime = prop_time(),
+    data_pubtime = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     data_copyright = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
@@ -105,7 +105,7 @@ GedcomHeader <- S7::new_class(
     source = prop_S7obj("source", GedcomSource),
     destination = prop_char(0, 1, 1),
     creation_date = prop_date_exact(min_size = 0, "creation_date", TRUE),
-    creation_time = prop_time(),
+    creation_time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     subm_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     gedcom_copyright = prop_char(0, 1, 1),
     default_language = prop_char(0, 1, 1),
@@ -276,8 +276,8 @@ GedcomS7 <- S7::new_class(
   properties = list(
     header = GedcomHeader,
     records = GedcomRecords,
-    update_change_dates = prop_logical(default = FALSE),
-    add_creation_dates = prop_logical(default = FALSE),
+    update_change_dates = prop_bool(default = FALSE),
+    add_creation_dates = prop_bool(default = FALSE),
     
     GEDCOM = S7::new_property(
       S7::class_character,

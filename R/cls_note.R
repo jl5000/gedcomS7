@@ -46,7 +46,7 @@ Note <- S7::new_class(
     text = prop_char(1, 1, 1),
     language = prop_char(0, 1, 1),
     media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
-    translations = prop_translations(),
+    translations = prop_S7list("translations", TranslationText),
     citations = prop_S7list("citations", SourceCitation),
 
     
@@ -61,7 +61,13 @@ Note <- S7::new_class(
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })
-  )
+  ),
+  validator = function(self){
+    for(tran in self@translations){
+      if(length(tran@language) + length(tran@media_type) == 0)
+        return("Each @translation requires a @language or @media_type to be defined.")
+    }
+  }
 )
 
 # Need location when top level has no xref

@@ -12,7 +12,7 @@ test_that("Function PersonalNamePieces() @ L22", {
 })
 
 
-test_that("Function PersonalNameTran() @ L80", {
+test_that("Function PersonalNameTran() @ L62", {
   expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
                                                  language = "en")@GEDCOM, "json2")
   expect_snapshot_value(PersonalNameTran("Joe /Bloggs/",
@@ -21,7 +21,7 @@ test_that("Function PersonalNameTran() @ L80", {
 })
 
 
-test_that("Function PersonalName() @ L142", {
+test_that("Function PersonalName() @ L113", {
   expect_warning(PersonalName("Joe Bloggs"),
                  regexp = "Did you forget to enclose the surname in forward slashes")
   expect_error(PersonalName("Joe /Bloggs/", name_type = "birth"),

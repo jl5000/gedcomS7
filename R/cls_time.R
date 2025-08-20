@@ -30,7 +30,7 @@ Time <- S7::new_class(
     minute = prop_whole(1, 1, 0, 59),
     second = prop_whole(0, 1, 0, 59),
     fraction = prop_whole(),
-    utc = prop_logical(default = TRUE),
+    utc = prop_bool(default = TRUE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,

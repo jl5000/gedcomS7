@@ -11,7 +11,7 @@ test_that("Function CreationDate() @ L13", {
 })
 
 
-test_that("Function ChangeDate() @ L62", {
+test_that("Function ChangeDate() @ L41", {
   expect_snapshot_value(ChangeDate(date = "1 JAN 2005",
                                           note_xrefs = "@23@",
                                           notes = c("note 1", "note 2"))@GEDCOM, "json2")

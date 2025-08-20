@@ -27,17 +27,10 @@ Fact <- S7::new_class(
     agency = prop_char(0, 1, 1),
     relig_affil = prop_char(0, 1, 1),
     cause = prop_char(0, 1, 1),
-    confidential = prop_logical(default = FALSE),
-    locked = prop_logical(default = FALSE),
-    private = prop_logical(default = FALSE),
-    date_sort = S7::new_property(S7::class_character | 
-                                   S7::new_S3_class("gedcomS7::DateSorting"),
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_pattern(value, reg_date_gregorian())
-                                   )
-                                 }),
+    confidential = prop_bool(default = FALSE),
+    locked = prop_bool(default = FALSE),
+    private = prop_bool(default = FALSE),
+    date_sort = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_name = "DateSorting"),
     associations = prop_S7list("associations", Association),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),

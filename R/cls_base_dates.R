@@ -87,7 +87,7 @@ DateGregorian <- S7::new_class(
     year = prop_whole(1, 1, 1),
     month = prop_whole(0, 1, 1, 12),
     day = prop_whole(0, 1, 1, 31),
-    bce = prop_logical(default = FALSE),
+    bce = prop_bool(default = FALSE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -134,9 +134,9 @@ DateApprox <- S7::new_class(
   parent = DateClass,
   properties = list(
     date_greg = prop_date_greg(min_size = 1, "date_greg"),
-    about = prop_logical(default = TRUE),
-    calc = prop_logical(default = FALSE),
-    est = prop_logical(default = FALSE),
+    about = prop_bool(default = TRUE),
+    calc = prop_bool(default = FALSE),
+    est = prop_bool(default = FALSE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -331,7 +331,7 @@ DateValue <- S7::new_class(
                               )
                             }),
     date_phrase = prop_char(0, 1, 1),
-    time = prop_time(),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) obj_to_val(self@date)),
@@ -379,7 +379,7 @@ DateSorting <- S7::new_class(
   properties = list(
     date = prop_date_greg(min_size = 1),
     date_phrase = prop_char(0, 1, 1),
-    time = prop_time(),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                                 getter = function(self) obj_to_val(self@date)),
