@@ -161,17 +161,29 @@ prop_char <- function(min_size = NULL,
                       pattern = NULL,
                       names_required = FALSE,
                       default = NULL,
+                      casting_name = NULL,
                       S7class_name = NULL){
   
   classes <- S7::class_character
   if(!is.null(S7class_name)){
     classes <- S7::new_union(
-      classes, 
+      classes,
       S7::new_S3_class(paste0("gedcomS7::", S7class_name))
     )
   }
+  
+  getter_fn <- setter_fn <- NULL
+  if(!is.null(casting_name){
+    getter_fn <- function(self) S7::prop(self, casting_name)
+    setter_fn <- function(self, value){
+      S7::prop(self, casting_name) <- as.character(value)
+      self
+    }
+  }
     
   S7::new_property(classes, default = default,
+                   getter = getter_fn,
+                   setter = getter_fn,
                    validator = function(value){
                      names_test <- NULL
                      if(names_required){
