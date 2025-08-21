@@ -163,21 +163,19 @@ prop_char <- function(min_size = NULL,
                       default = NULL,
                       S7class_name = NULL){
   
-  if(is.null(S7class_name)){
-    classes <- S7::class_character
-  } else {
+  classes <- S7::class_character
+  if(!is.null(S7class_name)){
     classes <- S7::new_union(
-      S7::class_character, 
+      classes, 
       S7::new_S3_class(paste0("gedcomS7::", S7class_name))
     )
   }
     
   S7::new_property(classes, default = default,
                    validator = function(value){
+                     names_test <- NULL
                      if(names_required){
                        names_test <- chk_input_size(names(value), length(value), length(value), 1)
-                     } else {
-                       names_test <- NULL
                      }
                        
                      c(
