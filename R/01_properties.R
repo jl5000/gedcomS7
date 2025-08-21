@@ -173,7 +173,7 @@ prop_char <- function(min_size = NULL,
   }
   
   getter_fn <- setter_fn <- NULL
-  if(!is.null(casting_name){
+  if(!is.null(casting name)){
     getter_fn <- function(self) S7::prop(self, casting_name)
     setter_fn <- function(self, value){
       S7::prop(self, casting_name) <- as.character(value)
