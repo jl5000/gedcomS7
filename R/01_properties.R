@@ -183,7 +183,7 @@ prop_char <- function(min_size = NULL,
     
   S7::new_property(classes, default = default,
                    getter = getter_fn,
-                   setter = getter_fn,
+                   setter = setter_fn,
                    validator = function(value){
                      names_test <- NULL
                      if(names_required){
