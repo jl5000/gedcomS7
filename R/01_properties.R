@@ -165,10 +165,10 @@ prop_char <- function(min_size = NULL,
                       S7class_name = NULL){
   
   classes <- S7::class_character
-  if(!is.null(S7class_name)){
+  for(cls in S7class_name){
     classes <- S7::new_union(
       classes,
-      S7::new_S3_class(paste0("gedcomS7::", S7class_name))
+      S7::new_S3_class(paste0("gedcomS7::", cls))
     )
   }
   
