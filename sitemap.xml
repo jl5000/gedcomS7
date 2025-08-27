@@ -110,7 +110,12 @@
 <url><loc>https://jl5000.github.io/gedcomS7/reference/parse_gedcom_age.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/parse_gedcom_date.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/prepare_gedcom_lines.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/prop_S7list.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/prop_S7obj.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/prop_bool.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/prop_char.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/prop_definitions.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/prop_whole.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/pull_record.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/push_record.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/read_gedcom.html</loc></url>

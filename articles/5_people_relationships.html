@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gedcomS7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,8 +106,8 @@ U(nknown). If no sex is specified, a value of “U” is used.</p>
 surname):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anakin</span><span class="op">@</span><span class="va">pers_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anakin /Skywalker/"</span>, <span class="st">"Darth Vader"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in (function (self, value) : Did you forget to enclose the surname in</span></span>
-<span><span class="co">#&gt; forward slashes?: Darth Vader</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning in validator(object): Did you forget to enclose the surname in forward</span></span>
+<span><span class="co">#&gt; slashes?: Darth Vader</span></span></code></pre></div>
 <p>Individuals can have more than one name. These can be different kinds
 of name such as birth name or adoptive name, or if there is uncertainty,
 variants of these based on conflicting evidence sources. There is also
