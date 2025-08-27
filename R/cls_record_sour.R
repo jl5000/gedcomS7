@@ -134,7 +134,7 @@ FactsRecorded <- S7::new_class(
                            pattern = sprintf("^(%s)(, (%s))*$", 
                                              paste(val_fact_types(), collapse = "|"),
                                              paste(val_fact_types(), collapse = "|"))),
-    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_name = "DatePeriod"),
+    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_names = "DatePeriod"),
     date_phrase = prop_char(0, 1, 1),
     territory = prop_S7obj("territory", Place),
     

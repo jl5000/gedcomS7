@@ -133,7 +133,7 @@ DateApprox <- S7::new_class(
   "DateApprox", 
   parent = DateClass,
   properties = list(
-    date_greg = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
+    date_greg = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
     about = prop_bool(default = TRUE),
     calc = prop_bool(default = FALSE),
     est = prop_bool(default = FALSE),
@@ -202,8 +202,8 @@ DatePeriod <- S7::new_class(
   "DatePeriod", 
   parent = DateClass,
   properties = list(
-    start_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
-    end_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
+    start_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
+    end_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -307,31 +307,17 @@ DateRange <- S7::new_class(
 #'              regexp = "A date period should not have a time defined")
 #' expect_error(DateValue(""), regexp = "A @date_phrase must be given if @date is ''")
 #' expect_equal(DateValue(DateGregorian(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
-#' expect_snapshot_value(DateValue("aft 1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
+#' expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
 #' expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@GEDCOM, "json2")
 DateValue <- S7::new_class(
   "DateValue",
   parent = DateClass,
   properties = list(
-    date = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::DateGregorian") | 
-                              S7::new_S3_class("gedcomS7::DatePeriod") |
-                              S7::new_S3_class("gedcomS7::DateRange") | 
-                              S7::new_S3_class("gedcomS7::DateApprox"),
-                            getter = function(self) self@date,
-                            setter = function(self, value){
-                              if(is.character(value)) value <- toupper(value)
-                              self@date <- value
-                              self
-                            },
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1),
-                                chk_input_pattern(value, reg_date_value())
-                              )
-                            }),
+    date = prop_char(1, 1, pattern = reg_date_value(),
+                     S7class_names = c("DateGregorian", "DatePeriod",
+                                       "DateRange", "DateApprox")),
     date_phrase = prop_char(0, 1, 1),
-    time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) obj_to_val(self@date)),
@@ -377,9 +363,9 @@ DateSorting <- S7::new_class(
   "DateSorting",
   parent = DateClass,
   properties = list(
-    date = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_name = "DateGregorian"),
+    date = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
     date_phrase = prop_char(0, 1, 1),
-    time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                                 getter = function(self) obj_to_val(self@date)),

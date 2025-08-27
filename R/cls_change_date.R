@@ -17,8 +17,8 @@ CreationDate <- S7::new_class(
     date_exact = prop_char(1, 1, 
                            pattern = reg_date_exact(),
                            default = date_exact_current(),
-                           S7class_name = "DateExact"),
-    time = prop_char(0, 1, pattern = reg_time(), S7class_name = "Time"),
+                           S7class_names = "DateExact"),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM = S7::new_property(
       S7::class_character,

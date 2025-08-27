@@ -27,7 +27,7 @@ NonEvent <- S7::new_class(
   parent = GedcomS7class,
   properties = list(
     event_type = prop_char(1, 1, choices = val_event_types(FALSE)),
-    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_name = "DatePeriod"),
+    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_names = "DatePeriod"),
     date_phrase = prop_char(0, 1, 1),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),

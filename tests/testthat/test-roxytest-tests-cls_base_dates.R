@@ -136,12 +136,12 @@ test_that("Function DateValue() @ L312", {
                regexp = "A date period should not have a time defined")
   expect_error(DateValue(""), regexp = "A @date_phrase must be given if @date is ''")
   expect_equal(DateValue(DateGregorian(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
-  expect_snapshot_value(DateValue("aft 1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
+  expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
   expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@GEDCOM, "json2")
 })
 
 
-test_that("Function DateSorting() @ L376", {
+test_that("Function DateSorting() @ L362", {
   expect_error(DateSorting(""), regexp = "@date is in an invalid format")
   expect_error(DateSorting("FROM 2016"), regexp = "@date is in an invalid format")
   expect_error(DateSorting(DatePeriod(end_date = "1980")), 

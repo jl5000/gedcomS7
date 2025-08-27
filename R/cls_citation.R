@@ -65,7 +65,7 @@ SourceCitation <- S7::new_class(
   properties = list(
     sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
     where = prop_char(0, 1, 1),
-    date = prop_char(0, 1, pattern = reg_date_value(), S7class_name = "DateValue"),
+    date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
     source_text = prop_S7list("source_text", TranslationText),
     fact_type = prop_char(0, 1, choices = val_fact_types()),
     fact_phrase = prop_char(0, 1, 1),
