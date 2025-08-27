@@ -22,3 +22,4 @@ If any elements of the list are of type character, then they will automatically
 be converted into objects of the appropriate class. Any elements that cannot
 be converted will result in the validator throwing an error.
 }
+\keyword{internal}

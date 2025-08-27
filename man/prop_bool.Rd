@@ -16,3 +16,4 @@ An S7 property object.
 Constructs a logical property with a default value and validation to ensure
 it contains exactly one element.
 }
+\keyword{internal}

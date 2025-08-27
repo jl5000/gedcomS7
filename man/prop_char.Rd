@@ -47,3 +47,4 @@ An S7 property object.
 Constructs a character property with optional constraints on size,
 character length, pattern matching, and allowed choices.
 }
+\keyword{internal}

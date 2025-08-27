@@ -20,3 +20,4 @@ Constructs a property that can store a single object of a specified gedcomS7 cla
 \details{
 The property will default to a value of NULL if no object is provided.
 }
+\keyword{internal}

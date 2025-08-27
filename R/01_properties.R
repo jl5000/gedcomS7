@@ -147,6 +147,7 @@ NULL
 #' @param S7_class The gedcomS7 class that each element of the list should conform to.
 #'
 #' @returns An S7 property object.
+#' @keywords internal
 prop_S7list <- function(prop_name, S7_class){
   S7::new_property(S7::class_list,
                    getter = function(self) S7::prop(self, prop_name),
@@ -170,6 +171,7 @@ prop_S7list <- function(prop_name, S7_class){
 #' @param S7_class The gedcomS7 class that the property value should conform to.
 #'
 #' @returns An S7 property object.
+#' @keywords internal
 prop_S7obj <- function(prop_name, S7_class){
   # S3 class used so that order of class definition does not matter and classes
   # can be recursive
@@ -201,6 +203,7 @@ prop_S7obj <- function(prop_name, S7_class){
 #' could also take.
 #'
 #' @returns An S7 property object.
+#' @keywords internal
 prop_char <- function(min_size = NULL, 
                       max_size = NULL, 
                       min_char = NULL, 
@@ -256,6 +259,7 @@ prop_char <- function(min_size = NULL,
 #' @param max_val Maximum numeric value allowed.
 #'
 #' @returns An S7 property object.
+#' @keywords internal
 prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val = NULL){
   S7::new_property(S7::class_numeric,
                    validator = function(value){
@@ -274,6 +278,7 @@ prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val
 #' @param default Logical value to use as the default.
 #'
 #' @returns An S7 property object.
+#' @keywords internal
 prop_bool <- function(default = FALSE){
   S7::new_property(S7::class_logical, default = default,
                    validator = function(value){

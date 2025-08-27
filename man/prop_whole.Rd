@@ -22,3 +22,4 @@ An S7 property object.
 Constructs a numeric property with validation for whole numbers and optional
 constraints on size and value range.
 }
+\keyword{internal}
