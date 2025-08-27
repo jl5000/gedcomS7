@@ -12,36 +12,13 @@ SubmitterRecord <- S7::new_class(
   "SubmitterRecord", 
   parent = Record,
   properties = list(
-    subm_name = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 1, 1, 1)
-                                 }),
-    address = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Address"),
-                               getter = function(self) self@address,
-                               setter = function(self, value){
-                                 self@address <- as.S7class(value, gedcomS7::Address)
-                                 self
-                               }),
-    phone_numbers = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, min_val = 1)
-                                     }),
-    emails = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
-    faxes = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, min_val = 1)
-                             }),
-    web_pages = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, min_val = 1)
-                                 }),
-    languages = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, min_val = 1)
-                                 }),
+    subm_name = prop_char(1, 1, 1),
+    address = prop_S7obj("address", Address),
+    phone_numbers = prop_char(min_char = 1),
+    emails = prop_char(min_char = 1),
+    faxes = prop_char(min_char = 1),
+    web_pages = prop_char(min_char = 1),
+    languages = prop_char(min_char = 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,

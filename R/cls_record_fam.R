@@ -41,64 +41,14 @@ FamilyRecord <- S7::new_class(
   "FamilyRecord", 
   parent = Record,
   properties = list(
-    facts = S7::new_property(S7::class_list,
-                             getter = function(self) self@facts,
-                             setter = function(self, value){
-                               self@facts <- as.S7class_list(value, FamilyFact)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    non_events = S7::new_property(S7::class_list,
-                                  getter = function(self) self@non_events,
-                                  setter = function(self, value){
-                                    self@non_events <- as.S7class_list(value, NonEvent)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
-    husb_xref = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    wife_xref = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    chil_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    associations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@associations,
-                                    setter = function(self, value){
-                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
-    subm_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    spouse_sealings = S7::new_property(S7::class_list,
-                                       getter = function(self) self@spouse_sealings,
-                                       setter = function(self, value){
-                                         self@spouse_sealings <- as.S7class_list(value, gedcomS7::SpouseSealing)
-                                         self
-                                       },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
+    facts = prop_S7list("facts", FamilyFact),
+    non_events = prop_S7list("non_events", NonEvent),
+    husb_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    wife_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
+    chil_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    associations = prop_S7list("associations", Association),
+    subm_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    spouse_sealings = prop_S7list("spouse_sealings", SpouseSealing),
     
     NUM_CHILDREN = S7::new_property(
       S7::class_integer,

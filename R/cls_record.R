@@ -23,79 +23,19 @@ Record <- S7::new_class(
   parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
-    XREF = S7::new_property(S7::class_character, default = "@GEDCOMS7_ORPHAN@",
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1),
-                                chk_input_pattern(value, reg_xref(TRUE))
-                              )
-                            }),
-    confidential = S7::new_property(S7::class_logical, default = FALSE,
-                                    validator = function(value){
-                                      chk_input_size(value, 1, 1)
-                                    }),
-    locked = S7::new_property(S7::class_logical, default = FALSE,
-                              validator = function(value){
-                                chk_input_size(value, 1, 1)
-                              }),
-    private = S7::new_property(S7::class_logical, default = FALSE,
-                               validator = function(value){
-                                 chk_input_size(value, 1, 1)
-                               }),
-    user_ids = S7::new_property(S7::class_character, # potentially named
-                                validator = function(value){
-                                  chk_input_size(value, min_val = 1)
-                                }), 
-    unique_ids = S7::new_property(S7::class_character, # not named
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_uuid(TRUE))
-                                  }), 
-    ext_ids = S7::new_property(S7::class_character, # definitely named
-                               validator = function(value){
-                                 c(
-                                   chk_input_size(value, min_val = 1),
-                                   chk_input_size(names(value), length(value), length(value), 1)
-                                 )
-                               }), 
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
-    media_links = S7::new_property(S7::class_list,
-                                   getter = function(self) self@media_links,
-                                   setter = function(self, value){
-                                     self@media_links <- as.S7class_list(value, gedcomS7::MediaLink)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
-    created = S7::new_property(NULL | S7::new_S3_class("gedcomS7::CreationDate"),
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1)
-                               }),
-    updated = S7::new_property(NULL | S7::new_S3_class("gedcomS7::ChangeDate"),
-                               validator = function(value){
-                                 chk_input_size(value, 0, 1)
-                               }),
+    XREF = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@GEDCOMS7_ORPHAN@"),
+    confidential = prop_bool(default = FALSE),
+    locked = prop_bool(default = FALSE),
+    private = prop_bool(default = FALSE),
+    user_ids = prop_char(min_char = 1), # potentially named
+    unique_ids = prop_char(pattern = reg_uuid(TRUE)), # not named
+    ext_ids = prop_char(min_char = 1, names_required = TRUE), # definitely named
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
+    media_links = prop_S7list("media_links", MediaLink),
+    created = prop_S7obj("created", CreationDate),
+    updated = prop_S7obj("updated", ChangeDate),
     
     RESTRICTIONS = S7::new_property(S7::class_character,
                                     getter = function(self){

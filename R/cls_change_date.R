@@ -7,36 +7,18 @@
 #' @tests
 #' expect_error(CreationDate(date_exact = "1 JAM 2005"), regexp = "@date_exact is in an invalid format.")
 #' expect_error(CreationDate(time = "123:34:45"), regexp = "@time is in an invalid format.")
-#' expect_snapshot_value(CreationDate(date_exact = "1 jan 2005")@GEDCOM, "json2")
+#' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005")@GEDCOM, "json2")
 #' expect_snapshot_value(CreationDate(date_exact = "1 JAN 2005",
 #'                                           time = "11:04:56")@GEDCOM, "json2")
 CreationDate <- S7::new_class(
   "CreationDate",
   parent = GedcomS7class,
   properties = list(
-    date_exact = S7::new_property(S7::class_character | 
-                                    S7::new_S3_class("gedcomS7::DateExact"),
-                                  getter = function(self) self@date_exact,
-                                  setter = function(self, value){
-                                    if(length(value) == 0) value <- date_exact_current()
-                                    if(is.character(value)) value <- toupper(value)
-                                    self@date_exact <- value
-                                    self
-                                  },
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 1, 1),
-                                      chk_input_pattern(value, reg_date_exact())
-                                    )
-                                  }),
-    time = S7::new_property(S7::class_character | 
-                              S7::new_S3_class("gedcomS7::Time"),
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 0, 1),
-                                chk_input_pattern(value, reg_time())
-                              )
-                            }),
+    date_exact = prop_char(1, 1, 
+                           pattern = reg_date_exact(),
+                           default = date_exact_current(),
+                           S7class_names = "DateExact"),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -63,19 +45,8 @@ ChangeDate <- S7::new_class(
   "ChangeDate", 
   parent = CreationDate,
   properties = list(
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    notes = prop_S7list("notes", Note),
     
     GEDCOM = S7::new_property(
       S7::class_character,

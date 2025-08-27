@@ -23,30 +23,12 @@ PersonalNamePieces <- S7::new_class(
   "PersonalNamePieces",
   parent = GedcomS7class,
   properties = list(
-    prefix = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
-    given = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, min_val = 1)
-                             }),
-    nickname = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  chk_input_size(value, min_val = 1)
-                                }),
-    surname_prefix = S7::new_property(S7::class_character,
-                                      validator = function(value){
-                                        chk_input_size(value, min_val = 1)
-                                      }),
-    surname = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 chk_input_size(value, min_val = 1)
-                               }),
-    suffix = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, min_val = 1)
-                              }),
+    prefix = prop_char(min_char = 1),
+    given = prop_char(min_char = 1),
+    nickname = prop_char(min_char = 1),
+    surname_prefix = prop_char(min_char = 1),
+    surname = prop_char(min_char = 1),
+    suffix = prop_char(min_char = 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -81,20 +63,9 @@ PersonalNameTran <- S7::new_class(
   "PersonalNameTran",
   parent = GedcomS7class,
   properties = list(
-    pers_name = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   chk_input_size(value, 1, 1, 1)
-                                 }),
-    language = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 1, 1, 1)
-                                  )
-                                }),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1)
-                                   }),
+    pers_name = prop_char(1, 1, 1),
+    language = prop_char(1, 1, 1),
+    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -143,64 +114,14 @@ PersonalName <- S7::new_class(
   "PersonalName",
   parent = GedcomS7class,
   properties = list(
-    pers_name = S7::new_property(S7::class_character,
-                                 getter = function(self) self@pers_name,
-                                 setter = function(self, value){
-                                   if(!grepl("/", value))
-                                     warning("Did you forget to enclose the surname in forward slashes?: ", value)
-                                   
-                                   self@pers_name <- value
-                                   self
-                                 },
-                                 validator = function(value){
-                                   chk_input_size(value, 1, 1, 1)
-                                 }),
-    name_type = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 0, 1),
-                                     chk_input_choice(value, val_name_types())
-                                   )
-                                 }),
-    type_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    name_pieces = S7::new_property(NULL | S7::new_S3_class("gedcomS7::PersonalNamePieces"),
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1)
-                                   }),
-    name_translations = S7::new_property(S7::class_list,
-                                         getter = function(self) self@name_translations,
-                                         setter = function(self, value){
-                                           self@name_translations <- as.S7class_list(value, gedcomS7::PersonalNameTran)
-                                           self
-                                         },
-                                         validator = function(value){
-                                           for(inp in value) if(is.character(inp)) return(inp)
-                                         }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    pers_name = prop_char(1, 1, 1),
+    name_type = prop_char(0, 1, choices = val_name_types()),
+    type_phrase = prop_char(0, 1, 1),
+    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
+    name_translations = prop_S7list("name_translations", PersonalNameTran),
+    notes = prop_S7list("notes", Note),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    citations = prop_S7list("citations", SourceCitation),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@pers_name),
@@ -222,6 +143,9 @@ PersonalName <- S7::new_class(
   ),
   
   validator = function(self){
+    if(!grepl("/", self@pers_name))
+      warning("Did you forget to enclose the surname in forward slashes?: ", self@pers_name)
+    
     c(
       chk_input_phrase(self@type_phrase, "@type_phrase",
                        self@name_type, "@name_type", "OTHER"),

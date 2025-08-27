@@ -30,50 +30,13 @@ Association <- S7::new_class(
   "Association",
   parent = GedcomS7class,
   properties = list(
-    indi_xref = S7::new_property(S7::class_character, default = "@VOID@",
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 1, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    indi_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    relation_is = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     c(
-                                       chk_input_size(value, 1, 1),
-                                       chk_input_choice(value, val_roles())
-                                     )
-                                   }),
-    relation_phrase = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_size(value, 0, 1, 1)
-                                       }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    citations = S7::new_property(S7::class_list,
-                                 getter = function(self) self@citations,
-                                 setter = function(self, value){
-                                   self@citations <- as.S7class_list(value, gedcomS7::SourceCitation)
-                                   self
-                                 },
-                                 validator = function(value){
-                                   for(inp in value) if(is.character(inp)) return(inp)
-                                 }),
+    indi_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    indi_phrase = prop_char(0, 1, 1),
+    relation_is = prop_char(1, 1, choices = val_roles()),
+    relation_phrase = prop_char(0, 1, 1),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    notes = prop_S7list("notes", Note),
+    citations = prop_S7list("citations", SourceCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,

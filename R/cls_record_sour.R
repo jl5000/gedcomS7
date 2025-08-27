@@ -11,21 +11,9 @@ SourceCallNumber <- S7::new_class(
   "SourceCallNumber",
   parent = GedcomS7class,
   properties = list(
-    call_number = S7::new_property(S7::class_character,
-                                    validator = function(value){
-                                      chk_input_size(value, 1, 1, 1)
-                                    }),
-    medium = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 0, 1),
-                                  chk_input_choice(value, val_medium_types())
-                                )
-                              }),
-    medium_phrase = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, 0, 1, 1)
-                                     }),
+    call_number = prop_char(1, 1, 1),
+    medium = prop_char(0, 1, choices = val_medium_types()),
+    medium_phrase = prop_char(0, 1, 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -80,35 +68,10 @@ RepositoryCitation <- S7::new_class(
   "RepositoryCitation",
   parent = GedcomS7class,
   properties = list(
-    repo_xref = S7::new_property(S7::class_character, default = "@VOID@",
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, 1, 1),
-                                     chk_input_pattern(value, reg_xref(TRUE))
-                                   )
-                                 }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    call_numbers = S7::new_property(S7::class_list,
-                                    getter = function(self) self@call_numbers,
-                                    setter = function(self, value){
-                                      self@call_numbers <- as.S7class_list(value, gedcomS7::SourceCallNumber)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
+    repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    notes = prop_S7list("notes", Note),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    call_numbers = prop_S7list("call_numbers", SourceCallNumber),
 
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -167,33 +130,13 @@ FactsRecorded <- S7::new_class(
   "FactsRecorded",
   parent = GedcomS7class,
   properties = list(
-    fact_types = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 1, 1),
-                                      chk_input_pattern(value, sprintf("^(%s)(, (%s))*$", 
-                                                                       paste(val_fact_types(), collapse = "|"),
-                                                                       paste(val_fact_types(), collapse = "|")))
-                                    )
-                                  }),
-    date_period = S7::new_property(S7::class_character | 
-                                     S7::new_S3_class("gedcomS7::DatePeriod"),
-                                   validator = function(value){
-                                     c(
-                                       chk_input_size(value, 0, 1),
-                                       chk_input_pattern(value, reg_date_period())
-                                     )
-                                   }),
-    date_phrase = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    territory = S7::new_property(NULL | S7::new_S3_class("gedcomS7::Place"),
-                                 getter = function(self) self@territory,
-                                 setter = function(self, value){
-                                   self@territory <- as.S7class(value, gedcomS7::Place)
-                                   self
-                                 }),
+    fact_types = prop_char(1, 1, 
+                           pattern = sprintf("^(%s)(, (%s))*$", 
+                                             paste(val_fact_types(), collapse = "|"),
+                                             paste(val_fact_types(), collapse = "|"))),
+    date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_names = "DatePeriod"),
+    date_phrase = prop_char(0, 1, 1),
+    territory = prop_S7obj("territory", Place),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -252,67 +195,17 @@ SourceRecord <- S7::new_class(
   "SourceRecord", 
   parent = Record,
   properties = list(
-    facts_recorded = S7::new_property(S7::class_list,
-                                      getter = function(self) self@facts_recorded,
-                                      setter = function(self, value){
-                                        self@facts_recorded <- as.S7class_list(value, gedcomS7::FactsRecorded)
-                                        self
-                                      },
-                                      validator = function(value){
-                                        for(inp in value) if(is.character(inp)) return(inp)
-                                      }),
-    agency = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                chk_input_size(value, 0, 1, 1)
-                              }),
-    data_note_xrefs = S7::new_property(S7::class_character,
-                                       validator = function(value){
-                                         chk_input_pattern(value, reg_xref(TRUE))
-                                       }),
-    data_notes = S7::new_property(S7::class_list,
-                                  getter = function(self) self@data_notes,
-                                  setter = function(self, value){
-                                    self@data_notes <- as.S7class_list(value, gedcomS7::Note)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
-    originator = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  }),
-    full_title = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  }),
-    short_title = S7::new_property(S7::class_character,
-                                   validator = function(value){
-                                     chk_input_size(value, 0, 1, 1)
-                                   }),
-    publication_facts = S7::new_property(S7::class_character,
-                                         validator = function(value){
-                                           chk_input_size(value, 0, 1, 1)
-                                         }),
+    facts_recorded = prop_S7list("facts_recorded", FactsRecorded),
+    agency = prop_char(0, 1, 1),
+    data_note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    data_notes = prop_S7list("data_notes", Note),
+    originator = prop_char(0, 1, 1),
+    full_title = prop_char(0, 1, 1),
+    short_title = prop_char(0, 1, 1),
+    publication_facts = prop_char(0, 1, 1),
     # NOTE I've made the cardinality of this {0,M} to match source citation
-    source_text = S7::new_property(S7::class_list,
-                                   getter = function(self) self@source_text,
-                                   setter = function(self, value){
-                                     self@source_text <- as.S7class_list(value, gedcomS7::TranslationText)
-                                     self
-                                   },
-                                   validator = function(value){
-                                     for(inp in value) if(is.character(inp)) return(inp)
-                                   }),
-    repo_citations = S7::new_property(S7::class_list,
-                                      getter = function(self) self@repo_citations,
-                                      setter = function(self, value){
-                                        self@repo_citations <- as.S7class_list(value, gedcomS7::RepositoryCitation)
-                                        self
-                                      },
-                                      validator = function(value){
-                                        for(inp in value) if(is.character(inp)) return(inp)
-                                      }),
+    source_text = prop_S7list("source_text", TranslationText),
+    repo_citations = prop_S7list("repo_citations", RepositoryCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,

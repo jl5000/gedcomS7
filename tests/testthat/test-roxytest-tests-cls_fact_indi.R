@@ -2,7 +2,7 @@
 
 # File R/cls_fact_indi.R: @tests
 
-test_that("Function IndividualEvent() @ L63", {
+test_that("Function IndividualEvent() @ L54", {
   expect_error(IndividualEvent("birth", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
   expect_error(IndividualEvent("BIRT", fact_val = "Yes"), 
@@ -27,7 +27,7 @@ test_that("Function IndividualEvent() @ L63", {
   expect_snapshot_value(IndividualEvent("DEAT", fact_val = "Y", age = "73y 4m",
                                         age_phrase = "old")@GEDCOM, "json2")
   expect_snapshot_value(IndividualEvent("ADOP", fact_val = "Y",
-                                         date = "jan 1980",
+                                         date = "JAN 1980",
                                          fact_desc = "More info on adoption",
                                          fam_xref = "@123@",
                                          adop_parent = "WIFE",
@@ -35,7 +35,7 @@ test_that("Function IndividualEvent() @ L63", {
 })
 
 
-test_that("Function IndividualAttribute() @ L158", {
+test_that("Function IndividualAttribute() @ L134", {
   expect_error(IndividualAttribute("descr", fact_val = "Tall"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(IndividualAttribute("DSCR"), 

@@ -75,7 +75,7 @@ chk_input_size <- function(input,
 #' expect_equal(chk_input_pattern(month.abb, "[A-Z][a-z][a-xz]"),
 #'              "is in an invalid format: May")
 chk_input_pattern <- function(input, pattern) {
-  if (length(input) > 0 && is.character(input)) {
+  if (length(input) > 0 && is.character(input) && !is.null(pattern)) {
     for (i in input) {
       if (!grepl(pattern, i))
         return(sprintf("is in an invalid format: %s", i))
@@ -100,7 +100,7 @@ chk_input_pattern <- function(input, pattern) {
 #' expect_match(chk_input_choice(LETTERS, LETTERS[-20]),
 #'              "has an invalid value: T")
 chk_input_choice <- function(input, choices) {
-  if (length(input) > 0 && is.character(input)){
+  if (length(input) > 0 && is.character(input) && !is.null(choices)){
     for (i in input) {
       if (!i %in% choices)
         return(sprintf("has an invalid value: %s\n  The valid values are: %s", 

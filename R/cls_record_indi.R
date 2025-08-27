@@ -54,92 +54,18 @@ IndividualRecord <- S7::new_class(
   "IndividualRecord", 
   parent = Record,
   properties = list(
-    pers_names = S7::new_property(S7::class_list,
-                                  getter = function(self) self@pers_names,
-                                  setter = function(self, value){
-                                    self@pers_names <- as.S7class_list(value, gedcomS7::PersonalName)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
-    sex = S7::new_property(S7::class_character, default = "U",
-                           validator = function(value){
-                             c(
-                               chk_input_size(value, 0, 1),
-                               chk_input_choice(value, val_sexes())
-                             )
-                           }),
-    facts = S7::new_property(S7::class_list,
-                             getter = function(self) self@facts,
-                             setter = function(self, value){
-                               self@facts <- as.S7class_list(value, IndividualFact)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
-    non_events = S7::new_property(S7::class_list,
-                                  getter = function(self) self@non_events,
-                                  setter = function(self, value){
-                                    self@non_events <- as.S7class_list(value, gedcomS7::NonEvent)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
-    ordinances = S7::new_property(S7::class_list,
-                                  getter = function(self) self@ordinances,
-                                  setter = function(self, value){
-                                    self@ordinances <- as.S7class_list(value, gedcomS7::Ordinance)
-                                    self
-                                  },
-                                  validator = function(value){
-                                    for(inp in value) if(is.character(inp)) return(inp)
-                                  }),
-    fam_links_chil = S7::new_property(S7::class_list,
-                                      getter = function(self) self@fam_links_chil,
-                                      setter = function(self, value){
-                                        self@fam_links_chil <- as.S7class_list(value, gedcomS7::FamilyLinkChild)
-                                        self
-                                      },
-                                      validator = function(value){
-                                        for(inp in value) if(is.character(inp)) return(inp)
-                                      }),
-    fam_links_spou = S7::new_property(S7::class_list,
-                                      getter = function(self) self@fam_links_spou,
-                                      setter = function(self, value){
-                                        self@fam_links_spou <- as.S7class_list(value, gedcomS7::FamilyLinkSpouse)
-                                        self
-                                      },
-                                      validator = function(value){
-                                        for(inp in value) if(is.character(inp)) return(inp)
-                                      }),
-    subm_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    associations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@associations,
-                                    setter = function(self, value){
-                                      self@associations <- as.S7class_list(value, gedcomS7::Association)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                    }),
-    alia_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    anci_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    desi_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
+    pers_names = prop_S7list("pers_names", PersonalName),
+    sex = prop_char(0, 1, choices = val_sexes(), default = "U"),
+    facts = prop_S7list("facts", IndividualFact),
+    non_events = prop_S7list("non_events", NonEvent),
+    ordinances = prop_S7list("ordinances", Ordinance),
+    fam_links_chil = prop_S7list("fam_links_chil", FamilyLinkChild),
+    fam_links_spou = prop_S7list("fam_links_spou", FamilyLinkSpouse),
+    subm_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    associations = prop_S7list("associations", Association),
+    alia_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    anci_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    desi_xrefs = prop_char(pattern = reg_xref(TRUE)),
     
     PRIMARY_NAME = S7::new_property(
       S7::class_character,

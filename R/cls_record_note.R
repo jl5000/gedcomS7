@@ -11,43 +11,17 @@
 #' expect_snapshot_value(NoteRecord("@N4@",
 #'                                         text = "The note goes something like this",
 #'                                         language = "en")@GEDCOM, "json2")
-#' expect_error(NoteRecord("test", translations = TranslationText("Woohoo")),
+#' expect_error(NoteRecord("@N4@", text = "test",
+#'                        translations = TranslationText("Woohoo")),
 #'              regexp = "Each @translation requires a @language or @media_type")
 NoteRecord <- S7::new_class(
   "NoteRecord", 
   parent = Record,
   properties = list(
-    text = S7::new_property(S7::class_character,
-                            validator = function(value){
-                              chk_input_size(value, 1, 1, 1)
-                            }),
-    media_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 0, 1),
-                                      chk_input_choice(value, c("text/plain","text/html"))
-                                    )
-                                  }),
-    language = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1, 1)
-                                  )
-                                }),
-    translations = S7::new_property(S7::class_list,
-                                    getter = function(self) self@translations,
-                                    setter = function(self, value){
-                                      self@translations <- as.S7class_list(value, gedcomS7::TranslationText)
-                                      self
-                                    },
-                                    validator = function(value){
-                                      for(inp in value) if(is.character(inp)) return(inp)
-                                      
-                                      for(tran in value){
-                                        if(length(tran@language) + length(tran@media_type) == 0)
-                                          return("Each @translation requires a @language or @media_type to be defined.")
-                                      }
-                                    }),
+    text = prop_char(1, 1, 1),
+    media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
+    language = prop_char(0, 1, 1),
+    translations = prop_S7list("translations", TranslationText),
     
     GEDCOM = S7::new_property(
       S7::class_data.frame,
@@ -74,6 +48,11 @@ NoteRecord <- S7::new_class(
     
     if(length(self@media_links) > 0)
       return("This record does not use @media_links")
+    
+    for(tran in self@translations){
+      if(length(tran@language) + length(tran@media_type) == 0)
+        return("Each @translation requires a @language or @media_type to be defined.")
+    }
   }
 )
 

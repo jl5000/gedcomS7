@@ -42,54 +42,14 @@ Place <- S7::new_class(
   "Place",
   parent = GedcomS7class,
   properties = list(
-    place_name = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 1, 1, 1)
-                                  }),
-    place_form = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_size(value, 0, 1, 1)
-                                  }),
-    language = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1, 1)
-                                  )
-                                }),
-    place_translations = S7::new_property(S7::class_character,
-                                          validator = function(value){
-                                            c(
-                                              chk_input_size(value, min_val = 1),
-                                              chk_input_size(names(value), length(value), length(value), 1)
-                                            )
-                                          }),
-    lat_long = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  c(
-                                    chk_input_size(value, 0, 1),
-                                    chk_input_pattern(value, sprintf("^%s %s$", reg_latitude(), reg_longitude()))
-                                  )
-                                }),
-    ext_ids = S7::new_property(S7::class_character,
-                               validator = function(value){
-                                 c(
-                                   chk_input_size(value, min_val = 1),
-                                   chk_input_size(names(value), length(value), length(value), 1)
-                                 )
-                               }),
-    note_xrefs = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    chk_input_pattern(value, reg_xref(TRUE))
-                                  }),
-    notes = S7::new_property(S7::class_list,
-                             getter = function(self) self@notes,
-                             setter = function(self, value){
-                               self@notes <- as.S7class_list(value, gedcomS7::Note)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                             }),
+    place_name = prop_char(1, 1, 1),
+    place_form = prop_char(0, 1, 1),
+    language = prop_char(0, 1, 1),
+    place_translations = prop_char(min_char = 1, names_required = TRUE),
+    lat_long = prop_char(0, 1, pattern = sprintf("^%s %s$", reg_latitude(), reg_longitude())),
+    ext_ids = prop_char(min_char = 1, names_required = TRUE),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    notes = prop_S7list("notes", Note),
     
     LATITUDE = S7::new_property(S7::class_character,
                            getter = function(self){

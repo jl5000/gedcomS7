@@ -36,39 +36,12 @@ MediaFile <- S7::new_class(
   "MediaFile",
   parent = GedcomS7class,
   properties = list(
-    location = S7::new_property(S7::class_character,
-                                validator = function(value){
-                                  chk_input_size(value, 1, 1, 1)
-                                }),
-    title = S7::new_property(S7::class_character,
-                             validator = function(value){
-                               chk_input_size(value, 0, 1, 1)
-                             }),
-    media_type = S7::new_property(S7::class_character,
-                                  validator = function(value){
-                                    c(
-                                      chk_input_size(value, 1, 1, 1)
-                                      #chk_input_choice(value, val_multimedia_formats()), TODO
-                                    )
-                                  }),
-    medium = S7::new_property(S7::class_character,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 0, 1),
-                                  chk_input_choice(value, val_medium_types())
-                                )
-                              }),
-    medium_phrase = S7::new_property(S7::class_character,
-                                     validator = function(value){
-                                       chk_input_size(value, 0, 1, 1)
-                                     }),
-    media_alt = S7::new_property(S7::class_character,
-                                 validator = function(value){
-                                   c(
-                                     chk_input_size(value, min_val = 1)
-                                     #chk_input_choice(names(value), val_multimedia_formats())
-                                   )
-                                 }),
+    location = prop_char(1, 1, 1),
+    title = prop_char(0, 1, 1),
+    media_type = prop_char(1, 1, 1),
+    medium = prop_char(0, 1, choices = val_medium_types()),
+    medium_phrase = prop_char(0, 1, 1),
+    media_alt = prop_char(min_char = 1),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -120,16 +93,7 @@ MediaRecord <- S7::new_class(
   "MediaRecord", 
   parent = Record,
   properties = list(
-    files = S7::new_property(S7::class_list,
-                             getter = function(self) self@files,
-                             setter = function(self, value){
-                               self@files <- as.S7class_list(value, gedcomS7::MediaFile)
-                               self
-                             },
-                             validator = function(value){
-                               for(inp in value) if(is.character(inp)) return(inp)
-                               chk_input_size(value, 1)
-                             }),
+    files = prop_S7list("files", MediaFile),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -150,6 +114,9 @@ MediaRecord <- S7::new_class(
   validator = function(self){
     if(length(self@media_links) > 0)
       return("This record does not use @media_links")
+    
+    if(length(self@files) < 1)
+      return("At least one file must be defined")
   }
 )
 

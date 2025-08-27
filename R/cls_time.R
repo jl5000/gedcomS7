@@ -26,35 +26,11 @@ Time <- S7::new_class(
   "Time",
   parent = GedcomS7class,
   properties = list(
-    hour = S7::new_property(S7::class_numeric,
-                            validator = function(value){
-                              c(
-                                chk_input_size(value, 1, 1, 0, 23),
-                                chk_whole_number(value)
-                              )
-                            }),
-    minute = S7::new_property(S7::class_numeric,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 1, 1, 0, 59),
-                                  chk_whole_number(value)
-                                )
-                              }),
-    second = S7::new_property(S7::class_numeric,
-                              validator = function(value){
-                                c(
-                                  chk_input_size(value, 0, 1, 0, 59),
-                                  chk_whole_number(value)
-                                )
-                              }),
-    fraction = S7::new_property(S7::class_numeric,
-                                validator = function(value){
-                                  chk_whole_number(value)
-                                }),
-    utc = S7::new_property(S7::class_logical, default = TRUE,
-                           validator = function(value){
-                             chk_input_size(value, 1, 1)
-                           }),
+    hour = prop_whole(1, 1, 0, 23),
+    minute = prop_whole(1, 1, 0, 59),
+    second = prop_whole(0, 1, 0, 59),
+    fraction = prop_whole(),
+    utc = prop_bool(default = TRUE),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,

@@ -26,7 +26,7 @@ test_that("Function MediaFile() @ L35", {
 })
 
 
-test_that("Function MediaRecord() @ L119", {
+test_that("Function MediaRecord() @ L92", {
   fls <- list(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",
