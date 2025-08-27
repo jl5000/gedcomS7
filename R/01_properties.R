@@ -134,6 +134,19 @@
 #' @keywords internal
 NULL
 
+#' Create a property for a list of gedcomS7 objects
+#'
+#' Constructs a property that stores a list of objects of a specified gedcomS7 class.
+#' 
+#' @details
+#' If any elements of the list are of type character, then they will automatically
+#' be converted into objects of the appropriate class. Any elements that cannot
+#' be converted will result in the validator throwing an error. 
+#'
+#' @param prop_name A character string specifying the name of the property.
+#' @param S7_class The gedcomS7 class that each element of the list should conform to.
+#'
+#' @returns An S7 property object.
 prop_S7list <- function(prop_name, S7_class){
   S7::new_property(S7::class_list,
                    getter = function(self) S7::prop(self, prop_name),
@@ -145,7 +158,21 @@ prop_S7list <- function(prop_name, S7_class){
                      for(inp in value) if(is.character(inp)) return(inp)
                    })
 }
+
+#' Create a property for a single gedcomS7 object
+#'
+#' Constructs a property that can store a single object of a specified gedcomS7 class.
+#' 
+#' @details
+#' The property will default to a value of NULL if no object is provided. 
+#'
+#' @param prop_name A character string specifying the name of the property.
+#' @param S7_class The gedcomS7 class that the property value should conform to.
+#'
+#' @returns An S7 property object.
 prop_S7obj <- function(prop_name, S7_class){
+  # S3 class used so that order of class definition does not matter and classes
+  # can be recursive
   S7::new_property(NULL | S7::new_S3_class(paste0("gedcomS7::", deparse(substitute(S7_class)))),
                    getter = function(self) S7::prop(self, prop_name),
                    setter = function(self, value){
@@ -153,6 +180,27 @@ prop_S7obj <- function(prop_name, S7_class){
                      self
                    })
 }
+
+
+#' Create a character-based property
+#'
+#' Constructs a character property with optional constraints on size, 
+#' character length, pattern matching, and allowed choices.
+#'
+#' @param min_size Minimum number of elements allowed.
+#' @param max_size Maximum number of elements allowed.
+#' @param min_char Minimum number of characters per element.
+#' @param max_char Maximum number of characters per element.
+#' @param choices Character vector of allowed values.
+#' @param pattern Regular expression pattern that values must match.
+#' @param names_required Logical indicating whether property values should have names.
+#' @param default Default value for the property.
+#' @param casting_name The name of the property if you want to explicitly cast it
+#' to character type when being set (this allows users to provide other atomic types).
+#' @param S7class_names Character vector of gedcomS7 class names that this property
+#' could also take.
+#'
+#' @returns An S7 property object.
 prop_char <- function(min_size = NULL, 
                       max_size = NULL, 
                       min_char = NULL, 
@@ -196,6 +244,18 @@ prop_char <- function(min_size = NULL,
                      )
                    })
 }
+
+#' Create a numeric property restricted to whole numbers
+#'
+#' Constructs a numeric property with validation for whole numbers and optional 
+#' constraints on size and value range.
+#'
+#' @param min_size Minimum number of elements allowed.
+#' @param max_size Maximum number of elements allowed.
+#' @param min_val Minimum numeric value allowed.
+#' @param max_val Maximum numeric value allowed.
+#'
+#' @returns An S7 property object.
 prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val = NULL){
   S7::new_property(S7::class_numeric,
                    validator = function(value){
@@ -205,6 +265,15 @@ prop_whole <- function(min_size = NULL, max_size = NULL, min_val = NULL, max_val
                      )
                    })
 }
+
+#' Create a boolean property
+#'
+#' Constructs a logical property with a default value and validation to ensure 
+#' it contains exactly one element.
+#'
+#' @param default Logical value to use as the default.
+#'
+#' @returns An S7 property object.
 prop_bool <- function(default = FALSE){
   S7::new_property(S7::class_logical, default = default,
                    validator = function(value){
