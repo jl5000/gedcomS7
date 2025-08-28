@@ -134,7 +134,7 @@ increase_level <- function(ged, by = 1){
 }
 
 remove_void_xrefs <- function(xrefs){
-  xrefs[xrefs != "@VOID@"]
+  xrefs[xrefs != void_xref()]
 }
 
 to_console <- function(label, val, exdent){

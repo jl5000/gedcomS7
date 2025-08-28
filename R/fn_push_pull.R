@@ -241,7 +241,7 @@ refresh_indi_links <- function(gedcom, record){
 
   for(lnk in record@fam_links_spou){
     fam_xref <- lnk@fam_xref
-    if(fam_xref == "@VOID@") next
+    if(fam_xref == void_xref()) next
     fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     
     fam_husb <- find_ged_values(fam_rec, "HUSB")
@@ -275,7 +275,7 @@ refresh_indi_links <- function(gedcom, record){
   
   for(lnk in record@fam_links_chil){
     fam_xref <- lnk@fam_xref
-    if(fam_xref == "@VOID@") next
+    if(fam_xref == void_xref()) next
     fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")
     

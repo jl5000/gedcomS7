@@ -68,7 +68,7 @@ RepositoryCitation <- S7::new_class(
   "RepositoryCitation",
   parent = GedcomS7class,
   properties = list(
-    repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     notes = prop_S7list("notes", Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     call_numbers = prop_S7list("call_numbers", SourceCallNumber),

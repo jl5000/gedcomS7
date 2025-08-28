@@ -30,7 +30,7 @@ MediaLink <- S7::new_class(
   "MediaLink",
   parent = GedcomS7class,
   properties = list(
-    media_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    media_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     title = prop_char(0, 1, 1),
     top = prop_whole(0, 1, 0),
     left = prop_whole(0, 1, 0),

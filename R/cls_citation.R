@@ -63,7 +63,7 @@ SourceCitation <- S7::new_class(
   "SourceCitation",
   parent = GedcomS7class,
   properties = list(
-    sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     where = prop_char(0, 1, 1),
     date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
     source_text = prop_S7list("source_text", TranslationText),

@@ -30,7 +30,7 @@ Association <- S7::new_class(
   "Association",
   parent = GedcomS7class,
   properties = list(
-    indi_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    indi_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     indi_phrase = prop_char(0, 1, 1),
     relation_is = prop_char(1, 1, choices = val_roles()),
     relation_phrase = prop_char(0, 1, 1),

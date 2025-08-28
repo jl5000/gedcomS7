@@ -6,6 +6,8 @@ S7::method(print, GedcomS7class) <- function(x, ...){
   summary(x)
 }
 
+void_xref <- function() "@VOID@"
+
 
 #' Create an address object
 #' 
