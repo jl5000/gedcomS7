@@ -62,8 +62,8 @@ date_exact_current <- function(){
 #' Create a GEDCOM Gregorian Date object
 #' 
 #' @inheritParams prop_definitions
-#' @param bce Whether the date is Before the Common Era. This is FALSE by default,
-#' but if TRUE, only the year should be given.
+#' @param year The year given as an integer (not 0). Negative years are interpreted
+#' as Before the Common Era (BCE). If BCE, only year should be provided.
 #' 
 #' @returns An S7 object representing a GEDCOM Gregorian Date.
 #' @export
@@ -74,20 +74,25 @@ date_exact_current <- function(){
 #' expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
 #' expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
 #' expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
-#' expect_error(DateGregorian(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
+#' expect_error(DateGregorian(-320, 5, 16), regexp = "BCE date must contain year only")
 #' expect_equal(DateGregorian(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
 #' expect_equal(DateGregorian(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
 #' expect_equal(DateGregorian(2004, 8)@GEDCOM_STRING, "AUG 2004")
 #' expect_equal(DateGregorian(2012)@GEDCOM_STRING, "2012")
-#' expect_equal(DateGregorian(193, bce = TRUE)@GEDCOM_STRING, "193 BCE")
+#' expect_equal(DateGregorian(-193)@GEDCOM_STRING, "193 BCE")
 DateGregorian <- S7::new_class(
   "DateGregorian", 
   parent = DateClass,
   properties = list(
-    year = prop_whole(1, 1, 1),
+    year = prop_whole(1, 1),
     month = prop_whole(0, 1, 1, 12),
     day = prop_whole(0, 1, 1, 31),
-    bce = prop_bool(default = FALSE),
+    
+    BCE = S7::new_property(
+      S7::class_logical,
+      getter = function(self){
+        isTRUE(self@year < 0)
+      }),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -97,17 +102,17 @@ DateGregorian <- S7::new_class(
           val <- paste(val, self@day)
         if (length(self@month) == 1) 
           val <- paste(val, toupper(month.abb[self@month]))
-        if (length(self@year) == 1) {
-          val <- paste(val, self@year)
-          if(length(self@month) + length(self@day) == 0 & self@bce)
-            val <- paste(val, "BCE")
-        }
+        
+        val <- paste(val, abs(self@year))
+        if(self@BCE) val <- paste(val, "BCE")
+            
         trimws(val)
       }               
     )
   ),
   validator = function(self){
-    chk_input_date_cpts(self@year, self@month, self@day, self@bce)
+    if(self@year == 0) stop("@year cannot be zero")
+    chk_input_date_cpts(self@year, self@month, self@day)
   }
 )
 

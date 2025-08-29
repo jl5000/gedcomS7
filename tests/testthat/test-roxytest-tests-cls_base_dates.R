@@ -26,16 +26,16 @@ test_that("Function DateGregorian() @ L83", {
   expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
   expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
   expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
-  expect_error(DateGregorian(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
+  expect_error(DateGregorian(-320, 5, 16), regexp = "BCE date must contain year only")
   expect_equal(DateGregorian(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
   expect_equal(DateGregorian(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
   expect_equal(DateGregorian(2004, 8)@GEDCOM_STRING, "AUG 2004")
   expect_equal(DateGregorian(2012)@GEDCOM_STRING, "2012")
-  expect_equal(DateGregorian(193, bce = TRUE)@GEDCOM_STRING, "193 BCE")
+  expect_equal(DateGregorian(-193)@GEDCOM_STRING, "193 BCE")
 })
 
 
-test_that("Function DateApprox() @ L132", {
+test_that("Function DateApprox() @ L137", {
   expect_error(DateApprox("hello"), regexp = "@date_greg is in an invalid format")
   expect_equal(DateApprox(DateGregorian(2001, 5, 12), calc = TRUE)@GEDCOM_STRING, 
                                 "CAL 12 MAY 2001")
@@ -46,7 +46,7 @@ test_that("Function DateApprox() @ L132", {
 })
 
 
-test_that("Function DatePeriod() @ L201", {
+test_that("Function DatePeriod() @ L206", {
   expect_equal(DatePeriod()@GEDCOM_STRING, "")
   expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
   expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -88,7 +88,7 @@ test_that("Function DatePeriod() @ L201", {
 })
 
 
-test_that("Function DateRange() @ L273", {
+test_that("Function DateRange() @ L278", {
   expect_error(DateRange(), regexp = "has too few elements")
   expect_error(DateRange(""), regexp = "@start_date is in an invalid format")
   expect_error(DateRange(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -130,7 +130,7 @@ test_that("Function DateRange() @ L273", {
 })
 
 
-test_that("Function DateValue() @ L312", {
+test_that("Function DateValue() @ L317", {
   expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
   expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
                regexp = "A date period should not have a time defined")
@@ -141,7 +141,7 @@ test_that("Function DateValue() @ L312", {
 })
 
 
-test_that("Function DateSorting() @ L362", {
+test_that("Function DateSorting() @ L367", {
   expect_error(DateSorting(""), regexp = "@date is in an invalid format")
   expect_error(DateSorting("FROM 2016"), regexp = "@date is in an invalid format")
   expect_error(DateSorting(DatePeriod(end_date = "1980")), 

@@ -41,10 +41,10 @@ DateGregorian(year = 1999, month = 4)
 DateGregorian(year = 1999)
 ```
 
-Years before the Common Era can be defined using the `bce` parameter:
+Years before the Common Era can be defined using negative years:
 
 ```{r}
-DateGregorian(year = 105, bce = TRUE)
+DateGregorian(year = -105)
 ```
 
 No other calendars apart from the Gregorian calendar are supported by the package.
