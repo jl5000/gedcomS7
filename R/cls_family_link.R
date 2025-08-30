@@ -1,4 +1,15 @@
 
+FamilyLink <- S7::new_class(
+  "FamilyLink", 
+  parent = GedcomS7class, 
+  abstract = TRUE,
+  properties = list(
+    fam_xref = prop_char(1, 1, pattern = reg_xref(TRUE)),
+    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
+    notes = prop_S7list("notes", Note)
+  )
+)
+
 #' Create a family link (as spouse) object
 #' 
 #' @inheritParams prop_definitions 
@@ -11,12 +22,8 @@
 #'                                                notes = list(Note("test")))@GEDCOM, "json2")
 FamilyLinkSpouse <- S7::new_class(
   "FamilyLinkSpouse",
-  parent = GedcomS7class,
+  parent = FamilyLink,
   properties = list(
-    fam_xref = prop_char(1, 1, pattern = reg_xref(TRUE)),
-    note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
-    
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
@@ -60,7 +67,7 @@ FamilyLinkSpouse <- S7::new_class(
 #'                                                note_xrefs = c("@242@","@GJFJ@"))@GEDCOM, "json2")
 FamilyLinkChild <- S7::new_class(
   "FamilyLinkChild", 
-  parent = FamilyLinkSpouse,
+  parent = FamilyLink,
   properties = list(
     pedigree = prop_char(0, 1, choices = val_pedigree_types()),
     pedigree_phrase = prop_char(0, 1, 1),
