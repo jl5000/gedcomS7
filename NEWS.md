@@ -2,6 +2,7 @@
 
 * `DateGregorian()` now handles BCE dates with a negative `@year`
 * Minor changes to some internal class names and their inheritance
+* Other minor internal improvements
 
 # gedcomS7 0.1.1 (27 Aug 2025)
 
