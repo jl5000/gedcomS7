@@ -61,8 +61,7 @@ Association <- S7::new_class(
 
 parse_associations <- function(rec_lines, location = NULL){
   asso_lst <- find_ged_values(rec_lines, c(location, "ASSO"), return_list = TRUE)
-  if(length(asso_lst) == 0) return(list())
-  
+
   lapply(asso_lst, \(x){
     Association(
       indi_xref = find_ged_values(x, "ASSO"),

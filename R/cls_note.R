@@ -73,8 +73,7 @@ Note <- S7::new_class(
 # Need location when top level has no xref
 parse_notes <- function(lines, location = NULL){
   note_lst <- find_ged_values(lines, c(location, "NOTE"), return_list = TRUE)
-  if(length(note_lst) == 0) return(list())
-  
+
   lapply(note_lst, \(x){
     Note(
       text = find_ged_values(x, "NOTE"),

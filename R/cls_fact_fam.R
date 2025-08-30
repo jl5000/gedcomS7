@@ -91,8 +91,7 @@ parse_facts_fam <- function(rec_lines){
                               tag = paste(c(val_family_attribute_types(TRUE),
                                             val_family_event_types(TRUE)),
                                           collapse = "|"))
-  if(length(fact_lst) == 0) return(list())
-  
+
   lapply(fact_lst, \(x){
     tag <- parse_line_tag(x[1])
     

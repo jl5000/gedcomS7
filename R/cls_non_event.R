@@ -57,8 +57,7 @@ NonEvent <- S7::new_class(
 
 parse_non_events <- function(rec_lines){
   none_lst <- find_ged_values(rec_lines, "NO", return_list = TRUE)
-  if(length(none_lst) == 0) return(list())
-  
+
   lapply(none_lst, \(x){
     NonEvent(
       event_type = find_ged_values(x, "NO"),

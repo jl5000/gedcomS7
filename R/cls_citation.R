@@ -119,8 +119,7 @@ SourceCitation <- S7::new_class(
 parse_citations <- function(lines, location = NULL){
   
   sour_lst <- find_ged_values(lines, c(location, "SOUR"), return_list = TRUE)
-  if(length(sour_lst) == 0) return(list())
-  
+
   lapply(sour_lst, \(x){
     SourceCitation(
       sour_xref = find_ged_values(x, "SOUR"),

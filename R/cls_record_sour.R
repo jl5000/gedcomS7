@@ -36,8 +36,7 @@ SourceCallNumber <- S7::new_class(
 
 parse_call_numbers <- function(lines, location){
   call_lst <- find_ged_values(lines, c(location, "CALN"), return_list = TRUE) 
-  if(length(call_lst) == 0) return(list())
-  
+
   lapply(call_lst, \(x){
     SourceCallNumber(
       call_number = find_ged_values(x, "CALN"),
@@ -88,8 +87,7 @@ RepositoryCitation <- S7::new_class(
 
 parse_repo_citations <- function(rec_lines){
   repo_lst <- find_ged_values(rec_lines, "REPO", return_list = TRUE) 
-  if(length(repo_lst) == 0) return(list())
-  
+
   lapply(repo_lst, \(x){
     RepositoryCitation(
       repo_xref = find_ged_values(x, "REPO"),

@@ -101,8 +101,7 @@ FamilyLinkChild <- S7::new_class(
 parse_family_links <- function(rec_lines, as_spouse = TRUE){
   if(as_spouse) tag <- "FAMS" else tag <- "FAMC"
   link_lst <- find_ged_values(rec_lines, tag, return_list = TRUE) 
-  if(length(link_lst) == 0) return(list())
-  
+
   lapply(link_lst, \(x){
 
     if(tag == "FAMC"){
