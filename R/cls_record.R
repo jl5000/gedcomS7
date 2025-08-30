@@ -23,7 +23,7 @@ Record <- S7::new_class(
   parent = GedcomS7class,
   abstract = TRUE,
   properties = list(
-    XREF = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@GEDCOMS7_ORPHAN@"),
+    XREF = prop_char(1, 1, pattern = reg_xref(TRUE), default = new_xref()),
     confidential = prop_bool(default = FALSE),
     locked = prop_bool(default = FALSE),
     private = prop_bool(default = FALSE),

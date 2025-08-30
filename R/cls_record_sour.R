@@ -52,7 +52,7 @@ parse_call_numbers <- function(lines, location){
 #' 
 #' @inheritParams prop_definitions
 #' @param repo_xref The cross-reference identifier of a repository record. If the repository
-#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' does not have a record, then this can be left blank and a void xref will be used. However,
 #' you should describe the repository in @notes.
 #' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
 #' This can either be a `SourceCallNumber` object, a list of them,

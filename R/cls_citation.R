@@ -3,7 +3,7 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param sour_xref The cross-reference identifier of a source record. If the source
-#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' does not have a record, then this can be left blank and a void xref will be used. However,
 #' you should describe the source in @where.
 #' @param where A specific location within the information referenced. For a published work, this could
 #' include the volume of a multi-volume work and the page number or numbers. For a

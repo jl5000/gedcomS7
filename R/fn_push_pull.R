@@ -139,13 +139,13 @@ push_record <- function(gedcom, record){
   }
   
   if(gedcom@add_creation_dates){
-    if(length(record@created) == 0 && record@XREF == "@GEDCOMS7_ORPHAN@"){
+    if(length(record@created) == 0 && record@XREF == new_xref()){
       record@created <- CreationDate()
     }
   }
   
   rec_type <- get_record_type(record)
-  new_rec <- record@XREF == "@GEDCOMS7_ORPHAN@"
+  new_rec <- record@XREF == new_xref()
   
   if(new_rec)
     record@XREF <- gedcom@records@XREFS_NEXT[[rec_type]]
