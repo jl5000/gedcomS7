@@ -106,10 +106,13 @@ is_alive <- function(rec_lines, max_age = 100){
   deaths <- find_ged_values(rec_lines, "DEAT", return_list = TRUE)
   
   if(length(deaths) > 0){
+    deaths_chr <- unlist(deaths)
     # death events exist - Y/date/place/addr
     death_occured <- c(
-      grepl("^1 DEAT Y$", unlist(deaths)),
-      grepl("^2 (DATE|PLAC|ADDR) ", unlist(deaths))
+      startsWith(deaths_chr, "1 DEAT Y"),
+      startsWith(deaths_chr, "2 DATE "),
+      startsWith(deaths_chr, "2 PLAC "),
+      startsWith(deaths_chr, "2 ADDR ")
     )
     if(any(death_occured)) return(FALSE)
   }

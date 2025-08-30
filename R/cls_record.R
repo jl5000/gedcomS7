@@ -79,9 +79,9 @@ parse_common_record_elements <- function(rec, rec_lines){
   resn <- find_ged_values(rec_lines, "RESN")
   if(length(resn) > 0){
     S7::props(rec) <- list(
-      locked = grepl("LOCKED", resn),
-      confidential = grepl("CONFIDENTIAL", resn),
-      private = grepl("PRIVACY", resn)
+      locked = grepl("LOCKED", resn, fixed = TRUE),
+      confidential = grepl("CONFIDENTIAL", resn, fixed = TRUE),
+      private = grepl("PRIVACY", resn, fixed = TRUE)
     )
   }
   
