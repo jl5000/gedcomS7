@@ -2,7 +2,7 @@
 
 # File R/cls_family_link.R: @tests
 
-test_that("Function FamilyLinkSpouse() @ L12", {
+test_that("Function FamilyLinkSpouse() @ L23", {
   expect_error(FamilyLinkSpouse(), regexp = "@fam_xref has too few elements")
   expect_snapshot_value(FamilyLinkSpouse("@F123@")@GEDCOM, "json2")
   expect_snapshot_value(FamilyLinkSpouse("@F2@", 
@@ -10,7 +10,7 @@ test_that("Function FamilyLinkSpouse() @ L12", {
 })
 
 
-test_that("Function FamilyLinkChild() @ L61", {
+test_that("Function FamilyLinkChild() @ L68", {
   expect_error(FamilyLinkChild("@F123@", pedigree = "father"), 
                                        regexp = "@pedigree has an invalid value")
   expect_error(FamilyLinkChild("@F123@", pedigree = "OTHER"), 
