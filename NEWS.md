@@ -1,6 +1,6 @@
 # gedcomS7 0.2.0 (XX Sep 2025)
 
-* `DateGregorian()` now indicates BCE dates by providing a negative year
+* `DateGregorian()` now handles BCE dates with a negative `@year`
 * Minor changes to some internal class names and their inheritance
 
 # gedcomS7 0.1.1 (27 Aug 2025)

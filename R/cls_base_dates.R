@@ -69,11 +69,13 @@ date_exact_current <- function(){
 #' @export
 #' @tests
 #' expect_error(DateGregorian(), regexp = "@year has too few elements")
+#' expect_error(DateGregorian(0), regexp = "@year cannot be zero")
 #' expect_error(DateGregorian(2001, day = 15), regexp = "Day is defined without a month")
 #' expect_error(DateGregorian(day = 5), regexp = "@year has too few elements")
 #' expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
 #' expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
 #' expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
+#' expect_error(DateGregorian(2001, 2, 30), regexp = "Invalid date")
 #' expect_error(DateGregorian(-320, 5, 16), regexp = "BCE date must contain year only")
 #' expect_equal(DateGregorian(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
 #' expect_equal(DateGregorian(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
@@ -111,7 +113,7 @@ DateGregorian <- S7::new_class(
     )
   ),
   validator = function(self){
-    if(self@year == 0) stop("@year cannot be zero")
+    if(self@year == 0) return("@year cannot be zero")
     chk_input_date_cpts(self@year, self@month, self@day)
   }
 )
