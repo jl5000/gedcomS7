@@ -1,4 +1,17 @@
 
+AuditDate <- S7::new_class(
+  "AuditDate",
+  parent = GedcomS7class,
+  abstract = TRUE,
+  properties = list(
+    date_exact = prop_char(1, 1, 
+                           pattern = reg_date_exact(),
+                           default = date_exact_current(),
+                           S7class_names = "DateExact"),
+    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time")
+  )
+)
+
 #' Create a creation date object
 #' 
 #' @inheritParams prop_definitions 
@@ -12,14 +25,8 @@
 #'                                           time = "11:04:56")@GEDCOM, "json2")
 CreationDate <- S7::new_class(
   "CreationDate",
-  parent = GedcomS7class,
+  parent = AuditDate,
   properties = list(
-    date_exact = prop_char(1, 1, 
-                           pattern = reg_date_exact(),
-                           default = date_exact_current(),
-                           S7class_names = "DateExact"),
-    time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
-    
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
@@ -43,7 +50,7 @@ CreationDate <- S7::new_class(
 #'                                         notes = c("note 1", "note 2"))@GEDCOM, "json2")
 ChangeDate <- S7::new_class(
   "ChangeDate", 
-  parent = CreationDate,
+  parent = AuditDate,
   properties = list(
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),

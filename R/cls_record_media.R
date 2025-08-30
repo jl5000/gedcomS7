@@ -122,8 +122,7 @@ MediaRecord <- S7::new_class(
 
 parse_media_files <- function(rec_lines){
   file_lst <- find_ged_values(rec_lines, "FILE", return_list = TRUE)
-  if(length(file_lst) == 0) return(list())
-  
+
   lapply(file_lst, \(x){
     MediaFile(
       location = find_ged_values(x, "FILE"),

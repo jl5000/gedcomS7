@@ -197,9 +197,9 @@ parse_common_fact_elements <- function(fact, lines){
   resn <- find_ged_values(lines, c(tag, "RESN"))
   if(length(resn) > 0){
     S7::props(fact) <- list(
-      locked = grepl("LOCKED", resn),
-      confidential = grepl("CONFIDENTIAL", resn),
-      private = grepl("PRIVACY", resn)
+      locked = grepl("LOCKED", resn, fixed = TRUE),
+      confidential = grepl("CONFIDENTIAL", resn, fixed = TRUE),
+      private = grepl("PRIVACY", resn, fixed = TRUE)
     )
   }
   

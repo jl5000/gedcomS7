@@ -30,7 +30,7 @@ MediaLink <- S7::new_class(
   "MediaLink",
   parent = GedcomS7class,
   properties = list(
-    media_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    media_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     title = prop_char(0, 1, 1),
     top = prop_whole(0, 1, 0),
     left = prop_whole(0, 1, 0),
@@ -56,8 +56,7 @@ MediaLink <- S7::new_class(
 
 parse_media_links <- function(lines, location = NULL){
   media_lst <- find_ged_values(lines, c(location, "OBJE"), return_list = TRUE)
-  if(length(media_lst) == 0) return(list())
-  
+
   lapply(media_lst, \(x){
     MediaLink(
       media_xref = find_ged_values(x, "OBJE"),

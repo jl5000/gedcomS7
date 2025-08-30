@@ -2,7 +2,7 @@
 
 # File R/fn_df.R: @tests
 
-test_that("Function df_indi() @ L72", {
+test_that("Function df_indi() @ L73", {
   indi_df <- df_indi(test_ged())
   expect_equal(nrow(indi_df), 6)
   expect_equal(indi_df$name[2], "Father /Bloggs/")
@@ -13,7 +13,7 @@ test_that("Function df_indi() @ L72", {
 })
 
 
-test_that("Function df_fam() @ L110", {
+test_that("Function df_fam() @ L112", {
   fam_df <- df_fam(test_ged())
   expect_equal(nrow(fam_df), 3)
   expect_equal(fam_df$husb_xref[1], "@I2@")
@@ -24,7 +24,7 @@ test_that("Function df_fam() @ L110", {
 })
 
 
-test_that("Function df_sour() @ L139", {
+test_that("Function df_sour() @ L141", {
   sour_df <- df_sour(test_ged())
   expect_equal(sour_df$originator[1], "An author")
   expect_equal(sour_df$title[2], "The Yellow Pages")
@@ -32,21 +32,21 @@ test_that("Function df_sour() @ L139", {
 })
 
 
-test_that("Function df_repo() @ L165", {
+test_that("Function df_repo() @ L167", {
   repo_df <- df_repo(test_ged())
   expect_equal(repo_df$name[1], "Library")
   expect_equal(repo_df$address[1], "Library Road")
 })
 
 
-test_that("Function df_media() @ L189", {
+test_that("Function df_media() @ L191", {
   media_df <- df_media(test_ged())
   expect_equal(media_df$num_files[1], 1)
   expect_equal(media_df$paths[1], "path/goes/here")
 })
 
 
-test_that("Function df_note() @ L216", {
+test_that("Function df_note() @ L218", {
   note_df <- df_note(test_ged())
   expect_equal(note_df$text[1], "This is a note")
   expect_equal(note_df$text[2], "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...")
@@ -55,14 +55,14 @@ test_that("Function df_note() @ L216", {
 })
 
 
-test_that("Function df_subm() @ L244", {
+test_that("Function df_subm() @ L246", {
   subm_df <- df_subm(test_ged())
   expect_equal(subm_df$name[1], "Submitter 1")
   expect_equal(subm_df$address[2], "Another road")
 })
 
 
-test_that("Function df_indi_facts() @ L274", {
+test_that("Function df_indi_facts() @ L276", {
   fact_df <- df_indi_facts(test_ged(), "@I1@")
   expect_equal(fact_df$type[1], "Birth")
   expect_equal(fact_df$type[4], "Other attribute")
@@ -74,7 +74,7 @@ test_that("Function df_indi_facts() @ L274", {
 })
 
 
-test_that("Function df_fam_facts() @ L310", {
+test_that("Function df_fam_facts() @ L312", {
   fact_df <- df_fam_facts(test_ged(), "@F1@")
   expect_equal(fact_df$type[1], "Marriage")
   expect_equal(fact_df$date[1], "MAR 1965")

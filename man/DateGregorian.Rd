@@ -4,22 +4,15 @@
 \alias{DateGregorian}
 \title{Create a GEDCOM Gregorian Date object}
 \usage{
-DateGregorian(
-  year = integer(0),
-  month = integer(0),
-  day = integer(0),
-  bce = FALSE
-)
+DateGregorian(year = integer(0), month = integer(0), day = integer(0))
 }
 \arguments{
-\item{year}{The year given as an integer (greater than 0).}
+\item{year}{The year given as an integer (not 0). Negative years are interpreted
+as Before the Common Era (BCE). If BCE, only year should be provided.}
 
 \item{month}{The month of the year given as an integer between 1 and 12.}
 
 \item{day}{The day of the month given as an integer between 1 and 31.}
-
-\item{bce}{Whether the date is Before the Common Era. This is FALSE by default,
-but if TRUE, only the year should be given.}
 }
 \value{
 An S7 object representing a GEDCOM Gregorian Date.

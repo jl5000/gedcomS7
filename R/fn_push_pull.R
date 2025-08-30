@@ -139,13 +139,13 @@ push_record <- function(gedcom, record){
   }
   
   if(gedcom@add_creation_dates){
-    if(length(record@created) == 0 && record@XREF == "@GEDCOMS7_ORPHAN@"){
+    if(length(record@created) == 0 && record@XREF == new_xref()){
       record@created <- CreationDate()
     }
   }
   
   rec_type <- get_record_type(record)
-  new_rec <- record@XREF == "@GEDCOMS7_ORPHAN@"
+  new_rec <- record@XREF == new_xref()
   
   if(new_rec)
     record@XREF <- gedcom@records@XREFS_NEXT[[rec_type]]
@@ -241,7 +241,7 @@ refresh_indi_links <- function(gedcom, record){
 
   for(lnk in record@fam_links_spou){
     fam_xref <- lnk@fam_xref
-    if(fam_xref == "@VOID@") next
+    if(fam_xref == void_xref()) next
     fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     
     fam_husb <- find_ged_values(fam_rec, "HUSB")
@@ -275,7 +275,7 @@ refresh_indi_links <- function(gedcom, record){
   
   for(lnk in record@fam_links_chil){
     fam_xref <- lnk@fam_xref
-    if(fam_xref == "@VOID@") next
+    if(fam_xref == void_xref()) next
     fam_rec <- gedcom@records@RAW@FAM[[fam_xref]]
     fam_chil <- find_ged_values(fam_rec, "CHIL")
     

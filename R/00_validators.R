@@ -113,17 +113,16 @@ chk_input_choice <- function(input, choices) {
 
 #' Validate a date by its components
 #' 
-#' @param year The year.
+#' @param year The year. Negative years are interpreted as BCE.
 #' @param month The month.
 #' @param day The day.
-#' @param bce Whether the date occurs before the common era.
 #'
 #' @inherit chk_input_size return
 #' @keywords internal
 #' @tests
 #' expect_equal(chk_input_date_cpts(numeric(),1,2),
 #'              "Year must be defined")
-#' expect_equal(chk_input_date_cpts(2000,1,2, bce = TRUE),
+#' expect_equal(chk_input_date_cpts(-2000,1,2),
 #'              "BCE date must contain year only")
 #' expect_equal(chk_input_date_cpts(2000,numeric(),2),
 #'              "Day is defined without a month")
@@ -134,11 +133,11 @@ chk_input_choice <- function(input, choices) {
 #' expect_null(chk_input_date_cpts(2000,2,29))
 #' expect_null(chk_input_date_cpts(2020,6,14))
 #' expect_null(chk_input_date_cpts(1980,9,3))
-chk_input_date_cpts <- function(year, month, day, bce = FALSE){
+chk_input_date_cpts <- function(year, month, day){
   if (length(year) == 0)
     return("Year must be defined")
   
-  if(bce){
+  if(year < 0){
     if(length(month) + length(day) > 0)
       return("BCE date must contain year only")
   }
@@ -150,7 +149,7 @@ chk_input_date_cpts <- function(year, month, day, bce = FALSE){
   if(length(day) == 0) day <- 10
   if(nchar(day) == 1) day <- paste0(0, day)
   if(nchar(month) == 1) month <- paste0(0, month)
-  d <- try(as.Date(paste(day, month, year), format = "%d %m %Y"))
+  d <- try(as.Date(paste(day, month, abs(year)), format = "%d %m %Y"))
   if("try-error" %in% class(d) || is.na(d)) {
     return("Invalid date")
   }

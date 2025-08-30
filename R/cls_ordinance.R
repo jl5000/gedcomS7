@@ -120,8 +120,7 @@ parse_ordinances <- function(rec_lines){
   ord_lst <- find_ged_values(rec_lines, return_list = TRUE, 
                              tag = paste(c(val_individual_ordinance_types(),"SLGS"),
                                          collapse = "|"))
-  if(length(ord_lst) == 0) return(list())
-  
+
   lapply(ord_lst, \(x){
     tag <- parse_line_tag(x[1])
     

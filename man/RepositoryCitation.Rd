@@ -13,7 +13,7 @@ RepositoryCitation(
 }
 \arguments{
 \item{repo_xref}{The cross-reference identifier of a repository record. If the repository
-does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+does not have a record, then this can be left blank and a void xref will be used. However,
 you should describe the repository in @notes.}
 
 \item{notes}{Associated notes. This can either be a \code{Note()} object, a list of them,

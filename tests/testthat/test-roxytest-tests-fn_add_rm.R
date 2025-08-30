@@ -119,11 +119,11 @@ test_that("Function rm_xref_ptrs() @ L398", {
     )
   )@GEDCOM
   void_lines <- rm_xref_ptrs(lines1, "@S1@", TRUE)
-  expect_equal(parse_line_value(void_lines)[6], "@VOID@")
-  expect_equal(parse_line_value(void_lines)[8], "@VOID@")
+  expect_equal(parse_line_value(void_lines)[6], void_xref())
+  expect_equal(parse_line_value(void_lines)[8], void_xref())
   expect_length(rm_xref_ptrs(lines1, "@S1@", FALSE), 5)
   void_lines <- rm_xref_ptrs(lines1, "@N1@", TRUE)
-  expect_equal(parse_line_value(void_lines)[5], "@VOID@")
+  expect_equal(parse_line_value(void_lines)[5], void_xref())
   expect_length(rm_xref_ptrs(lines1, "@N1@", FALSE), 8)
 })
 

@@ -3,7 +3,7 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param sour_xref The cross-reference identifier of a source record. If the source
-#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' does not have a record, then this can be left blank and a void xref will be used. However,
 #' you should describe the source in @where.
 #' @param where A specific location within the information referenced. For a published work, this could
 #' include the volume of a multi-volume work and the page number or numbers. For a
@@ -63,7 +63,7 @@ SourceCitation <- S7::new_class(
   "SourceCitation",
   parent = GedcomS7class,
   properties = list(
-    sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    sour_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     where = prop_char(0, 1, 1),
     date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
     source_text = prop_S7list("source_text", TranslationText),
@@ -119,8 +119,7 @@ SourceCitation <- S7::new_class(
 parse_citations <- function(lines, location = NULL){
   
   sour_lst <- find_ged_values(lines, c(location, "SOUR"), return_list = TRUE)
-  if(length(sour_lst) == 0) return(list())
-  
+
   lapply(sour_lst, \(x){
     SourceCitation(
       sour_xref = find_ged_values(x, "SOUR"),

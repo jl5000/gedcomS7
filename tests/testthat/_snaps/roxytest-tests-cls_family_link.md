@@ -1,4 +1,4 @@
-# Function FamilyLinkSpouse() @ L12
+# Function FamilyLinkSpouse() @ L23
 
     {
       "type": "character",
@@ -14,7 +14,7 @@
       "value": ["0 FAMS @F2@", "1 NOTE test"]
     }
 
-# Function FamilyLinkChild() @ L61
+# Function FamilyLinkChild() @ L68
 
     {
       "type": "character",

@@ -167,8 +167,7 @@ parse_name_pieces <- function(lines, location = NULL){
 
 parse_personal_name_tran <- function(lines, location = NULL){
   tran_lst <- find_ged_values(lines, c(location, "TRAN"), return_list = TRUE)
-  if(length(tran_lst) == 0) return(list())
-  
+
   lapply(tran_lst, \(x){
     PersonalNameTran(
       pers_name = find_ged_values(x, "TRAN"),
@@ -182,8 +181,7 @@ parse_personal_name_tran <- function(lines, location = NULL){
 parse_personal_names <- function(rec_lines){
   
   name_lst <- find_ged_values(rec_lines, "NAME", return_list = TRUE)
-  if(length(name_lst) == 0) return(list())
-  
+
   lapply(name_lst, \(x){
     PersonalName(
       pers_name = find_ged_values(x, "NAME"),

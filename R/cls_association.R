@@ -3,7 +3,7 @@
 #' 
 #' @inheritParams prop_definitions
 #' @param indi_xref The cross-reference identifier of an individual record. If the individual
-#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' does not have a record, then this can be left blank and a void xref will be used. However,
 #' you should define an @indi_phrase.
 #' @param indi_phrase Textual information that cannot be expressed in the @indi_xref.
 #' @param relation_is The nature of the association. This must be a value from `val_roles()`.
@@ -30,7 +30,7 @@ Association <- S7::new_class(
   "Association",
   parent = GedcomS7class,
   properties = list(
-    indi_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    indi_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     indi_phrase = prop_char(0, 1, 1),
     relation_is = prop_char(1, 1, choices = val_roles()),
     relation_phrase = prop_char(0, 1, 1),
@@ -61,8 +61,7 @@ Association <- S7::new_class(
 
 parse_associations <- function(rec_lines, location = NULL){
   asso_lst <- find_ged_values(rec_lines, c(location, "ASSO"), return_list = TRUE)
-  if(length(asso_lst) == 0) return(list())
-  
+
   lapply(asso_lst, \(x){
     Association(
       indi_xref = find_ged_values(x, "ASSO"),
