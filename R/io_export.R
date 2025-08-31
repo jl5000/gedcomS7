@@ -40,7 +40,7 @@ write_gedcom <- function(gedcom,
                          inc_private = TRUE,
                          inc_living = TRUE) {
   
-  if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
+  if(tolower(tools::file_ext(filepath)) != "ged")
     stop("Output is not being saved as a GEDCOM file (*.ged)")
   
   if(file.exists(filepath)) file.remove(filepath)

@@ -8,7 +8,9 @@ read_gedcom(filepath = NULL, lines = NULL)
 }
 \arguments{
 \item{filepath}{The full filepath of the GEDCOM file. If this and the \code{lines}
-parameter are both NULL then you will be prompted to select a file.}
+parameter are both NULL then you will be prompted to select a file. You may
+also provide the path to a GEDzip file (*.zip), where there should be a
+single GEDCOM file located in the root directory of the archive.}
 
 \item{lines}{If the filepath is not provided then a character vector of
 GEDCOM lines can be provided.}

@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 The goal of `gedcomS7` is to handle genealogical data as GEDCOM files. This package succeeds the `tidyged` package and many of the other packages in the `gedcompendium`. The key changes are:
 
 * The package is designed to work with GEDCOM 7.0, rather than 5.5.5.
-* The package has minimal dependencies; currently only one: [`S7`](https://rconsortium.github.io/S7/).
+* The package has minimal dependencies that are not already found in a typical R installation; currently only one: [`S7`](https://rconsortium.github.io/S7/).
 * GEDCOM files are stored as S7 objects rather than dataframes.
 * The package contains all functionality to create, edit, and interrogate GEDCOM files.
 

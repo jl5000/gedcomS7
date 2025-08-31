@@ -4,7 +4,9 @@
 #' Imports a *.ged file and creates a gedcom object.
 #'
 #' @param filepath The full filepath of the GEDCOM file. If this and the `lines`
-#' parameter are both NULL then you will be prompted to select a file.
+#' parameter are both NULL then you will be prompted to select a file. You may
+#' also provide the path to a GEDzip file (*.zip), where there should be a 
+#' single GEDCOM file located in the root directory of the archive.
 #' @param lines If the filepath is not provided then a character vector of 
 #' GEDCOM lines can be provided.
 #'
@@ -47,12 +49,28 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
     
     filepath <- filepath %||% file.choose()
     
-    if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
-      stop("GEDCOM file should have a .ged extension")
+    ext <- tolower(tools::file_ext(filepath)) 
+    if(ext == "ged"){
+      con <- file(filepath, encoding = "UTF-8")
+    } else if(ext == "zip") {
+      contents <- unzip(filepath, list = TRUE)
+      ged_files <- contents[contents$Name == basename(contents$Name) &
+                            tools::file_ext(contents$Name) == "ged",]
+      
+      if(nrow(ged_files) == 0){
+        stop("No GEDCOM files found in root of zip file")
+      } else if(nrow(ged_files) == 1){
+        filename <- ged_files$Name
+      } else {
+        stop("More than one GEDCOM file found in root of zip file")
+      }
+      
+      con <- unz(filepath, filename, encoding = "UTF-8")
+    } else {
+      stop("The filepath should have a .ged or .zip extension")
+    }
     
-    con <- file(filepath, encoding = "UTF-8")
     on.exit(close(con))
-    
     ged_lines_raw <- readLines(con)
     
   }

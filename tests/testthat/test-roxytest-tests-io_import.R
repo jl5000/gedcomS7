@@ -2,7 +2,7 @@
 
 # File R/io_import.R: @tests
 
-test_that("Function read_gedcom() @ L37", {
+test_that("Function read_gedcom() @ L39", {
   maximal <- test_path("maximal70.ged")
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")

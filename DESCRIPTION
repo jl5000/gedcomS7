@@ -19,7 +19,8 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 4.1)
 Imports:
-    S7
+    S7,
+    tools
 Suggests: 
     testthat (>= 3.0.0),
     roxytest,
