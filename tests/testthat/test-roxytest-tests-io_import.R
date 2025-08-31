@@ -10,7 +10,7 @@ test_that("Function read_gedcom() @ L39", {
   ged <- read_gedcom(maximal)
   expect_equal(length(ged@GEDCOM), length(lines))
   expect_warning(read_gedcom(maximal, lines), regexp = "Both filepath and lines")
-  expect_error(read_gedcom("file.txt"), regexp = "GEDCOM file should have")
+  expect_error(read_gedcom("file.txt"), regexp = "The filepath should have")
   expect_error(read_gedcom(lines = lines[-1]), 
                regexp = "The file does not start with a HEAD record")
   expect_error(read_gedcom(lines = lines[-length(lines)]), 

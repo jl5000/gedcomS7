@@ -20,7 +20,7 @@
 #' ged <- read_gedcom(maximal)
 #' expect_equal(length(ged@GEDCOM), length(lines))
 #' expect_warning(read_gedcom(maximal, lines), regexp = "Both filepath and lines")
-#' expect_error(read_gedcom("file.txt"), regexp = "GEDCOM file should have")
+#' expect_error(read_gedcom("file.txt"), regexp = "The filepath should have")
 #' expect_error(read_gedcom(lines = lines[-1]), 
 #'              regexp = "The file does not start with a HEAD record")
 #' expect_error(read_gedcom(lines = lines[-length(lines)]), 
@@ -75,7 +75,12 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
     
   }
   
-  ged_lines <- ged_lines_raw |> 
+  parse_file(ged_lines_raw)
+}
+
+parse_file <- function(lines_raw){
+  
+  ged_lines <- lines_raw |> 
     validate_lines() |> 
     remove_at_escapes() |> 
     combine_cont_lines()
@@ -84,11 +89,10 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
   
   ged <- parse_records(records_lst)
   
-  check_unparsed(ged_lines_raw, ged)
+  check_unparsed(lines_raw, ged)
   
   ged
 }
-
 
 validate_lines <- function(lines){
   
