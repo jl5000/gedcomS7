@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gedcomS7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,7 @@
     <li><a class="dropdown-item" href="../articles/8_finding_records.html">Finding related records</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -123,10 +124,9 @@ using <code><a href="../reference/DateGregorian.html">DateGregorian()</a></code>
 <span><span class="co">#&gt; Date:     APR 1999</span></span>
 <span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">1999</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     1999</span></span></code></pre></div>
-<p>Years before the Common Era can be defined using the <code>bce</code>
-parameter:</p>
+<p>Years before the Common Era can be defined using negative years:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">105</span>, bce <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/DateGregorian.html">DateGregorian</a></span><span class="op">(</span>year <span class="op">=</span> <span class="op">-</span><span class="fl">105</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Date:     105 BCE</span></span></code></pre></div>
 <p>No other calendars apart from the Gregorian calendar are supported by
 the package.</p>
