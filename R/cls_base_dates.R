@@ -1,5 +1,5 @@
 
-DateClass <- S7::new_class("DateClass", parent = GedcomS7class, abstract = TRUE)
+DateAny <- S7::new_class("DateAny", parent = GedcomS7class, abstract = TRUE)
 
 
 #' Create a GEDCOM Exact Date object
@@ -18,7 +18,7 @@ DateClass <- S7::new_class("DateClass", parent = GedcomS7class, abstract = TRUE)
 #' expect_equal(DateExact(28, 7, 12)@as_date, as.Date("28-07-12"))
 DateExact <- S7::new_class(
   "DateExact", 
-  parent = DateClass,
+  parent = DateAny,
   properties = list(
     year = prop_whole(1, 1, 1),
     month = prop_whole(1, 1, 1, 12),
@@ -62,32 +62,39 @@ date_exact_current <- function(){
 #' Create a GEDCOM Gregorian Date object
 #' 
 #' @inheritParams prop_definitions
-#' @param bce Whether the date is Before the Common Era. This is FALSE by default,
-#' but if TRUE, only the year should be given.
+#' @param year The year given as an integer (not 0). Negative years are interpreted
+#' as Before the Common Era (BCE). If BCE, only year should be provided.
 #' 
 #' @returns An S7 object representing a GEDCOM Gregorian Date.
 #' @export
 #' @tests
 #' expect_error(DateGregorian(), regexp = "@year has too few elements")
+#' expect_error(DateGregorian(0), regexp = "@year cannot be zero")
 #' expect_error(DateGregorian(2001, day = 15), regexp = "Day is defined without a month")
 #' expect_error(DateGregorian(day = 5), regexp = "@year has too few elements")
 #' expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
 #' expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
 #' expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
-#' expect_error(DateGregorian(320, 5, 16, bce = TRUE), regexp = "BCE date must contain year only")
+#' expect_error(DateGregorian(2001, 2, 30), regexp = "Invalid date")
+#' expect_error(DateGregorian(-320, 5, 16), regexp = "BCE date must contain year only")
 #' expect_equal(DateGregorian(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
 #' expect_equal(DateGregorian(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
 #' expect_equal(DateGregorian(2004, 8)@GEDCOM_STRING, "AUG 2004")
 #' expect_equal(DateGregorian(2012)@GEDCOM_STRING, "2012")
-#' expect_equal(DateGregorian(193, bce = TRUE)@GEDCOM_STRING, "193 BCE")
+#' expect_equal(DateGregorian(-193)@GEDCOM_STRING, "193 BCE")
 DateGregorian <- S7::new_class(
   "DateGregorian", 
-  parent = DateClass,
+  parent = DateAny,
   properties = list(
-    year = prop_whole(1, 1, 1),
+    year = prop_whole(1, 1),
     month = prop_whole(0, 1, 1, 12),
     day = prop_whole(0, 1, 1, 31),
-    bce = prop_bool(default = FALSE),
+    
+    BCE = S7::new_property(
+      S7::class_logical,
+      getter = function(self){
+        isTRUE(self@year < 0)
+      }),
     
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
@@ -97,17 +104,17 @@ DateGregorian <- S7::new_class(
           val <- paste(val, self@day)
         if (length(self@month) == 1) 
           val <- paste(val, toupper(month.abb[self@month]))
-        if (length(self@year) == 1) {
-          val <- paste(val, self@year)
-          if(length(self@month) + length(self@day) == 0 & self@bce)
-            val <- paste(val, "BCE")
-        }
+        
+        val <- paste(val, abs(self@year))
+        if(self@BCE) val <- paste(val, "BCE")
+            
         trimws(val)
       }               
     )
   ),
   validator = function(self){
-    chk_input_date_cpts(self@year, self@month, self@day, self@bce)
+    if(self@year == 0) return("@year cannot be zero")
+    chk_input_date_cpts(self@year, self@month, self@day)
   }
 )
 
@@ -131,7 +138,7 @@ DateGregorian <- S7::new_class(
 #'                                "EST AUG 2004")
 DateApprox <- S7::new_class(
   "DateApprox", 
-  parent = DateClass,
+  parent = DateAny,
   properties = list(
     date_greg = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
     about = prop_bool(default = TRUE),
@@ -153,6 +160,18 @@ DateApprox <- S7::new_class(
   )
 )
 
+DateSpan <- S7::new_class(
+  "DateSpan",
+  parent = DateAny,
+  abstract = TRUE,
+  properties = list(
+    start_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
+    end_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian")
+  ),
+  validator = function(self){
+    chk_input_dates(self@start_date, self@end_date)
+  }
+)
 
 #' Create a GEDCOM Date Period object
 #' 
@@ -200,11 +219,8 @@ DateApprox <- S7::new_class(
 #'   ), regexp = "Start date comes after end date")
 DatePeriod <- S7::new_class(
   "DatePeriod", 
-  parent = DateClass,
+  parent = DateSpan,
   properties = list(
-    start_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
-    end_date = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
-    
     GEDCOM_STRING = S7::new_property(
       S7::class_character,
       getter = function(self){
@@ -220,10 +236,7 @@ DatePeriod <- S7::new_class(
         }
       }               
     )
-  ),
-  validator = function(self){
-    chk_input_dates(self@start_date, self@end_date)
-  }
+  )
 )
 
 #' Create a GEDCOM Date Range object
@@ -272,7 +285,7 @@ DatePeriod <- S7::new_class(
 #'   ), regexp = "Start date comes after end date")
 DateRange <- S7::new_class(
   "DateRange", 
-  parent = DatePeriod,
+  parent = DateSpan,
   properties = list(
     
     GEDCOM_STRING = S7::new_property(
@@ -311,7 +324,7 @@ DateRange <- S7::new_class(
 #' expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@GEDCOM, "json2")
 DateValue <- S7::new_class(
   "DateValue",
-  parent = DateClass,
+  parent = DateAny,
   properties = list(
     date = prop_char(1, 1, pattern = reg_date_value(),
                      S7class_names = c("DateGregorian", "DatePeriod",
@@ -361,7 +374,7 @@ DateValue <- S7::new_class(
 #' expect_snapshot_value(DateSorting("1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
 DateSorting <- S7::new_class(
   "DateSorting",
-  parent = DateClass,
+  parent = DateAny,
   properties = list(
     date = prop_char(1, 1, pattern = reg_date_gregorian(), S7class_names = "DateGregorian"),
     date_phrase = prop_char(0, 1, 1),
@@ -403,7 +416,7 @@ parse_date_value <- function(lines, location = NULL, sorting = FALSE){
 }
 
 
-S7::method(summary, DateClass) <- function(object, ...){
+S7::method(summary, DateAny) <- function(object, ...){
   date_str <- object@GEDCOM_STRING
   
   if(S7::S7_inherits(object, DateSorting) || S7::S7_inherits(object, DateValue)){

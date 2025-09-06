@@ -1,6 +1,6 @@
 Package: gedcomS7
 Title: Create Family Tree GEDCOM Files with S7 Objects
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: 
     person(given = "Jamie", 
            family = "Lendrum",
@@ -19,7 +19,8 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 4.1)
 Imports:
-    S7
+    S7,
+    tools
 Suggests: 
     testthat (>= 3.0.0),
     roxytest,

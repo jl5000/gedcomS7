@@ -33,4 +33,7 @@ Save a gedcom object to disk as a GEDCOM file
 This function prepares the gedcom object and then writes it to the filepath.
 Steps taken include filtering sensitive data, escaping "@" signs (with another "@") ,
 and splitting long lines onto separate lines.
+
+Writing to GEDzip files is not supported. If you want to do this then write
+to a GEDCOM file first and then move the file to the GEDzip archive.
 }

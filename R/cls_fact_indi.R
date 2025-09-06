@@ -166,8 +166,7 @@ parse_facts_indi <- function(rec_lines){
                               tag = paste(c(val_individual_attribute_types(TRUE),
                                             val_individual_event_types(TRUE)),
                                           collapse = "|"))
-  if(length(fact_lst) == 0) return(list())
-  
+
   lapply(fact_lst, \(x){
     tag <- parse_line_tag(x[1])
     

@@ -4,7 +4,9 @@
 #' Imports a *.ged file and creates a gedcom object.
 #'
 #' @param filepath The full filepath of the GEDCOM file. If this and the `lines`
-#' parameter are both NULL then you will be prompted to select a file.
+#' parameter are both NULL then you will be prompted to select a file. You may
+#' also provide the path to a GEDzip file (*.zip), where there should be a 
+#' single GEDCOM file located in the root directory of the archive.
 #' @param lines If the filepath is not provided then a character vector of 
 #' GEDCOM lines can be provided.
 #'
@@ -18,7 +20,7 @@
 #' ged <- read_gedcom(maximal)
 #' expect_equal(length(ged@GEDCOM), length(lines))
 #' expect_warning(read_gedcom(maximal, lines), regexp = "Both filepath and lines")
-#' expect_error(read_gedcom("file.txt"), regexp = "GEDCOM file should have")
+#' expect_error(read_gedcom("file.txt"), regexp = "The filepath should have")
 #' expect_error(read_gedcom(lines = lines[-1]), 
 #'              regexp = "The file does not start with a HEAD record")
 #' expect_error(read_gedcom(lines = lines[-length(lines)]), 
@@ -47,17 +49,27 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
     
     filepath <- filepath %||% file.choose()
     
-    if(tolower(substr(filepath, nchar(filepath)-3 , nchar(filepath))) != ".ged")
-      stop("GEDCOM file should have a .ged extension")
+    ext <- tolower(tools::file_ext(filepath))
+    if(ext == "ged"){
+      con <- file(filepath, encoding = "UTF-8")
+    } else if(ext == "zip") {
+      filename <- zipped_gedname(filepath, must_exist = TRUE)
+      con <- unz(filepath, filename, encoding = "UTF-8")
+    } else {
+      stop("The filepath should have a .ged or .zip extension")
+    }
     
-    con <- file(filepath, encoding = "UTF-8")
     on.exit(close(con))
-    
     ged_lines_raw <- readLines(con)
     
   }
   
-  ged_lines <- ged_lines_raw |> 
+  parse_file(ged_lines_raw)
+}
+
+parse_file <- function(lines_raw){
+  
+  ged_lines <- lines_raw |> 
     validate_lines() |> 
     remove_at_escapes() |> 
     combine_cont_lines()
@@ -66,11 +78,10 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
   
   ged <- parse_records(records_lst)
   
-  check_unparsed(ged_lines_raw, ged)
+  check_unparsed(lines_raw, ged)
   
   ged
 }
-
 
 validate_lines <- function(lines){
   

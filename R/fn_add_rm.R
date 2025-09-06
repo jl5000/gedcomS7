@@ -389,11 +389,11 @@ rm_records <- function(x, xrefs, void_refs = TRUE){
 #'   )
 #' )@GEDCOM
 #' void_lines <- rm_xref_ptrs(lines1, "@S1@", TRUE)
-#' expect_equal(parse_line_value(void_lines)[6], "@VOID@")
-#' expect_equal(parse_line_value(void_lines)[8], "@VOID@")
+#' expect_equal(parse_line_value(void_lines)[6], void_xref())
+#' expect_equal(parse_line_value(void_lines)[8], void_xref())
 #' expect_length(rm_xref_ptrs(lines1, "@S1@", FALSE), 5)
 #' void_lines <- rm_xref_ptrs(lines1, "@N1@", TRUE)
-#' expect_equal(parse_line_value(void_lines)[5], "@VOID@")
+#' expect_equal(parse_line_value(void_lines)[5], void_xref())
 #' expect_length(rm_xref_ptrs(lines1, "@N1@", FALSE), 8)
 rm_xref_ptrs <- function(lines, xref, void_refs){
   ptr_rows <- \(lines) which(parse_line_value(lines) == xref)
@@ -401,7 +401,7 @@ rm_xref_ptrs <- function(lines, xref, void_refs){
   if(length(rows) == 0) return(lines)
   
   if(void_refs){
-    lines[rows] <- sub(xref, "@VOID@", lines[rows])
+    lines[rows] <- sub(xref, void_xref(), lines[rows])
   } else {
     lines <- delete_ged_sections(lines, ptr_rows)
   }

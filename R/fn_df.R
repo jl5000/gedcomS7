@@ -20,9 +20,10 @@ mutate_generic_values <- function(df, lines){
   refns <- parse_vals_and_types(lines, "REFN")
   df$user_ids <- paste(names(refns), refns, sep = "=", collapse = ";") |> 
     chronify()
-  df$locked <- any(grepl("^1 RESN .*LOCKED", lines))
-  df$private <- any(grepl("^1 RESN .*PRIVACY", lines))
-  df$confidential <- any(grepl("^1 RESN .*CONFIDENTIAL", lines))
+  resn_flags <- lines[startsWith(lines, "1 RESN ")]
+  df$locked <- any(grepl("LOCKED", resn_flags, fixed = TRUE))
+  df$private <- any(grepl("PRIVACY", resn_flags, fixed = TRUE))
+  df$confidential <- any(grepl("CONFIDENTIAL", resn_flags, fixed = TRUE))
   df$last_modified <- chronify(find_ged_values(lines, c("CHAN","DATE")))
   
   df
@@ -74,20 +75,21 @@ df_indi <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
     xref <- parse_line_xref(lines[1])
-    df$name <- chronify(find_ged_values(lines, "NAME"))
-    df$sex <- chronify(find_ged_values(lines, "SEX"))
-    df$birth_date <- chronify(find_ged_values(lines, c("BIRT","DATE")))
-    df$birth_place <- chronify(find_ged_values(lines, c("BIRT","PLAC")))
-    df$is_alive <- is_alive(lines)
-    df$death_date <- chronify(find_ged_values(lines, c("DEAT","DATE")))
-    df$death_place <- chronify(find_ged_values(lines, c("DEAT","PLAC")))
-    df$fam_as_child <- get_fam_as_child(x, xref, "BIRTH") |> 
-      paste(collapse = ";")
-    df$fam_as_spouse <- get_fam_as_spouse(x, xref) |> 
-      paste(collapse = ";")
-    df
+    
+    list(
+      name = chronify(find_ged_values(lines, "NAME")),
+      sex = chronify(find_ged_values(lines, "SEX")),
+      birth_date = chronify(find_ged_values(lines, c("BIRT","DATE"))),
+      birth_place = chronify(find_ged_values(lines, c("BIRT","PLAC"))),
+      is_alive = is_alive(lines),
+      death_date = chronify(find_ged_values(lines, c("DEAT","DATE"))),
+      death_place = chronify(find_ged_values(lines, c("DEAT","PLAC"))),
+      fam_as_child = get_fam_as_child(x, xref, "BIRTH") |> 
+        paste(collapse = ";"),
+      fam_as_spouse = get_fam_as_spouse(x, xref) |> 
+        paste(collapse = ";")
+    )
   }
   
   df_recs(rec_list, extract_rec_values)
@@ -112,14 +114,14 @@ df_fam <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
-    df$husb_xref <- chronify(find_ged_values(lines, "HUSB"))
-    df$wife_xref <- chronify(find_ged_values(lines, "WIFE"))
-    df$chil_xref <- find_ged_values(lines, "CHIL") |>
-      paste(collapse = ";")
-    df$marr_date <- chronify(find_ged_values(lines, c("MARR","DATE")))
-    df$marr_place <- chronify(find_ged_values(lines, c("MARR","PLAC")))
-    df
+    list(
+      husb_xref = chronify(find_ged_values(lines, "HUSB")),
+      wife_xref = chronify(find_ged_values(lines, "WIFE")),
+      chil_xref = find_ged_values(lines, "CHIL") |>
+        paste(collapse = ";"),
+      marr_date = chronify(find_ged_values(lines, c("MARR","DATE"))),
+      marr_place = chronify(find_ged_values(lines, c("MARR","PLAC")))
+    )
   }
 
   df_recs(rec_list, extract_rec_values)
@@ -141,12 +143,12 @@ df_sour <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
-    df$originator <- chronify(find_ged_values(lines, "AUTH"))
-    df$title <- chronify(find_ged_values(lines, "TITL"))
-    df$repo_xref <- find_ged_values(lines, "REPO") |>
-      paste(collapse = ";")
-    df
+    list(
+      originator = chronify(find_ged_values(lines, "AUTH")),
+      title = chronify(find_ged_values(lines, "TITL")),
+      repo_xref = find_ged_values(lines, "REPO") |>
+        paste(collapse = ";")
+    )
   }
   
   df_recs(rec_list, extract_rec_values)
@@ -167,10 +169,10 @@ df_repo <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
-    df$name <- chronify(find_ged_values(lines, "NAME"))
-    df$address <- chronify(find_ged_values(lines, "ADDR"))
-    df
+    list(
+      name = chronify(find_ged_values(lines, "NAME")),
+      address = chronify(find_ged_values(lines, "ADDR"))
+    )
   }
   
   df_recs(rec_list, extract_rec_values)
@@ -191,11 +193,11 @@ df_media <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
-    df$num_files <- length(find_ged_values(lines, "FILE"))
-    df$paths <- find_ged_values(lines, "FILE") |>
-      paste(collapse = ";")
-    df
+    list(
+      num_files = length(find_ged_values(lines, "FILE")),
+      paths = find_ged_values(lines, "FILE") |>
+        paste(collapse = ";")
+    )
   }
   
   df_recs(rec_list, extract_rec_values)
@@ -218,14 +220,14 @@ df_note <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
     txt <- parse_line_value(lines[1])
     if(nchar(txt) > 50) 
       txt <- paste0(substr(txt, 1, 47), "...")
     
-    df$text <- txt
-    df$language <- chronify(find_ged_values(lines, "LANG"))
-    df
+    list(
+      text = txt,
+      language = chronify(find_ged_values(lines, "LANG"))
+    )
   }
   
   df_recs(rec_list, extract_rec_values)
@@ -246,10 +248,10 @@ df_subm <- function(x, xrefs = NULL){
   if(length(rec_list) == 0) return(NULL)
   
   extract_rec_values <- \(lines){
-    df <- list()
-    df$name <- chronify(find_ged_values(lines, "NAME"))
-    df$address <- chronify(find_ged_values(lines, "ADDR"))
-    df
+    list(
+      name = chronify(find_ged_values(lines, "NAME")),
+      address = chronify(find_ged_values(lines, "ADDR"))
+    )
   }
   
   df_recs(rec_list, extract_rec_values)

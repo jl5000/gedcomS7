@@ -14,7 +14,8 @@ This package succeeds the `tidyged` package and many of the other
 packages in the `gedcompendium`. The key changes are:
 
 - The package is designed to work with GEDCOM 7.0, rather than 5.5.5.
-- The package has minimal dependencies; currently only one:
+- The package has minimal dependencies that are not already found in a
+  typical R installation; currently only one:
   [`S7`](https://rconsortium.github.io/S7/).
 - GEDCOM files are stored as S7 objects rather than dataframes.
 - The package contains all functionality to create, edit, and
@@ -58,7 +59,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      2 MAY 2025
+#> Creation Date:      30 AUG 2025
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
@@ -83,7 +84,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      2 MAY 2025
+#> Creation Date:      30 AUG 2025
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
@@ -146,7 +147,7 @@ ged@GEDCOM
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 2 MAY 2025"                               
+#>  [8] "1 DATE 30 AUG 2025"                              
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        

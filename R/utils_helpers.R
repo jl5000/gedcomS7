@@ -70,19 +70,21 @@ find_ged_values <- function(lines,
   
   for(level in seq_along(tag)){
     
-    lines_lst <- split(lines, cumsum(parse_line_level(lines) == base_level + level)) |> 
+    current_level <- base_level + level
+    lines_lst <- split(lines, cumsum(parse_line_level(lines) == current_level)) |> 
       unname()
     
-    lines_lst <- Filter(\(x) grepl(sprintf("^%s (%s)( (?s).*)?$", base_level + level, tag[level]), x[1], perl = TRUE), 
-                        lines_lst)
+    # \\b needed to distinguish "1 NOTE" from "1 NO CHR"
+    # Space cannot be used as some lines have no payload
+    pattern <- sprintf("^%s (%s)\\b", current_level, tag[level])
+    lines_lst <- Filter(\(x) grepl(pattern, x[1]), lines_lst)
     
     if(level == length(tag)){ # final tag
-      if(return_list){
-        return(lines_lst)
-      } else {
-        # strip out subordinates
-        lines_lst <- lapply(lines_lst, `[`, 1)
-      }
+      if(return_list) return(lines_lst)
+      
+      # strip out subordinates
+      lines_lst <- lapply(lines_lst, `[`, 1)
+ 
     } else { # remove parent tag ready for splitting again
       lines_lst <- lapply(lines_lst, `[`, -1)
     }
@@ -132,7 +134,7 @@ increase_level <- function(ged, by = 1){
 }
 
 remove_void_xrefs <- function(xrefs){
-  xrefs[xrefs != "@VOID@"]
+  xrefs[xrefs != void_xref()]
 }
 
 to_console <- function(label, val, exdent){
@@ -164,4 +166,23 @@ to_console_list <- function(label, values, exdent, prop = NULL){
       to_console(intro, S7::prop(values[[i]], prop), exdent)
     }
   }
+}
+
+zipped_gedname <- function(filepath, must_exist = FALSE){
+  
+  if(tools::file_ext(filepath) != "zip") stop("File is not a zip archive")
+    
+  contents <- unzip(filepath, list = TRUE)
+  ged_files <- contents[contents$Name == basename(contents$Name) &
+                          tools::file_ext(contents$Name) == "ged",]
+  
+  if(nrow(ged_files) == 0){
+    if(must_exist) stop("No GEDCOM files found in root of zip file")
+    return("gedcom.ged")
+  } else if(nrow(ged_files) == 1){
+    return(ged_files$Name)
+  } else {
+    stop("More than one GEDCOM file found in root of zip file")
+  }
+  
 }

@@ -36,8 +36,7 @@ SourceCallNumber <- S7::new_class(
 
 parse_call_numbers <- function(lines, location){
   call_lst <- find_ged_values(lines, c(location, "CALN"), return_list = TRUE) 
-  if(length(call_lst) == 0) return(list())
-  
+
   lapply(call_lst, \(x){
     SourceCallNumber(
       call_number = find_ged_values(x, "CALN"),
@@ -52,7 +51,7 @@ parse_call_numbers <- function(lines, location){
 #' 
 #' @inheritParams prop_definitions
 #' @param repo_xref The cross-reference identifier of a repository record. If the repository
-#' does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+#' does not have a record, then this can be left blank and a void xref will be used. However,
 #' you should describe the repository in @notes.
 #' @param call_numbers Call number(s) used to file and retrieve items from the repository. 
 #' This can either be a `SourceCallNumber` object, a list of them,
@@ -68,7 +67,7 @@ RepositoryCitation <- S7::new_class(
   "RepositoryCitation",
   parent = GedcomS7class,
   properties = list(
-    repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = "@VOID@"),
+    repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
     notes = prop_S7list("notes", Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     call_numbers = prop_S7list("call_numbers", SourceCallNumber),
@@ -88,8 +87,7 @@ RepositoryCitation <- S7::new_class(
 
 parse_repo_citations <- function(rec_lines){
   repo_lst <- find_ged_values(rec_lines, "REPO", return_list = TRUE) 
-  if(length(repo_lst) == 0) return(list())
-  
+
   lapply(repo_lst, \(x){
     RepositoryCitation(
       repo_xref = find_ged_values(x, "REPO"),

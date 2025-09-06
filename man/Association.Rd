@@ -16,7 +16,7 @@ Association(
 }
 \arguments{
 \item{indi_xref}{The cross-reference identifier of an individual record. If the individual
-does not have a record, then this can be left blank and the value "@VOID@" will be used. However,
+does not have a record, then this can be left blank and a void xref will be used. However,
 you should define an @indi_phrase.}
 
 \item{indi_phrase}{Textual information that cannot be expressed in the @indi_xref.}

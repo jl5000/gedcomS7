@@ -4,16 +4,14 @@
 \alias{chk_input_date_cpts}
 \title{Validate a date by its components}
 \usage{
-chk_input_date_cpts(year, month, day, bce = FALSE)
+chk_input_date_cpts(year, month, day)
 }
 \arguments{
-\item{year}{The year.}
+\item{year}{The year. Negative years are interpreted as BCE.}
 
 \item{month}{The month.}
 
 \item{day}{The day.}
-
-\item{bce}{Whether the date occurs before the common era.}
 }
 \value{
 Either a character string giving an error message, or NULL.
