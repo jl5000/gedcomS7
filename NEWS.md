@@ -1,4 +1,4 @@
-# gedcomS7 0.2.0 (XX Sep 2025)
+# gedcomS7 0.2.0 (6 Sep 2025)
 
 * `DateGregorian()` now handles BCE dates with a negative `@year`
 * GEDCOM files within zip archives can be imported (GEDzip)
