@@ -167,3 +167,22 @@ to_console_list <- function(label, values, exdent, prop = NULL){
     }
   }
 }
+
+zipped_gedname <- function(filepath, must_exist = FALSE){
+  
+  if(tools::file_ext(filepath) != "zip") stop("File is not a zip archive")
+    
+  contents <- unzip(filepath, list = TRUE)
+  ged_files <- contents[contents$Name == basename(contents$Name) &
+                          tools::file_ext(contents$Name) == "ged",]
+  
+  if(nrow(ged_files) == 0){
+    if(must_exist) stop("No GEDCOM files found in root of zip file")
+    return("gedcom.ged")
+  } else if(nrow(ged_files) == 1){
+    return(ged_files$Name)
+  } else {
+    stop("More than one GEDCOM file found in root of zip file")
+  }
+  
+}

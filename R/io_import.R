@@ -49,22 +49,11 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
     
     filepath <- filepath %||% file.choose()
     
-    ext <- tolower(tools::file_ext(filepath)) 
+    ext <- tolower(tools::file_ext(filepath))
     if(ext == "ged"){
       con <- file(filepath, encoding = "UTF-8")
     } else if(ext == "zip") {
-      contents <- unzip(filepath, list = TRUE)
-      ged_files <- contents[contents$Name == basename(contents$Name) &
-                            tools::file_ext(contents$Name) == "ged",]
-      
-      if(nrow(ged_files) == 0){
-        stop("No GEDCOM files found in root of zip file")
-      } else if(nrow(ged_files) == 1){
-        filename <- ged_files$Name
-      } else {
-        stop("More than one GEDCOM file found in root of zip file")
-      }
-      
+      filename <- zipped_gedname(filepath, must_exist = TRUE)
       con <- unz(filepath, filename, encoding = "UTF-8")
     } else {
       stop("The filepath should have a .ged or .zip extension")
