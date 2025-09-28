@@ -82,7 +82,7 @@ pull_record <- function(x, xref){
 #' It will also update the record last_updated if update_change_dates in the
 #' gedcom object is set to TRUE.
 #'
-#' @param gedcom An object representing the GEDCOM file.
+#' @inheritParams pull_record
 #' @param record An object representing the record to place back into the
 #' GEDCOM object.
 #'
@@ -131,15 +131,15 @@ pull_record <- function(x, xref){
 #' expect_false("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I1@"]])
 #' expect_false("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
 #' expect_false("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
-push_record <- function(gedcom, record){
-  check_gedcom_obj(gedcom)
-  check_missing_xrefs(gedcom, record)
+push_record <- function(x, record){
+  check_gedcom_obj(x)
+  check_missing_xrefs(x, record)
   
-  if(gedcom@update_change_dates){
+  if(x@update_change_dates){
      record@updated <- ChangeDate()
   }
   
-  if(gedcom@add_creation_dates){
+  if(x@add_creation_dates){
     if(length(record@created) == 0 && record@XREF == new_xref()){
       record@created <- CreationDate()
     }
@@ -149,24 +149,24 @@ push_record <- function(gedcom, record){
   new_rec <- record@XREF == new_xref()
   
   if(new_rec)
-    record@XREF <- gedcom@records@XREFS_NEXT[[rec_type]]
+    record@XREF <- x@records@XREFS_NEXT[[rec_type]]
   
   # Don't do this yet
   #if(rec_type %in% c("INDI","FAM")) record <- order_facts(record)
   
   lines <- record@GEDCOM
-  S7::prop(gedcom@records@RAW, rec_type)[[record@XREF]] <- lines
+  S7::prop(x@records@RAW, rec_type)[[record@XREF]] <- lines
   
   if(rec_type == "INDI"){
-    gedcom <- refresh_indi_links(gedcom, record)
+    x <- refresh_indi_links(x, record)
   } else if(rec_type == "FAM"){
-    gedcom <- refresh_fam_links(gedcom, record)
+    x <- refresh_fam_links(x, record)
   }
   
   if(new_rec)
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@XREF)
   
-  gedcom
+  x
 }
 
 

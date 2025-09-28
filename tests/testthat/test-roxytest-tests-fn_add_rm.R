@@ -106,7 +106,7 @@ test_that("Function add_spouse() @ L195", {
 })
 
 
-test_that("Function rm_xref_ptrs() @ L398", {
+test_that("Function rm_xref_ptrs() @ L399", {
   lines1 <- NonEvent(
     "NATU", 
     date_period = "FROM 1700 TO 1800", 

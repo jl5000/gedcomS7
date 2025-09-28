@@ -2,27 +2,27 @@
 
 # File R/fn_get.R: @tests
 
-test_that("Function get_fam_children() @ L78", {
+test_that("Function get_fam_children() @ L79", {
   expect_equal(get_fam_children(test_ged(), "@F1@"), "@I1@")
   expect_equal(get_fam_children(test_ged(), "@F1@", "BIRTH"), "@I1@")
   expect_equal(get_fam_children(test_ged(), "@F2@"), c("@I5@", "@I6@"))
 })
 
 
-test_that("Function get_indi_partners() @ L119", {
+test_that("Function get_indi_partners() @ L121", {
   expect_equal(get_indi_partners(test_ged(), "@I1@"), "@I4@")
   expect_equal(get_indi_partners(test_ged(), "@I4@"), "@I1@")
 })
 
 
-test_that("Function get_indi_children() @ L142", {
+test_that("Function get_indi_children() @ L144", {
   expect_equal(get_indi_children(test_ged(), "@I1@"), c("@I5@", "@I6@"))
   expect_equal(get_indi_children(test_ged(), "@I4@"), c("@I5@", "@I6@"))
   expect_equal(get_indi_children(test_ged(), "@I2@"), "@I1@")
 })
 
 
-test_that("Function get_indi_parents() @ L168", {
+test_that("Function get_indi_parents() @ L171", {
   expect_equal(get_indi_parents(test_ged(), "@I1@"), c("@I2@", "@I3@"))
   expect_equal(get_indi_parents(test_ged(), "@I5@"), c("@I1@", "@I4@"))
   expect_equal(get_indi_parents(test_ged(), "@I6@"), c("@I1@", "@I4@"))
@@ -30,17 +30,17 @@ test_that("Function get_indi_parents() @ L168", {
 })
 
 
-test_that("Function get_indi_mothers() @ L192", {
+test_that("Function get_indi_mothers() @ L196", {
   expect_equal(get_indi_mothers(test_ged(), "@I1@"), "@I3@")
 })
 
 
-test_that("Function get_indi_fathers() @ L207", {
+test_that("Function get_indi_fathers() @ L211", {
   expect_equal(get_indi_fathers(test_ged(), "@I1@"), "@I2@")
 })
 
 
-test_that("Function get_indi_siblings() @ L247", {
+test_that("Function get_indi_siblings() @ L252", {
   expect_equal(get_indi_siblings(test_ged(), "@I1@"), character())
   expect_equal(get_indi_siblings(test_ged(), "@I5@"), "@I6@")
   expect_equal(get_indi_siblings(test_ged(), "@I6@"), "@I5@")
@@ -48,7 +48,7 @@ test_that("Function get_indi_siblings() @ L247", {
 })
 
 
-test_that("Function get_supporting_recs() @ L330", {
+test_that("Function get_supporting_recs() @ L336", {
   expect_equal(get_supporting_recs(test_ged(), NULL), character())
   expect_equal(get_supporting_recs(test_ged(), "@S1@",F,F,F,F,F), character())
   expect_equal(get_supporting_recs(test_ged(), "@U1@"), character())
@@ -59,12 +59,12 @@ test_that("Function get_supporting_recs() @ L330", {
 })
 
 
-test_that("Function get_unused_recs() @ L379", {
+test_that("Function get_unused_recs() @ L385", {
   expect_equal(get_unused_recs(test_ged()), c("@U2@","@F3@","@N1@"))
 })
 
 
-test_that("Function get_descendants() @ L416", {
+test_that("Function get_descendants() @ L422", {
   expect_equal(sort(get_descendants(test_ged(), "@I2@")), 
                c("@I1@", "@I5@", "@I6@"))
   expect_equal(sort(get_descendants(test_ged(), "@I2@", 
@@ -79,7 +79,7 @@ test_that("Function get_descendants() @ L416", {
 })
 
 
-test_that("Function get_ancestors() @ L490", {
+test_that("Function get_ancestors() @ L497", {
   expect_equal(sort(get_ancestors(test_ged(), "@I5@")),
                c("@I1@","@I2@","@I3@","@I4@"))
   expect_equal(sort(get_ancestors(test_ged(), "@I5@", inc_indi = TRUE)),
@@ -95,7 +95,7 @@ test_that("Function get_ancestors() @ L490", {
 })
 
 
-test_that("Function get_records_by_pattern() @ L555", {
+test_that("Function get_records_by_pattern() @ L568", {
   expect_equal(get_records_by_pattern(test_ged(), "California"), "@I1@")
   expect_equal(get_records_by_pattern(test_ged(), "Mother"), "@I3@")
   expect_equal(get_records_by_pattern(test_ged(), "Mother", TRUE), 

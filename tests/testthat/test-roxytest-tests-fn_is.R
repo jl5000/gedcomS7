@@ -2,7 +2,7 @@
 
 # File R/fn_is.R: @tests
 
-test_that("Function get_record_type() @ L27", {
+test_that("Function get_record_type() @ L33", {
   expect_error(get_record_type(1), regexp = "Unrecognised record")
   expect_equal(get_record_type(IndividualRecord()), "INDI")
   expect_equal(get_record_type(FamilyRecord()), "FAM")
