@@ -1,3 +1,7 @@
+# gedcomS7 0.3.0 (??)
+
+* Additional validation of arguments in user-facing functions
+
 # gedcomS7 0.2.0 (6 Sep 2025)
 
 * `DateGregorian()` now handles BCE dates with a negative `@year`
