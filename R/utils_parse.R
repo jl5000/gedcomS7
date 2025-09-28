@@ -49,6 +49,13 @@ parse_vals_and_types <- function(lines, val_tag){
 #' expect_equal(parse_gedcom_date("FROM 25 MAR 1980 TO 1990", FALSE), as.Date("1990-12-31"))
 parse_gedcom_date <- function(date_string, minimise = TRUE){
   
+  stopifnot(
+    "date_string must be a character string" = is.character(date_string) &&
+      length(date_string) == 1,
+    "minimise must be a boolean" = is.logical(minimise) &&
+      length(minimise) == 1
+  )
+  
   # Extract relevant date_gregorian
   if(minimise){
     if(grepl("^(BEF|TO) ", date_string)) return(as.Date(NA_character_))
@@ -111,6 +118,11 @@ days_in_month <- function(date) {
 #' expect_equal(parse_gedcom_age("12w"), 12/52)
 #' expect_equal(parse_gedcom_age("3y 2m 1w 5d"), 3+(2/12)+(1/52)+(5/365))
 parse_gedcom_age <- function(age_string) {
+  
+  stopifnot(
+    "age_string must be a character string" = is.character(age_string) &&
+      length(age_string) == 1
+  )
   
   years <- sub(".*?(\\d{1,3})y.*", "\\1", age_string)
   months <- sub(".*?(\\d{1,2})m.*", "\\1", age_string)
