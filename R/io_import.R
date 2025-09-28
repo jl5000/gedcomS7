@@ -13,6 +13,8 @@
 #' @returns A gedcom S7 object.
 #' @export
 #' @tests
+#' expect_error(read_gedcom(1), regexp = "filepath must be a character string")
+#' expect_error(read_gedcom(lines = 1), regexp = "lines must be a character vector")
 #' maximal <- test_path("maximal70.ged")
 #' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
 #'                                  fileext = ".ged")
@@ -40,6 +42,7 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
   
   if(!is.null(lines) && is.null(filepath)){
     
+    stopifnot("lines must be a character vector" = is.character(lines))
     ged_lines_raw <- lines
     
   } else {
@@ -48,6 +51,10 @@ read_gedcom <- function(filepath = NULL, lines = NULL) {
       warning("Both filepath and lines provided - filepath will be used")
     
     filepath <- filepath %||% file.choose()
+    stopifnot(
+      "filepath must be a character string" = is.character(filepath) &&
+        length(filepath) == 1
+    )
     
     ext <- tolower(tools::file_ext(filepath))
     if(ext == "ged"){

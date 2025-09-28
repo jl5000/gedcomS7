@@ -2,7 +2,9 @@
 
 # File R/io_import.R: @tests
 
-test_that("Function read_gedcom() @ L39", {
+test_that("Function read_gedcom() @ L41", {
+  expect_error(read_gedcom(1), regexp = "filepath must be a character string")
+  expect_error(read_gedcom(lines = 1), regexp = "lines must be a character vector")
   maximal <- test_path("maximal70.ged")
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
