@@ -1,5 +1,6 @@
 
 get_records <- function(x, xrefs, rec_type){
+  check_gedcom_obj(x)
   rec_list <- S7::prop(x@records@RAW, rec_type)
   xrefs <- xrefs %||% names(rec_list)
   invalid <- setdiff(xrefs, names(rec_list))

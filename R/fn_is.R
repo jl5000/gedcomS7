@@ -1,4 +1,6 @@
 
+is_gedcomS7 <- function(x) S7::S7_inherits(x, GedcomS7)
+
 is_indi_rec <- function(record) S7::S7_inherits(record, IndividualRecord)
 is_fam_rec <- function(record) S7::S7_inherits(record, FamilyRecord)
 is_sour_rec <- function(record) S7::S7_inherits(record, SourceRecord)
@@ -7,13 +9,17 @@ is_media_rec <- function(record) S7::S7_inherits(record, MediaRecord)
 is_note_rec <- function(record) S7::S7_inherits(record, NoteRecord)
 is_subm_rec <- function(record) S7::S7_inherits(record, SubmitterRecord)
 
-is_indi_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Individual"]]]]
-is_fam_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Family"]]]]
-is_sour_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Source"]]]]
-is_repo_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Repository"]]]]
-is_media_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Multimedia"]]]]
-is_note_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Note"]]]]
-is_subm_xref <- function(x, xref) xref %in% x@records@XREFS[[val_record_types()[["Submitter"]]]]
+is_type_xref <- function(x, xref, type){
+  check_gedcom_obj(x)
+  xref %in% x@records@XREFS[[val_record_types()[[type]]]]
+}
+is_indi_xref <- function(x, xref) is_type_xref(x, xref, "Individual")
+is_fam_xref <- function(x, xref) is_type_xref(x, xref, "Family")
+is_sour_xref <- function(x, xref) is_type_xref(x, xref, "Source")
+is_repo_xref <- function(x, xref) is_type_xref(x, xref, "Repository")
+is_media_xref <- function(x, xref) is_type_xref(x, xref, "Multimedia")
+is_note_xref <- function(x, xref) is_type_xref(x, xref, "Note")
+is_subm_xref <- function(x, xref) is_type_xref(x, xref, "Submitter")
 
 #' @tests
 #' expect_error(get_record_type(1), regexp = "Unrecognised record")
@@ -46,6 +52,7 @@ get_record_type <- function(record){
   
 }
 
+check_gedcom_obj <- function(x) if(!is_gedcomS7(x)) stop("Not a GEDCOM object")
 check_indi_rec <- function(x, xref) if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
 check_fam_rec <- function(x, xref) if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
 

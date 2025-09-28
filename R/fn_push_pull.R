@@ -32,6 +32,7 @@
 #' expect_warning(pull_record(ged, "@I1@"),
 #'                regexp = "The following lines could not be parsed.+Wow.+No")
 pull_record <- function(x, xref){
+  check_gedcom_obj(x)
   
   if(!xref %in% unlist(x@records@XREFS))
     stop("The xref is not in the GEDCOM object")
@@ -131,7 +132,7 @@ pull_record <- function(x, xref){
 #' expect_false("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
 #' expect_false("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
 push_record <- function(gedcom, record){
-  
+  check_gedcom_obj(gedcom)
   check_missing_xrefs(gedcom, record)
   
   if(gedcom@update_change_dates){
