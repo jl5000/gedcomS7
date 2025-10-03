@@ -60,7 +60,7 @@ If you then push it to a GEDCOM object, it will assign it a proper xref:
 ged <- push_record(new_gedcom(), new_person)
 ```
 
-The property `ged@xref_prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
+The property `@records@prefixes` is a named vector containing any alphanumeric string (up to 6 characters long) which will precede the number given to identify new records (of which there are 7 types). This vector must be of a particular length with these specific names.
 
 We'll import a different GEDCOM file which has some records in it:
 
