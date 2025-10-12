@@ -76,11 +76,8 @@ Fact <- S7::new_class(
         c(
           obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
           obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
-          obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
-          sprintf("1 PHON %s", self@phone_numbers),
-          sprintf("1 EMAIL %s", self@emails),
-          sprintf("1 FAX %s", self@faxes),
-          sprintf("1 WWW %s", self@web_pages),
+          contacts_to_ged(self@address, self@phone_numbers, self@emails,
+                          self@faxes, self@web_pages) |> increase_level(by = 1),
           sprintf("1 AGNC %s", self@agency),
           sprintf("1 RELI %s", self@relig_affil),
           sprintf("1 CAUS %s", self@cause),

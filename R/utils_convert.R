@@ -78,6 +78,16 @@ notes_to_ged <- function(notes, note_xrefs){
   )
 }
 
+contacts_to_ged <- function(address, phone_numbers, emails, faxes, web_pages){
+  c(
+    obj_to_ged(address, "ADDR"),
+    sprintf("0 PHON %s", phone_numbers),
+    sprintf("0 EMAIL %s", emails),
+    sprintf("0 FAX %s", faxes),
+    sprintf("0 WWW %s", web_pages)
+  )
+}
+
 as.S7class_list <- function(input, S7class){
   if("S7_object" %in% class(input)) input <- list(input)
   lapply(input, \(x) 
