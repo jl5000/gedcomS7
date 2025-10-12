@@ -76,8 +76,7 @@ Place <- S7::new_class(
                                   sprintf("2 LATI %s", self@LATITUDE),
                                   sprintf("2 LONG %s", self@LONGITUDE),
                                   named_vec_to_ged(self@ext_ids, "EXID", "TYPE") |> increase_level(by = 1),
-                                  obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-                                  sprintf("1 SNOTE %s", self@note_xrefs)
+                                  notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1)
                                 )
                               })
   )

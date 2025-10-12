@@ -134,8 +134,7 @@ GedcomHeader <- S7::new_class(
           sprintf("1 LANG %s", self@default_language),
           rep("1 PLAC", length(self@default_place_form) > 0),
           sprintf("2 FORM %s", self@default_place_form),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
+          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1)
         )
       })
   ),

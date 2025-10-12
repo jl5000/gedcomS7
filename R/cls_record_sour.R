@@ -77,8 +77,7 @@ RepositoryCitation <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 REPO %s", self@repo_xref),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
+          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
           obj_to_ged(self@call_numbers, "CALN") |> increase_level(by = 1)
         )
       })
@@ -215,8 +214,7 @@ SourceRecord <- S7::new_class(
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
           sprintf("2 AGNC %s", self@agency),
-          obj_to_ged(self@data_notes, "NOTE") |> increase_level(by = 2),
-          sprintf("2 SNOTE %s", self@data_note_xrefs),
+          notes_to_ged(self@data_notes, self@data_note_xrefs) |> increase_level(by = 2),
           sprintf("1 AUTH %s", self@originator),
           sprintf("1 TITL %s", self@full_title),
           sprintf("1 ABBR %s", self@short_title),
@@ -225,8 +223,7 @@ SourceRecord <- S7::new_class(
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
+          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)

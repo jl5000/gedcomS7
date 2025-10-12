@@ -35,8 +35,7 @@ SubmitterRecord <- S7::new_class(
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
           sprintf("1 LANG %s", self@languages),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
+          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )

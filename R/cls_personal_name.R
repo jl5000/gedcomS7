@@ -135,8 +135,7 @@ PersonalName <- S7::new_class(
           sprintf("2 PHRASE %s", self@type_phrase),
           obj_to_ged(self@name_pieces) |> increase_level(by = 1),
           obj_to_ged(self@name_translations) |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
+          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
         )
       })

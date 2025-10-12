@@ -71,6 +71,13 @@ identifiers_to_ged <- function(user_ids, unique_ids, ext_ids){
   )
 }
 
+notes_to_ged <- function(notes, note_xrefs){
+  c(
+    obj_to_ged(notes, "NOTE"),
+    sprintf("0 SNOTE %s", note_xrefs)
+  )
+}
+
 as.S7class_list <- function(input, S7class){
   if("S7_object" %in% class(input)) input <- list(input)
   lapply(input, \(x) 
