@@ -280,7 +280,7 @@ split_gedcom_values <- function(lines) {
   lvl <- 0
   for(i in seq_along(lines)){
     if(substr(lines[i], 1, 6) == "0 CONT"){
-      lines[i] <- increase_level(lines[i], lvl + 1)
+      lines[i] <- level_up(lines[i], lvl + 1)
     } else {
       lvl <- parse_line_level(lines[i])
     }

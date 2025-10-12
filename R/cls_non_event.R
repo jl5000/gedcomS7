@@ -40,8 +40,8 @@ NonEvent <- S7::new_class(
           sprintf("0 NO %s", self@event_type),
           sprintf("1 DATE %s", obj_to_val(self@date_period)) |> trimws(),
           sprintf("2 PHRASE %s", self@date_phrase),
-          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          obj_to_ged(self@citations, "SOUR") |> level_up(1)
         )
       })
   ),

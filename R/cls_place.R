@@ -71,12 +71,12 @@ Place <- S7::new_class(
                                   sprintf("0 PLAC %s", self@place_name),
                                   sprintf("1 FORM %s", self@place_form),
                                   sprintf("1 LANG %s", self@language),
-                                  named_vec_to_ged(self@place_translations, "TRAN", "LANG") |> increase_level(by = 1),
+                                  named_vec_to_ged(self@place_translations, "TRAN", "LANG") |> level_up(1),
                                   rep("1 MAP", length(self@lat_long)),
                                   sprintf("2 LATI %s", self@LATITUDE),
                                   sprintf("2 LONG %s", self@LONGITUDE),
-                                  named_vec_to_ged(self@ext_ids, "EXID", "TYPE") |> increase_level(by = 1),
-                                  notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1)
+                                  named_vec_to_ged(self@ext_ids, "EXID", "TYPE") |> level_up(1),
+                                  notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
                                 )
                               })
   )

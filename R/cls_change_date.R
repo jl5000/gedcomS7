@@ -62,7 +62,7 @@ ChangeDate <- S7::new_class(
           "0 CHAN",
           sprintf("1 DATE %s", obj_to_val(self@date_exact)),
           sprintf("2 TIME %s", obj_to_val(self@time)),
-          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1)
+          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
         )
         
       })

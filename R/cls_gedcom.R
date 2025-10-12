@@ -43,7 +43,7 @@ GedcomSource <- S7::new_class(
           sprintf("1 NAME %s", self@product_name),
           sprintf("1 CORP %s", self@business_name),
           contacts_to_ged(self@business_address, self@phone_numbers, self@emails,
-                          self@faxes, self@web_pages) |> increase_level(by = 2),
+                          self@faxes, self@web_pages) |> level_up(2),
           sprintf("1 DATA %s", self@data_name),
           sprintf("2 DATE %s", obj_to_val(self@data_pubdate)),
           sprintf("3 TIME %s", obj_to_val(self@data_pubtime)),
@@ -122,7 +122,7 @@ GedcomHeader <- S7::new_class(
           sprintf("2 VERS %s", self@gedcom_version),
           rep("1 SCHMA", length(self@ext_tags) > 0),
           sprintf("2 TAG %s", self@ext_tags),
-          obj_to_ged(self@source) |> increase_level(by = 1),
+          obj_to_ged(self@source) |> level_up(1),
           sprintf("1 DEST %s", self@destination),
           sprintf("1 DATE %s", obj_to_val(self@creation_date)),
           sprintf("2 TIME %s", obj_to_val(self@creation_time)),
@@ -131,7 +131,7 @@ GedcomHeader <- S7::new_class(
           sprintf("1 LANG %s", self@default_language),
           rep("1 PLAC", length(self@default_place_form) > 0),
           sprintf("2 FORM %s", self@default_place_form),
-          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1)
+          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
         )
       })
   ),

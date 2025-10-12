@@ -125,7 +125,7 @@ chronify <- function(x){
 #'
 #' @returns The vector of GEDCOM lines with incremented levels.
 #' @keywords internal
-increase_level <- function(ged, by = 1){
+level_up <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   
   cur_level <- parse_line_level(ged)

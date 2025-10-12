@@ -52,7 +52,7 @@ MediaFile <- S7::new_class(
           sprintf("2 MEDI %s", self@medium),
           sprintf("3 PHRASE %s", self@medium_phrase),
           sprintf("1 TITL %s", self@title),
-          named_vec_to_ged(self@media_alt, "TRAN", "FORM") |> increase_level(by = 1)
+          named_vec_to_ged(self@media_alt, "TRAN", "FORM") |> level_up(1)
         )
       })
   ),
@@ -101,12 +101,12 @@ MediaRecord <- S7::new_class(
         c(
           sprintf("0 %s OBJE", self@XREF),
           sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          obj_to_ged(self@files) |> increase_level(by = 1),
-          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
-          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
-          obj_to_ged(self@updated) |> increase_level(by = 1),
-          obj_to_ged(self@created) |> increase_level(by = 1)
+          obj_to_ged(self@files) |> level_up(1),
+          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
+          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          obj_to_ged(self@citations, "SOUR") |> level_up(1),
+          obj_to_ged(self@updated) |> level_up(1),
+          obj_to_ged(self@created) |> level_up(1)
         )
       })
   ),

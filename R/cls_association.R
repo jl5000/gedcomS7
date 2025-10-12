@@ -46,8 +46,8 @@ Association <- S7::new_class(
           sprintf("1 PHRASE %s", self@indi_phrase),
           sprintf("1 ROLE %s", self@relation_is),
           sprintf("2 PHRASE %s", self@relation_phrase),
-          notes_to_ged(self@notes, self@note_xrefs) |> increase_level(by = 1),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          obj_to_ged(self@citations, "SOUR") |> level_up(1)
         )
       })
   ),
