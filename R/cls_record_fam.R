@@ -32,7 +32,7 @@
 #' expect_snapshot_value(FamilyRecord("@1@",
 #'                                    unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
 #'                                    ext_ids = stats::setNames(letters, LETTERS)[1:5],
-#'                                    user_ids = month.abb[1:6])@GEDCOM_IDENTIFIERS, "json2")
+#'                                    user_ids = month.abb[1:6])@GEDCOM, "json2")
 #' expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 3),
 #'                           chil_xrefs = c("@1@","@2@"))@NUM_CHILDREN, 3)
 #' expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 2),
@@ -86,7 +86,7 @@ FamilyRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s FAM", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
+          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           obj_to_ged(self@facts) |> increase_level(by = 1),
           obj_to_ged(self@non_events) |> increase_level(by = 1),
           named_vec_to_ged(self@husb_xref, "HUSB", "PHRASE") |> increase_level(by = 1),
@@ -95,7 +95,7 @@ FamilyRecord <- S7::new_class(
           obj_to_ged(self@associations) |> increase_level(by = 1),
           sprintf("1 SUBM %s", self@subm_xrefs),
           obj_to_ged(self@spouse_sealings) |> increase_level(by = 1),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
+          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),

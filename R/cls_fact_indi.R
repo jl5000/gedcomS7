@@ -222,7 +222,7 @@ S7::method(summary, IndividualFact) <- function(object, ...){
   to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
   cat("\n")
   to_console("Unique IDs:", toString(object@unique_ids), exdent)
-  to_console("Restrictions:", object@RESTRICTIONS, exdent)
+  to_console("Restrictions:", restrictions_to_resn(object@confidential, object@locked, object@private), exdent)
 }
 
 # DOESN'T WORK

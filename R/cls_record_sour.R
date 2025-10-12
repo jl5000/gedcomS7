@@ -210,7 +210,7 @@ SourceRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s SOUR", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
+          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
           obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
@@ -224,7 +224,7 @@ SourceRecord <- S7::new_class(
           obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
           obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
+          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),

@@ -63,6 +63,14 @@ restrictions_to_resn <- function(confidential, locked, private){
   toString(c(conf, lock, priv))
 }
 
+identifiers_to_ged <- function(user_ids, unique_ids, ext_ids){
+  c(
+    named_vec_to_ged(user_ids, "REFN", "TYPE"),
+    sprintf("0 UID %s", unique_ids),
+    named_vec_to_ged(ext_ids, "EXID", "TYPE")
+  )
+}
+
 as.S7class_list <- function(input, S7class){
   if("S7_object" %in% class(input)) input <- list(input)
   lapply(input, \(x) 

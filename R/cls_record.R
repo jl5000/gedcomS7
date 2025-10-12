@@ -35,22 +35,7 @@ Record <- S7::new_class(
     citations = prop_S7list("citations", SourceCitation),
     media_links = prop_S7list("media_links", MediaLink),
     created = prop_S7obj("created", CreationDate),
-    updated = prop_S7obj("updated", ChangeDate),
-    
-    RESTRICTIONS = S7::new_property(S7::class_character,
-                                    getter = function(self){
-                                      restrictions_to_resn(self@confidential, self@locked, self@private)
-                                    }),
-    
-    GEDCOM_IDENTIFIERS = S7::new_property(
-      S7::class_character,
-      getter = function(self){
-        c(
-          named_vec_to_ged(self@user_ids, "REFN", "TYPE"),
-          sprintf("0 UID %s", self@unique_ids),
-          named_vec_to_ged(self@ext_ids, "EXID", "TYPE")
-        )
-      })
+    updated = prop_S7obj("updated", ChangeDate)
   )
 )
 
@@ -94,7 +79,7 @@ print_record_summary <- function(x){
   to_console("User IDs:", toString(paste(names(x@user_ids), x@user_ids, sep = " = ")), exdent)
   to_console("Unique IDs:", toString(x@unique_ids), exdent)
   to_console("External IDs:", toString(paste(names(x@ext_ids), x@ext_ids, sep = "/")), exdent)
-  to_console("Restrictions:", x@RESTRICTIONS, exdent)
+  to_console("Restrictions:", restrictions_to_resn(x@confidential, x@locked, x@private), exdent)
   if(!is.null(x@created)) summary(x@created)
   if(!is.null(x@updated)) summary(x@updated)
 }

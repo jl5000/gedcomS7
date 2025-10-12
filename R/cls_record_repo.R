@@ -24,7 +24,7 @@ RepositoryRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s REPO", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
+          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           sprintf("1 NAME %s", self@repo_name),
           obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
           sprintf("1 PHON %s", self@phone_numbers),
@@ -33,7 +33,7 @@ RepositoryRecord <- S7::new_class(
           sprintf("1 WWW %s", self@web_pages),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
+          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
           obj_to_ged(self@updated) |> increase_level(by = 1),
           obj_to_ged(self@created) |> increase_level(by = 1)
         )

@@ -131,7 +131,7 @@ IndividualRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s INDI", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
+          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           obj_to_ged(self@pers_names, "NAME") |> increase_level(by = 1),
           sprintf("1 SEX %s", self@sex),
           obj_to_ged(self@facts) |> increase_level(by = 1),
@@ -144,7 +144,7 @@ IndividualRecord <- S7::new_class(
           named_vec_to_ged(self@alia_xrefs, "ALIA", "PHRASE") |> increase_level(by = 1),
           sprintf("1 ANCI %s", self@anci_xrefs),
           sprintf("1 DESI %s", self@desi_xrefs),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
+          identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> increase_level(by = 1),
           obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
           sprintf("1 SNOTE %s", self@note_xrefs),
           obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
