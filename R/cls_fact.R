@@ -29,12 +29,7 @@ Fact <- S7::new_class(
     citations = prop_S7list("citations", SourceCitation),
     media_links = prop_S7list("media_links", MediaLink),
     unique_ids = prop_char(pattern = reg_uuid(TRUE)),
-    
-    RESTRICTIONS = S7::new_property(S7::class_character,
-                                    getter = function(self){
-                                      restrictions_to_resn(self@confidential, self@locked, self@private)
-                                    }),
-    
+
     FACT_DATE = S7::new_property(
       S7::class_character,
       getter = function(self){
