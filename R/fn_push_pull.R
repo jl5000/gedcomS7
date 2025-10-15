@@ -79,7 +79,7 @@ pull_record <- function(x, xref){
 #' 
 #' @details 
 #' The function will automatically keep family links for individuals updated.
-#' It will also update the record last_updated if update_change_dates in the
+#' It will also update the `@updated` property if `@update_change_dates` in the
 #' gedcom object is set to TRUE.
 #'
 #' @inheritParams pull_record
