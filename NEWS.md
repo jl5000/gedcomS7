@@ -1,5 +1,8 @@
-# gedcomS7 0.3.0 (??)
+# gedcomS7 0.3.0 (?)
 
+* Added support for dates in the Julian calendar
+* Record and Fact objects no longer have `@GEDCOM_IDENTIFIERS` and `@RESTRICTIONS` properties
+* Parameters names in `push_record()` made consistent with `pull_record()` 
 * Additional validation of arguments in user-facing functions
 
 # gedcomS7 0.2.0 (6 Sep 2025)
