@@ -32,8 +32,8 @@ CreationDate <- S7::new_class(
       getter = function(self){
         c(
           "0 CREA",
-          sprintf("1 DATE %s", obj_to_val(self@date_exact)),
-          sprintf("2 TIME %s", obj_to_val(self@time))
+          sprintf("1 DATE %s", as_val(self@date_exact)),
+          sprintf("2 TIME %s", as_val(self@time))
         )
       })
   )
@@ -60,8 +60,8 @@ ChangeDate <- S7::new_class(
       getter = function(self){
         c(
           "0 CHAN",
-          sprintf("1 DATE %s", obj_to_val(self@date_exact)),
-          sprintf("2 TIME %s", obj_to_val(self@time)),
+          sprintf("1 DATE %s", as_val(self@date_exact)),
+          sprintf("2 TIME %s", as_val(self@time)),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
         )
         
@@ -94,8 +94,8 @@ parse_change_date <- function(rec_lines){
 S7::method(summary, CreationDate) <- function(object, ...){
   exdent <- 15
   to_console_value_with_phrase("Created:", 
-                               obj_to_val(object@date_exact), 
-                               obj_to_val(object@time),
+                               as_val(object@date_exact), 
+                               as_val(object@time),
                                exdent,
                                "%s %s")
 }
@@ -103,8 +103,8 @@ S7::method(summary, CreationDate) <- function(object, ...){
 S7::method(summary, ChangeDate) <- function(object, ...){
   exdent <- 15
   to_console_value_with_phrase("Changed:", 
-                               obj_to_val(object@date_exact), 
-                               obj_to_val(object@time),
+                               as_val(object@date_exact), 
+                               as_val(object@time),
                                exdent,
                                "%s %s")
 }

@@ -25,14 +25,10 @@ S7::method(as_ged, S7::class_atomic) <- function(x, tag1 = NULL, tag2 = NULL){
   ged
 }
 
-obj_to_val <- function(obj){
-  if("S7_object" %in% class(obj)){
-    val <- obj@GEDCOM_STRING
-  } else {
-    val <- obj # character/NULL
-  }
-  val
-}
+as_val <- S7::new_generic("as_val", "x")
+S7::method(as_val, NULL) <- function(x){x}
+S7::method(as_val, S7::class_character) <- function(x){x}
+S7::method(as_val, GedcomS7class) <- function(x){x@GEDCOM_STRING}
 
 restrictions_to_resn <- function(confidential, locked, private){
   if(!any(confidential, locked, private))

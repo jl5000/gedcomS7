@@ -158,11 +158,11 @@ DateApprox <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if(self@calc) {
-          paste("CAL", obj_to_val(self@date_cal))
+          paste("CAL", as_val(self@date_cal))
         } else if(self@est) {
-          paste("EST", obj_to_val(self@date_cal))
+          paste("EST", as_val(self@date_cal))
         } else if (self@about) {
-          paste("ABT", obj_to_val(self@date_cal))
+          paste("ABT", as_val(self@date_cal))
         } 
       }               
     )
@@ -239,17 +239,17 @@ DatePeriod <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          start <- obj_to_val(self@start_date)
-          end <- obj_to_val(self@end_date)
+          start <- as_val(self@start_date)
+          end <- as_val(self@end_date)
           if(grepl("JULIAN", start) != grepl("JULIAN", end)){
             start <- ifelse(grepl("JULIAN", start), start, paste("GREGORIAN", start))
             end <- ifelse(grepl("JULIAN", end), end, paste("GREGORIAN", end))
           }
           paste("FROM", start, "TO", end)
         } else if (length(self@start_date) == 1) {
-          paste("FROM", obj_to_val(self@start_date))
+          paste("FROM", as_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("TO", obj_to_val(self@end_date))
+          paste("TO", as_val(self@end_date))
         } else {
           ""
         }
@@ -321,17 +321,17 @@ DateRange <- S7::new_class(
       S7::class_character,
       getter = function(self){
         if (length(self@start_date) + length(self@end_date) == 2) {
-          start <- obj_to_val(self@start_date)
-          end <- obj_to_val(self@end_date)
+          start <- as_val(self@start_date)
+          end <- as_val(self@end_date)
           if(grepl("JULIAN", start) != grepl("JULIAN", end)){
             start <- ifelse(grepl("JULIAN", start), start, paste("GREGORIAN", start))
             end <- ifelse(grepl("JULIAN", end), end, paste("GREGORIAN", end))
           }
           paste("BET", start, "AND", end)
         } else if (length(self@start_date) == 1) {
-          paste("AFT", obj_to_val(self@start_date))
+          paste("AFT", as_val(self@start_date))
         } else if (length(self@end_date) == 1) {
-          paste("BEF", obj_to_val(self@end_date))
+          paste("BEF", as_val(self@end_date))
         } 
       }               
     )
@@ -367,27 +367,27 @@ DateValue <- S7::new_class(
     time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
-                              getter = function(self) obj_to_val(self@date)),
+                              getter = function(self) as_val(self@date)),
     
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 DATE %s", obj_to_val(self@date)) |> trimws(),
-          sprintf("1 TIME %s", obj_to_val(self@time)),
+          sprintf("0 DATE %s", as_val(self@date)) |> trimws(),
+          sprintf("1 TIME %s", as_val(self@time)),
           sprintf("1 PHRASE %s", self@date_phrase)
         )
       })
   ),
   validator = function(self){
     #date_period has no time
-    if(grepl("(FROM)|(TO)", obj_to_val(self@date))){
+    if(grepl("(FROM)|(TO)", as_val(self@date))){
       if(length(self@time) > 0)
         return("A date period should not have a time defined.")
     }
     
     chk_input_phrase(self@date_phrase, "@date_phrase",
-                     obj_to_val(self@date), "@date", "")
+                     as_val(self@date), "@date", "")
   }
 )
 
@@ -417,14 +417,14 @@ DateSorting <- S7::new_class(
     time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
-                                getter = function(self) obj_to_val(self@date)),
+                                getter = function(self) as_val(self@date)),
     
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 SDATE %s", obj_to_val(self@date)),
-          sprintf("1 TIME %s", obj_to_val(self@time)),
+          sprintf("0 SDATE %s", as_val(self@date)),
+          sprintf("1 TIME %s", as_val(self@time)),
           sprintf("1 PHRASE %s", self@date_phrase)
         )
       })
@@ -461,7 +461,7 @@ S7::method(summary, DateAny) <- function(object, ...){
   date_str <- object@GEDCOM_STRING
   
   if(S7::S7_inherits(object, DateSorting) || S7::S7_inherits(object, DateValue)){
-    if(length(object@time) == 1) date_str <- paste(date_str, obj_to_val(object@time))
+    if(length(object@time) == 1) date_str <- paste(date_str, as_val(object@time))
     if(length(object@date_phrase) == 1) date_str <- sprintf("%s (%s)",
                                                        date_str, object@date_phrase)
   }

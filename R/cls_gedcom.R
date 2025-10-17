@@ -45,8 +45,8 @@ GedcomSource <- S7::new_class(
           contacts_to_ged(self@business_address, self@phone_numbers, self@emails,
                           self@faxes, self@web_pages) |> level_up(2),
           sprintf("1 DATA %s", self@data_name),
-          sprintf("2 DATE %s", obj_to_val(self@data_pubdate)),
-          sprintf("3 TIME %s", obj_to_val(self@data_pubtime)),
+          sprintf("2 DATE %s", as_val(self@data_pubdate)),
+          sprintf("3 TIME %s", as_val(self@data_pubtime)),
           sprintf("2 COPR %s", self@data_copyright)
         )
       }
@@ -124,8 +124,8 @@ GedcomHeader <- S7::new_class(
           sprintf("2 TAG %s", self@ext_tags),
           as_ged(self@source) |> level_up(1),
           sprintf("1 DEST %s", self@destination),
-          sprintf("1 DATE %s", obj_to_val(self@creation_date)),
-          sprintf("2 TIME %s", obj_to_val(self@creation_time)),
+          sprintf("1 DATE %s", as_val(self@creation_date)),
+          sprintf("2 TIME %s", as_val(self@creation_time)),
           sprintf("1 SUBM %s", self@subm_xref),
           sprintf("1 COPR %s", self@gedcom_copyright),
           sprintf("1 LANG %s", self@default_language),
@@ -395,7 +395,7 @@ S7::method(summary, GedcomSource) <- function(object, ...){
 raw_header_summary <- function(hd){
   exdent <- 20
   to_console("GEDCOM version:", hd@gedcom_version, exdent)
-  to_console("Creation Date:", obj_to_val(hd@creation_date), exdent)
+  to_console("Creation Date:", as_val(hd@creation_date), exdent)
   to_console("Default Language:", hd@default_language, exdent)
   raw_source_summary(hd@source)
   cat("\n")

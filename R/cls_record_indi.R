@@ -72,7 +72,7 @@ IndividualRecord <- S7::new_class(
       getter = function(self){
         if(length(self@pers_names) == 0) return(character())
         
-        obj_to_val(self@pers_names[[1]]) |> 
+        as_val(self@pers_names[[1]]) |> 
           gsub(pattern = "/", replacement = "")
       }),
     
@@ -80,7 +80,7 @@ IndividualRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         vapply(self@pers_names, \(nm){
-          obj_to_val(nm)
+          as_val(nm)
         }, FUN.VALUE = character(1), USE.NAMES = FALSE) |> 
           gsub(pattern = "/", replacement = "")
       }),

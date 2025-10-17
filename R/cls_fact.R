@@ -33,7 +33,7 @@ Fact <- S7::new_class(
     FACT_DATE = S7::new_property(
       S7::class_character,
       getter = function(self){
-        obj_to_val(self@date)
+        as_val(self@date)
       }),
     
     FACT_LOCATION = S7::new_property(
@@ -41,7 +41,7 @@ Fact <- S7::new_class(
       getter = function(self){
         want_addr <- self@fact_type %in% c("RESI","CENS","PROP")
         if(want_addr && length(self@address) == 1){
-          return(obj_to_val(self@address))
+          return(as_val(self@address))
         }
         
         if(length(self@address) == 1 &&
@@ -50,9 +50,9 @@ Fact <- S7::new_class(
            length(self@address@country) > 1){
           toString(c(self@address@city, self@address@state, self@address@country))
         } else if(length(self@place) == 1){
-          obj_to_val(self@place)
+          as_val(self@place)
         } else if(length(self@address) == 1) {
-          obj_to_val(self@address) |> 
+          as_val(self@address) |> 
             strsplit("; ") |> 
             unlist() |> 
             tail(2) |> 
