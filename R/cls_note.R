@@ -57,8 +57,8 @@ Note <- S7::new_class(
           sprintf("0 NOTE %s", self@text),
           sprintf("1 MIME %s", self@media_type),
           sprintf("1 LANG %s", self@language),
-          obj_to_ged(self@translations) |> level_up(1),
-          obj_to_ged(self@citations) |> level_up(1)
+          as_ged(self@translations) |> level_up(1),
+          as_ged(self@citations) |> level_up(1)
         )
       })
   ),

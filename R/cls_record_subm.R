@@ -29,12 +29,12 @@ SubmitterRecord <- S7::new_class(
           sprintf("1 NAME %s", self@subm_name),
           contacts_to_ged(self@address, self@phone_numbers, self@emails,
                           self@faxes, self@web_pages) |> level_up(1),
-          obj_to_ged(self@media_links) |> level_up(1),
+          as_ged(self@media_links) |> level_up(1),
           sprintf("1 LANG %s", self@languages),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@updated) |> level_up(1),
-          obj_to_ged(self@created) |> level_up(1)
+          as_ged(self@updated) |> level_up(1),
+          as_ged(self@created) |> level_up(1)
         )
       })
   ),

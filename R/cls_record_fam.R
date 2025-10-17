@@ -87,20 +87,20 @@ FamilyRecord <- S7::new_class(
         c(
           sprintf("0 %s FAM", self@XREF),
           sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          obj_to_ged(self@facts) |> level_up(1),
-          obj_to_ged(self@non_events) |> level_up(1),
-          named_vec_to_ged(self@husb_xref, "HUSB", "PHRASE") |> level_up(1),
-          named_vec_to_ged(self@wife_xref, "WIFE", "PHRASE") |> level_up(1),
-          named_vec_to_ged(self@chil_xrefs, "CHIL", "PHRASE") |> level_up(1),
-          obj_to_ged(self@associations) |> level_up(1),
+          as_ged(self@facts) |> level_up(1),
+          as_ged(self@non_events) |> level_up(1),
+          as_ged(self@husb_xref, "HUSB", "PHRASE") |> level_up(1),
+          as_ged(self@wife_xref, "WIFE", "PHRASE") |> level_up(1),
+          as_ged(self@chil_xrefs, "CHIL", "PHRASE") |> level_up(1),
+          as_ged(self@associations) |> level_up(1),
           sprintf("1 SUBM %s", self@subm_xrefs),
-          obj_to_ged(self@spouse_sealings) |> level_up(1),
+          as_ged(self@spouse_sealings) |> level_up(1),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations) |> level_up(1),
-          obj_to_ged(self@media_links) |> level_up(1),
-          obj_to_ged(self@updated) |> level_up(1),
-          obj_to_ged(self@created) |> level_up(1)
+          as_ged(self@citations) |> level_up(1),
+          as_ged(self@media_links) |> level_up(1),
+          as_ged(self@updated) |> level_up(1),
+          as_ged(self@created) |> level_up(1)
         )
       })
   )

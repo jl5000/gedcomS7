@@ -132,24 +132,24 @@ IndividualRecord <- S7::new_class(
         c(
           sprintf("0 %s INDI", self@XREF),
           sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          obj_to_ged(self@pers_names) |> level_up(1),
+          as_ged(self@pers_names) |> level_up(1),
           sprintf("1 SEX %s", self@sex),
-          obj_to_ged(self@facts) |> level_up(1),
-          obj_to_ged(self@non_events) |> level_up(1),
-          obj_to_ged(self@ordinances) |> level_up(1),
-          obj_to_ged(self@fam_links_chil) |> level_up(1),
-          obj_to_ged(self@fam_links_spou) |> level_up(1),
+          as_ged(self@facts) |> level_up(1),
+          as_ged(self@non_events) |> level_up(1),
+          as_ged(self@ordinances) |> level_up(1),
+          as_ged(self@fam_links_chil) |> level_up(1),
+          as_ged(self@fam_links_spou) |> level_up(1),
           sprintf("1 SUBM %s", self@subm_xrefs),
-          obj_to_ged(self@associations) |> level_up(1),
-          named_vec_to_ged(self@alia_xrefs, "ALIA", "PHRASE") |> level_up(1),
+          as_ged(self@associations) |> level_up(1),
+          as_ged(self@alia_xrefs, "ALIA", "PHRASE") |> level_up(1),
           sprintf("1 ANCI %s", self@anci_xrefs),
           sprintf("1 DESI %s", self@desi_xrefs),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations) |> level_up(1),
-          obj_to_ged(self@media_links) |> level_up(1),
-          obj_to_ged(self@updated) |> level_up(1),
-          obj_to_ged(self@created) |> level_up(1)
+          as_ged(self@citations) |> level_up(1),
+          as_ged(self@media_links) |> level_up(1),
+          as_ged(self@updated) |> level_up(1),
+          as_ged(self@created) |> level_up(1)
         )
       })
   )

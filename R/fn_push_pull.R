@@ -312,9 +312,9 @@ order_facts <- function(record){
   # get dates of all facts
   dts <- lapply(record@facts, \(fct){
     if(length(fct@date_sort) == 1){
-      dt <- obj_to_ged(fct@date_sort, "SDATE")[1]
+      dt <- as_ged(fct@date_sort, "SDATE")[1]
     } else if(length(fct@date) == 1) {
-      dt <- obj_to_ged(fct@date, "DATE")[1]
+      dt <- as_ged(fct@date, "DATE")[1]
     } else {
       dt <- ""
     }

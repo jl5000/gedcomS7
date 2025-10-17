@@ -73,7 +73,7 @@ PersonalNameTran <- S7::new_class(
         c(
           sprintf("0 TRAN %s", self@pers_name),
           sprintf("1 LANG %s", self@language),
-          obj_to_ged(self@name_pieces) |> level_up(1)
+          as_ged(self@name_pieces) |> level_up(1)
         )
       })
   )
@@ -133,10 +133,10 @@ PersonalName <- S7::new_class(
           sprintf("0 NAME %s", self@pers_name),
           sprintf("1 TYPE %s", self@name_type),
           sprintf("2 PHRASE %s", self@type_phrase),
-          obj_to_ged(self@name_pieces) |> level_up(1),
-          obj_to_ged(self@name_translations) |> level_up(1),
+          as_ged(self@name_pieces) |> level_up(1),
+          as_ged(self@name_translations) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations) |> level_up(1)
+          as_ged(self@citations) |> level_up(1)
         )
       })
   ),

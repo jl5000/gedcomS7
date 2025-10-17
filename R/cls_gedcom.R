@@ -122,7 +122,7 @@ GedcomHeader <- S7::new_class(
           sprintf("2 VERS %s", self@gedcom_version),
           rep("1 SCHMA", length(self@ext_tags) > 0),
           sprintf("2 TAG %s", self@ext_tags),
-          obj_to_ged(self@source) |> level_up(1),
+          as_ged(self@source) |> level_up(1),
           sprintf("1 DEST %s", self@destination),
           sprintf("1 DATE %s", obj_to_val(self@creation_date)),
           sprintf("2 TIME %s", obj_to_val(self@creation_time)),

@@ -78,7 +78,7 @@ RepositoryCitation <- S7::new_class(
         c(
           sprintf("0 REPO %s", self@repo_xref),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@call_numbers) |> level_up(1)
+          as_ged(self@call_numbers) |> level_up(1)
         )
       })
   )
@@ -142,7 +142,7 @@ FactsRecorded <- S7::new_class(
           sprintf("0 EVEN %s", self@fact_types),
           sprintf("1 DATE %s", obj_to_val(self@date_period)) |> trimws(),
           sprintf("2 PHRASE %s", self@date_phrase),
-          obj_to_ged(self@territory) |> level_up(1)
+          as_ged(self@territory) |> level_up(1)
         )
       })
   )
@@ -212,21 +212,21 @@ SourceRecord <- S7::new_class(
           sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
-          obj_to_ged(self@facts_recorded) |> level_up(2),
+          as_ged(self@facts_recorded) |> level_up(2),
           sprintf("2 AGNC %s", self@agency),
           notes_to_ged(self@data_notes, self@data_note_xrefs) |> level_up(2),
           sprintf("1 AUTH %s", self@originator),
           sprintf("1 TITL %s", self@full_title),
           sprintf("1 ABBR %s", self@short_title),
           sprintf("1 PUBL %s", self@publication_facts),
-          obj_to_ged(self@source_text) |> level_up(1) |> 
+          as_ged(self@source_text) |> level_up(1) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
-          obj_to_ged(self@repo_citations) |> level_up(1),
+          as_ged(self@repo_citations) |> level_up(1),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@media_links) |> level_up(1),
-          obj_to_ged(self@updated) |> level_up(1),
-          obj_to_ged(self@created) |> level_up(1)
+          as_ged(self@media_links) |> level_up(1),
+          as_ged(self@updated) |> level_up(1),
+          as_ged(self@created) |> level_up(1)
         )
       })
   ),
