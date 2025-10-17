@@ -22,7 +22,7 @@ Fact <- S7::new_class(
     confidential = prop_bool(default = FALSE),
     locked = prop_bool(default = FALSE),
     private = prop_bool(default = FALSE),
-    date_sort = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateSorting"),
+    date_sort = prop_char(0, 1, pattern = reg_date_calendar(), S7class_names = "DateSorting"),
     associations = prop_S7list("associations", Association),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),

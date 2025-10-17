@@ -32,9 +32,9 @@
 #' expect_error(read_gedcom(lines = bad_lines1),
 #'              regexp = "The following lines are invalid:\n5: 1TAG Hello")
 #' bad_lines2 <- lines
-#' bad_lines2[c(10,13)] <- "1 DATE JULIAN date is not allowed"
+#' bad_lines2[c(10,13)] <- "1 DATE HEBREW date is not allowed"
 #' expect_error(read_gedcom(lines = bad_lines2),
-#'              regexp = "Non-Gregorian dates are not supported. See line 10, 13")
+#'              regexp = "Non-Gregorian/Julian dates are not supported. See line 10, 13")
 #' missing_xref <- sub("0 @I1@ INDI", "0 INDI", lines)
 #' expect_true(all(read_gedcom(lines = lines)@GEDCOM == 
 #'                 read_gedcom(lines = missing_xref)@GEDCOM))
@@ -101,17 +101,18 @@ validate_lines <- function(lines){
   
   #check characters in components
   
-  #non-greg calendars not allowed
+  #non-greg/jul calendars not allowed
   date_lines <- parse_line_tag(lines) == "DATE"
-  non_greg_lines <- grepl("(JULIAN|FRENCH_R|HEBREW)", parse_line_value(lines))
-  unsupp_date_rows <- which(date_lines & non_greg_lines)
+  non_gregjul_lines <- grepl("(FRENCH_R|HEBREW)", parse_line_value(lines))
+  unsupp_date_rows <- which(date_lines & non_gregjul_lines)
   
   if(length(unsupp_date_rows) > 0)
-    stop("Non-Gregorian dates are not supported. See line ", 
+    stop("Non-Gregorian/Julian dates are not supported. See line ", 
          toString(unsupp_date_rows))
   
-  # Make explicit GREGORIANs implicit
-  lines[date_lines] <- gsub("GREGORIAN ", "", lines[date_lines])
+  # Make explicit GREGORIANs implicit when it's the only calendar given
+  non_jul_lines <- !grepl("JULIAN", parse_line_value(lines))
+  lines[date_lines & non_jul_lines] <- gsub("GREGORIAN ", "", lines[date_lines & non_jul_lines])
   
   if(lines[1] != "0 HEAD")
     stop("The file does not start with a HEAD record")

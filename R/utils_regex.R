@@ -162,7 +162,7 @@ reg_date_exact <- function(only = TRUE, strict = TRUE) {
 #' Construct a regular expression for DATE values
 #'
 #' @details The DATE (and subsequent DATE_CALENDAR) pattern can potentially handle several
-#' different calendar types, but this package has only implemented the Gregorian calendar.
+#' different calendar types, but this package has only implemented the Gregorian/Julian calendar.
 #' @param flatten A logical value which determines whether a single regex string should be
 #' returned (flatten = TRUE) or if a vector of them should be returned (flatten = FALSE).
 #' The vector output is used if the regexes need to be combined with other regexes. If they
@@ -185,16 +185,17 @@ reg_date_exact <- function(only = TRUE, strict = TRUE) {
 #' expect_equal(grepl(reg_date(), "5 JUL 2005 "), FALSE)
 #' expect_equal(grepl(reg_date(), " 5 JUL 2005"), FALSE)
 reg_date <- function(flatten = TRUE, only = TRUE, strict = TRUE) {
-  reg_date_gregorian(flatten, only, strict)
+  reg_date_calendar(flatten, only, strict)
 }
 
 
-reg_date_gregorian <- function(flatten = TRUE, only = TRUE, strict = TRUE) {
+reg_date_calendar <- function(flatten = TRUE, only = TRUE, strict = TRUE) {
   combos <- c(reg_year(),
               paste(reg_year(), "BCE"),
               paste(reg_month(), reg_year()),
               paste(reg_day(strict), reg_month(), reg_year()))
   
+  combos <- paste0("((JULIAN|GREGORIAN) )?", combos)
   if(only) combos <- anchor_it(combos)
   if(flatten) combos <- paste(combos, collapse = "|")
   

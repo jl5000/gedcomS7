@@ -33,45 +33,56 @@ DateExact(2008, 4, 1)@as_date
 
 ## Calendar dates
 
-Calendar dates are the most common type of date used. They can not only be used to create specific dates like `DateExact()`, they underpin the other date types described below. They can be created using `DateGregorian()`:
+Calendar dates are the most common type of date used. They can not only be used to create specific dates like `DateExact()`, they underpin the other date types described below. They can be created using `DateCalendar()`:
 
 ```{r}
-DateGregorian(year = 1999, month = 4, day = 5)
-DateGregorian(year = 1999, month = 4)
-DateGregorian(year = 1999)
+DateCalendar(year = 1999, month = 4, day = 5)
+DateCalendar(year = 1999, month = 4)
+DateCalendar(year = 1999)
 ```
 
 Years before the Common Era can be defined using negative years:
 
 ```{r}
-DateGregorian(year = -105)
+DateCalendar(year = -105)
 ```
 
-No other calendars apart from the Gregorian calendar are supported by the package.
+The Gregorian calendar is implicitly assumed by default. The Julian calendar can be specified by setting `julian = TRUE`:
+
+```{r}
+DateCalendar(year = 1999, month = 4, julian = TRUE)
+```
+
+No other calendars apart from the Gregorian and Julian calendars are supported by the package.
 
 ## Approximate dates
 
-Approximate dates (i.e. those expressing uncertainty) use the qualifiers 'about', 'calculated', or 'estimated' in conjunction with a `DateGregorian()` object:
+Approximate dates (i.e. those expressing uncertainty) use the qualifiers 'about', 'calculated', or 'estimated' in conjunction with a `DateCalendar()` object:
 
 ```{r}
-DateGregorian(year = 1999, month = 4, day = 5) |> DateApprox(about = TRUE)
-DateGregorian(year = 1999, month = 4, day = 5) |> DateApprox(calc = TRUE)
-DateGregorian(year = 1999, month = 4, day = 5) |> DateApprox(est = TRUE)
+DateCalendar(year = 1999, month = 4, day = 5) |> DateApprox(about = TRUE)
+DateCalendar(year = 1999, month = 4, day = 5) |> DateApprox(calc = TRUE)
+DateCalendar(year = 1999, month = 4, day = 5) |> DateApprox(est = TRUE)
 ```
 
 
 ## Date periods
 
-Date periods can take one or two `DateGregorian()` objects:
+Date periods can take one or two `DateCalendar()` objects:
 
 ```{r}
-DatePeriod(start_date = DateGregorian(1956, 7, 26),
-           end_date = DateGregorian(1956, 9, 15))
-DatePeriod(start_date = DateGregorian(1956, 7, 26))
-DatePeriod(end_date = DateGregorian(1956, 9, 15))
+DatePeriod(start_date = DateCalendar(1956, 7, 26),
+           end_date = DateCalendar(1956, 9, 15))
+DatePeriod(start_date = DateCalendar(1956, 7, 26))
+DatePeriod(end_date = DateCalendar(1956, 9, 15))
 ```
 
-Providing only one date gives a semi-infinite period.
+Providing only one date gives a semi-infinite period. If a mix of calendars are used with a finite period, they are made explicit, e.g.
+
+```{r}
+DatePeriod(start_date = DateCalendar(1956, 7, 26, julian = TRUE),
+           end_date = DateCalendar(1956, 9, 15))
+```
 
 
 ## Date ranges
@@ -79,10 +90,10 @@ Providing only one date gives a semi-infinite period.
 Date ranges can be defined using `DateRange()`. Unlike `DatePeriod()`, they describe when an event occurred rather than a duration.
 
 ```{r}
-DateRange(start_date = DateGregorian(1956, 7, 26),
-           end_date = DateGregorian(1956, 9, 15))
-DateRange(start_date = DateGregorian(1956, 7, 26))
-DateRange(end_date = DateGregorian(1956, 9, 15))
+DateRange(start_date = DateCalendar(1956, 7, 26),
+           end_date = DateCalendar(1956, 9, 15))
+DateRange(start_date = DateCalendar(1956, 7, 26))
+DateRange(end_date = DateCalendar(1956, 9, 15))
 ```
 
 It's important to note that approximate dates cannot be used in date ranges or date periods. 
@@ -93,7 +104,7 @@ Date values can be defined with `DateValue()` and are a higher level of date exp
 
 ```{r}
 my_date <- DateValue(
-  date = DateGregorian(year = 1999, month = 4, day = 5),
+  date = DateCalendar(year = 1999, month = 4, day = 5),
   date_phrase = "Someone's birthday",
   time = Time(hour = 13, minute = 28, second = 57)
 )

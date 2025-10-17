@@ -158,8 +158,8 @@ chk_input_date_cpts <- function(year, month, day){
 
 #' Validate a date range/period
 #' 
-#' @param start_date The start date given either as a `DateGregorian` or a GEDCOM date string.
-#' @param end_date The end date given either as a `DateGregorian` or a GEDCOM date string.
+#' @param start_date The start date given either as a `DateCalendar` or a GEDCOM date string.
+#' @param end_date The end date given either as a `DateCalendar` or a GEDCOM date string.
 #'
 #' @inherit chk_input_size return
 #' @keywords internal

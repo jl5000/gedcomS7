@@ -27,6 +27,6 @@ Construct a regular expression for DATE values
 }
 \details{
 The DATE (and subsequent DATE_CALENDAR) pattern can potentially handle several
-different calendar types, but this package has only implemented the Gregorian calendar.
+different calendar types, but this package has only implemented the Gregorian/Julian calendar.
 }
 \keyword{internal}

@@ -120,9 +120,9 @@
 #' `DateSorting()` object.
 #' @param date_phrase Textual information that cannot be expressed in the date.
 #' @param start_date The start of the period/range given either as a formatted GEDCOM string, or a
-#' `DateGregorian()` object.
+#' `DateCalendar()` object.
 #' @param end_date The end of the period/range given either as a formatted GEDCOM string, or a
-#' `DateGregorian()` object.
+#' `DateCalendar()` object.
 #' @param time The time given either as a formatted GEDCOM string, or a
 #' `Time()` object.
 #' @param created A `CreationDate()` object containing the date the record was created.

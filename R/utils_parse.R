@@ -56,22 +56,23 @@ parse_gedcom_date <- function(date_string, minimise = TRUE){
       length(minimise) == 1
   )
   
-  # Extract relevant date_gregorian
+  # Extract relevant date_calendar
   if(minimise){
     if(grepl("^(BEF|TO) ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE,
+    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_calendar(only = FALSE,
                                                                        strict = FALSE)), 
                        "\\1", date_string)
   } else {
     if(grepl("^(AFT|FROM) ", date_string) &&
        !grepl(" TO ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_gregorian(only = FALSE,
+    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_calendar(only = FALSE,
                                                                   strict = FALSE)), 
                        "\\1", date_string)
   }
   
+  date_string <- gsub("(GREGORIAN|JULIAN) ", "", date_string)
   ged_year <- sub(".* ", "", date_string)
   
   if(grepl("[A-Z]{3}", date_string)) {

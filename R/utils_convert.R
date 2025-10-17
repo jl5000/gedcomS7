@@ -1,4 +1,35 @@
 
+# as_ged <- S7::new_generic("as_ged", "x")
+# 
+# S7::method(as_ged, NULL) <- function(x){character()}
+# S7::method(as_ged, GedcomS7class) <- function(x){x@GEDCOM}
+# 
+# S7::method(as_ged, S7::class_vector) <- function(x, tag1 = NULL, tag2 = NULL){
+#   stopifnot("Object contains atomic elements - a tag is required" = !is.null(tag1))
+#   if(length(x) == 0) return(character())
+#   if(is.null(tag2)) return(paste(0, tag1, x))
+#     
+#   # named vector
+#   ged <- character()
+#   for(i in seq_along(x)){
+#     ged <- c(
+#       ged,
+#       paste(0, tag1, x[i]),
+#       paste(1, tag2, names(x)[i])
+#     )
+#   }
+#   ged <- ged[ged != paste(1, tag2, "")]
+#   ged
+# }
+# S7::method(as_ged, S7::class_list) <- function(x){
+#   out <- character()
+#   for(input in x){ # all elements will be S7 objects
+#     out <- c(out, as_ged(input))
+#   }
+#   out
+# }
+
+
 #' Convert an input into a vector of GEDCOM lines
 #'
 #' @param obj Either an atomic vector, S7 class object, or list.

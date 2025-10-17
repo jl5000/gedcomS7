@@ -4,11 +4,11 @@
 \alias{DateApprox}
 \title{Create a GEDCOM Approximate Date object}
 \usage{
-DateApprox(date_greg = character(0), about = TRUE, calc = FALSE, est = FALSE)
+DateApprox(date_cal = character(0), about = TRUE, calc = FALSE, est = FALSE)
 }
 \arguments{
-\item{date_greg}{A Gregorian date given either as a formatted GEDCOM string, or a
-\code{DateGregorian} object.}
+\item{date_cal}{A Calendar date given either as a formatted GEDCOM string, or a
+\code{DateCalendar} object.}
 
 \item{about}{Whether the date is near to the date given.}
 
