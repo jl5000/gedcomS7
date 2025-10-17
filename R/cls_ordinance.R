@@ -29,12 +29,12 @@ Ordinance <- S7::new_class(
           sprintf("0 %s", self@ord_type),
           obj_to_ged(self@date, "DATE") |> level_up(1),
           sprintf("1 TEMP %s", self@temple_name),
-          obj_to_ged(self@place, "PLAC") |> level_up(1),
+          obj_to_ged(self@place) |> level_up(1),
           sprintf("1 STAT %s", self@ord_state),
           sprintf("2 DATE %s", obj_to_val(self@state_date)),
           sprintf("3 TIME %s", obj_to_val(self@state_time)),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations, "SOUR") |> level_up(1),
+          obj_to_ged(self@citations) |> level_up(1),
           sprintf("1 FAMC %s", self@fam_xref)
         )
       })
@@ -90,12 +90,12 @@ SpouseSealing <- S7::new_class(
           sprintf("0 %s", self@ord_type),
           obj_to_ged(self@date, "DATE") |> level_up(1),
           sprintf("1 TEMP %s", self@temple_name),
-          obj_to_ged(self@place, "PLAC") |> level_up(1),
+          obj_to_ged(self@place) |> level_up(1),
           sprintf("1 STAT %s", self@ord_state),
           sprintf("2 DATE %s", obj_to_val(self@state_date)),
           sprintf("3 TIME %s", obj_to_val(self@state_time)),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations, "SOUR") |> level_up(1)
+          obj_to_ged(self@citations) |> level_up(1)
         )
       })
   ),

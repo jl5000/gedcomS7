@@ -104,7 +104,7 @@ MediaRecord <- S7::new_class(
           obj_to_ged(self@files) |> level_up(1),
           identifiers_to_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations, "SOUR") |> level_up(1),
+          obj_to_ged(self@citations) |> level_up(1),
           obj_to_ged(self@updated) |> level_up(1),
           obj_to_ged(self@created) |> level_up(1)
         )

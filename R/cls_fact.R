@@ -75,7 +75,7 @@ Fact <- S7::new_class(
         
         c(
           obj_to_ged(self@date, "DATE") |> level_up(1),
-          obj_to_ged(self@place, "PLAC") |> level_up(1),
+          obj_to_ged(self@place) |> level_up(1),
           contacts_to_ged(self@address, self@phone_numbers, self@emails,
                           self@faxes, self@web_pages) |> level_up(1),
           sprintf("1 AGNC %s", self@agency),
@@ -85,8 +85,8 @@ Fact <- S7::new_class(
           obj_to_ged(self@date_sort, "SDATE") |> level_up(1),
           obj_to_ged(self@associations) |> level_up(1),
           notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
-          obj_to_ged(self@citations, "SOUR") |> level_up(1),
-          obj_to_ged(self@media_links, "OBJE") |> level_up(1),
+          obj_to_ged(self@citations) |> level_up(1),
+          obj_to_ged(self@media_links) |> level_up(1),
           sprintf("1 UID %s", self@unique_ids)
         )
       }
