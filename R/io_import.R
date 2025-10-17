@@ -85,7 +85,7 @@ parse_file <- function(lines_raw){
   
   ged <- parse_records(records_lst)
   
-  check_unparsed(lines_raw, ged)
+  check_unparsed(lines_raw, ged) # only really checks header
   
   ged
 }

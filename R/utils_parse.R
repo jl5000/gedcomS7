@@ -146,9 +146,16 @@ check_unparsed <- function(lines, parsed){
     parsed@GEDCOM
   )
   
-  # Exception - remove instances where a missing xref would have been added,
+  # Exceptions - only when this function is called on import
+  # Remove instances where a missing xref would have been added,
   # meaning the lines won't be identical anyway
-  not_parsed <- grep("^0 [A-Z]+$", not_parsed, value = TRUE, invert = TRUE)
+  # Also where explicit GREGORIAN calendar removed
+  new_xref_lines <- grep("^0 [A-Z]+$", not_parsed, value = TRUE)
+  unneeded_greg_lines <- setdiff(
+    grep("^\\d DATE .*GREGORIAN", not_parsed, value = TRUE),
+    grep("^\\d DATE .*JULIAN", not_parsed, value = TRUE)
+  )
+  not_parsed <- setdiff(not_parsed, c(new_xref_lines, unneeded_greg_lines))
   
   if(length(not_parsed) > 0)
     warning("The following lines could not be parsed:\n", 
