@@ -1,6 +1,7 @@
 # gedcomS7 0.3.0 (?)
 
 * Added support for dates in the Julian calendar
+* Names and values of `@ext_ids` are now concatenated directly when constructing URIs - trailing slashes must be explicit
 * Record and Fact objects no longer have `@GEDCOM_IDENTIFIERS` and `@RESTRICTIONS` properties
 * Parameters names in `push_record()` made consistent with `pull_record()` 
 * Additional validation of arguments in user-facing functions
