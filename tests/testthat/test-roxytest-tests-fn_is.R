@@ -3,7 +3,7 @@
 # File R/fn_is.R: @tests
 
 test_that("Function get_record_type() @ L33", {
-  expect_error(get_record_type(1), regexp = "Unrecognised record")
+  expect_error(get_record_type(1), regexp = "Input is not a gedcomS7 Record")
   expect_equal(get_record_type(IndividualRecord()), "INDI")
   expect_equal(get_record_type(FamilyRecord()), "FAM")
   expect_equal(get_record_type(SourceRecord()), "SOUR")

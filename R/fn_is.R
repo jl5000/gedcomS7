@@ -22,7 +22,7 @@ is_note_xref <- function(x, xref) is_type_xref(x, xref, "Note")
 is_subm_xref <- function(x, xref) is_type_xref(x, xref, "Submitter")
 
 #' @tests
-#' expect_error(get_record_type(1), regexp = "Unrecognised record")
+#' expect_error(get_record_type(1), regexp = "Input is not a gedcomS7 Record")
 #' expect_equal(get_record_type(IndividualRecord()), "INDI")
 #' expect_equal(get_record_type(FamilyRecord()), "FAM")
 #' expect_equal(get_record_type(SourceRecord()), "SOUR")
@@ -31,7 +31,7 @@ is_subm_xref <- function(x, xref) is_type_xref(x, xref, "Submitter")
 #' expect_equal(get_record_type(NoteRecord(text = "text")), "SNOTE")
 #' expect_equal(get_record_type(MediaRecord(files = MediaFile("file.ext", media_type = "type"))), "OBJE")
 get_record_type <- function(record){
-  if(!"gedcomS7::Record" %in% class(record)) stop("Unrecognised record")
+  stopifnot("Input is not a gedcomS7 Record" = "gedcomS7::Record" %in% class(record))
   parse_line_tag(record@GEDCOM[1])
 }
 
