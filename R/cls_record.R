@@ -78,7 +78,7 @@ print_record_summary <- function(x){
   exdent <- 15
   to_console("User IDs:", toString(paste(names(x@user_ids), x@user_ids, sep = " = ")), exdent)
   to_console("Unique IDs:", toString(x@unique_ids), exdent)
-  to_console("External IDs:", toString(paste(names(x@ext_ids), x@ext_ids, sep = "/")), exdent)
+  to_console("External IDs:", toString(paste0(names(x@ext_ids), x@ext_ids)), exdent)
   to_console("Restrictions:", restrictions_to_resn(x@confidential, x@locked, x@private), exdent)
   if(!is.null(x@created)) summary(x@created)
   if(!is.null(x@updated)) summary(x@updated)

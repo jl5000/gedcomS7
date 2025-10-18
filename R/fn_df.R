@@ -16,7 +16,7 @@ mutate_generic_values <- function(df, lines){
   df$unique_ids <- find_ged_values(lines, "UID") |> 
     paste(collapse = ";")
   exids <- parse_vals_and_types(lines, "EXID")
-  df$ext_ids <- paste(names(exids), exids, sep = "/", collapse = ";") |> 
+  df$ext_ids <- paste0(names(exids), exids, collapse = ";") |> 
     chronify()
   refns <- parse_vals_and_types(lines, "REFN")
   df$user_ids <- paste(names(refns), refns, sep = "=", collapse = ";") |> 
