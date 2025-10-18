@@ -42,7 +42,7 @@ GedcomSource <- S7::new_class(
           sprintf("1 VERS %s", self@product_version),
           sprintf("1 NAME %s", self@product_name),
           sprintf("1 CORP %s", self@business_name),
-          contacts_to_ged(self@business_address, self@phone_numbers, self@emails,
+          contacts_ged(self@business_address, self@phone_numbers, self@emails,
                           self@faxes, self@web_pages) |> level_up(2),
           sprintf("1 DATA %s", self@data_name),
           sprintf("2 DATE %s", as_val(self@data_pubdate)),
@@ -131,7 +131,7 @@ GedcomHeader <- S7::new_class(
           sprintf("1 LANG %s", self@default_language),
           rep("1 PLAC", length(self@default_place_form) > 0),
           sprintf("2 FORM %s", self@default_place_form),
-          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
+          notes_ged(self@notes, self@note_xrefs) |> level_up(1)
         )
       })
   ),

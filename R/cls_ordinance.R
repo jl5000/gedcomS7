@@ -33,7 +33,7 @@ Ordinance <- S7::new_class(
           sprintf("1 STAT %s", self@ord_state),
           sprintf("2 DATE %s", as_val(self@state_date)),
           sprintf("3 TIME %s", as_val(self@state_time)),
-          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
           as_ged(self@citations) |> level_up(1),
           sprintf("1 FAMC %s", self@fam_xref)
         )
@@ -94,7 +94,7 @@ SpouseSealing <- S7::new_class(
           sprintf("1 STAT %s", self@ord_state),
           sprintf("2 DATE %s", as_val(self@state_date)),
           sprintf("3 TIME %s", as_val(self@state_time)),
-          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
           as_ged(self@citations) |> level_up(1)
         )
       })

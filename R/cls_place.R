@@ -76,7 +76,7 @@ Place <- S7::new_class(
                                   sprintf("2 LATI %s", self@LATITUDE),
                                   sprintf("2 LONG %s", self@LONGITUDE),
                                   as_ged(self@ext_ids, "EXID", "TYPE") |> level_up(1),
-                                  notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
+                                  notes_ged(self@notes, self@note_xrefs) |> level_up(1)
                                 )
                               })
   )

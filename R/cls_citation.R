@@ -93,7 +93,7 @@ SourceCitation <- S7::new_class(
           sprintf("3 PHRASE %s", self@role_phrase),
           sprintf("1 QUAY %s", self@certainty),
           as_ged(self@media_links) |> level_up(1),
-          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1)
+          notes_ged(self@notes, self@note_xrefs) |> level_up(1)
         ) 
       })
   ),

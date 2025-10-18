@@ -76,7 +76,7 @@ Fact <- S7::new_class(
         c(
           as_ged(self@date, "DATE") |> level_up(1),
           as_ged(self@place) |> level_up(1),
-          contacts_to_ged(self@address, self@phone_numbers, self@emails,
+          contacts_ged(self@address, self@phone_numbers, self@emails,
                           self@faxes, self@web_pages) |> level_up(1),
           sprintf("1 AGNC %s", self@agency),
           sprintf("1 RELI %s", self@relig_affil),
@@ -84,7 +84,7 @@ Fact <- S7::new_class(
           sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
           as_ged(self@date_sort, "SDATE") |> level_up(1),
           as_ged(self@associations) |> level_up(1),
-          notes_to_ged(self@notes, self@note_xrefs) |> level_up(1),
+          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
           as_ged(self@citations) |> level_up(1),
           as_ged(self@media_links) |> level_up(1),
           sprintf("1 UID %s", self@unique_ids)

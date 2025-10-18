@@ -186,3 +186,39 @@ zipped_gedname <- function(filepath, must_exist = FALSE){
   }
   
 }
+
+identifiers_ged <- function(user_ids, unique_ids, ext_ids){
+  c(
+    as_ged(user_ids, "REFN", "TYPE"),
+    sprintf("0 UID %s", unique_ids),
+    as_ged(ext_ids, "EXID", "TYPE")
+  )
+}
+
+notes_ged <- function(notes, note_xrefs){
+  c(
+    as_ged(notes),
+    sprintf("0 SNOTE %s", note_xrefs)
+  )
+}
+
+contacts_ged <- function(address, phone_numbers, emails, faxes, web_pages){
+  c(
+    as_ged(address),
+    sprintf("0 PHON %s", phone_numbers),
+    sprintf("0 EMAIL %s", emails),
+    sprintf("0 FAX %s", faxes),
+    sprintf("0 WWW %s", web_pages)
+  )
+}
+
+restrictions_to_resn <- function(confidential, locked, private){
+  if(!any(confidential, locked, private))
+    return(character())
+  
+  conf <- rep("CONFIDENTIAL", confidential)
+  lock <- rep("LOCKED", locked)
+  priv <- rep("PRIVACY", private)
+  
+  toString(c(conf, lock, priv))
+}
