@@ -141,7 +141,7 @@ IndividualRecord <- S7::new_class(
           as_ged(self@fam_links_spou) |> level_up(1),
           sprintf("1 SUBM %s", self@subm_xrefs),
           as_ged(self@associations) |> level_up(1),
-          as_ged(self@alia_xrefs, "ALIA", "PHRASE") |> level_up(1),
+          as_ged(self@alia_xrefs, c("ALIA", "PHRASE")) |> level_up(1),
           sprintf("1 ANCI %s", self@anci_xrefs),
           sprintf("1 DESI %s", self@desi_xrefs),
           identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),

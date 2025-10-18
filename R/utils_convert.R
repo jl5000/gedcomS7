@@ -8,21 +8,16 @@ S7::method(as_ged, S7::class_list) <- function(x){
   if(length(x) == 0) return(character())
   unlist(lapply(x, \(y) as_ged(y)))
 }
-S7::method(as_ged, S7::class_atomic) <- function(x, tag1 = NULL, tag2 = NULL){
-  stopifnot("Object contains atomic elements - a tag is required" = !is.null(tag1))
+S7::method(as_ged, S7::class_atomic) <- function(x, tags){
+  stopifnot("One or two tags must be supplied" = length(tags) %in% 1:2)
   if(length(x) == 0) return(character())
-  if(is.null(tag2)) return(paste(0, tag1, x))
+  if(length(tags) == 1) return(paste(0, tags, x))
+  if(is.null(names(x))) return(paste(0, tags[1], x))
 
   # named vector
-  ged <- character()
-  for(i in seq_along(x)){
-    ged <- c(
-      ged,
-      paste(0, tag1, x[i]),
-      paste(1, tag2, names(x)[i])
-    )
-  }
-  ged <- ged[ged != paste(1, tag2, "")]
+  ged <- mapply(\(i, j) c(paste(0, tags[1], i), paste(1, tags[2], j)),
+                x, names(x), SIMPLIFY = TRUE, USE.NAMES = FALSE)
+  ged <- ged[ged != paste(1, tags[2], "")]
   ged
 }
 

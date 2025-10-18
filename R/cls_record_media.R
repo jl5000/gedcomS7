@@ -52,7 +52,7 @@ MediaFile <- S7::new_class(
           sprintf("2 MEDI %s", self@medium),
           sprintf("3 PHRASE %s", self@medium_phrase),
           sprintf("1 TITL %s", self@title),
-          as_ged(self@media_alt, "TRAN", "FORM") |> level_up(1)
+          as_ged(self@media_alt, c("TRAN", "FORM")) |> level_up(1)
         )
       })
   ),

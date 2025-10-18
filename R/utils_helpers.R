@@ -189,9 +189,9 @@ zipped_gedname <- function(filepath, must_exist = FALSE){
 
 identifiers_ged <- function(user_ids, unique_ids, ext_ids){
   c(
-    as_ged(user_ids, "REFN", "TYPE"),
+    as_ged(user_ids, c("REFN", "TYPE")),
     sprintf("0 UID %s", unique_ids),
-    as_ged(ext_ids, "EXID", "TYPE")
+    as_ged(ext_ids, c("EXID", "TYPE"))
   )
 }
 
