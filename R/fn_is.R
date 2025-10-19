@@ -35,7 +35,7 @@ get_record_type <- function(record){
   parse_line_tag(record@GEDCOM[1])
 }
 
-check_gedcom_obj <- function(x) if(!is_gedcomS7(x)) stop("Not a GEDCOM object")
-check_indi_rec <- function(x, xref) if(!is_indi_xref(x, xref)) stop("The xref is not for an Individual record.")
-check_fam_rec <- function(x, xref) if(!is_fam_xref(x, xref)) stop("The xref is not for a Family record.")
+check_gedcom_obj <- function(x) stopifnot("Not a GEDCOM object" = is_gedcomS7(x))
+check_indi_rec <- function(x, xref) stopifnot("The xref is not for an Individual record." = is_indi_xref(x, xref))
+check_fam_rec <- function(x, xref) stopifnot("The xref is not for a Family record." = is_fam_xref(x, xref))
 
