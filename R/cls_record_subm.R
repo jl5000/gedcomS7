@@ -24,17 +24,16 @@ SubmitterRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SUBM", self@XREF),
-          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          sprintf("1 NAME %s", self@subm_name),
+          as_ged("SUBM", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@subm_name, "NAME", 1),
           contacts_ged(self@address, self@phone_numbers, self@emails,
-                          self@faxes, self@web_pages) |> level_up(1),
-          as_ged(self@media_links) |> level_up(1),
-          sprintf("1 LANG %s", self@languages),
-          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@updated) |> level_up(1),
-          as_ged(self@created) |> level_up(1)
+                          self@faxes, self@web_pages, 1),
+          as_ged(self@media_links, 1),
+          as_ged(self@languages, "LANG", 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   ),

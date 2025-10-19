@@ -170,7 +170,7 @@ to_console_list <- function(label, values, exdent, prop = NULL){
 
 zipped_gedname <- function(filepath, must_exist = FALSE){
   
-  if(tools::file_ext(filepath) != "zip") stop("File is not a zip archive")
+  stopifnot("File is not a zip archive" = tools::file_ext(filepath) == "zip")
     
   contents <- unzip(filepath, list = TRUE)
   ged_files <- contents[contents$Name == basename(contents$Name) &
@@ -187,29 +187,41 @@ zipped_gedname <- function(filepath, must_exist = FALSE){
   
 }
 
-identifiers_ged <- function(user_ids, unique_ids, ext_ids){
+identifiers_ged <- function(user_ids, unique_ids, ext_ids, lvl = 0){
   c(
-    as_ged(user_ids, c("REFN", "TYPE")),
-    sprintf("0 UID %s", unique_ids),
-    as_ged(ext_ids, c("EXID", "TYPE"))
+    as_ged(user_ids, c("REFN", "TYPE"), lvl),
+    as_ged(unique_ids, "UID", lvl),
+    as_ged(ext_ids, c("EXID", "TYPE"), lvl)
   )
 }
 
-notes_ged <- function(notes, note_xrefs){
+notes_ged <- function(notes, note_xrefs, lvl = 0){
   c(
-    as_ged(notes),
-    sprintf("0 SNOTE %s", note_xrefs)
+    as_ged(notes, lvl),
+    as_ged(note_xrefs, "SNOTE", lvl)
   )
 }
 
-contacts_ged <- function(address, phone_numbers, emails, faxes, web_pages){
+contacts_ged <- function(address, phone_numbers, emails, faxes, web_pages, lvl = 0){
   c(
-    as_ged(address),
-    sprintf("0 PHON %s", phone_numbers),
-    sprintf("0 EMAIL %s", emails),
-    sprintf("0 FAX %s", faxes),
-    sprintf("0 WWW %s", web_pages)
+    as_ged(address, lvl = lvl),
+    as_ged(phone_numbers, "PHON", lvl),
+    as_ged(emails, "EMAIL", lvl),
+    as_ged(faxes, "FAX", lvl),
+    as_ged(web_pages, "WWW", lvl)
   )
+}
+
+audit_ged <- function(updated, created, lvl = 0){
+  c(
+    as_ged(updated, lvl = lvl),
+    as_ged(created, lvl = lvl)
+  )
+}
+
+restrictions_ged <- function(confidential, locked, private, lvl = 0){
+  restrictions_to_resn(confidential, locked, private) |> 
+    as_ged("RESN", lvl)
 }
 
 restrictions_to_resn <- function(confidential, locked, private){

@@ -202,7 +202,7 @@ refresh_fam_links <- function(gedcom, record){
     if(!record@XREF %in% fams){
       gedcom@records@RAW@INDI[[spou]] <- c(
         gedcom@records@RAW@INDI[[spou]],
-        sprintf("1 FAMS %s", record@XREF)
+        as_ged(record@XREF, "FAMS", 1)
       )
     }
   }
@@ -213,7 +213,7 @@ refresh_fam_links <- function(gedcom, record){
     if(!record@XREF %in% famc){
       gedcom@records@RAW@INDI[[chil]] <- c(
         gedcom@records@RAW@INDI[[chil]],
-        sprintf("1 FAMC %s", record@XREF)
+        as_ged(record@XREF, "FAMC", 1)
       )
     }
   }
@@ -269,7 +269,7 @@ refresh_indi_links <- function(gedcom, record){
       
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 %s %s", spou_type, record@XREF)
+        as_ged(record@XREF, spou_type, 1)
       )
     }
   }
@@ -283,7 +283,7 @@ refresh_indi_links <- function(gedcom, record){
     if(!record@XREF %in% fam_chil){
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 CHIL %s", record@XREF)
+        as_ged(record@XREF, "CHIL", 1)
       )
     }
   } 

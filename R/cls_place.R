@@ -68,15 +68,15 @@ Place <- S7::new_class(
     GEDCOM = S7::new_property(S7::class_character,
                               getter = function(self){
                                 c(
-                                  sprintf("0 PLAC %s", self@place_name),
-                                  sprintf("1 FORM %s", self@place_form),
-                                  sprintf("1 LANG %s", self@language),
-                                  as_ged(self@place_translations, c("TRAN", "LANG")) |> level_up(1),
+                                  as_ged(self@place_name, "PLAC", 0),
+                                  as_ged(self@place_form, "FORM", 1),
+                                  as_ged(self@language, "LANG", 1),
+                                  as_ged(self@place_translations, c("TRAN", "LANG"), 1),
                                   rep("1 MAP", length(self@lat_long)),
-                                  sprintf("2 LATI %s", self@LATITUDE),
-                                  sprintf("2 LONG %s", self@LONGITUDE),
-                                  as_ged(self@ext_ids, c("EXID", "TYPE")) |> level_up(1),
-                                  notes_ged(self@notes, self@note_xrefs) |> level_up(1)
+                                  as_ged(self@LATITUDE, "LATI", 2),
+                                  as_ged(self@LONGITUDE, "LONG", 2),
+                                  as_ged(self@ext_ids, c("EXID", "TYPE"), 1),
+                                  notes_ged(self@notes, self@note_xrefs, 1)
                                 )
                               })
   )

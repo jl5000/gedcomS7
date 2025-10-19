@@ -63,14 +63,14 @@ Address <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 ADDR %s", gsub("; ", "\n", self@full)),
-          sprintf("1 ADR1 %s", self@adr1),
-          sprintf("1 ADR2 %s", self@adr2),
-          sprintf("1 ADR3 %s", self@adr3),
-          sprintf("1 CITY %s", self@city),
-          sprintf("1 STAE %s", self@state),
-          sprintf("1 POST %s", self@postal_code),
-          sprintf("1 CTRY %s", self@country)
+          as_ged(gsub("; ", "\n", self@full), "ADDR", 0),
+          as_ged(self@adr1, "ADR1", 1),
+          as_ged(self@adr2, "ADR2", 1),
+          as_ged(self@adr3, "ADR3", 1),
+          as_ged(self@city, "CITY", 1),
+          as_ged(self@state, "STAE", 1),
+          as_ged(self@postal_code, "POST", 1),
+          as_ged(self@country, "CTRY", 1)
         )
       })
   )

@@ -47,12 +47,12 @@ MediaFile <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FILE %s", self@location),
-          sprintf("1 FORM %s", self@media_type),
-          sprintf("2 MEDI %s", self@medium),
-          sprintf("3 PHRASE %s", self@medium_phrase),
-          sprintf("1 TITL %s", self@title),
-          as_ged(self@media_alt, c("TRAN", "FORM")) |> level_up(1)
+          as_ged(self@location, "FILE", 0),
+          as_ged(self@media_type, "FORM", 1),
+          as_ged(self@medium, "MEDI", 2),
+          as_ged(self@medium_phrase, "PHRASE", 3),
+          as_ged(self@title, "TITL", 1),
+          as_ged(self@media_alt, c("TRAN", "FORM"), 1)
         )
       })
   ),
@@ -99,14 +99,13 @@ MediaRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s OBJE", self@XREF),
-          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          as_ged(self@files) |> level_up(1),
-          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1),
-          as_ged(self@updated) |> level_up(1),
-          as_ged(self@created) |> level_up(1)
+          as_ged("OBJE", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@files, 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   ),

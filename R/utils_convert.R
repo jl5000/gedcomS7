@@ -1,22 +1,24 @@
 
 as_ged <- S7::new_generic("as_ged", "x")
 
-S7::method(as_ged, NULL) <- function(x) character()
+S7::method(as_ged, NULL) <- function(x, ...) character()
 # ... for DATE/TIME where it could be character or S7 object
-S7::method(as_ged, GedcomS7class) <- function(x, ...) x@GEDCOM
-S7::method(as_ged, S7::class_list) <- function(x){
-  unlist(lapply(x, \(y) as_ged(y))) %||% character()
+S7::method(as_ged, GedcomS7class) <- function(x, tags = NULL, lvl = 0){
+  level_up(x@GEDCOM, lvl)
+} 
+S7::method(as_ged, S7::class_list) <- function(x, lvl = 0){
+  unlist(lapply(x, \(y) as_ged(y, lvl = lvl))) %||% character()
 }
-S7::method(as_ged, S7::class_atomic) <- function(x, tags){
+S7::method(as_ged, S7::class_atomic) <- function(x, tags, lvl = 0){
   stopifnot("One or two tags must be supplied" = length(tags) %in% 1:2)
   if(length(x) == 0) return(character())
-  if(length(tags) == 1) return(paste(0, tags, x))
-  if(is.null(names(x))) return(paste(0, tags[1], x))
+  if(length(tags) == 1) return(paste(lvl, tags, x))
+  if(is.null(names(x))) return(paste(lvl, tags[1], x))
 
   # named vector
-  ged <- mapply(\(i, j) c(paste(0, tags[1], i), paste(1, tags[2], j)),
+  ged <- mapply(\(i, j) c(paste(lvl, tags[1], i), paste(lvl + 1, tags[2], j)),
                 x, names(x), SIMPLIFY = TRUE, USE.NAMES = FALSE)
-  ged[ged != paste(1, tags[2], "")]
+  ged[ged != paste(lvl + 1, tags[2], "")]
 }
 
 

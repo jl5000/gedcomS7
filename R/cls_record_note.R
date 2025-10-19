@@ -28,14 +28,13 @@ NoteRecord <- S7::new_class(
       getter = function(self){
         c(
           sprintf("0 %s SNOTE %s", self@XREF, self@text),
-          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)), # coming soon
-          sprintf("1 MIME %s", self@media_type),
-          sprintf("1 LANG %s", self@language),
-          as_ged(self@translations) |> level_up(1),
-          as_ged(self@citations) |> level_up(1),
-          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
-          as_ged(self@updated) |> level_up(1),
-          as_ged(self@created) |> level_up(1)
+          restrictions_ged(self@confidential, self@locked, self@private, 1), # coming soon
+          as_ged(self@media_type, "MIME", 1),
+          as_ged(self@language, "LANG", 1),
+          as_ged(self@translations, 1),
+          as_ged(self@citations, 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   ),

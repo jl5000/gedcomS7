@@ -74,20 +74,20 @@ Fact <- S7::new_class(
         # }
         
         c(
-          as_ged(self@date, "DATE") |> level_up(1),
-          as_ged(self@place) |> level_up(1),
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@place, lvl = 1),
           contacts_ged(self@address, self@phone_numbers, self@emails,
-                          self@faxes, self@web_pages) |> level_up(1),
-          sprintf("1 AGNC %s", self@agency),
-          sprintf("1 RELI %s", self@relig_affil),
-          sprintf("1 CAUS %s", self@cause),
-          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          as_ged(self@date_sort, "SDATE") |> level_up(1),
-          as_ged(self@associations) |> level_up(1),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1),
-          as_ged(self@media_links) |> level_up(1),
-          sprintf("1 UID %s", self@unique_ids)
+                       self@faxes, self@web_pages, 1),
+          as_ged(self@agency, "AGNC", 1),
+          as_ged(self@relig_affil, "RELI", 1),
+          as_ged(self@cause, "CAUS", 1),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@date_sort, "SDATE", 1),
+          as_ged(self@associations, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@media_links, 1),
+          as_ged(self@unique_ids, "UID", 1)
         )
       }
     )

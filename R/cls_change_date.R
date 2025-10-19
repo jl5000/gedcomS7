@@ -31,9 +31,9 @@ CreationDate <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          "0 CREA",
-          sprintf("1 DATE %s", as_val(self@date_exact)),
-          sprintf("2 TIME %s", as_val(self@time))
+          paste(0, "CREA"),
+          as_ged(as_val(self@date_exact), "DATE", 1),
+          as_ged(as_val(self@time), "TIME", 2)
         )
       })
   )
@@ -59,10 +59,10 @@ ChangeDate <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          "0 CHAN",
-          sprintf("1 DATE %s", as_val(self@date_exact)),
-          sprintf("2 TIME %s", as_val(self@time)),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1)
+          paste(0, "CHAN"),
+          as_ged(as_val(self@date_exact), "DATE", 1),
+          as_ged(as_val(self@time), "TIME", 2),
+          notes_ged(self@notes, self@note_xrefs, 1)
         )
         
       })

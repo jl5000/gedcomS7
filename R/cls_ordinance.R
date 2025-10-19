@@ -26,16 +26,16 @@ Ordinance <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s", self@ord_type),
-          as_ged(self@date, "DATE") |> level_up(1),
-          sprintf("1 TEMP %s", self@temple_name),
-          as_ged(self@place) |> level_up(1),
-          sprintf("1 STAT %s", self@ord_state),
-          sprintf("2 DATE %s", as_val(self@state_date)),
-          sprintf("3 TIME %s", as_val(self@state_time)),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1),
-          sprintf("1 FAMC %s", self@fam_xref)
+          paste(0, self@ord_type),
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@temple_name, "TEMP", 1),
+          as_ged(self@place, lvl = 1),
+          as_ged(self@ord_state, "STAT", 1),
+          as_ged(as_val(self@state_date), "DATE", 2),
+          as_ged(as_val(self@state_time), "TIME", 3),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@fam_xref, "FAMC", 1)
         )
       })
   ),
@@ -87,15 +87,15 @@ SpouseSealing <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s", self@ord_type),
-          as_ged(self@date, "DATE") |> level_up(1),
-          sprintf("1 TEMP %s", self@temple_name),
-          as_ged(self@place) |> level_up(1),
-          sprintf("1 STAT %s", self@ord_state),
-          sprintf("2 DATE %s", as_val(self@state_date)),
-          sprintf("3 TIME %s", as_val(self@state_time)),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1)
+          paste(0, self@ord_type),
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@temple_name, "TEMP", 1),
+          as_ged(self@place, lvl = 1),
+          as_ged(self@ord_state, "STAT", 1),
+          as_ged(as_val(self@state_date), "DATE", 2),
+          as_ged(as_val(self@state_time), "TIME", 3),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

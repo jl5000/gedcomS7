@@ -37,11 +37,11 @@ NonEvent <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NO %s", self@event_type),
-          sprintf("1 DATE %s", as_val(self@date_period)) |> trimws(),
-          sprintf("2 PHRASE %s", self@date_phrase),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1)
+          as_ged(self@event_type, "NO", 0),
+          as_ged(as_val(self@date_period), "DATE", 1) |> trimws(),
+          as_ged(self@date_phrase, "PHRASE", 2),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

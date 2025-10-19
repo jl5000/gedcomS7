@@ -373,9 +373,9 @@ DateValue <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 DATE %s", as_val(self@date)) |> trimws(),
-          sprintf("1 TIME %s", as_val(self@time)),
-          sprintf("1 PHRASE %s", self@date_phrase)
+          as_ged(as_val(self@date), "DATE", 0) |> trimws(),
+          as_ged(as_val(self@time), "TIME", 1),
+          as_ged(self@date_phrase, "PHRASE", 1)
         )
       })
   ),
@@ -423,9 +423,9 @@ DateSorting <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 SDATE %s", as_val(self@date)),
-          sprintf("1 TIME %s", as_val(self@time)),
-          sprintf("1 PHRASE %s", self@date_phrase)
+          as_ged(as_val(self@date), "SDATE", 0),
+          as_ged(as_val(self@time), "TIME", 1),
+          as_ged(self@date_phrase, "PHRASE", 1)
         )
       })
   ),

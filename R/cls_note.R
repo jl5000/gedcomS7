@@ -54,11 +54,11 @@ Note <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NOTE %s", self@text),
-          sprintf("1 MIME %s", self@media_type),
-          sprintf("1 LANG %s", self@language),
-          as_ged(self@translations) |> level_up(1),
-          as_ged(self@citations) |> level_up(1)
+          as_ged(self@text, "NOTE", 0),
+          as_ged(self@media_type, "MIME", 1),
+          as_ged(self@language, "LANG", 1),
+          as_ged(self@translations, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

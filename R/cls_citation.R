@@ -80,20 +80,20 @@ SourceCitation <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 SOUR %s", self@sour_xref),
-          sprintf("1 PAGE %s", self@where),
+          as_ged(self@sour_xref, "SOUR", 0),
+          as_ged(self@where, "PAGE", 1),
           rep("1 DATA", length(self@date) + 
                 length(self@source_text) > 0),
-          as_ged(self@date, "DATE") |> level_up(2),
-          as_ged(self@source_text) |> level_up(2) |> 
+          as_ged(self@date, "DATE", 2),
+          as_ged(self@source_text, 2) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
-          sprintf("1 EVEN %s", self@fact_type),
-          sprintf("2 PHRASE %s", self@fact_phrase),
-          sprintf("2 ROLE %s", self@role),
-          sprintf("3 PHRASE %s", self@role_phrase),
-          sprintf("1 QUAY %s", self@certainty),
-          as_ged(self@media_links) |> level_up(1),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1)
+          as_ged(self@fact_type, "EVEN", 1),
+          as_ged(self@fact_phrase, "PHRASE", 2),
+          as_ged(self@role, "ROLE", 2),
+          as_ged(self@role_phrase, "PHRASE", 3),
+          as_ged(self@certainty, "QUAY", 1),
+          as_ged(self@media_links, 1),
+          notes_ged(self@notes, self@note_xrefs, 1)
         ) 
       })
   ),

@@ -85,22 +85,21 @@ FamilyRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s FAM", self@XREF),
-          sprintf("1 RESN %s", restrictions_to_resn(self@confidential, self@locked, self@private)),
-          as_ged(self@facts) |> level_up(1),
-          as_ged(self@non_events) |> level_up(1),
-          as_ged(self@husb_xref, c("HUSB", "PHRASE")) |> level_up(1),
-          as_ged(self@wife_xref, c("WIFE", "PHRASE")) |> level_up(1),
-          as_ged(self@chil_xrefs, c("CHIL", "PHRASE")) |> level_up(1),
-          as_ged(self@associations) |> level_up(1),
-          sprintf("1 SUBM %s", self@subm_xrefs),
-          as_ged(self@spouse_sealings) |> level_up(1),
-          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids) |> level_up(1),
-          notes_ged(self@notes, self@note_xrefs) |> level_up(1),
-          as_ged(self@citations) |> level_up(1),
-          as_ged(self@media_links) |> level_up(1),
-          as_ged(self@updated) |> level_up(1),
-          as_ged(self@created) |> level_up(1)
+          as_ged("FAM", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@facts, 1),
+          as_ged(self@non_events, 1),
+          as_ged(self@husb_xref, c("HUSB", "PHRASE"), 1),
+          as_ged(self@wife_xref, c("WIFE", "PHRASE"), 1),
+          as_ged(self@chil_xrefs, c("CHIL", "PHRASE"), 1),
+          as_ged(self@associations, 1),
+          as_ged(self@subm_xrefs, "SUBM", 1),
+          as_ged(self@spouse_sealings, 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@media_links, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   )
