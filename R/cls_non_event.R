@@ -38,7 +38,7 @@ NonEvent <- S7::new_class(
       getter = function(self){
         c(
           as_ged(self@event_type, "NO", 0),
-          as_ged(as_val(self@date_period), "DATE", 1) |> trimws(),
+          as_ged(as_val(self@date_period), "DATE", 1),
           as_ged(self@date_phrase, "PHRASE", 2),
           notes_ged(self@notes, self@note_xrefs, 1),
           as_ged(self@citations, 1)

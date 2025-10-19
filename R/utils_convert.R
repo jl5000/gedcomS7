@@ -12,8 +12,8 @@ S7::method(as_ged, S7::class_list) <- function(x, lvl = 0){
 S7::method(as_ged, S7::class_atomic) <- function(x, tags, lvl = 0){
   stopifnot("One or two tags must be supplied" = length(tags) %in% 1:2)
   if(length(x) == 0) return(character())
-  if(length(tags) == 1) return(paste(lvl, tags, x))
-  if(is.null(names(x))) return(paste(lvl, tags[1], x))
+  if(isTRUE(x == "")) return(paste(lvl, tags[1]))
+  if(length(tags) == 1 || is.null(names(x))) return(paste(lvl, tags[1], x))
 
   # named vector
   ged <- mapply(\(i, j) c(paste(lvl, tags[1], i), paste(lvl + 1, tags[2], j)),

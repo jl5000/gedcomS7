@@ -373,7 +373,7 @@ DateValue <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          as_ged(as_val(self@date), "DATE", 0) |> trimws(),
+          as_ged(as_val(self@date), "DATE", 0),
           as_ged(as_val(self@time), "TIME", 1),
           as_ged(self@date_phrase, "PHRASE", 1)
         )

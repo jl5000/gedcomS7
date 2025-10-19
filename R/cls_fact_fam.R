@@ -21,13 +21,13 @@ FamilyFact <- S7::new_class(
           wife_age <- chronify(self@wife_age)
         
         c(
-          as_ged(chronify(self@fact_val), self@fact_type, 0) |> trimws(),
+          as_ged(chronify(self@fact_val), self@fact_type, 0),
           as_ged(self@fact_desc, "TYPE", 1),
           rep("1 HUSB", length(husb_age)),
-          as_ged(husb_age, "AGE", 2) |> trimws(),
+          as_ged(husb_age, "AGE", 2),
           as_ged(self@husb_age_phrase, "PHRASE", 3),
           rep("1 WIFE", length(wife_age)),
-          as_ged(wife_age, "AGE", 2) |> trimws(),
+          as_ged(wife_age, "AGE", 2),
           as_ged(self@wife_age_phrase, "PHRASE", 3),
           self@.fact_detail_as_ged
         )

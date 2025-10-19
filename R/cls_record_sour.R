@@ -140,7 +140,7 @@ FactsRecorded <- S7::new_class(
       getter = function(self){
         c(
           as_ged(self@fact_types, "EVEN", 0),
-          as_ged(as_val(self@date_period), "DATE", 1) |> trimws(),
+          as_ged(as_val(self@date_period), "DATE", 1),
           as_ged(self@date_phrase, "PHRASE", 2),
           as_ged(self@territory, lvl = 1)
         )

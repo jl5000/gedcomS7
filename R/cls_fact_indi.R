@@ -67,9 +67,9 @@ IndividualEvent <- S7::new_class(
           age <- chronify(self@age)
         
         c(
-          as_ged(chronify(self@fact_val), self@fact_type, 0) |> trimws(),
+          as_ged(chronify(self@fact_val), self@fact_type, 0),
           as_ged(self@fact_desc, "TYPE", 1),
-          as_ged(age, "AGE", 1) |> trimws(),
+          as_ged(age, "AGE", 1),
           as_ged(self@age_phrase, "PHRASE", 2),
           self@.fact_detail_as_ged,
           as_ged(self@fam_xref, "FAMC", 1),
@@ -143,9 +143,9 @@ IndividualAttribute <- S7::new_class(
           age <- chronify(self@age)
         
         c(
-          as_ged(chronify(self@fact_val), self@fact_type, 0) |> trimws(),
+          as_ged(chronify(self@fact_val), self@fact_type, 0),
           as_ged(self@fact_desc, "TYPE", 1),
-          as_ged(age, "AGE", 1) |> trimws(),
+          as_ged(age, "AGE", 1),
           as_ged(self@age_phrase, "PHRASE", 2),
           self@.fact_detail_as_ged
         )
