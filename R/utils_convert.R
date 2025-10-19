@@ -5,8 +5,7 @@ S7::method(as_ged, NULL) <- function(x) character()
 # ... for DATE/TIME where it could be character or S7 object
 S7::method(as_ged, GedcomS7class) <- function(x, ...) x@GEDCOM
 S7::method(as_ged, S7::class_list) <- function(x){
-  if(length(x) == 0) return(character())
-  unlist(lapply(x, \(y) as_ged(y)))
+  unlist(lapply(x, \(y) as_ged(y))) %||% character()
 }
 S7::method(as_ged, S7::class_atomic) <- function(x, tags){
   stopifnot("One or two tags must be supplied" = length(tags) %in% 1:2)
@@ -37,8 +36,7 @@ S7::method(as.S7class_list, GedcomS7class) <- function(x, S7class){
   list(x)
 }
 S7::method(as.S7class_list, S7::class_list) <- function(x, S7class){
-  if(length(x) == 0) return(x)
-  do.call(c, lapply(x, as.S7class_list, S7class))
+  do.call(c, lapply(x, as.S7class_list, S7class)) %||% x
 }
 S7::method(as.S7class_list, S7::class_atomic) <- function(x, S7class){
   lapply(x, \(i) do.call(S7class, list(i)))
