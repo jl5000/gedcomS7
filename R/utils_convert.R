@@ -17,9 +17,10 @@ S7::method(as_ged, S7::class_atomic) <- function(x, tags){
   # named vector
   ged <- mapply(\(i, j) c(paste(0, tags[1], i), paste(1, tags[2], j)),
                 x, names(x), SIMPLIFY = TRUE, USE.NAMES = FALSE)
-  ged <- ged[ged != paste(1, tags[2], "")]
-  ged
+  ged[ged != paste(1, tags[2], "")]
 }
+
+
 
 as_val <- S7::new_generic("as_val", "x")
 S7::method(as_val, NULL) <- function(x) x
@@ -27,24 +28,28 @@ S7::method(as_val, S7::class_character) <- function(x) x
 S7::method(as_val, GedcomS7class) <- function(x) x@GEDCOM_STRING
 
 
-as.S7class_list <- function(input, S7class){
-  if("S7_object" %in% class(input)) input <- list(input)
-  lapply(input, \(x) 
-         if(is.atomic(x)){
-           do.call(S7class, list(x))
-         } else {
-           if(S7::S7_inherits(x, S7class)){
-             x
-           } else {
-             sprintf("contains an invalid object not of class %s.", 
-                     S7class@name)
-           }
-         }
-  )
-}
 
-as.S7class <- function(input, S7class){
-  if(length(input) == 0) return(input)
-  if(is.atomic(input)) input <- do.call(S7class, list(input))
-  input
+as.S7class_list <- S7::new_generic("as.S7class_list", "x")
+S7::method(as.S7class_list, GedcomS7class) <- function(x, S7class){
+  if(!paste0("gedcomS7::", S7class@name) %in% class(x)) 
+    stop(sprintf("%s cannot be converted to class %s.", class(x)[1], S7class@name))
+  
+  list(x)
 }
+S7::method(as.S7class_list, S7::class_list) <- function(x, S7class){
+  if(length(x) == 0) return(x)
+  do.call(c, lapply(x, as.S7class_list, S7class))
+}
+S7::method(as.S7class_list, S7::class_atomic) <- function(x, S7class){
+  lapply(x, \(i) do.call(S7class, list(i)))
+} 
+
+
+
+as.S7class <- S7::new_generic("as.S7class", "x")
+S7::method(as.S7class, NULL) <- function(x, S7class) x
+S7::method(as.S7class, GedcomS7class) <- function(x, S7class) x # Assume developer gives it correct class!
+S7::method(as.S7class, S7::class_atomic) <- function(x, S7class){
+  if(length(x) == 0) return(x)
+  do.call(S7class, list(x))
+} 

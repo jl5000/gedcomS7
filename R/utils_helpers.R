@@ -139,11 +139,11 @@ remove_void_xrefs <- function(xrefs){
 
 to_console <- function(label, val, exdent){
   if(length(val) == 0 || isTRUE(val == "")) val <- "<Undefined>"
-  cat(strwrap(val, 
-              initial = sprintf(paste0("%-", exdent, "s"), label), 
-              prefix = "", 
-              exdent = exdent), 
-      fill = TRUE)
+  strwrap(val, 
+          initial = sprintf(paste0("%-", exdent, "s"), label), 
+          prefix = "", 
+          exdent = exdent) |> 
+    cat(fill = TRUE)
 }
 
 to_console_value_with_phrase <- function(label, 
