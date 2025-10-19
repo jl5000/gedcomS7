@@ -100,7 +100,7 @@ The `@unique_ids` must take the form of a [Universally unique identifier](https:
 uuid::UUIDgenerate(n = 1)
 ```
 
-The `@ext_ids` must take the form of a named vector where the names are the URI defining the identifier. For example, to include the reference to an individual's [Find a Grave's](https://www.findagrave.com) page, you would supply `c("https://www.findagrave.com/memorial" = "1075")`, which would be interpreted as https://www.findagrave.com/memorial/1075.
+The `@ext_ids` must take the form of a named vector where the names are the URI defining the identifier. For example, to include the reference to an individual's [Find a Grave's](https://www.findagrave.com) page, you would supply `c("https://www.findagrave.com/memorial/" = "1075")`, which would be interpreted as https://www.findagrave.com/memorial/1075.
 
 ## Referencing other records
 
