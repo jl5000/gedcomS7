@@ -27,7 +27,7 @@ NoteRecord <- S7::new_class(
       S7::class_data.frame,
       getter = function(self){
         c(
-          sprintf("0 %s SNOTE %s", self@XREF, self@text),
+          as_ged("SNOTE", self@XREF) |> paste(self@text),
           restrictions_ged(self@confidential, self@locked, self@private, 1), # coming soon
           as_ged(self@media_type, "MIME", 1),
           as_ged(self@language, "LANG", 1),

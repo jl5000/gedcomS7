@@ -1,6 +1,6 @@
 Package: gedcomS7
 Title: Create Family Tree GEDCOM Files with S7 Objects
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person(given = "Jamie", 
            family = "Lendrum",
