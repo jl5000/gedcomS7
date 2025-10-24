@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gedcomS7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,15 +56,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">push_record</span><span class="op">(</span><span class="va">gedcom</span>, <span class="va">record</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">push_record</span><span class="op">(</span><span class="va">x</span>, <span class="va">record</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-gedcom">gedcom<a class="anchor" aria-label="anchor" href="#arg-gedcom"></a></dt>
-<dd><p>An object representing the GEDCOM file.</p></dd>
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>A gedcom object.</p></dd>
 
 
 <dt id="arg-record">record<a class="anchor" aria-label="anchor" href="#arg-record"></a></dt>
@@ -79,7 +79,7 @@ GEDCOM object.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function will automatically keep family links for individuals updated.
-It will also update the record last_updated if update_change_dates in the
+It will also update the <code>@updated</code> property if <code>@update_change_dates</code> in the
 gedcom object is set to TRUE.</p>
     </div>
 

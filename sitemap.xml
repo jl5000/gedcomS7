@@ -19,8 +19,8 @@
 <url><loc>https://jl5000.github.io/gedcomS7/reference/ChangeDate.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/CreationDate.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/DateApprox.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/DateCalendar.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/DateExact.html</loc></url>
-<url><loc>https://jl5000.github.io/gedcomS7/reference/DateGregorian.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/DatePeriod.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/DateRange.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/DateSorting.html</loc></url>
@@ -102,11 +102,10 @@
 <url><loc>https://jl5000.github.io/gedcomS7/reference/get_records_by_pattern.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/get_supporting_recs.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/get_unused_recs.html</loc></url>
-<url><loc>https://jl5000.github.io/gedcomS7/reference/increase_level.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/index.html</loc></url>
+<url><loc>https://jl5000.github.io/gedcomS7/reference/level_up.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/lookups.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/new_gedcom.html</loc></url>
-<url><loc>https://jl5000.github.io/gedcomS7/reference/obj_to_ged.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/parse_common_record_elements.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/parse_gedcom_age.html</loc></url>
 <url><loc>https://jl5000.github.io/gedcomS7/reference/parse_gedcom_date.html</loc></url>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gedcomS7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,9 +50,19 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="gedcoms7-030-24-oct-2025">gedcomS7 0.3.0 (24 Oct 2025)<a class="anchor" aria-label="anchor" href="#gedcoms7-030-24-oct-2025"></a></h2>
+<ul><li>Added support for dates in the Julian calendar - <code>DateGregorian()</code> renamed <code><a href="../reference/DateCalendar.html">DateCalendar()</a></code>
+</li>
+<li>Names and values of <code>@ext_ids</code> are now concatenated directly when constructing URIs - trailing slashes must be explicit</li>
+<li>Record and Fact objects no longer have <code>@GEDCOM_IDENTIFIERS</code> and <code>@RESTRICTIONS</code> properties</li>
+<li>Argument names in <code><a href="../reference/push_record.html">push_record()</a></code> made consistent with <code><a href="../reference/pull_record.html">pull_record()</a></code>
+</li>
+<li>Additional validation of arguments in user-facing functions</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="gedcoms7-020-6-sep-2025">gedcomS7 0.2.0 (6 Sep 2025)<a class="anchor" aria-label="anchor" href="#gedcoms7-020-6-sep-2025"></a></h2>
 <ul><li>
-<code><a href="../reference/DateGregorian.html">DateGregorian()</a></code> now handles BCE dates with a negative <code>@year</code>
+<code>DateGregorian()</code> now handles BCE dates with a negative <code>@year</code>
 </li>
 <li>GEDCOM files within zip archives can be imported (GEDzip)</li>
 <li>Minor changes to some internal class names and their inheritance</li>
