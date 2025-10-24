@@ -37,19 +37,18 @@ NonEvent <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NO %s", self@event_type),
-          sprintf("1 DATE %s", obj_to_val(self@date_period)) |> trimws(),
-          sprintf("2 PHRASE %s", self@date_phrase),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          as_ged(self@event_type, "NO", 0),
+          as_ged(as_val(self@date_period), "DATE", 1),
+          as_ged(self@date_phrase, "PHRASE", 2),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),
   validator = function(self){
     c(
       chk_input_phrase(self@date_phrase, "@date_phrase",
-                       obj_to_val(self@date_period), "@date_period", ""),
+                       as_val(self@date_period), "@date_period", ""),
       chk_input_parents(self@date_phrase, "@date_phrase", self@date_period, "@date_period")
     )
   }
@@ -76,7 +75,7 @@ S7::method(summary, NonEvent) <- function(object, ...){
   fact_type <- names(val_fact_types(TRUE))[fact_type == val_fact_types(TRUE)]
   to_console("Non Event:", fact_type, exdent)
   to_console_value_with_phrase("Period:", 
-                               obj_to_val(object@date_period), object@date_phrase, 
+                               as_val(object@date_period), object@date_phrase, 
                                exdent)
   cat("\n")
   to_console("Citations:", length(object@citations), exdent)

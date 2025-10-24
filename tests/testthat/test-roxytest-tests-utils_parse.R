@@ -19,7 +19,7 @@ test_that("Function parse_gedcom_date() @ L50", {
 })
 
 
-test_that("Function parse_gedcom_age() @ L113", {
+test_that("Function parse_gedcom_age() @ L121", {
   expect_equal(parse_gedcom_age("16y"), 16)
   expect_equal(parse_gedcom_age("16y 6m"), 16.5)
   expect_equal(parse_gedcom_age("73d"), 73/365)

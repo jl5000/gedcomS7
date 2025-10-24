@@ -41,14 +41,14 @@ MediaLink <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 OBJE %s", self@media_xref),
+          as_ged(self@media_xref, "OBJE", 0),
           rep("1 CROP", length(self@top) + length(self@left) +
                         length(self@height) + length(self@width) > 0),
-          sprintf("2 TOP %s", self@top),
-          sprintf("2 LEFT %s", self@left),
-          sprintf("2 HEIGHT %s", self@height),
-          sprintf("2 WIDTH %s", self@width),
-          sprintf("1 TITL %s", self@title)
+          as_ged(self@top, "TOP", 2),
+          as_ged(self@left, "LEFT", 2),
+          as_ged(self@height, "HEIGHT", 2),
+          as_ged(self@width, "WIDTH", 2),
+          as_ged(self@title, "TITL", 1)
         )
       })
   )

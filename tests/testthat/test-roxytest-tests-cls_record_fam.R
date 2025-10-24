@@ -18,7 +18,7 @@ test_that("Function FamilyRecord() @ L40", {
   expect_snapshot_value(FamilyRecord("@1@",
                                      unique_ids = "a95b5007-2ad2-4bac-81b0-7184243c4512",
                                      ext_ids = stats::setNames(letters, LETTERS)[1:5],
-                                     user_ids = month.abb[1:6])@GEDCOM_IDENTIFIERS, "json2")
+                                     user_ids = month.abb[1:6])@GEDCOM, "json2")
   expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 3),
                             chil_xrefs = c("@1@","@2@"))@NUM_CHILDREN, 3)
   expect_equal(FamilyRecord(facts = FamilyAttribute("NCHI", 2),

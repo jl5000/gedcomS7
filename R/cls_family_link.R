@@ -28,9 +28,8 @@ FamilyLinkSpouse <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FAMS %s", self@fam_xref),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
+          as_ged(self@fam_xref, "FAMS", 0),
+          notes_ged(self@notes, self@note_xrefs, 1)
         )
       })
   )
@@ -78,13 +77,12 @@ FamilyLinkChild <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 FAMC %s", self@fam_xref),
-          sprintf("1 PEDI %s", self@pedigree),
-          sprintf("2 PHRASE %s", self@pedigree_phrase),
-          sprintf("1 STAT %s", self@confidence),
-          sprintf("2 PHRASE %s", self@confidence_phrase),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1)
+          as_ged(self@fam_xref, "FAMC", 0),
+          as_ged(self@pedigree, "PEDI", 1),
+          as_ged(self@pedigree_phrase, "PHRASE", 2),
+          as_ged(self@confidence, "STAT", 1),
+          as_ged(self@confidence_phrase, "PHRASE", 2),
+          notes_ged(self@notes, self@note_xrefs, 1)
         )
       })
   ),

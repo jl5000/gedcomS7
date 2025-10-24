@@ -24,21 +24,16 @@ SubmitterRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SUBM", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
-          sprintf("1 NAME %s", self@subm_name),
-          obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
-          sprintf("1 PHON %s", self@phone_numbers),
-          sprintf("1 EMAIL %s", self@emails),
-          sprintf("1 FAX %s", self@faxes),
-          sprintf("1 WWW %s", self@web_pages),
-          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          sprintf("1 LANG %s", self@languages),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@updated) |> increase_level(by = 1),
-          obj_to_ged(self@created) |> increase_level(by = 1)
+          as_ged("SUBM", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@subm_name, "NAME", 1),
+          contacts_ged(self@address, self@phone_numbers, self@emails,
+                          self@faxes, self@web_pages, 1),
+          as_ged(self@media_links, 1),
+          as_ged(self@languages, "LANG", 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   ),

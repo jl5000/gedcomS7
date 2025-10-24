@@ -19,9 +19,9 @@ SourceCallNumber <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 CALN %s", self@call_number),
-          sprintf("1 MEDI %s", self@medium),
-          sprintf("2 PHRASE %s", self@medium_phrase)
+          as_ged(self@call_number, "CALN", 0),
+          as_ged(self@medium, "MEDI", 1),
+          as_ged(self@medium_phrase, "PHRASE", 2)
         )
       })
   ),
@@ -76,10 +76,9 @@ RepositoryCitation <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 REPO %s", self@repo_xref),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@call_numbers, "CALN") |> increase_level(by = 1)
+          as_ged(self@repo_xref, "REPO", 0),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@call_numbers, 1)
         )
       })
   )
@@ -140,10 +139,10 @@ FactsRecorded <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 EVEN %s", self@fact_types),
-          sprintf("1 DATE %s", obj_to_val(self@date_period)) |> trimws(),
-          sprintf("2 PHRASE %s", self@date_phrase),
-          obj_to_ged(self@territory, "PLAC") |> increase_level(by = 1)
+          as_ged(self@fact_types, "EVEN", 0),
+          as_ged(as_val(self@date_period), "DATE", 1),
+          as_ged(self@date_phrase, "PHRASE", 2),
+          as_ged(self@territory, lvl = 1)
         )
       })
   )
@@ -209,27 +208,24 @@ SourceRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s SOUR", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
+          as_ged("SOUR", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
           rep("1 DATA", length(self@facts_recorded) + length(self@agency) + 
                 length(self@data_notes) + length(self@data_note_xrefs) > 0),
-          obj_to_ged(self@facts_recorded, "EVEN") |> increase_level(by = 2),
-          sprintf("2 AGNC %s", self@agency),
-          obj_to_ged(self@data_notes, "NOTE") |> increase_level(by = 2),
-          sprintf("2 SNOTE %s", self@data_note_xrefs),
-          sprintf("1 AUTH %s", self@originator),
-          sprintf("1 TITL %s", self@full_title),
-          sprintf("1 ABBR %s", self@short_title),
-          sprintf("1 PUBL %s", self@publication_facts),
-          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 1) |> 
+          as_ged(self@facts_recorded, 2),
+          as_ged(self@agency, "AGNC", 2),
+          notes_ged(self@data_notes, self@data_note_xrefs, 2),
+          as_ged(self@originator, "AUTH", 1),
+          as_ged(self@full_title, "TITL", 1),
+          as_ged(self@short_title, "ABBR", 1),
+          as_ged(self@publication_facts, "PUBL", 1),
+          as_ged(self@source_text) |> level_up(1) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
-          obj_to_ged(self@repo_citations, "REPO") |> increase_level(by = 1),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          obj_to_ged(self@updated) |> increase_level(by = 1),
-          obj_to_ged(self@created) |> increase_level(by = 1)
+          as_ged(self@repo_citations, 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@media_links, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   ),

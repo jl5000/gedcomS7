@@ -22,23 +22,18 @@ Fact <- S7::new_class(
     confidential = prop_bool(default = FALSE),
     locked = prop_bool(default = FALSE),
     private = prop_bool(default = FALSE),
-    date_sort = prop_char(0, 1, pattern = reg_date_gregorian(), S7class_names = "DateSorting"),
+    date_sort = prop_char(0, 1, pattern = reg_date_calendar(), S7class_names = "DateSorting"),
     associations = prop_S7list("associations", Association),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
     notes = prop_S7list("notes", Note),
     citations = prop_S7list("citations", SourceCitation),
     media_links = prop_S7list("media_links", MediaLink),
     unique_ids = prop_char(pattern = reg_uuid(TRUE)),
-    
-    RESTRICTIONS = S7::new_property(S7::class_character,
-                                    getter = function(self){
-                                      restrictions_to_resn(self@confidential, self@locked, self@private)
-                                    }),
-    
+
     FACT_DATE = S7::new_property(
       S7::class_character,
       getter = function(self){
-        obj_to_val(self@date)
+        as_val(self@date)
       }),
     
     FACT_LOCATION = S7::new_property(
@@ -46,7 +41,7 @@ Fact <- S7::new_class(
       getter = function(self){
         want_addr <- self@fact_type %in% c("RESI","CENS","PROP")
         if(want_addr && length(self@address) == 1){
-          return(obj_to_val(self@address))
+          return(as_val(self@address))
         }
         
         if(length(self@address) == 1 &&
@@ -55,9 +50,9 @@ Fact <- S7::new_class(
            length(self@address@country) > 1){
           toString(c(self@address@city, self@address@state, self@address@country))
         } else if(length(self@place) == 1){
-          obj_to_val(self@place)
+          as_val(self@place)
         } else if(length(self@address) == 1) {
-          obj_to_val(self@address) |> 
+          as_val(self@address) |> 
             strsplit("; ") |> 
             unlist() |> 
             tail(2) |> 
@@ -79,24 +74,20 @@ Fact <- S7::new_class(
         # }
         
         c(
-          obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
-          obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
-          obj_to_ged(self@address, "ADDR") |> increase_level(by = 1),
-          sprintf("1 PHON %s", self@phone_numbers),
-          sprintf("1 EMAIL %s", self@emails),
-          sprintf("1 FAX %s", self@faxes),
-          sprintf("1 WWW %s", self@web_pages),
-          sprintf("1 AGNC %s", self@agency),
-          sprintf("1 RELI %s", self@relig_affil),
-          sprintf("1 CAUS %s", self@cause),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
-          obj_to_ged(self@date_sort, "SDATE") |> increase_level(by = 1),
-          obj_to_ged(self@associations) |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
-          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          sprintf("1 UID %s", self@unique_ids)
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@place, lvl = 1),
+          contacts_ged(self@address, self@phone_numbers, self@emails,
+                       self@faxes, self@web_pages, 1),
+          as_ged(self@agency, "AGNC", 1),
+          as_ged(self@relig_affil, "RELI", 1),
+          as_ged(self@cause, "CAUS", 1),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@date_sort, "SDATE", 1),
+          as_ged(self@associations, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@media_links, 1),
+          as_ged(self@unique_ids, "UID", 1)
         )
       }
     )

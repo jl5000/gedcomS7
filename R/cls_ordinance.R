@@ -26,17 +26,16 @@ Ordinance <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s", self@ord_type),
-          obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
-          sprintf("1 TEMP %s", self@temple_name),
-          obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
-          sprintf("1 STAT %s", self@ord_state),
-          sprintf("2 DATE %s", obj_to_val(self@state_date)),
-          sprintf("3 TIME %s", obj_to_val(self@state_time)),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
-          sprintf("1 FAMC %s", self@fam_xref)
+          paste(0, self@ord_type),
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@temple_name, "TEMP", 1),
+          as_ged(self@place, lvl = 1),
+          as_ged(self@ord_state, "STAT", 1),
+          as_ged(as_val(self@state_date), "DATE", 2),
+          as_ged(as_val(self@state_time), "TIME", 3),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@fam_xref, "FAMC", 1)
         )
       })
   ),
@@ -88,16 +87,15 @@ SpouseSealing <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s", self@ord_type),
-          obj_to_ged(self@date, "DATE") |> increase_level(by = 1),
-          sprintf("1 TEMP %s", self@temple_name),
-          obj_to_ged(self@place, "PLAC") |> increase_level(by = 1),
-          sprintf("1 STAT %s", self@ord_state),
-          sprintf("2 DATE %s", obj_to_val(self@state_date)),
-          sprintf("3 TIME %s", obj_to_val(self@state_time)),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          paste(0, self@ord_type),
+          as_ged(self@date, "DATE", 1),
+          as_ged(self@temple_name, "TEMP", 1),
+          as_ged(self@place, lvl = 1),
+          as_ged(self@ord_state, "STAT", 1),
+          as_ged(as_val(self@state_date), "DATE", 2),
+          as_ged(as_val(self@state_time), "TIME", 3),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

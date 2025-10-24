@@ -17,6 +17,7 @@
 #' @returns The filepath (invisibly).
 #' @export
 #' @tests
+#' expect_error(write_gedcom(5), regexp = "Not a GEDCOM object")
 #' maximal <- test_path("maximal70.ged")
 #' maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
 #'                                  fileext = ".ged")
@@ -25,9 +26,15 @@
 #'                        SNOTE = "N", SOUR = "S", SUBM = "U")
 #'                                
 #' expect_error(write_gedcom(ged, "my_family.txt"), 
-#'              regexp = "Output is not being saved as a GEDCOM file")
+#'              regexp = "filepath must be a character string")
+#' expect_error(write_gedcom(ged, 1), 
+#'              regexp = "filepath must be a character string")
+#' expect_error(write_gedcom(ged, paste0(letters, ".ged")), 
+#'              regexp = "filepath must be a character string")
 #' 
 #' maximal <- withr::local_tempfile(fileext = ".ged")
+#' expect_error(write_gedcom(ged, maximal, inc_confid = logical()),
+#'              regexp = "inc_\\* arguments must be booleans")
 #' roundtrip1 <- write_gedcom(ged, maximal)
 #' roundtrip2 <- read_gedcom(maximal)
 #' roundtrip2@records@prefixes <- c(FAM = "F", INDI = "I", OBJE = "M", REPO = "R", 
@@ -43,9 +50,17 @@ write_gedcom <- function(gedcom,
                          inc_private = TRUE,
                          inc_living = TRUE) {
   
-  if(tolower(tools::file_ext(filepath)) != "ged")
-    stop("Output is not being saved as a GEDCOM file (*.ged)")
-  
+  check_gedcom_obj(gedcom)
+  stopifnot(
+    "filepath must be a character string ending in .ged" = is.character(filepath) &&
+      length(filepath) == 1 &&
+      tolower(tools::file_ext(filepath)) == "ged",
+    "inc_* arguments must be booleans" = all(is.logical(inc_confid), 
+                                             is.logical(inc_private), 
+                                             is.logical(inc_living)) &&
+      length(c(inc_confid, inc_private, inc_living)) == 3
+  )
+
   if(file.exists(filepath)) file.remove(filepath)
   
   # Write Byte Order Mark
@@ -89,8 +104,20 @@ rm_restricted_structures <- function(lines, restriction){
 #'
 #' @returns A gedcom object cleansed of information on living individuals.
 #' @export
+#' @tests
+#' expect_error(rm_living("fdfds"), regexp = "Not a GEDCOM object")
+#' expect_error(rm_living(test_ged(), "string"), regexp = "max_age must be")
+#' expect_error(rm_living(test_ged(), 99:100), regexp = "max_age must be")
+#' expect_error(rm_living(test_ged(), -2), regexp = "max_age must be")
 rm_living <- function(x,
                       max_age = 100) {
+  
+  check_gedcom_obj(x)
+  stopifnot(
+    "max_age must be a non-negative scalar" = is.numeric(max_age) &&
+      length(max_age) == 1 &&
+      max_age >= 0
+  )
   
   remove <- NULL
   for(xref in x@records@XREFS[["INDI"]]) {
@@ -253,7 +280,7 @@ split_gedcom_values <- function(lines) {
   lvl <- 0
   for(i in seq_along(lines)){
     if(substr(lines[i], 1, 6) == "0 CONT"){
-      lines[i] <- increase_level(lines[i], lvl + 1)
+      lines[i] <- level_up(lines[i], lvl + 1)
     } else {
       lvl <- parse_line_level(lines[i])
     }

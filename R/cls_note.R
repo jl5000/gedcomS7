@@ -32,13 +32,13 @@
 #' expect_error(Note("test", 
 #'                         language = "en",
 #'                         translations = Address("street")),
-#'              regexp = "@translations contains an invalid object")
+#'              regexp = "gedcomS7::Address cannot be converted to class TranslationText")
 #' expect_error(Note("test", 
 #'                         language = "en",
 #'                         translations = list(TranslationText("test",
 #'                                                               language = "en"),
 #'                                         Address("street"))),
-#'              regexp = "@translations contains an invalid object not of class TranslationText")
+#'              regexp = "gedcomS7::Address cannot be converted to class TranslationText")
 Note <- S7::new_class(
   "Note",
   parent = GedcomS7class,
@@ -54,11 +54,11 @@ Note <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NOTE %s", self@text),
-          sprintf("1 MIME %s", self@media_type),
-          sprintf("1 LANG %s", self@language),
-          obj_to_ged(self@translations) |> increase_level(by = 1),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          as_ged(self@text, "NOTE", 0),
+          as_ged(self@media_type, "MIME", 1),
+          as_ged(self@language, "LANG", 1),
+          as_ged(self@translations, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

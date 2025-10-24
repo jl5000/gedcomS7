@@ -1,86 +1,55 @@
 
-#' Convert an input into a vector of GEDCOM lines
-#'
-#' @param obj Either an atomic vector, S7 class object, or list.
-#' Any S7 class objects must have an `GEDCOM()` method.
-#' @param tag If the obj contains any atomic elements, then this
-#' will specify what tag they are recorded against.
-#'
-#' @returns A vector of GEDCOM lines.
-#' @keywords internal
-obj_to_ged <- function(obj, tag = NULL){
-  
-  if(is.atomic(obj) && is.null(tag))
-    stop("Object contains atomic elements - a tag is required")
-  
-  if(is.atomic(obj)) return(sprintf("0 %s %s", tag, obj))
-  
-  if("S7_object" %in% class(obj)) return(obj@GEDCOM)
-  
-  if(length(obj) == 0) return(character())
-  
-  out = character()
-  for(input in obj){
-    out <- c(out, obj_to_ged(input, tag))
-  }
-  
-  out
+as_ged <- S7::new_generic("as_ged", "x")
+
+S7::method(as_ged, NULL) <- function(x, ...) character()
+# ... for DATE/TIME where it could be character or S7 object
+S7::method(as_ged, GedcomS7class) <- function(x, tags = NULL, lvl = 0){
+  level_up(x@GEDCOM, lvl)
+} 
+S7::method(as_ged, S7::class_list) <- function(x, lvl = 0){
+  unlist(lapply(x, \(y) as_ged(y, lvl = lvl))) %||% character()
 }
+S7::method(as_ged, S7::class_atomic) <- function(x, tags, lvl = 0){
+  stopifnot("One or two tags must be supplied" = length(tags) %in% 1:2)
+  if(length(x) == 0) return(character())
+  if(isTRUE(x == "")) return(paste(lvl, tags[1]))
+  if(length(tags) == 1 || is.null(names(x))) return(paste(lvl, tags[1], x))
 
-
-named_vec_to_ged <- function(vec, tag1, tag2){
-  ged <- character()
-  for(i in seq_along(vec)){
-    ged <- c(
-      ged,
-      sprintf("0 %s %s", tag1, vec[i]),
-      sprintf("1 %s %s", tag2, names(vec)[i])
-    )
-  }
-  ged <- ged[ged != sprintf("1 %s ", tag2)]
-  ged
+  # named vector
+  ged <- mapply(\(i, j) c(paste(lvl, tags[1], i), paste(lvl + 1, tags[2], j)),
+                x, names(x), SIMPLIFY = TRUE, USE.NAMES = FALSE)
+  ged[ged != paste(lvl + 1, tags[2], "")]
 }
 
 
 
-obj_to_val <- function(obj){
-  if("S7_object" %in% class(obj)){
-    val <- obj@GEDCOM_STRING
-  } else {
-    val <- obj # character/NULL
-  }
-  val
-}
+as_val <- S7::new_generic("as_val", "x")
+S7::method(as_val, NULL) <- function(x) x
+S7::method(as_val, S7::class_character) <- function(x) x
+S7::method(as_val, GedcomS7class) <- function(x) x@GEDCOM_STRING
 
-restrictions_to_resn <- function(confidential, locked, private){
-  if(!any(confidential, locked, private))
-    return(character())
+
+
+as.S7class_list <- S7::new_generic("as.S7class_list", "x")
+S7::method(as.S7class_list, GedcomS7class) <- function(x, S7class){
+  if(!paste0("gedcomS7::", S7class@name) %in% class(x)) 
+    stop(sprintf("%s cannot be converted to class %s.", class(x)[1], S7class@name))
   
-  conf <- rep("CONFIDENTIAL", confidential)
-  lock <- rep("LOCKED", locked)
-  priv <- rep("PRIVACY", private)
-  
-  toString(c(conf, lock, priv))
+  list(x)
 }
+S7::method(as.S7class_list, S7::class_list) <- function(x, S7class){
+  do.call(c, lapply(x, as.S7class_list, S7class)) %||% x
+}
+S7::method(as.S7class_list, S7::class_atomic) <- function(x, S7class){
+  lapply(x, \(i) do.call(S7class, list(i)))
+} 
 
-as.S7class_list <- function(input, S7class){
-  if("S7_object" %in% class(input)) input <- list(input)
-  lapply(input, \(x) 
-         if(is.atomic(x)){
-           do.call(S7class, list(x))
-         } else {
-           if(S7::S7_inherits(x, S7class)){
-             x
-           } else {
-             sprintf("contains an invalid object not of class %s.", 
-                     S7class@name)
-           }
-         }
-  )
-}
 
-as.S7class <- function(input, S7class){
-  if(length(input) == 0) return(input)
-  if(is.atomic(input)) input <- do.call(S7class, list(input))
-  input
-}
+
+as.S7class <- S7::new_generic("as.S7class", "x")
+S7::method(as.S7class, NULL) <- function(x, S7class) x
+S7::method(as.S7class, GedcomS7class) <- function(x, S7class) x # Assume developer gives it correct class!
+S7::method(as.S7class, S7::class_atomic) <- function(x, S7class){
+  if(length(x) == 0) return(x)
+  do.call(S7class, list(x))
+} 

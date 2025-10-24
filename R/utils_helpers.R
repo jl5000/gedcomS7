@@ -125,7 +125,7 @@ chronify <- function(x){
 #'
 #' @returns The vector of GEDCOM lines with incremented levels.
 #' @keywords internal
-increase_level <- function(ged, by = 1){
+level_up <- function(ged, by = 1){
   if(length(ged) == 0) return(character())
   
   cur_level <- parse_line_level(ged)
@@ -139,11 +139,11 @@ remove_void_xrefs <- function(xrefs){
 
 to_console <- function(label, val, exdent){
   if(length(val) == 0 || isTRUE(val == "")) val <- "<Undefined>"
-  cat(strwrap(val, 
-              initial = sprintf(paste0("%-", exdent, "s"), label), 
-              prefix = "", 
-              exdent = exdent), 
-      fill = TRUE)
+  strwrap(val, 
+          initial = sprintf(paste0("%-", exdent, "s"), label), 
+          prefix = "", 
+          exdent = exdent) |> 
+    cat(fill = TRUE)
 }
 
 to_console_value_with_phrase <- function(label, 
@@ -170,7 +170,7 @@ to_console_list <- function(label, values, exdent, prop = NULL){
 
 zipped_gedname <- function(filepath, must_exist = FALSE){
   
-  if(tools::file_ext(filepath) != "zip") stop("File is not a zip archive")
+  stopifnot("File is not a zip archive" = tools::file_ext(filepath) == "zip")
     
   contents <- unzip(filepath, list = TRUE)
   ged_files <- contents[contents$Name == basename(contents$Name) &
@@ -185,4 +185,52 @@ zipped_gedname <- function(filepath, must_exist = FALSE){
     stop("More than one GEDCOM file found in root of zip file")
   }
   
+}
+
+identifiers_ged <- function(user_ids, unique_ids, ext_ids, lvl = 0){
+  c(
+    as_ged(user_ids, c("REFN", "TYPE"), lvl),
+    as_ged(unique_ids, "UID", lvl),
+    as_ged(ext_ids, c("EXID", "TYPE"), lvl)
+  )
+}
+
+notes_ged <- function(notes, note_xrefs, lvl = 0){
+  c(
+    as_ged(notes, lvl),
+    as_ged(note_xrefs, "SNOTE", lvl)
+  )
+}
+
+contacts_ged <- function(address, phone_numbers, emails, faxes, web_pages, lvl = 0){
+  c(
+    as_ged(address, lvl = lvl),
+    as_ged(phone_numbers, "PHON", lvl),
+    as_ged(emails, "EMAIL", lvl),
+    as_ged(faxes, "FAX", lvl),
+    as_ged(web_pages, "WWW", lvl)
+  )
+}
+
+audit_ged <- function(updated, created, lvl = 0){
+  c(
+    as_ged(updated, lvl = lvl),
+    as_ged(created, lvl = lvl)
+  )
+}
+
+restrictions_ged <- function(confidential, locked, private, lvl = 0){
+  restrictions_to_resn(confidential, locked, private) |> 
+    as_ged("RESN", lvl)
+}
+
+restrictions_to_resn <- function(confidential, locked, private){
+  if(!any(confidential, locked, private))
+    return(character())
+  
+  conf <- rep("CONFIDENTIAL", confidential)
+  lock <- rep("LOCKED", locked)
+  priv <- rep("PRIVACY", private)
+  
+  toString(c(conf, lock, priv))
 }

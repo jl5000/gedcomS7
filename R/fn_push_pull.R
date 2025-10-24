@@ -32,6 +32,7 @@
 #' expect_warning(pull_record(ged, "@I1@"),
 #'                regexp = "The following lines could not be parsed.+Wow.+No")
 pull_record <- function(x, xref){
+  check_gedcom_obj(x)
   
   if(!xref %in% unlist(x@records@XREFS))
     stop("The xref is not in the GEDCOM object")
@@ -78,10 +79,10 @@ pull_record <- function(x, xref){
 #' 
 #' @details 
 #' The function will automatically keep family links for individuals updated.
-#' It will also update the record last_updated if update_change_dates in the
+#' It will also update the `@updated` property if `@update_change_dates` in the
 #' gedcom object is set to TRUE.
 #'
-#' @param gedcom An object representing the GEDCOM file.
+#' @inheritParams pull_record
 #' @param record An object representing the record to place back into the
 #' GEDCOM object.
 #'
@@ -130,15 +131,15 @@ pull_record <- function(x, xref){
 #' expect_false("1 FAMS @F2@" %in% ged@records@RAW@INDI[["@I1@"]])
 #' expect_false("1 CHIL @I2@" %in% ged@records@RAW@FAM[["@F1@"]])
 #' expect_false("1 HUSB @I1@" %in% ged@records@RAW@FAM[["@F2@"]])
-push_record <- function(gedcom, record){
+push_record <- function(x, record){
+  check_gedcom_obj(x)
+  check_missing_xrefs(x, record)
   
-  check_missing_xrefs(gedcom, record)
-  
-  if(gedcom@update_change_dates){
+  if(x@update_change_dates){
      record@updated <- ChangeDate()
   }
   
-  if(gedcom@add_creation_dates){
+  if(x@add_creation_dates){
     if(length(record@created) == 0 && record@XREF == new_xref()){
       record@created <- CreationDate()
     }
@@ -148,24 +149,24 @@ push_record <- function(gedcom, record){
   new_rec <- record@XREF == new_xref()
   
   if(new_rec)
-    record@XREF <- gedcom@records@XREFS_NEXT[[rec_type]]
+    record@XREF <- x@records@XREFS_NEXT[[rec_type]]
   
   # Don't do this yet
   #if(rec_type %in% c("INDI","FAM")) record <- order_facts(record)
   
   lines <- record@GEDCOM
-  S7::prop(gedcom@records@RAW, rec_type)[[record@XREF]] <- lines
+  S7::prop(x@records@RAW, rec_type)[[record@XREF]] <- lines
   
   if(rec_type == "INDI"){
-    gedcom <- refresh_indi_links(gedcom, record)
+    x <- refresh_indi_links(x, record)
   } else if(rec_type == "FAM"){
-    gedcom <- refresh_fam_links(gedcom, record)
+    x <- refresh_fam_links(x, record)
   }
   
   if(new_rec)
     message("New ", names(which(val_record_types() == rec_type)), " record added with xref ", record@XREF)
   
-  gedcom
+  x
 }
 
 
@@ -201,7 +202,7 @@ refresh_fam_links <- function(gedcom, record){
     if(!record@XREF %in% fams){
       gedcom@records@RAW@INDI[[spou]] <- c(
         gedcom@records@RAW@INDI[[spou]],
-        sprintf("1 FAMS %s", record@XREF)
+        as_ged(record@XREF, "FAMS", 1)
       )
     }
   }
@@ -212,7 +213,7 @@ refresh_fam_links <- function(gedcom, record){
     if(!record@XREF %in% famc){
       gedcom@records@RAW@INDI[[chil]] <- c(
         gedcom@records@RAW@INDI[[chil]],
-        sprintf("1 FAMC %s", record@XREF)
+        as_ged(record@XREF, "FAMC", 1)
       )
     }
   }
@@ -268,7 +269,7 @@ refresh_indi_links <- function(gedcom, record){
       
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 %s %s", spou_type, record@XREF)
+        as_ged(record@XREF, spou_type, 1)
       )
     }
   }
@@ -282,7 +283,7 @@ refresh_indi_links <- function(gedcom, record){
     if(!record@XREF %in% fam_chil){
       gedcom@records@RAW@FAM[[fam_xref]] <- c(
         gedcom@records@RAW@FAM[[fam_xref]],
-        sprintf("1 CHIL %s", record@XREF)
+        as_ged(record@XREF, "CHIL", 1)
       )
     }
   } 
@@ -311,9 +312,9 @@ order_facts <- function(record){
   # get dates of all facts
   dts <- lapply(record@facts, \(fct){
     if(length(fct@date_sort) == 1){
-      dt <- obj_to_ged(fct@date_sort, "SDATE")[1]
+      dt <- as_ged(fct@date_sort, "SDATE")[1]
     } else if(length(fct@date) == 1) {
-      dt <- obj_to_ged(fct@date, "DATE")[1]
+      dt <- as_ged(fct@date, "DATE")[1]
     } else {
       dt <- ""
     }

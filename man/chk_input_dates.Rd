@@ -7,9 +7,9 @@
 chk_input_dates(start_date, end_date)
 }
 \arguments{
-\item{start_date}{The start date given either as a \code{DateGregorian} or a GEDCOM date string.}
+\item{start_date}{The start date given either as a \code{DateCalendar} or a GEDCOM date string.}
 
-\item{end_date}{The end date given either as a \code{DateGregorian} or a GEDCOM date string.}
+\item{end_date}{The end date given either as a \code{DateCalendar} or a GEDCOM date string.}
 }
 \value{
 Either a character string giving an error message, or NULL.

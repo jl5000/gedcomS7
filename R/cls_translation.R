@@ -24,9 +24,9 @@ TranslationText <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 TRAN %s", self@text),
-          sprintf("1 MIME %s", self@media_type),
-          sprintf("1 LANG %s", self@language)
+          as_ged(self@text, "TRAN", 0),
+          as_ged(self@media_type, "MIME", 1),
+          as_ged(self@language, "LANG", 1)
         )
       })
   )

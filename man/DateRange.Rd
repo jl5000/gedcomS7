@@ -8,10 +8,10 @@ DateRange(start_date = character(0), end_date = character(0))
 }
 \arguments{
 \item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian()} object.}
+\code{DateCalendar()} object.}
 
 \item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian()} object.}
+\code{DateCalendar()} object.}
 }
 \value{
 An S7 object representing a GEDCOM Date Range.

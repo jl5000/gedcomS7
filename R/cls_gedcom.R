@@ -38,19 +38,16 @@ GedcomSource <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 SOUR %s", self@product_id),
-          sprintf("1 VERS %s", self@product_version),
-          sprintf("1 NAME %s", self@product_name),
-          sprintf("1 CORP %s", self@business_name),
-          obj_to_ged(self@business_address, "ADDR") |> increase_level(by = 2),
-          sprintf("2 PHON %s", self@phone_numbers),
-          sprintf("2 EMAIL %s", self@emails),
-          sprintf("2 FAX %s", self@faxes),
-          sprintf("2 WWW %s", self@web_pages),
-          sprintf("1 DATA %s", self@data_name),
-          sprintf("2 DATE %s", obj_to_val(self@data_pubdate)),
-          sprintf("3 TIME %s", obj_to_val(self@data_pubtime)),
-          sprintf("2 COPR %s", self@data_copyright)
+          as_ged(self@product_id, "SOUR", 0),
+          as_ged(self@product_version, "VERS", 1),
+          as_ged(self@product_name, "NAME", 1),
+          as_ged(self@business_name, "CORP", 1),
+          contacts_ged(self@business_address, self@phone_numbers, self@emails,
+                          self@faxes, self@web_pages, 2),
+          as_ged(self@data_name, "DATA", 1),
+          as_ged(as_val(self@data_pubdate), "DATE", 2),
+          as_ged(as_val(self@data_pubtime), "TIME", 3),
+          as_ged(self@data_copyright, "COPR", 2)
         )
       }
     )),
@@ -120,22 +117,21 @@ GedcomHeader <- S7::new_class(
       S7::class_character, 
       getter = function(self){
         c(
-          "0 HEAD",
-          "1 GEDC",
-          sprintf("2 VERS %s", self@gedcom_version),
+          paste(0, "HEAD"),
+          paste(1, "GEDC"),
+          as_ged(self@gedcom_version, "VERS", 2),
           rep("1 SCHMA", length(self@ext_tags) > 0),
-          sprintf("2 TAG %s", self@ext_tags),
-          obj_to_ged(self@source) |> increase_level(by = 1),
-          sprintf("1 DEST %s", self@destination),
-          sprintf("1 DATE %s", obj_to_val(self@creation_date)),
-          sprintf("2 TIME %s", obj_to_val(self@creation_time)),
-          sprintf("1 SUBM %s", self@subm_xref),
-          sprintf("1 COPR %s", self@gedcom_copyright),
-          sprintf("1 LANG %s", self@default_language),
+          as_ged(self@ext_tags, "TAG", 2),
+          as_ged(self@source, lvl = 1),
+          as_ged(self@destination, "DEST", 1),
+          as_ged(as_val(self@creation_date), "DATE", 1),
+          as_ged(as_val(self@creation_time), "TIME", 2),
+          as_ged(self@subm_xref, "SUBM", 1),
+          as_ged(self@gedcom_copyright, "COPR", 1),
+          as_ged(self@default_language, "LANG", 1),
           rep("1 PLAC", length(self@default_place_form) > 0),
-          sprintf("2 FORM %s", self@default_place_form),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
+          as_ged(self@default_place_form, "FORM", 2),
+          notes_ged(self@notes, self@note_xrefs, 1)
         )
       })
   ),
@@ -399,7 +395,7 @@ S7::method(summary, GedcomSource) <- function(object, ...){
 raw_header_summary <- function(hd){
   exdent <- 20
   to_console("GEDCOM version:", hd@gedcom_version, exdent)
-  to_console("Creation Date:", obj_to_val(hd@creation_date), exdent)
+  to_console("Creation Date:", as_val(hd@creation_date), exdent)
   to_console("Default Language:", hd@default_language, exdent)
   raw_source_summary(hd@source)
   cat("\n")

@@ -19,36 +19,41 @@ test_that("Function date_exact_current() @ L53", {
 })
 
 
-test_that("Function DateGregorian() @ L85", {
-  expect_error(DateGregorian(), regexp = "@year has too few elements")
-  expect_error(DateGregorian(0), regexp = "@year cannot be zero")
-  expect_error(DateGregorian(2001, day = 15), regexp = "Day is defined without a month")
-  expect_error(DateGregorian(day = 5), regexp = "@year has too few elements")
-  expect_error(DateGregorian(month = 10), regexp = "@year has too few elements")
-  expect_error(DateGregorian(2010, 13, 3), regexp = "@month has a value which is too high")
-  expect_error(DateGregorian(2010, 1, 32), regexp = "@day has a value which is too high")
-  expect_error(DateGregorian(2001, 2, 30), regexp = "Invalid date")
-  expect_error(DateGregorian(-320, 5, 16), regexp = "BCE date must contain year only")
-  expect_equal(DateGregorian(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
-  expect_equal(DateGregorian(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
-  expect_equal(DateGregorian(2004, 8)@GEDCOM_STRING, "AUG 2004")
-  expect_equal(DateGregorian(2012)@GEDCOM_STRING, "2012")
-  expect_equal(DateGregorian(-193)@GEDCOM_STRING, "193 BCE")
+test_that("Function DateCalendar() @ L90", {
+  expect_error(DateCalendar(), regexp = "@year has too few elements")
+  expect_error(DateCalendar(0), regexp = "@year cannot be zero")
+  expect_error(DateCalendar(2001, day = 15), regexp = "Day is defined without a month")
+  expect_error(DateCalendar(day = 5), regexp = "@year has too few elements")
+  expect_error(DateCalendar(month = 10), regexp = "@year has too few elements")
+  expect_error(DateCalendar(2010, 13, 3), regexp = "@month has a value which is too high")
+  expect_error(DateCalendar(2010, 1, 32), regexp = "@day has a value which is too high")
+  expect_error(DateCalendar(2001, 2, 30), regexp = "Invalid date")
+  expect_error(DateCalendar(-320, 5, 16), regexp = "BCE date must contain year only")
+  expect_equal(DateCalendar(2001, 5, 12)@GEDCOM_STRING, "12 MAY 2001")
+  expect_equal(DateCalendar(2001, 5, 12, TRUE)@GEDCOM_STRING, "JULIAN 12 MAY 2001")
+  expect_equal(DateCalendar(2004, 2, 29)@GEDCOM_STRING, "29 FEB 2004")
+  expect_equal(DateCalendar(2004, 8)@GEDCOM_STRING, "AUG 2004")
+  expect_equal(DateCalendar(2004, 8, julian = TRUE)@GEDCOM_STRING, "JULIAN AUG 2004")
+  expect_equal(DateCalendar(2012)@GEDCOM_STRING, "2012")
+  expect_equal(DateCalendar(-193)@GEDCOM_STRING, "193 BCE")
+  expect_equal(DateCalendar(-193, julian = TRUE)@GEDCOM_STRING, "JULIAN 193 BCE")
 })
 
 
-test_that("Function DateApprox() @ L139", {
-  expect_error(DateApprox("hello"), regexp = "@date_greg is in an invalid format")
-  expect_equal(DateApprox(DateGregorian(2001, 5, 12), calc = TRUE)@GEDCOM_STRING, 
+test_that("Function DateApprox() @ L148", {
+  expect_error(DateApprox("hello"), regexp = "@date_cal is in an invalid format")
+  expect_equal(DateApprox(DateCalendar(2001, 5, 12), calc = TRUE)@GEDCOM_STRING, 
                                 "CAL 12 MAY 2001")
-  expect_equal(DateApprox(DateGregorian(2004, 2, 29), about = TRUE)@GEDCOM_STRING, 
+  expect_equal(DateApprox(DateCalendar(2004, 2, 29), about = TRUE)@GEDCOM_STRING, 
                                 "ABT 29 FEB 2004")
-  expect_equal(DateApprox(DateGregorian(2004, 8), est = TRUE)@GEDCOM_STRING, 
+  expect_equal(DateApprox(DateCalendar(2004, 8), est = TRUE)@GEDCOM_STRING, 
                                  "EST AUG 2004")
+  expect_equal(DateApprox(DateCalendar(2004, 8, julian = TRUE), est = TRUE)@GEDCOM_STRING, 
+                                 "EST JULIAN AUG 2004")
 })
 
 
-test_that("Function DatePeriod() @ L220", {
+test_that("Function DatePeriod() @ L234", {
   expect_equal(DatePeriod()@GEDCOM_STRING, "")
   expect_error(DatePeriod(""), regexp = "@start_date is in an invalid format")
   expect_error(DatePeriod(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -56,41 +61,46 @@ test_that("Function DatePeriod() @ L220", {
   expect_equal(DatePeriod(end_date = "2 JUL 1989")@GEDCOM_STRING, "TO 2 JUL 1989")
   expect_equal(
     DatePeriod(
-      start_date = DateGregorian(1995, 6, 1)
+      start_date = DateCalendar(1995, 6, 1)
     )@GEDCOM_STRING, "FROM 1 JUN 1995")
   expect_equal(
     DatePeriod(
-      end_date = DateGregorian(1995, 6, 1)
+      end_date = DateCalendar(1995, 6, 1)
     )@GEDCOM_STRING, "TO 1 JUN 1995")
   expect_equal(
     DatePeriod(
-      start_date = DateGregorian(1990, 6, 1),
-      end_date = DateGregorian(1995, 3)
+      start_date = DateCalendar(1990, 6, 1),
+      end_date = DateCalendar(1995, 3)
     )@GEDCOM_STRING, "FROM 1 JUN 1990 TO MAR 1995")
+  expect_equal(
+    DatePeriod(
+      start_date = DateCalendar(1990, 6, 1, julian = TRUE),
+      end_date = DateCalendar(1995, 3)
+    )@GEDCOM_STRING, "FROM JULIAN 1 JUN 1990 TO GREGORIAN MAR 1995")
   expect_error(
     DatePeriod(
-      start_date = DateGregorian(1995, 6, 1),
-      end_date = DateGregorian(1995, 6, 1)
+      start_date = DateCalendar(1995, 6, 1),
+      end_date = DateCalendar(1995, 6, 1)
     ), regexp = "Start date is the same as end date")
   expect_error(
     DatePeriod(
-      start_date = DateGregorian(2005, 6, 1),
-      end_date = DateGregorian(1995, 6, 1)
+      start_date = DateCalendar(2005, 6, 1),
+      end_date = DateCalendar(1995, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
     DatePeriod(
-      start_date = DateGregorian(2005, 8, 1),
-      end_date = DateGregorian(2005, 6, 1)
+      start_date = DateCalendar(2005, 8, 1),
+      end_date = DateCalendar(2005, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
     DatePeriod(
-      start_date = DateGregorian(2005, 8, 10),
-      end_date = DateGregorian(2005, 8, 1)
+      start_date = DateCalendar(2005, 8, 10),
+      end_date = DateCalendar(2005, 8, 1)
     ), regexp = "Start date comes after end date")
 })
 
 
-test_that("Function DateRange() @ L286", {
+test_that("Function DateRange() @ L315", {
   expect_error(DateRange(), regexp = "has too few elements")
   expect_error(DateRange(""), regexp = "@start_date is in an invalid format")
   expect_error(DateRange(end_date = ""), regexp = "@end_date is in an invalid format")
@@ -98,57 +108,69 @@ test_that("Function DateRange() @ L286", {
   expect_equal(DateRange(end_date = "2 JUL 1989")@GEDCOM_STRING, "BEF 2 JUL 1989")
   expect_equal(
     DateRange(
-      start_date = DateGregorian(1995, 6, 1)
+      start_date = DateCalendar(1995, 6, 1)
     )@GEDCOM_STRING, "AFT 1 JUN 1995")
   expect_equal(
     DateRange(
-      end_date = DateGregorian(1995, 6, 1)
+      end_date = DateCalendar(1995, 6, 1)
     )@GEDCOM_STRING, "BEF 1 JUN 1995")
   expect_equal(
     DateRange(
-      start_date = DateGregorian(1990, 6, 1),
-      end_date = DateGregorian(1995, 3)
+      start_date = DateCalendar(1990, 6, 1),
+      end_date = DateCalendar(1995, 3)
     )@GEDCOM_STRING, "BET 1 JUN 1990 AND MAR 1995")
+  expect_equal(
+    DateRange(
+      start_date = DateCalendar(1990, 6, 1),
+      end_date = DateCalendar(1995, 3, julian = TRUE)
+    )@GEDCOM_STRING, "BET GREGORIAN 1 JUN 1990 AND JULIAN MAR 1995")
+  expect_equal(
+    DateRange(
+      start_date = DateCalendar(1990, 6, 1, julian = TRUE),
+      end_date = DateCalendar(1995, 3, julian = TRUE)
+    )@GEDCOM_STRING, "BET JULIAN 1 JUN 1990 AND JULIAN MAR 1995")
   expect_error(
     DateRange(
-     start_date = DateGregorian(1995, 6, 1),
-      end_date = DateGregorian(1995, 6, 1)
+     start_date = DateCalendar(1995, 6, 1),
+      end_date = DateCalendar(1995, 6, 1)
     ), regexp = "Start date is the same as end date")
   expect_error(
     DateRange(
-      start_date = DateGregorian(2005, 6, 1),
-      end_date = DateGregorian(1995, 6, 1)
+      start_date = DateCalendar(2005, 6, 1),
+      end_date = DateCalendar(1995, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
     DateRange(
-      start_date = DateGregorian(2005, 8, 1),
-      end_date = DateGregorian(2005, 6, 1)
+      start_date = DateCalendar(2005, 8, 1),
+      end_date = DateCalendar(2005, 6, 1)
     ), regexp = "Start date comes after end date")
   expect_error(
     DateRange(
-      start_date = DateGregorian(2005, 8, 10),
-      end_date = DateGregorian(2005, 8, 1)
+      start_date = DateCalendar(2005, 8, 10),
+      end_date = DateCalendar(2005, 8, 1)
     ), regexp = "Start date comes after end date")
 })
 
 
-test_that("Function DateValue() @ L325", {
+test_that("Function DateValue() @ L359", {
   expect_error(DateValue("FROM 2016", time = "12:34"), regexp = "A date period should not have a time defined")
   expect_error(DateValue(DatePeriod(end_date = "1980"), time = Time(3,45,54,6765)), 
                regexp = "A date period should not have a time defined")
   expect_error(DateValue(""), regexp = "A @date_phrase must be given if @date is ''")
-  expect_equal(DateValue(DateGregorian(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
+  expect_equal(DateValue(DateCalendar(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
   expect_snapshot_value(DateValue("AFT 1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
   expect_snapshot_value(DateValue("", date_phrase = "Phrase only", time = "02:24")@GEDCOM, "json2")
 })
 
 
-test_that("Function DateSorting() @ L375", {
+test_that("Function DateSorting() @ L411", {
   expect_error(DateSorting(""), regexp = "@date is in an invalid format")
   expect_error(DateSorting("FROM 2016"), regexp = "@date is in an invalid format")
   expect_error(DateSorting(DatePeriod(end_date = "1980")), 
                regexp = "@date must be <character> or ")
-  expect_equal(DateSorting(DateGregorian(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
+  expect_warning(DateSorting("JULIAN 2000"), 
+                 regexp = "It is recommended you use a sorting date in the Gregorian calendar")
+  expect_equal(DateSorting(DateCalendar(2005, 1, 5))@GEDCOM_STRING, "5 JAN 2005")
   expect_snapshot_value(DateSorting("1990", date_phrase = "Maybe 1992")@GEDCOM, "json2")
 })
 

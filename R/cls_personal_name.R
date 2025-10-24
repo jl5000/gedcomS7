@@ -34,12 +34,12 @@ PersonalNamePieces <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NPFX %s", self@prefix),
-          sprintf("0 GIVN %s", self@given),
-          sprintf("0 NICK %s", self@nickname),
-          sprintf("0 SPFX %s", self@surname_prefix),
-          sprintf("0 SURN %s", self@surname),
-          sprintf("0 NSFX %s", self@suffix)
+          as_ged(self@prefix, "NPFX", 0),
+          as_ged(self@given, "GIVN", 0),
+          as_ged(self@nickname, "NICK", 0),
+          as_ged(self@surname_prefix, "SPFX", 0),
+          as_ged(self@surname, "SURN", 0),
+          as_ged(self@suffix, "NSFX", 0)
         )
       })
   )
@@ -71,9 +71,9 @@ PersonalNameTran <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 TRAN %s", self@pers_name),
-          sprintf("1 LANG %s", self@language),
-          obj_to_ged(self@name_pieces) |> increase_level(by = 1)
+          as_ged(self@pers_name, "TRAN", 0),
+          as_ged(self@language, "LANG", 1),
+          as_ged(self@name_pieces, lvl = 1)
         )
       })
   )
@@ -130,14 +130,13 @@ PersonalName <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 NAME %s", self@pers_name),
-          sprintf("1 TYPE %s", self@name_type),
-          sprintf("2 PHRASE %s", self@type_phrase),
-          obj_to_ged(self@name_pieces) |> increase_level(by = 1),
-          obj_to_ged(self@name_translations) |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1)
+          as_ged(self@pers_name, "NAME", 0),
+          as_ged(self@name_type, "TYPE", 1),
+          as_ged(self@type_phrase, "PHRASE", 2),
+          as_ged(self@name_pieces, lvl = 1),
+          as_ged(self@name_translations, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1)
         )
       })
   ),

@@ -160,10 +160,10 @@ or a character vector of XREFs of source records.}
 \item{date_phrase}{Textual information that cannot be expressed in the date.}
 
 \item{start_date}{The start of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian()} object.}
+\code{DateCalendar()} object.}
 
 \item{end_date}{The end of the period/range given either as a formatted GEDCOM string, or a
-\code{DateGregorian()} object.}
+\code{DateCalendar()} object.}
 
 \item{time}{The time given either as a formatted GEDCOM string, or a
 \code{Time()} object.}

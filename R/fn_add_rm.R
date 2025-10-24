@@ -351,6 +351,7 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
 #' @returns The gedcom object with the records removed.
 #' @export
 rm_records <- function(x, xrefs, void_refs = TRUE){
+  check_gedcom_obj(x)
   xrefs <- unique(xrefs)
   for(xref in xrefs){
     for(rec_type in names(x@records@prefixes)){

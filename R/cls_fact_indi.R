@@ -67,14 +67,14 @@ IndividualEvent <- S7::new_class(
           age <- chronify(self@age)
         
         c(
-          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
-          sprintf("1 TYPE %s", self@fact_desc),
-          sprintf("1 AGE %s", age) |> trimws(),
-          sprintf("2 PHRASE %s", self@age_phrase),
+          as_ged(chronify(self@fact_val), self@fact_type, 0),
+          as_ged(self@fact_desc, "TYPE", 1),
+          as_ged(age, "AGE", 1),
+          as_ged(self@age_phrase, "PHRASE", 2),
           self@.fact_detail_as_ged,
-          sprintf("1 FAMC %s", self@fam_xref),
-          sprintf("2 ADOP %s", self@adop_parent),
-          sprintf("3 PHRASE %s", self@adop_parent_phrase)
+          as_ged(self@fam_xref, "FAMC", 1),
+          as_ged(self@adop_parent, "ADOP", 2),
+          as_ged(self@adop_parent_phrase, "PHRASE", 3)
         )
       })
   ),
@@ -143,10 +143,10 @@ IndividualAttribute <- S7::new_class(
           age <- chronify(self@age)
         
         c(
-          sprintf("0 %s %s", self@fact_type, chronify(self@fact_val)) |> trimws(),
-          sprintf("1 TYPE %s", self@fact_desc),
-          sprintf("1 AGE %s", age) |> trimws(),
-          sprintf("2 PHRASE %s", self@age_phrase),
+          as_ged(chronify(self@fact_val), self@fact_type, 0),
+          as_ged(self@fact_desc, "TYPE", 1),
+          as_ged(age, "AGE", 1),
+          as_ged(self@age_phrase, "PHRASE", 2),
           self@.fact_detail_as_ged
         )
       })
@@ -222,7 +222,7 @@ S7::method(summary, IndividualFact) <- function(object, ...){
   to_console("Notes:", length(object@notes) + length(object@note_xrefs), exdent)
   cat("\n")
   to_console("Unique IDs:", toString(object@unique_ids), exdent)
-  to_console("Restrictions:", object@RESTRICTIONS, exdent)
+  to_console("Restrictions:", restrictions_to_resn(object@confidential, object@locked, object@private), exdent)
 }
 
 # DOESN'T WORK

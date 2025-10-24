@@ -80,21 +80,20 @@ SourceCitation <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 SOUR %s", self@sour_xref),
-          sprintf("1 PAGE %s", self@where),
+          as_ged(self@sour_xref, "SOUR", 0),
+          as_ged(self@where, "PAGE", 1),
           rep("1 DATA", length(self@date) + 
                 length(self@source_text) > 0),
-          obj_to_ged(self@date, "DATE") |> increase_level(by = 2),
-          obj_to_ged(self@source_text, "TEXT") |> increase_level(by = 2) |> 
+          as_ged(self@date, "DATE", 2),
+          as_ged(self@source_text, 2) |> 
             gsub(pattern = "(^\\d) TRAN ", replacement = "\\1 TEXT "),
-          sprintf("1 EVEN %s", self@fact_type),
-          sprintf("2 PHRASE %s", self@fact_phrase),
-          sprintf("2 ROLE %s", self@role),
-          sprintf("3 PHRASE %s", self@role_phrase),
-          sprintf("1 QUAY %s", self@certainty),
-          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs)
+          as_ged(self@fact_type, "EVEN", 1),
+          as_ged(self@fact_phrase, "PHRASE", 2),
+          as_ged(self@role, "ROLE", 2),
+          as_ged(self@role_phrase, "PHRASE", 3),
+          as_ged(self@certainty, "QUAY", 1),
+          as_ged(self@media_links, 1),
+          notes_ged(self@notes, self@note_xrefs, 1)
         ) 
       })
   ),
@@ -144,7 +143,7 @@ S7::method(summary, SourceCitation) <- function(object, ...){
   exdent <- 15
   to_console("Source XREF:", object@sour_xref, exdent)
   to_console("Where:", object@where, exdent)
-  to_console("Date:", obj_to_val(object@date), exdent)
+  to_console("Date:", as_val(object@date), exdent)
   fact_type <- object@fact_type
   fact_type <- names(val_fact_types(TRUE))[fact_type == val_fact_types(TRUE)]
   to_console_value_with_phrase("Fact:", 

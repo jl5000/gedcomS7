@@ -4,10 +4,10 @@
 \alias{push_record}
 \title{Push an edited record back into a GEDCOM object}
 \usage{
-push_record(gedcom, record)
+push_record(x, record)
 }
 \arguments{
-\item{gedcom}{An object representing the GEDCOM file.}
+\item{x}{A gedcom object.}
 
 \item{record}{An object representing the record to place back into the
 GEDCOM object.}
@@ -20,6 +20,6 @@ Push an edited record back into a GEDCOM object
 }
 \details{
 The function will automatically keep family links for individuals updated.
-It will also update the record last_updated if update_change_dates in the
+It will also update the \verb{@updated} property if \verb{@update_change_dates} in the
 gedcom object is set to TRUE.
 }

@@ -1,3 +1,11 @@
+# gedcomS7 0.3.0 (24 Oct 2025)
+
+* Added support for dates in the Julian calendar - `DateGregorian()` renamed `DateCalendar()`
+* Names and values of `@ext_ids` are now concatenated directly when constructing URIs - trailing slashes must be explicit
+* Record and Fact objects no longer have `@GEDCOM_IDENTIFIERS` and `@RESTRICTIONS` properties
+* Argument names in `push_record()` made consistent with `pull_record()` 
+* Additional validation of arguments in user-facing functions
+
 # gedcomS7 0.2.0 (6 Sep 2025)
 
 * `DateGregorian()` now handles BCE dates with a negative `@year`

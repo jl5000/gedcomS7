@@ -72,7 +72,7 @@ IndividualRecord <- S7::new_class(
       getter = function(self){
         if(length(self@pers_names) == 0) return(character())
         
-        obj_to_val(self@pers_names[[1]]) |> 
+        as_val(self@pers_names[[1]]) |> 
           gsub(pattern = "/", replacement = "")
       }),
     
@@ -80,7 +80,7 @@ IndividualRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         vapply(self@pers_names, \(nm){
-          obj_to_val(nm)
+          as_val(nm)
         }, FUN.VALUE = character(1), USE.NAMES = FALSE) |> 
           gsub(pattern = "/", replacement = "")
       }),
@@ -130,27 +130,25 @@ IndividualRecord <- S7::new_class(
       S7::class_character,
       getter = function(self){
         c(
-          sprintf("0 %s INDI", self@XREF),
-          sprintf("1 RESN %s", self@RESTRICTIONS),
-          obj_to_ged(self@pers_names, "NAME") |> increase_level(by = 1),
-          sprintf("1 SEX %s", self@sex),
-          obj_to_ged(self@facts) |> increase_level(by = 1),
-          obj_to_ged(self@non_events) |> increase_level(by = 1),
-          obj_to_ged(self@ordinances) |> increase_level(by = 1),
-          obj_to_ged(self@fam_links_chil, "FAMC") |> increase_level(by = 1),
-          obj_to_ged(self@fam_links_spou, "FAMS") |> increase_level(by = 1),
-          sprintf("1 SUBM %s", self@subm_xrefs),
-          obj_to_ged(self@associations) |> increase_level(by = 1),
-          named_vec_to_ged(self@alia_xrefs, "ALIA", "PHRASE") |> increase_level(by = 1),
-          sprintf("1 ANCI %s", self@anci_xrefs),
-          sprintf("1 DESI %s", self@desi_xrefs),
-          self@GEDCOM_IDENTIFIERS |> increase_level(by = 1),
-          obj_to_ged(self@notes, "NOTE") |> increase_level(by = 1),
-          sprintf("1 SNOTE %s", self@note_xrefs),
-          obj_to_ged(self@citations, "SOUR") |> increase_level(by = 1),
-          obj_to_ged(self@media_links, "OBJE") |> increase_level(by = 1),
-          obj_to_ged(self@updated) |> increase_level(by = 1),
-          obj_to_ged(self@created) |> increase_level(by = 1)
+          as_ged("INDI", self@XREF),
+          restrictions_ged(self@confidential, self@locked, self@private, 1),
+          as_ged(self@pers_names, 1),
+          as_ged(self@sex, "SEX", 1),
+          as_ged(self@facts, 1),
+          as_ged(self@non_events, 1),
+          as_ged(self@ordinances, 1),
+          as_ged(self@fam_links_chil, 1),
+          as_ged(self@fam_links_spou, 1),
+          as_ged(self@subm_xrefs, "SUBM", 1),
+          as_ged(self@associations, 1),
+          as_ged(self@alia_xrefs, c("ALIA", "PHRASE"), 1),
+          as_ged(self@anci_xrefs, "ANCI", 1),
+          as_ged(self@desi_xrefs, "DESI", 1),
+          identifiers_ged(self@user_ids, self@unique_ids, self@ext_ids, 1),
+          notes_ged(self@notes, self@note_xrefs, 1),
+          as_ged(self@citations, 1),
+          as_ged(self@media_links, 1),
+          audit_ged(self@updated, self@created, 1)
         )
       })
   )

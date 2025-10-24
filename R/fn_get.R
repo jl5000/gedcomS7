@@ -15,6 +15,7 @@ get_fam_as_child <- function(x,
                              pedigrees = NULL){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   indi_ged <- x@records@RAW@INDI[[xref]]
   all_fam_xref <- find_ged_values(indi_ged, "FAMC") |> 
@@ -80,6 +81,7 @@ get_fam_children <- function(x,
                               pedigrees = NULL){
   
   check_fam_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   fam_ged <- x@records@RAW@FAM[[xref]]
   all_chil_xref <- find_ged_values(fam_ged, "CHIL") |> 
@@ -144,6 +146,7 @@ get_indi_children <- function(x,
                               pedigrees = NULL){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   fams_xref <- get_fam_as_spouse(x, xref)
   
@@ -170,6 +173,7 @@ get_indi_parents <- function(x,
                              pedigrees = NULL){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   famc_xref <- get_fam_as_child(x, xref, pedigrees)
   
@@ -217,6 +221,7 @@ get_indi_parents_fathmoth <- function(x,
                                       father = TRUE){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   famc_xref <- get_fam_as_child(x, xref, pedigrees)
   if(father) tag <- "HUSB" else tag <- "WIFE"
@@ -250,6 +255,7 @@ get_indi_siblings <- function(x,
                               inc_half = FALSE){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   if(inc_half){
     spou_xref <- get_indi_parents(x, xref, pedigrees)
@@ -422,6 +428,7 @@ get_descendants <- function(x,
                             pedigrees = NULL){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   return_xrefs <- character()
   
@@ -496,6 +503,7 @@ get_ancestors <- function(x,
                           pedigrees = NULL){
   
   check_indi_rec(x, xref)
+  pedigrees <- check_pedigrees(pedigrees)
   
   return_xrefs <- character()
   
@@ -529,6 +537,11 @@ get_ancestors <- function(x,
   } else {
     return_xrefs
   }
+}
+
+check_pedigrees <- function(pedigrees){
+  pedigrees <- pedigrees %||% val_pedigree_types()
+  match.arg(pedigrees, val_pedigree_types(), several.ok = TRUE)
 }
 
 pedigree_in_set <- function(pedigree, set){

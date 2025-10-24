@@ -49,22 +49,30 @@ parse_vals_and_types <- function(lines, val_tag){
 #' expect_equal(parse_gedcom_date("FROM 25 MAR 1980 TO 1990", FALSE), as.Date("1990-12-31"))
 parse_gedcom_date <- function(date_string, minimise = TRUE){
   
-  # Extract relevant date_gregorian
+  stopifnot(
+    "date_string must be a character string" = is.character(date_string) &&
+      length(date_string) == 1,
+    "minimise must be a boolean" = is.logical(minimise) &&
+      length(minimise) == 1
+  )
+  
+  # Extract relevant date_calendar
   if(minimise){
     if(grepl("^(BEF|TO) ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_gregorian(only = FALSE,
+    date_string <- sub(sprintf("^[A-Z ]*?(%s).*?$", reg_date_calendar(only = FALSE,
                                                                        strict = FALSE)), 
                        "\\1", date_string)
   } else {
     if(grepl("^(AFT|FROM) ", date_string) &&
        !grepl(" TO ", date_string)) return(as.Date(NA_character_))
     
-    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_gregorian(only = FALSE,
+    date_string <- sub(sprintf("^.*?(%s).*?$", reg_date_calendar(only = FALSE,
                                                                   strict = FALSE)), 
                        "\\1", date_string)
   }
   
+  date_string <- gsub("(GREGORIAN|JULIAN) ", "", date_string)
   ged_year <- sub(".* ", "", date_string)
   
   if(grepl("[A-Z]{3}", date_string)) {
@@ -112,6 +120,11 @@ days_in_month <- function(date) {
 #' expect_equal(parse_gedcom_age("3y 2m 1w 5d"), 3+(2/12)+(1/52)+(5/365))
 parse_gedcom_age <- function(age_string) {
   
+  stopifnot(
+    "age_string must be a character string" = is.character(age_string) &&
+      length(age_string) == 1
+  )
+  
   years <- sub(".*?(\\d{1,3})y.*", "\\1", age_string)
   months <- sub(".*?(\\d{1,2})m.*", "\\1", age_string)
   weeks <- sub(".*?(\\d{1,2})w.*", "\\1", age_string)
@@ -133,9 +146,16 @@ check_unparsed <- function(lines, parsed){
     parsed@GEDCOM
   )
   
-  # Exception - remove instances where a missing xref would have been added,
+  # Exceptions - only when this function is called on import
+  # Remove instances where a missing xref would have been added,
   # meaning the lines won't be identical anyway
-  not_parsed <- grep("^0 [A-Z]+$", not_parsed, value = TRUE, invert = TRUE)
+  # Also where explicit GREGORIAN calendar removed
+  new_xref_lines <- grep("^0 [A-Z]+$", not_parsed, value = TRUE)
+  unneeded_greg_lines <- setdiff(
+    grep("^\\d DATE .*GREGORIAN", not_parsed, value = TRUE),
+    grep("^\\d DATE .*JULIAN", not_parsed, value = TRUE)
+  )
+  not_parsed <- setdiff(not_parsed, c(new_xref_lines, unneeded_greg_lines))
   
   if(length(not_parsed) > 0)
     warning("The following lines could not be parsed:\n", 

@@ -2,7 +2,9 @@
 
 # File R/io_import.R: @tests
 
-test_that("Function read_gedcom() @ L39", {
+test_that("Function read_gedcom() @ L41", {
+  expect_error(read_gedcom(1), regexp = "filepath must be a character string")
+  expect_error(read_gedcom(lines = 1), regexp = "lines must be a character vector")
   maximal <- test_path("maximal70.ged")
   maximal <- withr::local_tempfile(lines = fix_maximal_header(maximal), 
                                    fileext = ".ged")
@@ -20,9 +22,9 @@ test_that("Function read_gedcom() @ L39", {
   expect_error(read_gedcom(lines = bad_lines1),
                regexp = "The following lines are invalid:\n5: 1TAG Hello")
   bad_lines2 <- lines
-  bad_lines2[c(10,13)] <- "1 DATE JULIAN date is not allowed"
+  bad_lines2[c(10,13)] <- "1 DATE HEBREW date is not allowed"
   expect_error(read_gedcom(lines = bad_lines2),
-               regexp = "Non-Gregorian dates are not supported. See line 10, 13")
+               regexp = "Non-Gregorian/Julian dates are not supported. See line 10, 13")
   missing_xref <- sub("0 @I1@ INDI", "0 INDI", lines)
   expect_true(all(read_gedcom(lines = lines)@GEDCOM == 
                   read_gedcom(lines = missing_xref)@GEDCOM))
