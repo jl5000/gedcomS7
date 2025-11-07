@@ -1,4 +1,4 @@
-# gedcomS7 0.3.0 (?)
+# gedcomS7 0.3.0 (24 Oct 2025)
 
 * Added support for dates in the Julian calendar - `DateGregorian()` renamed `DateCalendar()`
 * Names and values of `@ext_ids` are now concatenated directly when constructing URIs - trailing slashes must be explicit
