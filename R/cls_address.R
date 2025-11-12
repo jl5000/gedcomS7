@@ -12,8 +12,8 @@ new_xref <- function() "@GEDCOMS7_ORPHAN@"
 #' Create an address object
 #' 
 #' @param full A full address as it would appear on a mailing label, with lines separated
-#' by semi-colon and a space. For example:
-#' "The White House; 1600 Pennsylvania Avenue N.W.; Washington, DC 20500; United States of America"
+#' by a new line character. For example:
+#' "The White House\n1600 Pennsylvania Avenue N.W.\nWashington\nDC 20500\nUnited States of America"
 #' @param adr1 Deprecated.
 #' @param adr2 Deprecated.
 #' @param adr3 Deprecated.
@@ -57,13 +57,13 @@ Address <- S7::new_class(
     adr3 = prop_char(0, 1, 1),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
-                              getter = function(self) self@full),
+                              getter = function(self) gsub("\n", "; ", self@full)),
     
     GEDCOM = S7::new_property(
       S7::class_character,
       getter = function(self){
         c(
-          as_ged(gsub("; ", "\n", self@full), "ADDR", 0),
+          as_ged(self@full, "ADDR", 0),
           as_ged(self@adr1, "ADR1", 1),
           as_ged(self@adr2, "ADR2", 1),
           as_ged(self@adr3, "ADR3", 1),
@@ -83,7 +83,7 @@ parse_address <- function(lines, location = NULL){
   if(length(addr) == 0) return(NULL)
   
   Address(
-    full = gsub("\n", "; ", addr),
+    full = addr,
     adr1 = find_ged_values(lines, c(location, "ADDR","ADR1")),
     adr2 = find_ged_values(lines, c(location, "ADDR","ADR2")),
     adr3 = find_ged_values(lines, c(location, "ADDR","ADR3")),
