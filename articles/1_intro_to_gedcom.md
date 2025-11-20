@@ -1,0 +1,72 @@
+# Introduction to GEDCOM
+
+## What is GEDCOM?
+
+Genealogical Data Communication (GEDCOM) is a specification for storing
+and exchanging genealogical data. It was created by The Church of Jesus
+Christ of Latter-day Saints in 1984, and has become the de-facto
+standard used worldwide. The current version is 7.0 and is the version
+supported by `gedcomS7`.
+
+## What does a GEDCOM file look like?
+
+A GEDCOM file is a plain text file (with extension .ged), which contains
+*records*. These records contain information on:
+
+- Families
+- Individuals
+- Multimedia
+- Sources
+- Repositories
+- Notes
+- Submitters
+
+There are also two special records that appear at the beginning and end
+of a file; a header and trailer.
+
+A sample file looks like this:
+
+``` r
+sample_file <- readLines("remarriage1.ged")
+sample_file
+#>  [1] "0 HEAD"                 "1 GEDC"                 "2 VERS 7.0"            
+#>  [4] "0 @I1@ INDI"            "1 NAME John Q /Public/" "1 SEX M"               
+#>  [7] "1 FAMS @F1@"            "1 FAMS @F2@"            "0 @I2@ INDI"           
+#> [10] "1 NAME Jane /Doe/"      "1 SEX F"                "1 FAMS @F1@"           
+#> [13] "0 @I3@ INDI"            "1 NAME Mary /Roe/"      "1 DEAT"                
+#> [16] "2 DATE 1 MAR 1914"      "1 FAMS @F2@"            "0 @F1@ FAM"            
+#> [19] "1 HUSB @I1@"            "1 WIFE @I2@"            "1 MARR"                
+#> [22] "2 DATE 1 APR 1911"      "1 DIV"                  "2 DATE 2 MAY 1912"     
+#> [25] "1 MARR"                 "2 DATE 4 JUL 1914"      "0 @F2@ FAM"            
+#> [28] "1 HUSB @I1@"            "1 WIFE @I3@"            "1 MARR"                
+#> [31] "2 DATE 3 JUN 1913"      "0 TRLR"
+```
+
+Each record is a nested structure containing one or more lines. Lines in
+a GEDCOM file can have a number of components:
+
+- **Level**: The level in the hierarchical structure. This appears for
+  every line. New records begin at level 0;
+- **Cross-reference identifier**: A string (which looks like @XYZ@) that
+  signals the beginning of a new record (apart from header and trailer);
+- **Tag**: A short string given immediately after the level or
+  cross-reference identifier that indicates the type of information
+  being provided on the line. These are controlled values. User-defined
+  tags have been allowed in other GEDCOM programs, but they are
+  discouraged here;
+- **Line value**: The value associated with the tag. For example, on
+  line 3, the version of the GEDCOM specification that the file adheres
+  to is 7.0. The line value can also be a **cross-reference pointer**,
+  which links to another record in the file (which looks like @XYZ@). In
+  the above example, the Family record beginning on line 18 references
+  other Individual records who are members of the family.
+
+There will not be any lines that have all of these components. For
+example, the first line of records do not contain a line value.
+
+The [GEDCOM 7.0
+specification](https://gedcom.io/specifications/FamilySearchGEDCOMv7.html)
+is substantial, describing the strict rules around the specific set of
+tags and hierarchical structures allowed for each record type. You
+shouldn’t need to know any of the above to use the package, it is
+designed to automate the construction of these files.

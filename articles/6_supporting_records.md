@@ -1,0 +1,149 @@
+# Records for evidence and supporting information
+
+## Introduction
+
+Whilst the Individual and Family records describe the people and
+relationships, the remaining record types describe the evidence and
+supporting information. Specifically these are:
+
+- Source records where information was taken from;
+- Repository records where source records can be found;
+- Multimedia records that describe documents like photos or videos;
+- Submitter records that contain information on people who have provided
+  information (i.e. human sources);
+- Note records for informal notes that can be referenced in multiple
+  places.
+
+## Source records
+
+Source records are one of the most important types of record in a GEDCOM
+file. They provide evidence for the assertions made in a file, and
+require careful management.
+
+``` r
+library(gedcomS7)
+
+birth_source <- SourceRecord(
+  facts_recorded = FactsRecorded(
+    fact_types = "BIRT, MARR, DEAT",
+    date_period = DatePeriod("1900", "2000"),
+    territory = "England and Wales"
+  ),
+  originator = "General Register Office",
+  full_title = "BMD Register Book 1900-2000",
+  source_text = "This might contain a relevant extract from the register",
+  repo_citations = list(
+    "@R1@",
+    RepositoryCitation("@R2@", call_numbers = "ABC123")
+  )
+)
+```
+
+The `@facts_recorded` property can be optionally provided, containing
+the facts, time periods, and jurisdictions the source covers. In the
+example above the source covers births, marriages, and deaths in England
+and Wales over the period of 1900 to 2000. If deaths were only covered
+until 1980, then you would provide a list of two
+[`FactsRecorded()`](https://jl5000.github.io/gedcomS7/reference/FactsRecorded.md)
+objects - one for births and marriages, and the other for deaths.
+
+The `@repo_citations` property contains links to repository records
+which details where the source book can be found.
+
+There is an art to deciding the level of granularity in which to express
+sources. There are generally two approaches:
+
+- ‘Source splitters’ where each specific document has its own Source
+  record;
+- ‘Source lumpers’ where an entire class of documents has one Source
+  record.
+
+The best approach will depend on the kind of source document, so a
+hybrid approach is recommended. This is an [entire topic in
+itself](https://www.fhug.org.uk/kb/kb-article/citing-sources-method-1-and-method-2/)
+which we won’t dwell on here.
+
+## Repository records
+
+A repository is an archive (such as a library) containing source
+documents.
+
+``` r
+library_repo <- RepositoryRecord(
+  repo_name = "A library",
+  address = Address(
+    full = "123 Library Road; Turin Village; Manchester; New Hampshire; 123456; United States of America",
+    city = "Manchester",
+    state = "New Hampshire",
+    postal_code = "123456",
+    country = "United States of America"
+  ),
+  phone_numbers = c("645-618-6578", "645-618-6570", "645-618-6577"),
+  emails = c("enquiries@alibrary.com", "enquiries2@alibrary.com"),
+  faxes  = "0947393",
+  web_pages = "www.alibrary.com"
+)
+```
+
+## Multimedia records
+
+Multimedia records are used to define a single multimedia object such as
+a document or a photo. The primary property of this record is the
+`@files` property which takes a
+[`MediaFile()`](https://jl5000.github.io/gedcomS7/reference/MediaFile.md)
+object (or a list of them if a group of media files are grouped
+together).
+
+``` r
+my_family_photo <- MediaRecord(
+  files = MediaFile(
+    location = "C:/my_files/photo.jpg",
+    title = "My Family Photo",
+    media_type = "image/jpeg",
+    medium = "PHOTO"
+  )
+)
+```
+
+The `@media_type` describes the encoding of the file, as defined in [RFC
+2045](https://www.rfc-editor.org/info/rfc2045). A registry of file types
+is maintained
+[here](https://www.iana.org/assignments/media-types/media-types.xhtml).
+See the GEDCOM specification for more details.
+
+The `@medium` property must take one of the following values:
+
+``` r
+unname(val_medium_types())
+#>  [1] "AUDIO"      "BOOK"       "CARD"       "ELECTRONIC" "FICHE"     
+#>  [6] "FILM"       "MAGAZINE"   "MANUSCRIPT" "MAP"        "NEWSPAPER" 
+#> [11] "PHOTO"      "TOMBSTONE"  "VIDEO"      "OTHER"
+```
+
+## Submitter records
+
+Submitters are people who have contributed information to the GEDCOM
+file. The main properties of these records are the names and contact
+details of these people.
+
+``` r
+informant <- SubmitterRecord(
+  subm_name = "Joe Bloggs",
+  address = Address("2599 Priory Road; Wells; Somerset; England; BA5 1SH")
+)
+```
+
+## Note records
+
+Note records allow you to make notes in your file and reference them in
+multiple places.
+
+``` r
+spelling_note <- NoteRecord(
+  text = "Lindsay has alternative spellings of 'Lindsey' and 'Linsey'",
+  media_type = "text/plain"
+)
+```
+
+The `@media_type` can also be of type “text/html” if the `@text`
+property contains HTML markup (e.g. for new line characters).

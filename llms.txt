@@ -1,0 +1,447 @@
+# gedcomS7
+
+The goal of `gedcomS7` is to handle genealogical data as GEDCOM files.
+This package succeeds the `tidyged` package and many of the other
+packages in the `gedcompendium`. The key changes are:
+
+- The package is designed to work with GEDCOM 7.0, rather than 5.5.5.
+- The package has minimal dependencies that are not already found in a
+  typical R installation; currently only one:
+  [`S7`](https://rconsortium.github.io/S7/).
+- GEDCOM files are stored as S7 objects rather than dataframes.
+- The package contains all functionality to create, edit, and
+  interrogate GEDCOM files.
+
+## Installation
+
+You can install the development version of gedcomS7 from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("jl5000/gedcomS7")
+```
+
+## Key limitations
+
+When importing existing GEDCOM files, you should ensure that they are
+error free. This package assumes imported GEDCOM files are valid and
+very few validation checks are carried out. Several GEDCOM validators
+are available, including an online validator at
+<https://ged-inline.org/>.
+
+The package does not currently support extension tags. If you import a
+file with these features, the package may behave unpredictably.
+
+It can be quite cumbersome manipulating GEDCOM files using this package
+at the command line. Ideally, the package would have a shiny app
+interface, and this is a longer term aspiration.
+
+## Example
+
+GEDCOM files can be imported (with
+[`read_gedcom()`](https://jl5000.github.io/gedcomS7/reference/read_gedcom.md))
+or created from scratch, creating an S7 object representation:
+
+``` r
+library(gedcomS7)
+
+ged <- new_gedcom()
+ged
+#> GEDCOM file summary:
+#>  
+#> GEDCOM version:     7.0
+#> Creation Date:      30 AUG 2025
+#> Default Language:   en
+#> Source:             gedcomS7
+#> Source name:        The 'gedcomS7' package for the R language
+#> 
+#> Copyright:          <Undefined>
+#> 
+#> Submitters:         0
+#> Individuals:        0
+#> Families:           0
+#> Sources:            0
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
+```
+
+The metadata for the gedcom object (ged@…) can be modified.
+
+``` r
+ged@header@notes <- "This file contains my family tree"
+ged@header@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
+ged
+#> GEDCOM file summary:
+#>  
+#> GEDCOM version:     7.0
+#> Creation Date:      30 AUG 2025
+#> Default Language:   en
+#> Source:             gedcomS7
+#> Source name:        The 'gedcomS7' package for the R language
+#> 
+#> Copyright:          Copyright Jamie Lendrum 2023
+#> 
+#> Submitters:         0
+#> Individuals:        0
+#> Families:           0
+#> Sources:            0
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
+```
+
+New records can be created and ‘pushed’ to the GEDCOM object:
+
+``` r
+subm_record <- SubmitterRecord(subm_name = "Jamie Lendrum")
+indi_record <- IndividualRecord(sex = "M",
+                                pers_names = PersonalName("Joe /Bloggs/"))
+sour_record <- SourceRecord(full_title = "Census of England and Wales, 1921")
+
+ged <- ged |> 
+  push_record(subm_record) |> 
+  push_record(indi_record) |> 
+  push_record(sour_record)
+#> New Submitter record added with xref @U1@
+#> New Individual record added with xref @I1@
+#> New Source record added with xref @S1@
+
+ged@records
+#> Submitters:         1
+#> Individuals:        1
+#> Families:           0
+#> Sources:            1
+#> Repositories:       0
+#> Multimedia:         0
+#> Notes:              0
+```
+
+Existing records, must be ‘pulled’ from the object, edited, and then
+‘pushed’ back.
+
+``` r
+joe_bloggs <- pull_record(ged, "@I1@")
+joe_bloggs@notes <- "He had a dog called Rover"
+ged <- push_record(ged, joe_bloggs)
+```
+
+The entire GEDCOM representation can be seen with the `@GEDCOM`
+property:
+
+``` r
+ged@GEDCOM
+#>  [1] "0 HEAD"                                          
+#>  [2] "1 GEDC"                                          
+#>  [3] "2 VERS 7.0"                                      
+#>  [4] "1 SOUR gedcomS7"                                 
+#>  [5] "2 NAME The 'gedcomS7' package for the R language"
+#>  [6] "2 CORP Jamie Lendrum"                            
+#>  [7] "3 EMAIL jalendrum@gmail.com"                     
+#>  [8] "1 DATE 30 AUG 2025"                              
+#>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
+#> [10] "1 LANG en"                                       
+#> [11] "1 NOTE This file contains my family tree"        
+#> [12] "0 @U1@ SUBM"                                     
+#> [13] "1 NAME Jamie Lendrum"                            
+#> [14] "0 @I1@ INDI"                                     
+#> [15] "1 NAME Joe /Bloggs/"                             
+#> [16] "1 SEX M"                                         
+#> [17] "1 NOTE He had a dog called Rover"                
+#> [18] "0 @S1@ SOUR"                                     
+#> [19] "1 TITL Census of England and Wales, 1921"        
+#> [20] "0 TRLR"
+```
+
+The object can be exported to a GEDCOM file:
+
+``` r
+write_gedcom(ged, "my_gedcom.ged")
+```
+
+## References
+
+1.  The FamilySearch GEDCOM Specification, Prepared by the Family
+    History Department, The Church of Jesus Christ of Latter-day Saints.
+    <https://gedcom.io/specifications/FamilySearchGEDCOMv7.html>
+
+## Notice
+
+> This work comprises, is based on, or is derived from the FAMILYSEARCH
+> GEDCOM™ Specification, © 1984-2023 Intellectual Reserve, Inc. All
+> rights reserved.
+
+> “FAMILYSEARCH GEDCOM™” and “FAMILYSEARCH®” are trademarks of
+> Intellectual Reserve, Inc. and may not be used except as allowed by
+> the Apache 2.0 license that governs this work or as expressly
+> authorized in writing and in advance by Intellectual Reserve, Inc.
+
+# Package index
+
+## Classes
+
+### GEDCOM Classes
+
+- [`GedcomHeader`](https://jl5000.github.io/gedcomS7/reference/GedcomHeader.md)
+  : Create a GEDCOM header object
+- [`GedcomS7()`](https://jl5000.github.io/gedcomS7/reference/GedcomS7.md)
+  : Create a GEDCOM object
+- [`GedcomSource()`](https://jl5000.github.io/gedcomS7/reference/GedcomSource.md)
+  : Create a GEDCOM source object
+
+### Record Classes
+
+- [`FamilyRecord()`](https://jl5000.github.io/gedcomS7/reference/FamilyRecord.md)
+  : Create a family record object
+- [`IndividualRecord()`](https://jl5000.github.io/gedcomS7/reference/IndividualRecord.md)
+  : Create an individual record object
+- [`MediaRecord()`](https://jl5000.github.io/gedcomS7/reference/MediaRecord.md)
+  : Create a multimedia record object
+- [`NoteRecord()`](https://jl5000.github.io/gedcomS7/reference/NoteRecord.md)
+  : Create a shared note record object
+- [`RepositoryRecord()`](https://jl5000.github.io/gedcomS7/reference/RepositoryRecord.md)
+  : Create a repository record object
+- [`SourceRecord()`](https://jl5000.github.io/gedcomS7/reference/SourceRecord.md)
+  : Create a source record object
+- [`SubmitterRecord()`](https://jl5000.github.io/gedcomS7/reference/SubmitterRecord.md)
+  : Create a submitter record object
+
+### Location Classes
+
+- [`Place()`](https://jl5000.github.io/gedcomS7/reference/Place.md) :
+  Create a place structure object
+- [`Address()`](https://jl5000.github.io/gedcomS7/reference/Address.md)
+  : Create an address object
+
+### Date/Time Classes
+
+- [`DateApprox()`](https://jl5000.github.io/gedcomS7/reference/DateApprox.md)
+  : Create a GEDCOM Approximate Date object
+- [`DateCalendar()`](https://jl5000.github.io/gedcomS7/reference/DateCalendar.md)
+  : Create a GEDCOM Calendar Date object
+- [`DateExact()`](https://jl5000.github.io/gedcomS7/reference/DateExact.md)
+  : Create a GEDCOM Exact Date object
+- [`DatePeriod()`](https://jl5000.github.io/gedcomS7/reference/DatePeriod.md)
+  : Create a GEDCOM Date Period object
+- [`DateRange()`](https://jl5000.github.io/gedcomS7/reference/DateRange.md)
+  : Create a GEDCOM Date Range object
+- [`DateSorting()`](https://jl5000.github.io/gedcomS7/reference/DateSorting.md)
+  : Create a GEDCOM Sorting Date object
+- [`DateValue()`](https://jl5000.github.io/gedcomS7/reference/DateValue.md)
+  : Create a GEDCOM Date Value object
+- [`Time()`](https://jl5000.github.io/gedcomS7/reference/Time.md) :
+  Create a time object
+- [`ChangeDate`](https://jl5000.github.io/gedcomS7/reference/ChangeDate.md)
+  : Create a change date object
+- [`CreationDate`](https://jl5000.github.io/gedcomS7/reference/CreationDate.md)
+  : Create a creation date object
+- [`date_exact_current()`](https://jl5000.github.io/gedcomS7/reference/date_exact_current.md)
+  : Create a GEDCOM Exact Date object for today
+
+### Record Linkage Classes
+
+- [`FamilyLinkChild()`](https://jl5000.github.io/gedcomS7/reference/FamilyLinkChild.md)
+  : Create a family link (as child) object
+- [`FamilyLinkSpouse()`](https://jl5000.github.io/gedcomS7/reference/FamilyLinkSpouse.md)
+  : Create a family link (as spouse) object
+- [`MediaLink()`](https://jl5000.github.io/gedcomS7/reference/MediaLink.md)
+  : Create a multimedia link object
+- [`RepositoryCitation()`](https://jl5000.github.io/gedcomS7/reference/RepositoryCitation.md)
+  : Create a repository citation object
+- [`SourceCitation()`](https://jl5000.github.io/gedcomS7/reference/SourceCitation.md)
+  : Create a source citation object
+- [`Association()`](https://jl5000.github.io/gedcomS7/reference/Association.md)
+  : Create an association object
+
+### Individual/Family Fact Classes
+
+- [`FamilyEvent()`](https://jl5000.github.io/gedcomS7/reference/FamilyEvent.md)
+  : Create a family event object
+- [`IndividualEvent()`](https://jl5000.github.io/gedcomS7/reference/IndividualEvent.md)
+  : Create an individual event object
+- [`NonEvent()`](https://jl5000.github.io/gedcomS7/reference/NonEvent.md)
+  : Create a non-event object
+- [`FamilyAttribute()`](https://jl5000.github.io/gedcomS7/reference/FamilyAttribute.md)
+  : Create a family attribute object
+- [`IndividualAttribute()`](https://jl5000.github.io/gedcomS7/reference/IndividualAttribute.md)
+  : Create an individual attribute object
+- [`fact_rules_df()`](https://jl5000.github.io/gedcomS7/reference/fact_rules_df.md)
+  : Property requirements for fact objects.
+
+### Other Classes
+
+- [`Note()`](https://jl5000.github.io/gedcomS7/reference/Note.md) :
+  Create a note structure object
+- [`PersonalName()`](https://jl5000.github.io/gedcomS7/reference/PersonalName.md)
+  : Create a personal name object
+- [`PersonalNamePieces()`](https://jl5000.github.io/gedcomS7/reference/PersonalNamePieces.md)
+  : Create a name pieces object
+- [`PersonalNameTran()`](https://jl5000.github.io/gedcomS7/reference/PersonalNameTran.md)
+  : Create a name translation object
+- [`Ordinance()`](https://jl5000.github.io/gedcomS7/reference/Ordinance.md)
+  : Create an individual ordinance object
+- [`SpouseSealing()`](https://jl5000.github.io/gedcomS7/reference/SpouseSealing.md)
+  : Create a spouse sealing object
+- [`TranslationText()`](https://jl5000.github.io/gedcomS7/reference/TranslationText.md)
+  : Create a text translation object
+- [`FactsRecorded()`](https://jl5000.github.io/gedcomS7/reference/FactsRecorded.md)
+  : Create an object recording facts covered in a source record
+- [`SourceCallNumber()`](https://jl5000.github.io/gedcomS7/reference/SourceCallNumber.md)
+  : Create a source call number object
+- [`MediaFile()`](https://jl5000.github.io/gedcomS7/reference/MediaFile.md)
+  : Create a media file object
+
+## GEDCOM Creation
+
+Functions for creating, importing, and exporting pre-populated GEDCOM
+files
+
+- [`new_gedcom()`](https://jl5000.github.io/gedcomS7/reference/new_gedcom.md)
+  : Create a new GEDCOM object
+- [`read_gedcom()`](https://jl5000.github.io/gedcomS7/reference/read_gedcom.md)
+  : Import a GEDCOM file
+- [`write_gedcom()`](https://jl5000.github.io/gedcomS7/reference/write_gedcom.md)
+  : Save a gedcom object to disk as a GEDCOM file
+
+## Record Editing
+
+Functions to edit GEDCOM records
+
+- [`pull_record()`](https://jl5000.github.io/gedcomS7/reference/pull_record.md)
+  : Pull a record from a GEDCOM object for editing
+- [`push_record()`](https://jl5000.github.io/gedcomS7/reference/push_record.md)
+  : Push an edited record back into a GEDCOM object
+
+## Batch Creation/Deletion of Records
+
+Functions that allow you to create records for relatives and delete
+multiple records at once
+
+- [`add_children()`](https://jl5000.github.io/gedcomS7/reference/add_children.md)
+  : Create children records for a family
+- [`add_parents()`](https://jl5000.github.io/gedcomS7/reference/add_parents.md)
+  : Add parent records for an individual
+- [`add_siblings()`](https://jl5000.github.io/gedcomS7/reference/add_siblings.md)
+  : Create sibling records for an individual
+- [`add_spouse()`](https://jl5000.github.io/gedcomS7/reference/add_spouse.md)
+  : Add a spouse record for an individual
+- [`rm_living()`](https://jl5000.github.io/gedcomS7/reference/rm_living.md)
+  : Remove living individuals in a GEDCOM object
+- [`rm_records()`](https://jl5000.github.io/gedcomS7/reference/rm_records.md)
+  : Remove records from a GEDCOM object
+
+## Finding Records
+
+Functions that allow you to find xrefs of records that match criteria
+
+- [`get_ancestors()`](https://jl5000.github.io/gedcomS7/reference/get_ancestors.md)
+  : Identify all ancestors for an individual
+- [`get_descendants()`](https://jl5000.github.io/gedcomS7/reference/get_descendants.md)
+  : Identify all descendants for an individual
+- [`get_fam_as_child()`](https://jl5000.github.io/gedcomS7/reference/get_fam_as_child.md)
+  : Identify all families for an individual where they are a child
+- [`get_fam_as_spouse()`](https://jl5000.github.io/gedcomS7/reference/get_fam_as_spouse.md)
+  : Identify all families for an individual where they are a partner
+- [`get_fam_children()`](https://jl5000.github.io/gedcomS7/reference/get_fam_children.md)
+  : Identify all children in a family
+- [`get_fam_partners()`](https://jl5000.github.io/gedcomS7/reference/get_fam_partners.md)
+  : Identify all partners in a family
+- [`get_indi_children()`](https://jl5000.github.io/gedcomS7/reference/get_indi_children.md)
+  : Identify all children for an individual
+- [`get_indi_cousins()`](https://jl5000.github.io/gedcomS7/reference/get_indi_cousins.md)
+  : Identify all cousins for an individual
+- [`get_indi_fathers()`](https://jl5000.github.io/gedcomS7/reference/get_indi_fathers.md)
+  : Identify all fathers for an individual
+- [`get_indi_mothers()`](https://jl5000.github.io/gedcomS7/reference/get_indi_mothers.md)
+  : Identify all mothers for an individual
+- [`get_indi_parents()`](https://jl5000.github.io/gedcomS7/reference/get_indi_parents.md)
+  : Identify all parents for an individual
+- [`get_indi_partners()`](https://jl5000.github.io/gedcomS7/reference/get_indi_partners.md)
+  : Identify all partners for an individual
+- [`get_indi_siblings()`](https://jl5000.github.io/gedcomS7/reference/get_indi_siblings.md)
+  : Identify all siblings for an individual
+- [`get_records_by_pattern()`](https://jl5000.github.io/gedcomS7/reference/get_records_by_pattern.md)
+  : Identify all records that contain a pattern
+- [`get_supporting_recs()`](https://jl5000.github.io/gedcomS7/reference/get_supporting_recs.md)
+  : Identify all supporting records for a set of records
+- [`get_unused_recs()`](https://jl5000.github.io/gedcomS7/reference/get_unused_recs.md)
+  : Identify unreferenced records
+
+## Summarising Records
+
+Functions that allow you to generate dataframe summaries of record types
+and facts
+
+- [`df_fam()`](https://jl5000.github.io/gedcomS7/reference/df_fam.md) :
+  Summarise Family records in a dataframe
+- [`df_fam_facts()`](https://jl5000.github.io/gedcomS7/reference/df_fam_facts.md)
+  : Summarise a family's attributes/events in a dataframe
+- [`df_indi()`](https://jl5000.github.io/gedcomS7/reference/df_indi.md)
+  : Summarise Individual records in a dataframe
+- [`df_indi_facts()`](https://jl5000.github.io/gedcomS7/reference/df_indi_facts.md)
+  : Summarise an individual's attributes/events in a dataframe
+- [`df_media()`](https://jl5000.github.io/gedcomS7/reference/df_media.md)
+  : Summarise Multimedia records in a dataframe
+- [`df_note()`](https://jl5000.github.io/gedcomS7/reference/df_note.md)
+  : Summarise Note records in a dataframe
+- [`df_repo()`](https://jl5000.github.io/gedcomS7/reference/df_repo.md)
+  : Summarise Repository records in a dataframe
+- [`df_sour()`](https://jl5000.github.io/gedcomS7/reference/df_sour.md)
+  : Summarise Source records in a dataframe
+- [`df_subm()`](https://jl5000.github.io/gedcomS7/reference/df_subm.md)
+  : Summarise Submitter records in a dataframe
+
+## Parsing Functions
+
+Functions for parsing GEDCOM dates/ages into R dates/numerics
+
+- [`parse_gedcom_age()`](https://jl5000.github.io/gedcomS7/reference/parse_gedcom_age.md)
+  : Convert a GEDCOM age at event into decimalised years
+- [`parse_gedcom_date()`](https://jl5000.github.io/gedcomS7/reference/parse_gedcom_date.md)
+  : Convert a GEDCOM date into a date object
+
+## Controlled Values
+
+Functions to return vectors of controlled values
+
+- [`val_record_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_adoptive_parents()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_individual_attribute_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_individual_event_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_family_event_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_family_attribute_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_event_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_attribute_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_fact_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_individual_ordinance_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_family_ordinance_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_ordinance_states()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_medium_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_pedigree_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_certainty()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_restriction()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_roles()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_sexes()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_confidence_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  [`val_name_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md)
+  : Lookup values
+
+# Articles
+
+### All vignettes
+
+- [Introduction to
+  GEDCOM](https://jl5000.github.io/gedcomS7/articles/1_intro_to_gedcom.md):
+- [Implementation of
+  gedcomS7](https://jl5000.github.io/gedcomS7/articles/2_implementation.md):
+- [Creation of GEDCOM
+  objects](https://jl5000.github.io/gedcomS7/articles/3_gedcom_creation.md):
+- [Records](https://jl5000.github.io/gedcomS7/articles/4_records.md):
+- [Records for defining people and
+  relationships](https://jl5000.github.io/gedcomS7/articles/5_people_relationships.md):
+- [Records for evidence and supporting
+  information](https://jl5000.github.io/gedcomS7/articles/6_supporting_records.md):
+- [Date types](https://jl5000.github.io/gedcomS7/articles/7_dates.md):
+- [Finding related
+  records](https://jl5000.github.io/gedcomS7/articles/8_finding_records.md):
