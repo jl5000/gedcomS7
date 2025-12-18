@@ -2,7 +2,7 @@
 
 # File R/cls_fact_indi.R: @tests
 
-test_that("Function IndividualEvent() @ L54", {
+test_that("Function IndividualEvent() @ L52", {
   expect_error(IndividualEvent("birth", fact_val = "Y"), 
                regexp = "This is not a valid @fact_type for this event")
   expect_error(IndividualEvent("BIRT", fact_val = "Yes"), 
@@ -11,8 +11,6 @@ test_that("Function IndividualEvent() @ L54", {
                regexp = "Only adoption, birth, and christening events can have a @fam_xref")
   expect_error(IndividualEvent("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
                regexp = "Only adoption events can have a @adop_parent or @adop_parent_phrase")
-  expect_error(IndividualEvent("EVEN", fact_desc = "Fact desc"), 
-               regexp = "A @fact_val is required for this fact")
   expect_error(IndividualEvent("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
                regexp = "@adop_parent has an invalid value")
   expect_error(IndividualEvent("ADOP", fact_val = "Y", adop_parent = "BOTH"), 
@@ -35,7 +33,7 @@ test_that("Function IndividualEvent() @ L54", {
 })
 
 
-test_that("Function IndividualAttribute() @ L134", {
+test_that("Function IndividualAttribute() @ L132", {
   expect_error(IndividualAttribute("descr", fact_val = "Tall"), 
                regexp = "This is not a valid @fact_type for this attribute")
   expect_error(IndividualAttribute("DSCR"), 

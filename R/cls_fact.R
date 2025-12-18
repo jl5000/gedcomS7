@@ -144,8 +144,6 @@ fact_rules_df <- function(type = NULL){
   # Exceptions
   all_df$fact_val <- ifelse(all_df$fact_type %in% c("NCHI","NMR"),
                             "Integer", all_df$fact_val)
-  all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
-                                     TRUE, all_df$fact_val_required)
   all_df$fact_val_required <- ifelse(all_df$fact_type %in% c("RESI"),
                                      FALSE, all_df$fact_val_required)
   all_df$fact_val <- ifelse(all_df$fact_type %in% c("FACT","EVEN"),
