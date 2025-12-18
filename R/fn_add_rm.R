@@ -241,22 +241,25 @@ add_spouse <- function(x, xref, sex = "U", spou_name = NULL, fam_xref = NULL){
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of an Individual record.
-#' @param sexes A character string giving the sexes of each sibling. For example,
-#' "FFM" to add two sisters and one brother.
+#' @param sexes A character string giving the sexes (from [val_sexes()]) of each sibling. 
+#' For example, "FFM" to add two sisters and one brother.
 #' @param sib_names A character vector of sibling's names. If provided, it must be
 #' the same length as the number of sexes. If you don't want to provide a name for a
 #' sibling, set the name to "". 
 #' 
 #' Surnames must be enclosed in forward slashes. If all names you supply do not
 #' contain forward slashes then surnames will be taken from the father (or mother).
+#' @param pedigrees A character vector of pedigrees from [val_pedigree_types()].
+#' This must be a vector of length one (which will be recycled) or the same size 
+#' as the number of siblings. A value of NULL means no pedigrees will be defined.
+#' If you don't want to provide a pedigree for a sibling, set the pedigree to "". 
+#' Defaults to "BIRTH".
 #'
 #' @returns A gedcom object with additional sibling records.
 #' @export
-add_siblings <- function(x, xref, sexes, sib_names = NULL){
+add_siblings <- function(x, xref, sexes, sib_names = NULL, pedigrees = "BIRTH"){
   check_indi_rec(x, xref)
-  if(!is.null(sib_names) && nchar(sexes) != length(sib_names))
-    stop("If sibling names are given, the length of sib_names must be equal to the number of sexes given.")
-  
+
   famc_xref <- get_fam_as_child(x, xref, "BIRTH")
   
   if(length(famc_xref) == 0){
@@ -269,28 +272,50 @@ add_siblings <- function(x, xref, sexes, sib_names = NULL){
     x <- push_record(x, famc_rec)
   }
   
-  add_children(x, famc_xref, sexes, sib_names)
+  add_children(x, famc_xref, sexes, sib_names, pedigrees)
 }
 
 #' Create children records for a family
 #'
 #' @param x A gedcom object.
 #' @param xref The xref of a Family record.
-#' @param sexes A character string giving the sexes of each child. For example,
-#' "FFM" to add two daughters and one son.
+#' @param sexes A character string giving the sexes (from [val_sexes()]) of each child. 
+#' For example, "FFM" to add two daughters and one son.
 #' @param chil_names A character vector of children's names. If provided, it must be
 #' the same length as the number of sexes. If you don't want to provide a name for a
 #' child, set the name to "". 
 #' 
 #' Surnames must be enclosed in forward slashes. If all names you supply do not
 #' contain forward slashes then surnames will be taken from the father (or mother).
+#' @param pedigrees A character vector of pedigrees from [val_pedigree_types()].
+#' This must be a vector of length one (which will be recycled) or the same size 
+#' as the number of children. A value of NULL means no pedigrees will be defined.
+#' If you don't want to provide a pedigree for a child, set the pedigree to "". 
+#' Defaults to "BIRTH".
 #'
 #' @returns A gedcom object with additional child records.
 #' @export
-add_children <- function(x, xref, sexes, chil_names = NULL){
+#' @tests
+#' expect_error(add_children(test_ged(), "@I1@", "F"), 
+#'              "The xref is not for a Family record")
+#' expect_error(add_children(test_ged(), "@F1@", "F", c("Betty","Boo")), 
+#'              "If names are given")
+#' expect_error(add_children(test_ged(), "@F1@", "F", pedigrees = c("BIRTH","ADOPTED")), 
+#'              "If pedigrees are given")
+add_children <- function(x, xref, sexes, chil_names = NULL, pedigrees = "BIRTH"){
   check_fam_rec(x, xref)
   if(!is.null(chil_names) && nchar(sexes) != length(chil_names))
-    stop("If child names are given, the length of chil_names must be equal to the number of sexes given.")
+    stop("If names are given, the length must be equal to the number of sexes given.")
+  
+  stopifnot(
+    "If pedigrees are given, the length must be equal to one or to the number of sexes given." = 
+      is.null(pedigrees) || 
+        length(pedigrees) == 1 || 
+        length(pedigrees) == nchar(sexes)
+  )
+  
+  pedigrees <- pedigrees %||% ""
+  pedigrees <- rep_len(pedigrees, nchar(sexes))
   
   # Add surnames from parent if no surnames given
   if(!is.null(chil_names) && !any(grepl("/", chil_names))){
@@ -315,16 +340,20 @@ add_children <- function(x, xref, sexes, chil_names = NULL){
   }
   
   sexes_vec <- unlist(strsplit(sexes, split = NULL))
-  
+
   for(i in seq_along(sexes_vec)){
     if(!sexes_vec[i] %in% val_sexes()){
       warning("Skipping person with unknown sex: ", sexes_vec[i])
       next
     }
     
+    famc <- FamilyLinkChild(xref)
+    if(pedigrees[i] != ""){
+      famc@pedigree <- pedigrees[i]
+    }
     chil_rec <- IndividualRecord(
       sex = sexes_vec[i],
-      fam_links_chil = xref
+      fam_links_chil = famc
     )
     if(!is.null(chil_names) && chil_names[i] != ""){
       chil_rec@pers_names <- chil_names[i]

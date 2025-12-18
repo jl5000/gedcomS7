@@ -4,15 +4,15 @@
 \alias{add_children}
 \title{Create children records for a family}
 \usage{
-add_children(x, xref, sexes, chil_names = NULL)
+add_children(x, xref, sexes, chil_names = NULL, pedigrees = "BIRTH")
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xref}{The xref of a Family record.}
 
-\item{sexes}{A character string giving the sexes of each child. For example,
-"FFM" to add two daughters and one son.}
+\item{sexes}{A character string giving the sexes (from \code{\link[=val_sexes]{val_sexes()}}) of each child.
+For example, "FFM" to add two daughters and one son.}
 
 \item{chil_names}{A character vector of children's names. If provided, it must be
 the same length as the number of sexes. If you don't want to provide a name for a
@@ -20,6 +20,12 @@ child, set the name to "".
 
 Surnames must be enclosed in forward slashes. If all names you supply do not
 contain forward slashes then surnames will be taken from the father (or mother).}
+
+\item{pedigrees}{A character vector of pedigrees from \code{\link[=val_pedigree_types]{val_pedigree_types()}}.
+This must be a vector of length one (which will be recycled) or the same size
+as the number of children. A value of NULL means no pedigrees will be defined.
+If you don't want to provide a pedigree for a child, set the pedigree to "".
+Defaults to "BIRTH".}
 }
 \value{
 A gedcom object with additional child records.

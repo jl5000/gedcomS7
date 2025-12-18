@@ -106,7 +106,17 @@ test_that("Function add_spouse() @ L195", {
 })
 
 
-test_that("Function rm_xref_ptrs() @ L399", {
+test_that("Function add_children() @ L305", {
+  expect_error(add_children(test_ged(), "@I1@", "F"), 
+               "The xref is not for a Family record")
+  expect_error(add_children(test_ged(), "@F1@", "F", c("Betty","Boo")), 
+               "If names are given")
+  expect_error(add_children(test_ged(), "@F1@", "F", pedigrees = c("BIRTH","ADOPTED")), 
+               "If pedigrees are given")
+})
+
+
+test_that("Function rm_xref_ptrs() @ L428", {
   lines1 <- NonEvent(
     "NATU", 
     date_period = "FROM 1700 TO 1800", 

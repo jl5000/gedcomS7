@@ -1,3 +1,8 @@
+# gedcomS7 development version
+
+* `add_children()` and `add_siblings` gain a `pedigrees` argument allowing Child to Family links to be defined more specifically
+* `Address()` objects no longer treat semi-colons as new lines
+
 # gedcomS7 0.3.0 (24 Oct 2025)
 
 * Added support for dates in the Julian calendar - `DateGregorian()` renamed `DateCalendar()`
