@@ -59,16 +59,19 @@
 #' @param associations Associated individuals. This can either be a `Association()` object or a list of them.
 #' @param age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
 #' @param husb_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the husband was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
 #' @param wife_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the wife was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.

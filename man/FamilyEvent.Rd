@@ -105,6 +105,7 @@ to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUID
 
 \item{husb_age}{A character string that indicates the age in years, months, weeks and/or days
 that the husband was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
@@ -113,6 +114,7 @@ in the corresponding phrase parameter.}
 
 \item{wife_age}{A character string that indicates the age in years, months, weeks and/or days
 that the wife was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
