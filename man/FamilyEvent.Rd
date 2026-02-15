@@ -101,7 +101,7 @@ or a character vector of XREFs of source records.}
 or a character vector of XREFs of multimedia records.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
-to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
+to be formatted in line with RFC 9562 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{husb_age}{A character string that indicates the age in years, months, weeks and/or days
 that the husband was at the time of the fact. Any combination of these is permitted.

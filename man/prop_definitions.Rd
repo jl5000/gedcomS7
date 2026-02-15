@@ -125,7 +125,7 @@ as maintenance of these is done automatically.}
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
-to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
+to be formatted in line with RFC 9562 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}

@@ -95,7 +95,7 @@
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
 #' 
 #' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
-#' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
+#' to be formatted in line with RFC 9562 and can be generated with `uuid::UUIDgenerate()`.
 #' @param user_ids A character vector of user-generated identifiers. The type of the identifiers can
 #' be given in the vector names, e.g. c("Driving license number" = "ABC123")
 #' @param ext_ids A named character vector of identifiers maintained by an external authority.

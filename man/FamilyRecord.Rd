@@ -45,7 +45,7 @@ treated as private. This allows them to be excluded on export.}
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
-to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
+to be formatted in line with RFC 9562 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{ext_ids}{A named character vector of identifiers maintained by an external authority.
 The names must be given as a URI. See the GEDCOM specification for more information.}
