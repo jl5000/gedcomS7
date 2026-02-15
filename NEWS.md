@@ -4,6 +4,7 @@
 * `add_children()` and `add_siblings()` gain a `pedigrees` argument allowing Child to Family links to be defined more specifically
 * `Address()` objects no longer treat semi-colons as new lines
 * Self-referencing `@alia_xrefs` in `IndividualRecord()` are prohibited and cause an error
+* Minor updates and improvements to function documentation
 
 # gedcomS7 0.3.0 (24 Oct 2025)
 
