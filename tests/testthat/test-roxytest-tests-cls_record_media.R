@@ -26,7 +26,7 @@ test_that("Function MediaFile() @ L35", {
 })
 
 
-test_that("Function MediaRecord() @ L92", {
+test_that("Function MediaRecord() @ L94", {
   fls <- list(MediaFile(location = "media/original.mp3",
                                          title = "My audio",
                                          media_type = "audio/mp3",
@@ -41,5 +41,7 @@ test_that("Function MediaRecord() @ L92", {
   expect_snapshot_value(MediaRecord("@M548@", files = fls,
                                            locked = TRUE,
                                            notes = "Very loud")@GEDCOM, "json2")
+  expect_error(MediaRecord("@M548@", files = fls, citations = SourceCitation(media_links = "@M548@")),
+               "@citations must not contain @media_links pointing to this record")
 })
 

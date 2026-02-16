@@ -2,12 +2,14 @@
 
 # File R/cls_record_note.R: @tests
 
-test_that("Function NoteRecord() @ L17", {
+test_that("Function NoteRecord() @ L19", {
   expect_snapshot_value(NoteRecord("@N4@",
                                           text = "The note goes something like this",
                                           language = "en")@GEDCOM, "json2")
   expect_error(NoteRecord("@N4@", text = "test",
                          translations = TranslationText("Woohoo")),
                regexp = "Each @translation requires a @language or @media_type")
+  expect_error(NoteRecord("@N1@", text =" text", citations = SourceCitation(note_xrefs = "@N1@")),
+               "@citations must not point to this record")
 })
 

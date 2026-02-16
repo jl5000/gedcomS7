@@ -88,7 +88,9 @@ MediaFile <- S7::new_class(
 #'            
 #' expect_snapshot_value(MediaRecord("@M548@", files = fls,
 #'                                          locked = TRUE,
-#'                                          notes = "Very loud")@GEDCOM, "json2")            
+#'                                          notes = "Very loud")@GEDCOM, "json2")
+#' expect_error(MediaRecord("@M548@", files = fls, citations = SourceCitation(media_links = "@M548@")),
+#'              "@citations must not contain @media_links pointing to this record")         
 MediaRecord <- S7::new_class(
   "MediaRecord", 
   parent = Record,
@@ -115,6 +117,13 @@ MediaRecord <- S7::new_class(
     
     if(length(self@files) < 1)
       return("At least one file must be defined")
+    
+    for(cit in self@citations){
+      for(medlink in cit@media_links){
+        if(self@XREF %in% medlink@media_xref)
+          return("@citations must not contain @media_links pointing to this record")
+      }
+    }
   }
 )
 
