@@ -80,5 +80,9 @@ fix_maximal_records <- function(maximal_path){
   move <- ged[387:388]
   ged <- append(ged, move, 385) 
   ged <- ged[-(389:390)]
+  
+  # Fix circular loops in OBJE.SOUR.OBJE
+  ged[588] <- "2 OBJE @O2@"
+  ged[595] <- "2 OBJE @O2@"
   ged
 }
