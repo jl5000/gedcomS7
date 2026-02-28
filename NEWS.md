@@ -1,4 +1,4 @@
-# gedcomS7 development version
+# gedcomS7 0.4.0 (28 Feb 2026)
 
 * Bespoke events (`FamilyEvent("EVEN")` and `IndividualEvent("EVEN")`) no longer require a `fact_val` argument
 * `add_children()` and `add_siblings()` gain a `pedigrees` argument allowing Child to Family links to be defined more specifically
