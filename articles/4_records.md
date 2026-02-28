@@ -26,7 +26,7 @@ indi@locked <- TRUE
 ged <- push_record(new_gedcom(), indi)
 #> New Individual record added with xref @I1@
 indi <- pull_record(ged, "@I1@")
-#> Warning in pull_record(ged, "@I1@"): The record is locked. Ensure you have the
+#> Warning in check_restrictions(rec): The record is locked. Ensure you have the
 #> record owner's permission before editing it and pushing it back to the GEDCOM
 #> object.
 ```
@@ -156,7 +156,7 @@ e.g.
 
 ``` r
 uuid::UUIDgenerate(n = 1)
-#> [1] "1e6c780c-a273-49d2-a18a-faca87c12ae5"
+#> [1] "95e0230e-ff52-4d32-988a-da56ab7e2eec"
 ```
 
 The `@ext_ids` must take the form of a named vector where the names are
@@ -350,9 +350,9 @@ ged <- push_record(ged, new_record)
 # Extract record with creation/change dates added
 new_record <- pull_record(ged, "@I1@")
 new_record@created
-#> Created:       20 NOV 2025
+#> Created:       28 FEB 2026
 new_record@updated
-#> Changed:       20 NOV 2025
+#> Changed:       28 FEB 2026
 ```
 
 You can add a time and/or notes to these dates, but that’s probably

@@ -341,7 +341,7 @@ fact_rules_df("eve|chr")
 #>               fact_name fact_type individual family      fact fact_val_required
 #> 9           Christening       CHR       TRUE  FALSE     Event             FALSE
 #> 10    Adult christening      CHRA       TRUE  FALSE     Event             FALSE
-#> 23          Other event      EVEN       TRUE   TRUE     Event              TRUE
+#> 23          Other event      EVEN       TRUE   TRUE     Event             FALSE
 #> 35 Academic achievement      EDUC       TRUE  FALSE Attribute              TRUE
 #>    fact_val fact_desc_required
 #> 9         Y              FALSE

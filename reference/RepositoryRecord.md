@@ -59,7 +59,7 @@ RepositoryRecord(
 - unique_ids:
 
   A character vector of enduring and globally-unique identifiers. These
-  need to be formatted in line with RFC 4122 and can be generated with
+  need to be formatted in line with RFC 9562 and can be generated with
   [`uuid::UUIDgenerate()`](https://rdrr.io/pkg/uuid/man/UUIDgenerate.html).
 
 - ext_ids:

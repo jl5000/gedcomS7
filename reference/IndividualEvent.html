@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gedcomS7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Create an individual event object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jl5000/gedcomS7/blob/v0.3.0/R/cls_fact_indi.R" class="external-link"><code>R/cls_fact_indi.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jl5000/gedcomS7/blob/master/R/cls_fact_indi.R" class="external-link"><code>R/cls_fact_indi.R</code></a></small>
       <div class="d-none name"><code>IndividualEvent.Rd</code></div>
     </div>
 
@@ -203,12 +203,13 @@ or a character vector of XREFs of multimedia records.</p></dd>
 
 <dt id="arg-unique-ids">unique_ids<a class="anchor" aria-label="anchor" href="#arg-unique-ids"></a></dt>
 <dd><p>A character vector of enduring and globally-unique identifiers. These need
-to be formatted in line with RFC 4122 and can be generated with <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>.</p></dd>
+to be formatted in line with RFC 9562 and can be generated with <code><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">uuid::UUIDgenerate()</a></code>.</p></dd>
 
 
 <dt id="arg-age">age<a class="anchor" aria-label="anchor" href="#arg-age"></a></dt>
 <dd><p>A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "&lt; 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.</p></dd>

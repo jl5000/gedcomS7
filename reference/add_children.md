@@ -5,7 +5,7 @@ Create children records for a family
 ## Usage
 
 ``` r
-add_children(x, xref, sexes, chil_names = NULL)
+add_children(x, xref, sexes, chil_names = NULL, pedigrees = "BIRTH")
 ```
 
 ## Arguments
@@ -20,8 +20,9 @@ add_children(x, xref, sexes, chil_names = NULL)
 
 - sexes:
 
-  A character string giving the sexes of each child. For example, "FFM"
-  to add two daughters and one son.
+  A character string giving the sexes (from
+  [`val_sexes()`](https://jl5000.github.io/gedcomS7/reference/lookups.md))
+  of each child. For example, "FFM" to add two daughters and one son.
 
 - chil_names:
 
@@ -32,6 +33,15 @@ add_children(x, xref, sexes, chil_names = NULL)
   Surnames must be enclosed in forward slashes. If all names you supply
   do not contain forward slashes then surnames will be taken from the
   father (or mother).
+
+- pedigrees:
+
+  A character vector of pedigrees from
+  [`val_pedigree_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md).
+  This must be a vector of length one (which will be recycled) or the
+  same size as the number of children. A value of NULL means no
+  pedigrees will be defined. If you don't want to provide a pedigree for
+  a child, set the pedigree to "". Defaults to "BIRTH".
 
 ## Value
 

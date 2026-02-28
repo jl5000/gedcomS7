@@ -40,7 +40,7 @@ ged_new
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      20 NOV 2025
+#> Creation Date:      28 FEB 2026
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
