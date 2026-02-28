@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jl5000/gedcomS7/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/jl5000/gedcomS7/blob/v0.4.0/DESCRIPTION)
 
 Lendrum J (2026). *gedcomS7: Create Family Tree GEDCOM Files with S7
 Objects*. R package version 0.4.0, <https://jl5000.github.io/gedcomS7/>.

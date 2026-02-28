@@ -156,7 +156,7 @@ e.g.
 
 ``` r
 uuid::UUIDgenerate(n = 1)
-#> [1] "95e0230e-ff52-4d32-988a-da56ab7e2eec"
+#> [1] "de7a4126-252a-4709-9a6f-df23878cc9cc"
 ```
 
 The `@ext_ids` must take the form of a named vector where the names are
