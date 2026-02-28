@@ -30,8 +30,6 @@ IndividualFact <- S7::new_class(
 #'              regexp = "Only adoption, birth, and christening events can have a @fam_xref")
 #' expect_error(IndividualEvent("BIRT", fact_val = "Y", fam_xref = "@12@", adop_parent = "HUSB"), 
 #'              regexp = "Only adoption events can have a @adop_parent or @adop_parent_phrase")
-#' expect_error(IndividualEvent("EVEN", fact_desc = "Fact desc"), 
-#'              regexp = "A @fact_val is required for this fact")
 #' expect_error(IndividualEvent("ADOP", fact_val = "Y", fam_xref = "@12@", adop_parent = "man"), 
 #'              regexp = "@adop_parent has an invalid value")
 #' expect_error(IndividualEvent("ADOP", fact_val = "Y", adop_parent = "BOTH"), 

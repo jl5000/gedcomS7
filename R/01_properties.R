@@ -59,16 +59,19 @@
 #' @param associations Associated individuals. This can either be a `Association()` object or a list of them.
 #' @param age A character string that indicates the age in years, months, weeks and/or days 
 #' that the individual was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
 #' @param husb_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the husband was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
 #' @param wife_age A character string that indicates the age in years, months, weeks and/or days 
 #' that the wife was at the time of the fact. Any combination of these is permitted. 
+#' It is recommended that this be an age from a cited source document.
 #' Any labels must come after their corresponding number, for example; "4y 8m 1w 3d". 
 #' Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age 
 #' in the corresponding phrase parameter.
@@ -92,7 +95,7 @@
 #' @param subm_xrefs A character vector of relevant submitter record cross-reference identifiers.
 #' 
 #' @param unique_ids A character vector of enduring and globally-unique identifiers. These need
-#' to be formatted in line with RFC 4122 and can be generated with `uuid::UUIDgenerate()`.
+#' to be formatted in line with RFC 9562 and can be generated with `uuid::UUIDgenerate()`.
 #' @param user_ids A character vector of user-generated identifiers. The type of the identifiers can
 #' be given in the vector names, e.g. c("Driving license number" = "ABC123")
 #' @param ext_ids A named character vector of identifiers maintained by an external authority.

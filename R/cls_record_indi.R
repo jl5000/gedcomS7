@@ -30,6 +30,8 @@
 #' @returns An S7 object representing a GEDCOM INDIVIDUAL_RECORD.
 #' @export
 #' @tests
+#' expect_error(IndividualRecord(XREF = "@I1@", alia_xrefs = "@I1@"),
+#'              "@alia_xrefs must not point to this record")
 #' expect_warning(IndividualRecord(pers_names = "Me"),
 #'                regexp = "Did you forget to enclose the surname in forward slashes")
 #' expect_warning(IndividualRecord(pers_names = list(PersonalName("Joe /Bloggs/"), "Me")),
@@ -151,7 +153,11 @@ IndividualRecord <- S7::new_class(
           audit_ged(self@updated, self@created, 1)
         )
       })
-  )
+  ),
+  validator = function(self){
+    if(self@XREF %in% self@alia_xrefs)
+      return("@alia_xrefs must not point to this record")
+  }
 )
 
 

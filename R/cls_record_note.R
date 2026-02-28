@@ -14,6 +14,8 @@
 #' expect_error(NoteRecord("@N4@", text = "test",
 #'                        translations = TranslationText("Woohoo")),
 #'              regexp = "Each @translation requires a @language or @media_type")
+#' expect_error(NoteRecord("@N1@", text =" text", citations = SourceCitation(note_xrefs = "@N1@")),
+#'              "@citations must not point to this record")
 NoteRecord <- S7::new_class(
   "NoteRecord", 
   parent = Record,
@@ -47,6 +49,11 @@ NoteRecord <- S7::new_class(
     
     if(length(self@media_links) > 0)
       return("This record does not use @media_links")
+    
+    for(cit in self@citations){
+      if(self@XREF %in% cit@note_xrefs)
+        return("@citations must not point to this record")
+    }
     
     for(tran in self@translations){
       if(length(tran@language) + length(tran@media_type) == 0)

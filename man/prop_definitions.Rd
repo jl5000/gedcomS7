@@ -80,18 +80,21 @@ treated as private. This allows them to be excluded on export.}
 
 \item{age}{A character string that indicates the age in years, months, weeks and/or days
 that the individual was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
 
 \item{husb_age}{A character string that indicates the age in years, months, weeks and/or days
 that the husband was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
 
 \item{wife_age}{A character string that indicates the age in years, months, weeks and/or days
 that the wife was at the time of the fact. Any combination of these is permitted.
+It is recommended that this be an age from a cited source document.
 Any labels must come after their corresponding number, for example; "4y 8m 1w 3d".
 Age bounds can also be included, for example; "< 40y". If the age doesn't fit this format then describe the age
 in the corresponding phrase parameter.}
@@ -122,7 +125,7 @@ as maintenance of these is done automatically.}
 \item{subm_xrefs}{A character vector of relevant submitter record cross-reference identifiers.}
 
 \item{unique_ids}{A character vector of enduring and globally-unique identifiers. These need
-to be formatted in line with RFC 4122 and can be generated with \code{uuid::UUIDgenerate()}.}
+to be formatted in line with RFC 9562 and can be generated with \code{uuid::UUIDgenerate()}.}
 
 \item{user_ids}{A character vector of user-generated identifiers. The type of the identifiers can
 be given in the vector names, e.g. c("Driving license number" = "ABC123")}

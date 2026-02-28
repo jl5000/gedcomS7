@@ -2,7 +2,9 @@
 
 # File R/cls_record_indi.R: @tests
 
-test_that("Function IndividualRecord() @ L53", {
+test_that("Function IndividualRecord() @ L55", {
+  expect_error(IndividualRecord(XREF = "@I1@", alia_xrefs = "@I1@"),
+               "@alia_xrefs must not point to this record")
   expect_warning(IndividualRecord(pers_names = "Me"),
                  regexp = "Did you forget to enclose the surname in forward slashes")
   expect_warning(IndividualRecord(pers_names = list(PersonalName("Joe /Bloggs/"), "Me")),

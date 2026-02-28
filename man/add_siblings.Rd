@@ -4,15 +4,15 @@
 \alias{add_siblings}
 \title{Create sibling records for an individual}
 \usage{
-add_siblings(x, xref, sexes, sib_names = NULL)
+add_siblings(x, xref, sexes, sib_names = NULL, pedigrees = "BIRTH")
 }
 \arguments{
 \item{x}{A gedcom object.}
 
 \item{xref}{The xref of an Individual record.}
 
-\item{sexes}{A character string giving the sexes of each sibling. For example,
-"FFM" to add two sisters and one brother.}
+\item{sexes}{A character string giving the sexes (from \code{\link[=val_sexes]{val_sexes()}}) of each sibling.
+For example, "FFM" to add two sisters and one brother.}
 
 \item{sib_names}{A character vector of sibling's names. If provided, it must be
 the same length as the number of sexes. If you don't want to provide a name for a
@@ -20,6 +20,12 @@ sibling, set the name to "".
 
 Surnames must be enclosed in forward slashes. If all names you supply do not
 contain forward slashes then surnames will be taken from the father (or mother).}
+
+\item{pedigrees}{A character vector of pedigrees from \code{\link[=val_pedigree_types]{val_pedigree_types()}}.
+This must be a vector of length one (which will be recycled) or the same size
+as the number of siblings. A value of NULL means no pedigrees will be defined.
+If you don't want to provide a pedigree for a sibling, set the pedigree to "".
+Defaults to "BIRTH".}
 }
 \value{
 A gedcom object with additional sibling records.

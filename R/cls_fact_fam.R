@@ -47,8 +47,6 @@ FamilyFact <- S7::new_class(
 #'              regexp = "This is not a valid @fact_type for this event")
 #' expect_error(FamilyEvent("MARR", fact_val = "Yes"), 
 #'              regexp = "Only a @fact_val of 'Y' is permitted for this event")
-#' expect_error(FamilyEvent("EVEN", fact_desc = "Fact desc"), 
-#'              regexp = "A @fact_val is required for this fact")       
 #' expect_error(FamilyEvent("DIV", fact_val = "Y", husb_age = "73"), regexp = "@husb_age is in an invalid format")
 #' expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y")@GEDCOM, "json2")
 #' expect_snapshot_value(FamilyEvent("DIV", fact_val = "Y", wife_age_phrase = "old")@GEDCOM, "json2")

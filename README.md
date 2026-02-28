@@ -59,7 +59,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      30 AUG 2025
+#> Creation Date:      15 FEB 2026
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
@@ -84,7 +84,7 @@ ged
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      30 AUG 2025
+#> Creation Date:      15 FEB 2026
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
@@ -147,7 +147,7 @@ ged@GEDCOM
 #>  [5] "2 NAME The 'gedcomS7' package for the R language"
 #>  [6] "2 CORP Jamie Lendrum"                            
 #>  [7] "3 EMAIL jalendrum@gmail.com"                     
-#>  [8] "1 DATE 30 AUG 2025"                              
+#>  [8] "1 DATE 15 FEB 2026"                              
 #>  [9] "1 COPR Copyright Jamie Lendrum 2023"             
 #> [10] "1 LANG en"                                       
 #> [11] "1 NOTE This file contains my family tree"        
@@ -177,7 +177,7 @@ write_gedcom(ged, "my_gedcom.ged")
 ## Notice
 
 > This work comprises, is based on, or is derived from the FAMILYSEARCH
-> GEDCOM™ Specification, © 1984-2023 Intellectual Reserve, Inc. All
+> GEDCOM™ Specification, © 1984-2026 Intellectual Reserve, Inc. All
 > rights reserved.
 
 > “FAMILYSEARCH GEDCOM™” and “FAMILYSEARCH®” are trademarks of

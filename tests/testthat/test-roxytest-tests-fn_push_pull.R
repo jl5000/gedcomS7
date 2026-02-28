@@ -28,7 +28,7 @@ test_that("Function pull_record() @ L34", {
 })
 
 
-test_that("Function push_record() @ L134", {
+test_that("Function push_record() @ L140", {
   ged <- new_gedcom()
   ged@update_change_dates <- TRUE
   ged@add_creation_dates <- TRUE
