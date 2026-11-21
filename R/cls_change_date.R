@@ -6,7 +6,7 @@ AuditDate <- S7::new_class(
   properties = list(
     date_exact = prop_char(1, 1, 
                            pattern = reg_date_exact(),
-                           default = date_exact_current(),
+                           default = quote(date_exact_current()),
                            S7class_names = "DateExact"),
     time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time")
   )

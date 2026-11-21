@@ -103,7 +103,7 @@ GedcomHeader <- S7::new_class(
     destination = prop_char(0, 1, 1),
     creation_date = prop_char(0, 1, 
                               pattern = reg_date_exact(),
-                              default = date_exact_current(),
+                              default = quote(date_exact_current()),
                               S7class_names = "DateExact"),
     creation_time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     subm_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),

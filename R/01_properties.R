@@ -227,7 +227,7 @@ prop_char <- function(min_size = NULL,
       self
     }
   }
-    
+  
   S7::new_property(classes, default = default,
                    setter = setter_fn,
                    validator = function(value){
