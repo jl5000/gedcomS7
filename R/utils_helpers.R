@@ -172,7 +172,7 @@ zipped_gedname <- function(filepath, must_exist = FALSE){
   
   stopifnot("File is not a zip archive" = tools::file_ext(filepath) == "zip")
     
-  contents <- unzip(filepath, list = TRUE)
+  contents <- utils::unzip(filepath, list = TRUE)
   ged_files <- contents[contents$Name == basename(contents$Name) &
                           tools::file_ext(contents$Name) == "ged",]
   
