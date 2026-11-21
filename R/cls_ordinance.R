@@ -13,13 +13,13 @@ Ordinance <- S7::new_class(
     ord_type = prop_char(1, 1, choices = val_individual_ordinance_types()),
     date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
     temple_name = prop_char(0, 1, 1),
-    place = prop_S7obj("place", Place),
+    place = prop_S7obj(Place),
     ord_state = prop_char(0, 1),
     state_date = prop_char(0, 1, pattern = reg_date_exact(), S7class_names = "DateExact"),
     state_time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
-    citations = prop_S7list("citations", SourceCitation),
+    notes = prop_S7list(Note),
+    citations = prop_S7list(SourceCitation),
     fam_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     
     GEDCOM = S7::new_property(
@@ -75,13 +75,13 @@ SpouseSealing <- S7::new_class(
                                 getter = function(self) "SLGS"),
     date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
     temple_name = prop_char(0, 1, 1),
-    place = prop_S7obj("place", Place),
+    place = prop_S7obj(Place),
     ord_state = prop_char(0, 1, choices = val_ordinance_states("SLGS")),
     state_date = prop_char(0, 1, pattern = reg_date_exact(), S7class_names = "DateExact"),
     state_time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time"),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
-    citations = prop_S7list("citations", SourceCitation),
+    notes = prop_S7list(Note),
+    citations = prop_S7list(SourceCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,

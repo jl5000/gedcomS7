@@ -23,7 +23,7 @@ NoteRecord <- S7::new_class(
     text = prop_char(1, 1, 1),
     media_type = prop_char(0, 1, choices = c("text/plain","text/html")),
     language = prop_char(0, 1, 1),
-    translations = prop_S7list("translations", TranslationText),
+    translations = prop_S7list(TranslationText),
     
     GEDCOM = S7::new_property(
       S7::class_data.frame,

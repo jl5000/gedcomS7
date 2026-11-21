@@ -6,7 +6,7 @@ FamilyLink <- S7::new_class(
   properties = list(
     fam_xref = prop_char(1, 1, pattern = reg_xref(TRUE)),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note)
+    notes = prop_S7list(Note)
   )
 )
 

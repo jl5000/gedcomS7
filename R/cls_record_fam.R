@@ -41,14 +41,14 @@ FamilyRecord <- S7::new_class(
   "FamilyRecord", 
   parent = Record,
   properties = list(
-    facts = prop_S7list("facts", FamilyFact),
-    non_events = prop_S7list("non_events", NonEvent),
+    facts = prop_S7list(FamilyFact),
+    non_events = prop_S7list(NonEvent),
     husb_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     wife_xref = prop_char(0, 1, pattern = reg_xref(TRUE)),
     chil_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    associations = prop_S7list("associations", Association),
+    associations = prop_S7list(Association),
     subm_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    spouse_sealings = prop_S7list("spouse_sealings", SpouseSealing),
+    spouse_sealings = prop_S7list(SpouseSealing),
     
     NUM_CHILDREN = S7::new_property(
       S7::class_integer,

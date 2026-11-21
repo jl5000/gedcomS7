@@ -10,8 +10,8 @@ Fact <- S7::new_class(
     fact_desc = prop_char(0, 1, 1),
     
     date = prop_char(0, 1, pattern = reg_date_value(), S7class_names = "DateValue"),
-    place = prop_S7obj("place", Place),
-    address = prop_S7obj("address", Address),
+    place = prop_S7obj(Place),
+    address = prop_S7obj(Address),
     phone_numbers = prop_char(min_char = 1),
     emails = prop_char(min_char = 1),
     faxes = prop_char(min_char = 1),
@@ -23,11 +23,11 @@ Fact <- S7::new_class(
     locked = prop_bool(default = FALSE),
     private = prop_bool(default = FALSE),
     date_sort = prop_char(0, 1, pattern = reg_date_calendar(), S7class_names = "DateSorting"),
-    associations = prop_S7list("associations", Association),
+    associations = prop_S7list(Association),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
-    citations = prop_S7list("citations", SourceCitation),
-    media_links = prop_S7list("media_links", MediaLink),
+    notes = prop_S7list(Note),
+    citations = prop_S7list(SourceCitation),
+    media_links = prop_S7list(MediaLink),
     unique_ids = prop_char(pattern = reg_uuid(TRUE)),
 
     FACT_DATE = S7::new_property(

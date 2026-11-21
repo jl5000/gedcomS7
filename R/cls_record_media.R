@@ -95,7 +95,7 @@ MediaRecord <- S7::new_class(
   "MediaRecord", 
   parent = Record,
   properties = list(
-    files = prop_S7list("files", MediaFile),
+    files = prop_S7list(MediaFile),
     
     GEDCOM = S7::new_property(
       S7::class_character,
