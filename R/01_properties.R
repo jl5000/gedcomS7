@@ -146,16 +146,14 @@ NULL
 #' be converted into objects of the appropriate class. Any elements that cannot
 #' be converted will result in the validator throwing an error. 
 #'
-#' @param prop_name A character string specifying the name of the property.
 #' @param S7_class The gedcomS7 class that each element of the list should conform to.
 #'
 #' @returns An S7 property object.
 #' @keywords internal
-prop_S7list <- function(prop_name, S7_class){
+prop_S7list <- function(S7_class){
   S7::new_property(S7::class_list,
-                   getter = function(self) S7::prop(self, prop_name),
-                   setter = function(self, value){
-                     S7::prop(self, prop_name) <- as.S7class_list(value, S7_class)
+                   setter = function(self, name, value){
+                     S7::prop(self, name) <- as.S7class_list(value, S7_class)
                      self
                    },
                    validator = function(value){
@@ -170,18 +168,16 @@ prop_S7list <- function(prop_name, S7_class){
 #' @details
 #' The property will default to a value of NULL if no object is provided. 
 #'
-#' @param prop_name A character string specifying the name of the property.
 #' @param S7_class The gedcomS7 class that the property value should conform to.
 #'
 #' @returns An S7 property object.
 #' @keywords internal
-prop_S7obj <- function(prop_name, S7_class){
+prop_S7obj <- function(S7_class){
   # S3 class used so that order of class definition does not matter and classes
   # can be recursive
   S7::new_property(NULL | S7::new_S3_class(paste0("gedcomS7::", deparse(substitute(S7_class)))),
-                   getter = function(self) S7::prop(self, prop_name),
-                   setter = function(self, value){
-                     S7::prop(self, prop_name) <- as.S7class(value, S7_class)
+                   setter = function(self, name, value){
+                     S7::prop(self, name) <- as.S7class(value, S7_class)
                      self
                    })
 }
@@ -226,15 +222,13 @@ prop_char <- function(min_size = NULL,
   
   getter_fn <- setter_fn <- NULL
   if(!is.null(casting_name)){
-    getter_fn <- function(self) S7::prop(self, casting_name)
     setter_fn <- function(self, value){
       S7::prop(self, casting_name) <- as.character(value)
       self
     }
   }
-    
+  
   S7::new_property(classes, default = default,
-                   getter = getter_fn,
                    setter = setter_fn,
                    validator = function(value){
                      names_test <- NULL

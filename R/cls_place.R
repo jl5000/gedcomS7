@@ -49,7 +49,7 @@ Place <- S7::new_class(
     lat_long = prop_char(0, 1, pattern = sprintf("^%s %s$", reg_latitude(), reg_longitude())),
     ext_ids = prop_char(min_char = 1, names_required = TRUE),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
+    notes = prop_S7list(Note),
     
     LATITUDE = S7::new_property(S7::class_character,
                            getter = function(self){

@@ -1,6 +1,6 @@
 Package: gedcomS7
 Title: Create Family Tree GEDCOM Files with S7 Objects
-Version: 0.4.0
+Version: 1.0.0
 Authors@R: 
     person(given = "Jamie", 
            family = "Lendrum",
@@ -15,12 +15,12 @@ Description: Import, create, edit and export family tree GEDCOM files.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd", "roxytest::testthat_roclet"))
-RoxygenNote: 7.3.3
 Depends: 
-    R (>= 4.1)
+    R (>= 4.3)
 Imports:
-    S7,
-    tools
+    S7 (>= 1.0.0),
+    tools,
+    utils
 Suggests: 
     testthat (>= 3.0.0),
     roxytest,
@@ -29,3 +29,4 @@ Suggests:
     rmarkdown
 Config/testthat/edition: 3
 URL: https://jl5000.github.io/gedcomS7/, https://github.com/jl5000/gedcomS7
+Config/roxygen2/version: 8.0.0

@@ -65,7 +65,7 @@ PersonalNameTran <- S7::new_class(
   properties = list(
     pers_name = prop_char(1, 1, 1),
     language = prop_char(1, 1, 1),
-    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
+    name_pieces = prop_S7obj(PersonalNamePieces),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -117,11 +117,11 @@ PersonalName <- S7::new_class(
     pers_name = prop_char(1, 1, 1),
     name_type = prop_char(0, 1, choices = val_name_types()),
     type_phrase = prop_char(0, 1, 1),
-    name_pieces = prop_S7obj("name_pieces", PersonalNamePieces),
-    name_translations = prop_S7list("name_translations", PersonalNameTran),
-    notes = prop_S7list("notes", Note),
+    name_pieces = prop_S7obj(PersonalNamePieces),
+    name_translations = prop_S7list(PersonalNameTran),
+    notes = prop_S7list(Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    citations = prop_S7list("citations", SourceCitation),
+    citations = prop_S7list(SourceCitation),
     
     GEDCOM_STRING = S7::new_property(S7::class_character, 
                               getter = function(self) self@pers_name),

@@ -532,6 +532,10 @@
 1 FAMC @F1@
 0 @O1@ OBJE
 1 RESN CONFIDENTIAL, LOCKED
+1 FILE media/CharlotteBront%C3%AB.jpg
+2 FORM image/jpeg
+3 MEDI OTHER
+4 PHRASE Portrait
 1 FILE file:///path/to/file1
 2 FORM text/plain
 3 MEDI OTHER
@@ -585,14 +589,14 @@
 3 ROLE OTHER
 4 PHRASE Role phrase
 2 QUAY 0
-2 OBJE @O1@
+2 OBJE @O3@
 3 CROP
 4 TOP 0
 4 LEFT 0
 4 HEIGHT 100
 4 WIDTH 100
 3 TITL Title
-2 OBJE @O1@
+2 OBJE @O3@
 3 CROP
 4 TOP 100
 4 LEFT 100
@@ -620,6 +624,11 @@
 0 @O2@ OBJE
 1 RESN PRIVACY
 1 FILE http://host.example.com/path/to/file2
+2 FORM text/plain
+3 MEDI ELECTRONIC
+0 @O3@ OBJE
+1 RESN PRIVACY
+1 FILE http://host.example.com/path/to/file3
 2 FORM text/plain
 3 MEDI ELECTRONIC
 0 @R1@ REPO
@@ -785,8 +794,8 @@
 2 TYPE http://example.com
 1 NOTE Note text
 1 SNOTE @N1@
-1 OBJE @O1@
 1 OBJE @O2@
+1 OBJE @O3@
 1 CHAN
 2 DATE 27 MAR 2022
 3 TIME 08:56

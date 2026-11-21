@@ -4,11 +4,9 @@
 \alias{prop_S7list}
 \title{Create a property for a list of gedcomS7 objects}
 \usage{
-prop_S7list(prop_name, S7_class)
+prop_S7list(S7_class)
 }
 \arguments{
-\item{prop_name}{A character string specifying the name of the property.}
-
 \item{S7_class}{The gedcomS7 class that each element of the list should conform to.}
 }
 \value{

@@ -6,7 +6,7 @@ AuditDate <- S7::new_class(
   properties = list(
     date_exact = prop_char(1, 1, 
                            pattern = reg_date_exact(),
-                           default = date_exact_current(),
+                           default = quote(date_exact_current()),
                            S7class_names = "DateExact"),
     time = prop_char(0, 1, pattern = reg_time(), S7class_names = "Time")
   )
@@ -53,7 +53,7 @@ ChangeDate <- S7::new_class(
   parent = AuditDate,
   properties = list(
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
+    notes = prop_S7list(Note),
     
     GEDCOM = S7::new_property(
       S7::class_character,

@@ -31,11 +31,11 @@ Record <- S7::new_class(
     unique_ids = prop_char(pattern = reg_uuid(TRUE)), # not named
     ext_ids = prop_char(min_char = 1, names_required = TRUE), # definitely named
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    notes = prop_S7list("notes", Note),
-    citations = prop_S7list("citations", SourceCitation),
-    media_links = prop_S7list("media_links", MediaLink),
-    created = prop_S7obj("created", CreationDate),
-    updated = prop_S7obj("updated", ChangeDate)
+    notes = prop_S7list(Note),
+    citations = prop_S7list(SourceCitation),
+    media_links = prop_S7list(MediaLink),
+    created = prop_S7obj(CreationDate),
+    updated = prop_S7obj(ChangeDate)
   )
 )
 

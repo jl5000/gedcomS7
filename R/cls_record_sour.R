@@ -68,9 +68,9 @@ RepositoryCitation <- S7::new_class(
   parent = GedcomS7class,
   properties = list(
     repo_xref = prop_char(1, 1, pattern = reg_xref(TRUE), default = void_xref()),
-    notes = prop_S7list("notes", Note),
+    notes = prop_S7list(Note),
     note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    call_numbers = prop_S7list("call_numbers", SourceCallNumber),
+    call_numbers = prop_S7list(SourceCallNumber),
 
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -133,7 +133,7 @@ FactsRecorded <- S7::new_class(
                                              paste(val_fact_types(), collapse = "|"))),
     date_period = prop_char(0, 1, pattern = reg_date_period(), S7class_names = "DatePeriod"),
     date_phrase = prop_char(0, 1, 1),
-    territory = prop_S7obj("territory", Place),
+    territory = prop_S7obj(Place),
     
     GEDCOM = S7::new_property(
       S7::class_character,
@@ -192,17 +192,17 @@ SourceRecord <- S7::new_class(
   "SourceRecord", 
   parent = Record,
   properties = list(
-    facts_recorded = prop_S7list("facts_recorded", FactsRecorded),
+    facts_recorded = prop_S7list(FactsRecorded),
     agency = prop_char(0, 1, 1),
     data_note_xrefs = prop_char(pattern = reg_xref(TRUE)),
-    data_notes = prop_S7list("data_notes", Note),
+    data_notes = prop_S7list(Note),
     originator = prop_char(0, 1, 1),
     full_title = prop_char(0, 1, 1),
     short_title = prop_char(0, 1, 1),
     publication_facts = prop_char(0, 1, 1),
     # NOTE I've made the cardinality of this {0,M} to match source citation
-    source_text = prop_S7list("source_text", TranslationText),
-    repo_citations = prop_S7list("repo_citations", RepositoryCitation),
+    source_text = prop_S7list(TranslationText),
+    repo_citations = prop_S7list(RepositoryCitation),
     
     GEDCOM = S7::new_property(
       S7::class_character,
