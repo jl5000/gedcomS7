@@ -4,20 +4,22 @@ Create a GEDCOM header object
 
 ## Usage
 
-    GedcomHeader(
-      gedcom_version = character(0),
-      ext_tags = character(0),
-      source = NULL,
-      destination = character(0),
-      creation_date = <object>,
-      creation_time = character(0),
-      subm_xref = character(0),
-      gedcom_copyright = character(0),
-      default_language = character(0),
-      default_place_form = character(0),
-      notes = list(),
-      note_xrefs = character(0)
-    )
+``` r
+GedcomHeader(
+  gedcom_version = character(0),
+  ext_tags = character(0),
+  source = NULL,
+  destination = character(0),
+  creation_date = date_exact_current(),
+  creation_time = character(0),
+  subm_xref = character(0),
+  gedcom_copyright = character(0),
+  default_language = character(0),
+  default_place_form = character(0),
+  notes = list(),
+  note_xrefs = character(0)
+)
+```
 
 ## Arguments
 

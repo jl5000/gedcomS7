@@ -13,6 +13,7 @@ Dates that occur on a specific defined date are defined using
 [`DateExact()`](https://jl5000.github.io/gedcomS7/reference/DateExact.md):
 
 ``` r
+
 library(gedcomS7)
 
 DateExact(1999, 7, 5)
@@ -28,6 +29,7 @@ through the `@GEDCOM_STRING` property), this date object can also be
 expressed as a date type:
 
 ``` r
+
 DateExact(2008, 4, 1)@as_date
 #> [1] "2008-04-01"
 ```
@@ -42,6 +44,7 @@ using
 [`DateCalendar()`](https://jl5000.github.io/gedcomS7/reference/DateCalendar.md):
 
 ``` r
+
 DateCalendar(year = 1999, month = 4, day = 5)
 #> Date:     5 APR 1999
 DateCalendar(year = 1999, month = 4)
@@ -53,6 +56,7 @@ DateCalendar(year = 1999)
 Years before the Common Era can be defined using negative years:
 
 ``` r
+
 DateCalendar(year = -105)
 #> Date:     105 BCE
 ```
@@ -61,6 +65,7 @@ The Gregorian calendar is implicitly assumed by default. The Julian
 calendar can be specified by setting `julian = TRUE`:
 
 ``` r
+
 DateCalendar(year = 1999, month = 4, julian = TRUE)
 #> Date:     JULIAN APR 1999
 ```
@@ -76,6 +81,7 @@ Approximate dates (i.e. those expressing uncertainty) use the qualifiers
 object:
 
 ``` r
+
 DateCalendar(year = 1999, month = 4, day = 5) |> DateApprox(about = TRUE)
 #> Date:     ABT 5 APR 1999
 DateCalendar(year = 1999, month = 4, day = 5) |> DateApprox(calc = TRUE)
@@ -91,6 +97,7 @@ Date periods can take one or two
 objects:
 
 ``` r
+
 DatePeriod(start_date = DateCalendar(1956, 7, 26),
            end_date = DateCalendar(1956, 9, 15))
 #> Date:     FROM 26 JUL 1956 TO 15 SEP 1956
@@ -104,6 +111,7 @@ Providing only one date gives a semi-infinite period. If a mix of
 calendars are used with a finite period, they are made explicit, e.g.
 
 ``` r
+
 DatePeriod(start_date = DateCalendar(1956, 7, 26, julian = TRUE),
            end_date = DateCalendar(1956, 9, 15))
 #> Date:     FROM JULIAN 26 JUL 1956 TO GREGORIAN 15 SEP 1956
@@ -118,6 +126,7 @@ Unlike
 they describe when an event occurred rather than a duration.
 
 ``` r
+
 DateRange(start_date = DateCalendar(1956, 7, 26),
            end_date = DateCalendar(1956, 9, 15))
 #> Date:     BET 26 JUL 1956 AND 15 SEP 1956
@@ -140,6 +149,7 @@ conjunction with a date phrase (free text) and time. Instead of being
 single values, they are GEDCOM substructures:
 
 ``` r
+
 my_date <- DateValue(
   date = DateCalendar(year = 1999, month = 4, day = 5),
   date_phrase = "Someone's birthday",
@@ -157,6 +167,7 @@ my_date@GEDCOM
 It’s also possible to only define a DateValue through a phrase:
 
 ``` r
+
 DateValue(date = "", date_phrase = "March 14th")@GEDCOM
 #> [1] "0 DATE"              "1 PHRASE March 14th"
 ```

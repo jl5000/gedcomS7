@@ -18,6 +18,7 @@ You can install the development version of gedcomS7 from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("jl5000/gedcomS7")
 ```
@@ -44,6 +45,7 @@ GEDCOM files can be imported (with
 or created from scratch, creating an S7 object representation:
 
 ``` r
+
 library(gedcomS7)
 
 ged <- new_gedcom()
@@ -70,6 +72,7 @@ ged
 The metadata for the gedcom object (ged@…) can be modified.
 
 ``` r
+
 ged@header@notes <- "This file contains my family tree"
 ged@header@gedcom_copyright <- "Copyright Jamie Lendrum 2023"
 ged
@@ -95,6 +98,7 @@ ged
 New records can be created and ‘pushed’ to the GEDCOM object:
 
 ``` r
+
 subm_record <- SubmitterRecord(subm_name = "Jamie Lendrum")
 indi_record <- IndividualRecord(sex = "M",
                                 pers_names = PersonalName("Joe /Bloggs/"))
@@ -122,6 +126,7 @@ Existing records, must be ‘pulled’ from the object, edited, and then
 ‘pushed’ back.
 
 ``` r
+
 joe_bloggs <- pull_record(ged, "@I1@")
 joe_bloggs@notes <- "He had a dog called Rover"
 ged <- push_record(ged, joe_bloggs)
@@ -131,6 +136,7 @@ The entire GEDCOM representation can be seen with the `@GEDCOM`
 property:
 
 ``` r
+
 ged@GEDCOM
 #>  [1] "0 HEAD"                                          
 #>  [2] "1 GEDC"                                          
@@ -157,6 +163,7 @@ ged@GEDCOM
 The object can be exported to a GEDCOM file:
 
 ``` r
+
 write_gedcom(ged, "my_gedcom.ged")
 ```
 

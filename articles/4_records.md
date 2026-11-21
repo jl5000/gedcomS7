@@ -10,6 +10,7 @@ focuses on those aspects which they all (or almost all) have in common.
 New records are created using the set of `*Record()` functions, e.g.
 
 ``` r
+
 library(gedcomS7)
 
 indi <- IndividualRecord()
@@ -22,6 +23,7 @@ TRUE. If you attempt to pull a locked record from a GEDCOM object for
 editing, you will be presented with a warning:
 
 ``` r
+
 indi@locked <- TRUE
 ged <- push_record(new_gedcom(), indi)
 #> New Individual record added with xref @I1@
@@ -64,6 +66,7 @@ identifying it as a standalone record that has not yet been pushed to
 the GEDCOM object:
 
 ``` r
+
 new_person <- IndividualRecord()
 new_person@XREF
 #> [1] "@GEDCOMS7_ORPHAN@"
@@ -75,6 +78,7 @@ record and not an existing one. It is important you do not change it.
 If you then push it to a GEDCOM object, it will assign it a proper xref:
 
 ``` r
+
 ged <- push_record(new_gedcom(), new_person)
 #> New Individual record added with xref @I1@
 ```
@@ -87,6 +91,7 @@ vector must be of a particular length with these specific names.
 We’ll import a different GEDCOM file which has some records in it:
 
 ``` r
+
 ged_max <- read_gedcom("maximal70.ged")
 
 ged_max@records@prefixes
@@ -101,6 +106,7 @@ The `@records@XREFS` property gives a list of record xrefs in the GEDCOM
 object, split by record type:
 
 ``` r
+
 ged_max@records@XREFS
 #> $SUBM
 #> [1] "@U1@" "@U2@"
@@ -127,6 +133,7 @@ ged_max@records@XREFS
 The next xrefs of each type will therefore be:
 
 ``` r
+
 ged_max@records@XREFS_NEXT
 #>   SUBM   INDI    FAM   SOUR   REPO   OBJE  SNOTE 
 #> "@U3@" "@I5@" "@F3@" "@S3@" "@R3@" "@M1@" "@N3@"
@@ -155,8 +162,9 @@ identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier)
 e.g.
 
 ``` r
+
 uuid::UUIDgenerate(n = 1)
-#> [1] "de7a4126-252a-4709-9a6f-df23878cc9cc"
+#> [1] "3553fda4-0b65-4835-bac7-c14c3da2c0f5"
 ```
 
 The `@ext_ids` must take the form of a named vector where the names are
@@ -187,6 +195,7 @@ Source record xrefs, and it will be converted into a list of
 objects.
 
 ``` r
+
 SourceCitation() |> 
   str()
 #> <gedcomS7::SourceCitation>
@@ -220,6 +229,7 @@ of Multimedia record xrefs, a
 object, or a list of them.
 
 ``` r
+
 MediaLink() |> 
   str()
 #> <gedcomS7::MediaLink>
@@ -251,6 +261,7 @@ which also allows you to define some other properties of the note such
 as its language and media type.
 
 ``` r
+
 indi <- IndividualRecord()
 
 indi@notes <- "This is a single note"
@@ -265,6 +276,7 @@ Alternatively, you can supply a list which can contain any number of
 character or Note elements:
 
 ``` r
+
 indi@notes <- list(
   Note(text = "This is one of a number of <b>Note</b> objects. This one is HTML.",
        media_type = "text/html"),
@@ -280,6 +292,7 @@ elements, you can append any new values to the existing ones, otherwise
 they will be overwritten:
 
 ``` r
+
 indi@notes <- append(
   indi@notes,
   list(
@@ -339,6 +352,7 @@ creation/change dates depending on the values of `@add_creation_dates`
 and `@update_change_dates` (these are FALSE by default):
 
 ``` r
+
 ged <- new_gedcom()
 ged@update_change_dates <- TRUE
 ged@add_creation_dates <- TRUE
@@ -350,9 +364,9 @@ ged <- push_record(ged, new_record)
 # Extract record with creation/change dates added
 new_record <- pull_record(ged, "@I1@")
 new_record@created
-#> Created:       28 FEB 2026
+#> Created:       21 NOV 2026
 new_record@updated
-#> Changed:       28 FEB 2026
+#> Changed:       21 NOV 2026
 ```
 
 You can add a time and/or notes to these dates, but that’s probably

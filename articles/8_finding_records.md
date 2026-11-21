@@ -11,6 +11,7 @@ Person’). This person forms two separate family groups with two spouses,
 each resulting in two children.
 
 ``` r
+
 library(gedcomS7)
 
 main_person <- IndividualRecord(pers_names = "Main Person", sex = "M")
@@ -49,6 +50,7 @@ xrefs, so a helper function is created to convert xrefs for Individual
 records into the people’s names.
 
 ``` r
+
 main_person <- "@I1@"
 
 # Helper to convert xrefs to names
@@ -88,6 +90,7 @@ specify “BIRTH” if you only want biological). Allowed values for
 pedigrees are below.
 
 ``` r
+
 unname(val_pedigree_types())
 #> [1] "BIRTH"   "ADOPTED" "FOSTER"  "SEALING" "OTHER"
 ```
@@ -96,6 +99,7 @@ If we add an adopted child to family “@F3@” we can see the difference
 this parameter makes:
 
 ``` r
+
 adopted_child <- IndividualRecord(
   pers_names = "Adopted child",
   fam_links_chil = FamilyLinkChild(fam_xref = "@F3@", pedigree = "ADOPTED")
@@ -123,6 +127,7 @@ function to identify the descendants of Main Person. By default it will
 exclude the individual, all spouses, and all associated family records:
 
 ``` r
+
 get_descendants(three_gen, "@I2@") # Parent 1
 #> [1] "@I1@"  "@I6@"  "@I7@"  "@I8@"  "@I9@"  "@I10@"
 ```
@@ -131,6 +136,7 @@ Setting `inc_part = TRUE` will include all partners and their
 descendants, and all descendants’ partners:
 
 ``` r
+
 get_descendants(three_gen, "@I2@", inc_part = TRUE)
 #> [1] "@I3@"  "@I4@"  "@I5@"  "@I1@"  "@I6@"  "@I7@"  "@I8@"  "@I9@"  "@I10@"
 ```
@@ -138,6 +144,7 @@ get_descendants(three_gen, "@I2@", inc_part = TRUE)
 Setting `inc_indi = TRUE` will include the individual:
 
 ``` r
+
 get_descendants(three_gen, "@I2@", inc_indi = TRUE)
 #> [1] "@I2@"  "@I1@"  "@I6@"  "@I7@"  "@I8@"  "@I9@"  "@I10@"
 ```
@@ -146,6 +153,7 @@ Setting `inc_fam = TRUE` will include the individual’s families where
 they are a spouse/child, and all descendants’ families:
 
 ``` r
+
 get_descendants(three_gen, "@I2@", inc_fam = TRUE)
 #> [1] "@F1@"  "@F2@"  "@F3@"  "@I1@"  "@I6@"  "@I7@"  "@I8@"  "@I9@"  "@I10@"
 ```
@@ -170,6 +178,7 @@ media and repository record.
 We then add a link to the source record in the record of Main Person.
 
 ``` r
+
 supporting_media <- MediaRecord(
   files = MediaFile("myfile.mp3", media_type = "audio/mp3")
   )
@@ -199,6 +208,7 @@ record directly referenced in Main Person’s record, but also recognises
 the downstream dependencies of the repository and media records.
 
 ``` r
+
 get_supporting_recs(three_gen, "@I1@")
 #> [1] "@S1@" "@R1@" "@M1@"
 ```
@@ -211,6 +221,7 @@ function retrieves all records where a value matches a given regular
 expression (case insensitive).
 
 ``` r
+
 get_records_by_pattern(three_gen, "library")
 #> [1] "@R1@"
 get_records_by_pattern(three_gen, "son")
@@ -222,6 +233,7 @@ records were matched, set `return_context = TRUE` and it will return all
 the lines where a match occurred:
 
 ``` r
+
 get_records_by_pattern(three_gen, "son", return_context = TRUE)
 #> $`@I1@`
 #> [1] "1 NAME Main Person"
@@ -236,6 +248,7 @@ get_records_by_pattern(three_gen, "son", return_context = TRUE)
 You can then refine your pattern to include word boundaries etc.
 
 ``` r
+
 get_records_by_pattern(three_gen, "\\bson\\b", return_context = TRUE)
 #> $`@I6@`
 #> [1] "1 NAME Son 1"

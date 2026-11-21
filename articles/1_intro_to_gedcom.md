@@ -27,6 +27,7 @@ of a file; a header and trailer.
 A sample file looks like this:
 
 ``` r
+
 sample_file <- readLines("remarriage1.ged")
 sample_file
 #>  [1] "0 HEAD"                 "1 GEDC"                 "2 VERS 7.0"            

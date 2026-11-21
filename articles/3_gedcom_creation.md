@@ -6,6 +6,7 @@ The easiest way to create a GEDCOM object is to import an existing
 GEDCOM file. The example below imports the smallest legal GEDCOM file:
 
 ``` r
+
 library(gedcomS7)
 
 ged <- read_gedcom("minimal70.ged")
@@ -34,13 +35,14 @@ A GEDCOM object can also be created using the
 function:
 
 ``` r
+
 ged_new <- new_gedcom()
 
 ged_new
 #> GEDCOM file summary:
 #>  
 #> GEDCOM version:     7.0
-#> Creation Date:      28 FEB 2026
+#> Creation Date:      21 NOV 2026
 #> Default Language:   en
 #> Source:             gedcomS7
 #> Source name:        The 'gedcomS7' package for the R language
@@ -74,6 +76,7 @@ The filepath must end with file extension .ged.
 The properties of a GEDCOM object are:
 
 ``` r
+
 str(ged, max.level = 1)
 #> <gedcomS7::GedcomS7>
 #>  @ header             : <gedcomS7::GedcomHeader>
@@ -93,9 +96,9 @@ str(ged, max.level = 1)
 #>  @ records            : <gedcomS7::GedcomRecords>
 #>  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"
 #>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
-#>  .. @ XREFS       :List of 7
-#>  .. @ XREFS_PRIV  :List of 7
-#>  .. @ XREFS_CONFID:List of 7
+#>  .. @ XREFS       : List of 7
+#>  .. @ XREFS_PRIV  : List of 7
+#>  .. @ XREFS_CONFID: List of 7
 #>  .. @ XREFS_NEXT  : Named chr [1:7] "@U1@" "@I1@" "@F1@" "@S1@" "@R1@" "@M1@" "@N1@"
 #>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
 #>  .. @ RAW         : <gedcomS7::GedcomRecordsRaw>

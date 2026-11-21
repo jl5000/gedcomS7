@@ -9,6 +9,7 @@ records first, and then move on to Family records.
 ## Individuals
 
 ``` r
+
 library(gedcomS7)
 
 anakin <- IndividualRecord(
@@ -26,6 +27,7 @@ A quick and dirty way of adding names is with a character vector
 (enclosing forward slashes are GEDCOM’s way of indicating a surname):
 
 ``` r
+
 anakin@pers_names <- c("Anakin /Skywalker/", "Darth Vader")
 #> Warning in validator(object): Did you forget to enclose the surname in forward
 #> slashes?: Darth Vader
@@ -40,6 +42,7 @@ complexity, a personal name is usually defined using a
 object (or a list of them):
 
 ``` r
+
 anakin@pers_names <- list(
   PersonalName(pers_name = "Anakin /Skywalker/",
                name_type = "BIRTH",
@@ -81,6 +84,7 @@ must take one of the values of
 [`val_name_types()`](https://jl5000.github.io/gedcomS7/reference/lookups.md):
 
 ``` r
+
 val_name_types()
 #> [1] "AKA"          "BIRTH"        "IMMIGRANT"    "MAIDEN"       "MARRIED"     
 #> [6] "PROFESSIONAL" "OTHER"
@@ -102,6 +106,7 @@ provide the primary (first) name as a simple character string, and
 `@ALL_NAMES` will provide all names as a simple character vector.
 
 ``` r
+
 anakin@PRIMARY_NAME
 #> [1] "Anakin Skywalker"
 anakin@ALL_NAMES
@@ -122,6 +127,7 @@ individual when the fact applied (among other aspects).
 The full list of fact types that can be created are given below:
 
 ``` r
+
 val_individual_attribute_types(inc_generic = TRUE)
 #>                  Caste   Physical description   Academic achievement 
 #>                 "CAST"                 "DSCR"                 "EDUC" 
@@ -151,6 +157,7 @@ val_individual_event_types(inc_generic = TRUE)
 In the example below, we add 4 facts for Anakin:
 
 ``` r
+
 anakin@facts <- list(
   IndividualAttribute(fact_type = "TITL",
                       fact_val = "Lord",
@@ -170,6 +177,7 @@ defining a fact value, you must also add a fact description which
 provides a further classification:
 
 ``` r
+
 anakin@facts <- append(
   anakin@facts,
   IndividualEvent(fact_type = "EVEN",
@@ -186,6 +194,7 @@ the `@non_events` property. This takes a
 object or a list of them.
 
 ``` r
+
 anakin@non_events <- NonEvent("BARM")
 ```
 
@@ -199,6 +208,7 @@ the
 function.
 
 ``` r
+
 skywalkers <- new_gedcom() |> 
   push_record(anakin)
 #> New Individual record added with xref @I1@
@@ -222,6 +232,7 @@ Below we create a new empty Family record in our GEDCOM object
 `skywalkers`, and then link Anakin to this family as a spouse.
 
 ``` r
+
 skywalkers <- push_record(skywalkers, FamilyRecord())
 #> New Family record added with xref @F1@
 
@@ -234,6 +245,7 @@ recognise that a new linkage has appeared, and update the Family record
 to reflect this:
 
 ``` r
+
 skywalkers <- push_record(skywalkers, anakin)
 
 skywalkers@records@RAW@FAM[["@F1@"]]
@@ -255,6 +267,7 @@ an Individual record then a value of “@VOID@” can be used. However, you
 will need to provide this as a named vector describing the person, e.g.
 
 ``` r
+
 leia_han <- FamilyRecord()
 
 leia_han@chil_xrefs <- c("Ben Solo" = "@VOID@")
@@ -280,6 +293,7 @@ to specify the sexes and/or names of those being added.
 As an example, we will add a spouse and two children for Anakin:
 
 ``` r
+
 skywalkers <- skywalkers |> 
   add_spouse("@I1@", sex = "F", spou_name = "Padme /Amidala/",
              fam_xref = "@F1@") |> 
@@ -317,6 +331,7 @@ object (or a list of them).
 The full list of fact types that can be created are given below:
 
 ``` r
+
 val_family_attribute_types(inc_generic = TRUE)
 #> Number of children          Residence    Other attribute 
 #>             "NCHI"             "RESI"             "FACT"
@@ -337,6 +352,7 @@ properties. You can filter this table by providing a search string to
 the function:
 
 ``` r
+
 fact_rules_df("eve|chr")
 #>               fact_name fact_type individual family      fact fact_val_required
 #> 9           Christening       CHR       TRUE  FALSE     Event             FALSE
@@ -384,6 +400,7 @@ below), an `@indi_phrase` must be given containing their name. A
 `@relation_is` value is mandatory.
 
 ``` r
+
 anakin <- pull_record(skywalkers, "@I1@")
 
 anakin@associations <- list(
@@ -402,6 +419,7 @@ The `@relation_is` property must take one of the following values. If it
 is “OTHER”, then a `@relation_phrase` must be given.
 
 ``` r
+
 val_roles()
 #>              Child Religious official             Father             Friend 
 #>             "CHIL"           "CLERGY"             "FATH"           "FRIEND" 

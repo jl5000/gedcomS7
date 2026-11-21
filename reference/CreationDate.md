@@ -4,7 +4,9 @@ Create a creation date object
 
 ## Usage
 
-    CreationDate(date_exact = <object>, time = character(0))
+``` r
+CreationDate(date_exact = date_exact_current(), time = character(0))
+```
 
 ## Arguments
 

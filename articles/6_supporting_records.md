@@ -21,6 +21,7 @@ file. They provide evidence for the assertions made in a file, and
 require careful management.
 
 ``` r
+
 library(gedcomS7)
 
 birth_source <- SourceRecord(
@@ -69,6 +70,7 @@ A repository is an archive (such as a library) containing source
 documents.
 
 ``` r
+
 library_repo <- RepositoryRecord(
   repo_name = "A library",
   address = Address(
@@ -95,6 +97,7 @@ object (or a list of them if a group of media files are grouped
 together).
 
 ``` r
+
 my_family_photo <- MediaRecord(
   files = MediaFile(
     location = "C:/my_files/photo.jpg",
@@ -114,6 +117,7 @@ See the GEDCOM specification for more details.
 The `@medium` property must take one of the following values:
 
 ``` r
+
 unname(val_medium_types())
 #>  [1] "AUDIO"      "BOOK"       "CARD"       "ELECTRONIC" "FICHE"     
 #>  [6] "FILM"       "MAGAZINE"   "MANUSCRIPT" "MAP"        "NEWSPAPER" 
@@ -127,6 +131,7 @@ file. The main properties of these records are the names and contact
 details of these people.
 
 ``` r
+
 informant <- SubmitterRecord(
   subm_name = "Joe Bloggs",
   address = Address("2599 Priory Road; Wells; Somerset; England; BA5 1SH")
@@ -139,6 +144,7 @@ Note records allow you to make notes in your file and reference them in
 multiple places.
 
 ``` r
+
 spelling_note <- NoteRecord(
   text = "Lindsay has alternative spellings of 'Lindsey' and 'Linsey'",
   media_type = "text/plain"

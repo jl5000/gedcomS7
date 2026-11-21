@@ -6,14 +6,10 @@ gedcomS7 class.
 ## Usage
 
 ``` r
-prop_S7obj(prop_name, S7_class)
+prop_S7obj(S7_class)
 ```
 
 ## Arguments
-
-- prop_name:
-
-  A character string specifying the name of the property.
 
 - S7_class:
 

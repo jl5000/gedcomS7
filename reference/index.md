@@ -4,7 +4,7 @@
 
 ### GEDCOM Classes
 
-- [`GedcomHeader`](https://jl5000.github.io/gedcomS7/reference/GedcomHeader.md)
+- [`GedcomHeader()`](https://jl5000.github.io/gedcomS7/reference/GedcomHeader.md)
   : Create a GEDCOM header object
 - [`GedcomS7()`](https://jl5000.github.io/gedcomS7/reference/GedcomS7.md)
   : Create a GEDCOM object
@@ -53,9 +53,9 @@
   : Create a GEDCOM Date Value object
 - [`Time()`](https://jl5000.github.io/gedcomS7/reference/Time.md) :
   Create a time object
-- [`ChangeDate`](https://jl5000.github.io/gedcomS7/reference/ChangeDate.md)
+- [`ChangeDate()`](https://jl5000.github.io/gedcomS7/reference/ChangeDate.md)
   : Create a change date object
-- [`CreationDate`](https://jl5000.github.io/gedcomS7/reference/CreationDate.md)
+- [`CreationDate()`](https://jl5000.github.io/gedcomS7/reference/CreationDate.md)
   : Create a creation date object
 - [`date_exact_current()`](https://jl5000.github.io/gedcomS7/reference/date_exact_current.md)
   : Create a GEDCOM Exact Date object for today

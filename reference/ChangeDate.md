@@ -4,12 +4,14 @@ Create a change date object
 
 ## Usage
 
-    ChangeDate(
-      date_exact = <object>,
-      time = character(0),
-      note_xrefs = character(0),
-      notes = list()
-    )
+``` r
+ChangeDate(
+  date_exact = date_exact_current(),
+  time = character(0),
+  note_xrefs = character(0),
+  notes = list()
+)
+```
 
 ## Arguments
 

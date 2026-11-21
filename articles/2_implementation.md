@@ -41,6 +41,7 @@ updated GEDCOM 7.0 specification.
 The main GEDCOM object is an S7 representation of a GEDCOM file:
 
 ``` r
+
 library(gedcomS7)
 
 ged <- read_gedcom("remarriage1.ged")
@@ -64,7 +65,7 @@ str(ged)
 #>  @ records            : <gedcomS7::GedcomRecords>
 #>  .. @ prefixes    : Named chr [1:7] "U" "I" "F" "S" "R" "M" "N"
 #>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
-#>  .. @ XREFS       :List of 7
+#>  .. @ XREFS       : List of 7
 #>  .. .. $ SUBM : chr(0) 
 #>  .. .. $ INDI : chr [1:3] "@I1@" "@I2@" "@I3@"
 #>  .. .. $ FAM  : chr [1:2] "@F1@" "@F2@"
@@ -72,7 +73,7 @@ str(ged)
 #>  .. .. $ REPO : chr(0) 
 #>  .. .. $ OBJE : chr(0) 
 #>  .. .. $ SNOTE: chr(0) 
-#>  .. @ XREFS_PRIV  :List of 7
+#>  .. @ XREFS_PRIV  : List of 7
 #>  .. .. $ SUBM : chr(0) 
 #>  .. .. $ INDI : chr(0) 
 #>  .. .. $ FAM  : chr(0) 
@@ -80,7 +81,7 @@ str(ged)
 #>  .. .. $ REPO : chr(0) 
 #>  .. .. $ OBJE : chr(0) 
 #>  .. .. $ SNOTE: chr(0) 
-#>  .. @ XREFS_CONFID:List of 7
+#>  .. @ XREFS_CONFID: List of 7
 #>  .. .. $ SUBM : chr(0) 
 #>  .. .. $ INDI : chr(0) 
 #>  .. .. $ FAM  : chr(0) 
@@ -92,11 +93,11 @@ str(ged)
 #>  .. .. - attr(*, "names")= chr [1:7] "SUBM" "INDI" "FAM" "SOUR" ...
 #>  .. @ RAW         : <gedcomS7::GedcomRecordsRaw>
 #>  .. .. @ SUBM : Named list()
-#>  .. .. @ INDI :List of 3
+#>  .. .. @ INDI : List of 3
 #>  .. .. .. $ @I1@: chr [1:5] "0 @I1@ INDI" "1 NAME John Q /Public/" "1 SEX M" "1 FAMS @F1@" ...
 #>  .. .. .. $ @I2@: chr [1:4] "0 @I2@ INDI" "1 NAME Jane /Doe/" "1 SEX F" "1 FAMS @F1@"
 #>  .. .. .. $ @I3@: chr [1:5] "0 @I3@ INDI" "1 NAME Mary /Roe/" "1 DEAT" "2 DATE 1 MAR 1914" ...
-#>  .. .. @ FAM  :List of 2
+#>  .. .. @ FAM  : List of 2
 #>  .. .. .. $ @F1@: chr [1:9] "0 @F1@ FAM" "1 HUSB @I1@" "1 WIFE @I2@" "1 MARR" ...
 #>  .. .. .. $ @F2@: chr [1:5] "0 @F2@ FAM" "1 HUSB @I1@" "1 WIFE @I3@" "1 MARR" ...
 #>  .. .. @ SOUR : Named list()
@@ -112,6 +113,7 @@ Properties of the GEDCOM object can be accessed and modified using the
 `@` operator, e.g.
 
 ``` r
+
 ged@header@default_language
 #> character(0)
 ged@header@default_language <- "en"
@@ -131,6 +133,7 @@ character vector of notes, and these will be converted to a list of
 [`Note()`](https://jl5000.github.io/gedcomS7/reference/Note.md) objects.
 
 ``` r
+
 ged@header@notes <- c("This is a note", "This is another note")
 str(ged@header@notes)
 #> List of 2
@@ -153,6 +156,7 @@ str(ged@header@notes)
 You can then access properties of these:
 
 ``` r
+
 ged@header@notes[[2]]@language <- "en"
 ```
 
@@ -176,6 +180,7 @@ file as lists of character vectors in the `@RAW` property of the
 first individual are:
 
 ``` r
+
 ged@records@RAW@INDI[[1]]
 #> [1] "0 @I1@ INDI"            "1 NAME John Q /Public/" "1 SEX M"               
 #> [4] "1 FAMS @F1@"            "1 FAMS @F2@"
@@ -184,6 +189,7 @@ ged@records@RAW@INDI[[1]]
 You can also reference records by their xref:
 
 ``` r
+
 ged@records@RAW@INDI[["@I1@"]]
 #> [1] "0 @I1@ INDI"            "1 NAME John Q /Public/" "1 SEX M"               
 #> [4] "1 FAMS @F1@"            "1 FAMS @F2@"
@@ -194,6 +200,7 @@ object. This takes a copy of the record and parses it into an editable
 `S7` object.
 
 ``` r
+
 john_public <- pull_record(ged, "@I1@")
 
 str(john_public, max.level = 1)
@@ -211,13 +218,13 @@ str(john_public, max.level = 1)
 #>  @ media_links   : list()
 #>  @ created       : NULL
 #>  @ updated       : NULL
-#>  @ pers_names    :List of 1
+#>  @ pers_names    : List of 1
 #>  @ sex           : chr "M"
 #>  @ facts         : list()
 #>  @ non_events    : list()
 #>  @ ordinances    : list()
 #>  @ fam_links_chil: list()
-#>  @ fam_links_spou:List of 2
+#>  @ fam_links_spou: List of 2
 #>  @ subm_xrefs    : chr(0) 
 #>  @ associations  : list()
 #>  @ alia_xrefs    : chr(0) 
@@ -236,6 +243,7 @@ str(john_public, max.level = 1)
 We can edit a property and Push it back to the GEDCOM object:
 
 ``` r
+
 john_public@notes <- "John once had a dog called Rover"
 
 ged <- push_record(ged, john_public)
@@ -272,6 +280,7 @@ provide a brief summary of the object (not every property may be
 displayed). For example:
 
 ``` r
+
 ged
 #> GEDCOM file summary:
 #>  
