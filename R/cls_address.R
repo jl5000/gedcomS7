@@ -13,7 +13,7 @@ new_xref <- function() "@GEDCOMS7_ORPHAN@"
 #' 
 #' @param full A full address as it would appear on a mailing label, with lines separated
 #' by a new line character. For example:
-#' "The White House\n1600 Pennsylvania Avenue N.W.\nWashington\nDC 20500\nUnited States of America"
+#' "The White House\\n1600 Pennsylvania Avenue N.W.\\nWashington\\nDC 20500\\nUnited States of America"
 #' @param adr1 Deprecated.
 #' @param adr2 Deprecated.
 #' @param adr3 Deprecated.

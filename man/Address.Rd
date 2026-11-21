@@ -18,7 +18,7 @@ Address(
 \arguments{
 \item{full}{A full address as it would appear on a mailing label, with lines separated
 by a new line character. For example:
-"The White House\n1600 Pennsylvania Avenue N.W.\nWashington\nDC 20500\nUnited States of America"}
+"The White House\\n1600 Pennsylvania Avenue N.W.\\nWashington\\nDC 20500\\nUnited States of America"}
 
 \item{city}{The city component of the address.}
 
