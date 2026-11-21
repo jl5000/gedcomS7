@@ -1,3 +1,7 @@
+# gedcomS7 1.0.0 (21 Nov 2026)
+
+* Package internals updated to be compatible with `S7` v1.0.0.
+
 # gedcomS7 0.4.0 (28 Feb 2026)
 
 * Bespoke events (`FamilyEvent("EVEN")` and `IndividualEvent("EVEN")`) no longer require a `fact_val` argument
